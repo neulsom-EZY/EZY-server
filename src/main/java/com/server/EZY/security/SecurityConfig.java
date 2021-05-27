@@ -1,4 +1,4 @@
-package com.server.EZY.configuration.security;
+package com.server.EZY.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
