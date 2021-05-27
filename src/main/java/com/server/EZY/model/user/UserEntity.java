@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "User")
@@ -18,13 +19,16 @@ public class UserEntity {
     @Column(name = "UserId")
     private Long userIdx;
 
-    @Column(name = "NickName")
+    @Column(name = "NickName", length = 10)
+    @Size(min = 1, max = 10)
     private String nickname;
 
-    @Column(name = "Password")
+    @Column(name = "Password", length = 10)
+    @Size(min = 4, max = 10)
     private String password;
 
-    @Column(name = "PhoneNumber")
+    @Column(name = "PhoneNumber", length = 11)
+    @Size(min = 11, max = 11 )
     private String phoneNumber;
 
     @Column(name = "Permission")
