@@ -33,18 +33,16 @@ public class PersonalPlanEntity {
     @Column(name = "PlanWhat")
     private String what;
 
-    @Column(name = "PlanHow")
-    private String how;
-
     @Column(name = "PlanWho")
     private String who;
 
     @Column(name = "PlanRepeat")
     private boolean repeat;
 
+    @Column(name = "Category")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "Category",
+            name = "PersonalPlanCategory",
             joinColumns = @JoinColumn(name = "PersonalPlanId")
     )
     @Builder.Default
