@@ -5,12 +5,12 @@ import com.server.EZY.model.user.UserEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Errands")
-public class ErrandsEntity {
+@Table(name = "Errand")
+public class ErrandEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ErrandsIdx")
-    private Long errandsIdx;
+    @Column(name = "ErrandIdx")
+    private Long errandIdx;
 
     @Column(name = "SenderId")
     private Long senderIdx;
