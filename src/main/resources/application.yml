@@ -24,6 +24,13 @@ spring:
           auto: create-drop
     show-sql: true
 
+  #Redis 설정
+  redis:
+    image: redis:latest
+    host: localhost
+    port: 6379
+
+
 logging:
   level:
     org.hibernate.type.descriptor.sql : trace
