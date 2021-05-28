@@ -1,4 +1,4 @@
-package com.server.EZY.model.plan;
+package com.server.EZY.model.plan.personal;
 
 import com.server.EZY.model.user.UserEntity;
 import lombok.*;
