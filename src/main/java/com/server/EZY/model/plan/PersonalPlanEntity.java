@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan;
 
+import com.server.EZY.model.user.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,4 +48,8 @@ public class PersonalPlanEntity {
     )
     @Builder.Default
     private List<String> categories = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserId")
+    private UserEntity user;
 }
