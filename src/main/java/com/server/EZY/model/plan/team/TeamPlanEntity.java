@@ -52,5 +52,8 @@ public class TeamPlanEntity {
     @Builder.Default
     private List<String> categories = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "UserTeamId")
+    private UserTeamEntity userTeamEntity;
 
 }
