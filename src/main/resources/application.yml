@@ -28,6 +28,8 @@ logging:
   level:
     org.hibernate.type.descriptor.sql : trace
 
-jwt:
-  header: Authorization
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+security:
+  jwt:
+    token:
+      secret-key: afsdasfdASAWRSasgdvFTUJARGtasdfSRTJSRTEQR14asdfVA
+      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
