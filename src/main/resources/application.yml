@@ -31,5 +31,5 @@ logging:
 security:
   jwt:
     token:
-      secret-key: afsdasfdASAWRSasgdvFTUJARGtasdfSRTJSRTEQR14asdfVA
-      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+      secretKey: afsdasfdASAWRSasgdvFTUJARGtasdfSRTJSRTEQR14asdfVA
+      expireLength: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
