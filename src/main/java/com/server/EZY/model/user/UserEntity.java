@@ -19,19 +19,19 @@ public class UserEntity {
     @Column(name = "UserId")
     private Long userIdx;
 
-    @Column(name = "NickName", length = 10)
+    @Column(name = "NickName", length = 10, nullable = false)
     @Size(min = 1, max = 10)
     private String nickname;
 
-    @Column(name = "Password", length = 10)
+    @Column(name = "Password", length = 10, nullable = false)
     @Size(min = 4, max = 10)
     private String password;
 
     @Column(name = "PhoneNumber", length = 11)
-    @Size(min = 11, max = 11 )
+    @Size(min = 11, max = 11)
     private String phoneNumber;
 
-    @Column(name = "Permission")
+    @Column(name = "Permission", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Permission permission;
 
