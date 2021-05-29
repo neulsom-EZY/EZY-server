@@ -4,6 +4,7 @@ import com.server.EZY.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -13,9 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /// 데이터베이스 호출을 수행하는 중이므로 OncePerRequestFilter을 사용하여 두 번 이상의 작업을 막는다.
+@Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-    @Autowired
+
     private JwtTokenProvider jwtTokenProvider;
+
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
