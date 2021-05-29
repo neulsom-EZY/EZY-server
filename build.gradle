@@ -20,17 +20,19 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// *** Redis *** //
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.1'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.1'
 
-	// ** Swagger ** //
+	// swagger
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	compileOnly 'org.projectlombok:lombok'
