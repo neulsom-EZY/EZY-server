@@ -24,7 +24,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.auth0:java-jwt:3.16.0'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.1'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.1'
 
 	// ** Swagger ** //
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
@@ -40,8 +44,6 @@ dependencies {
 	implementation 'org.projectlombok:lombok'
 	annotationProcessor("org.projectlombok:lombok")
 	compileOnly("org.projectlombok:lombok")
-
-	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
 }
 
 test {
