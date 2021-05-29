@@ -33,6 +33,6 @@ class EzyApplicationTests {
 
 	@Test
 	void SECRET_KEY_ENCODE_검증(){
-		System.out.println("encode 결과 값은= "+encodeInit());
+		System.out.println("encode 결과 값은: "+encodeInit());
 	}
 }
