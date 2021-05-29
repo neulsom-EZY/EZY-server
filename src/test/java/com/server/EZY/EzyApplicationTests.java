@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.PostConstruct;
+import java.util.Base64;
+
 @SpringBootTest
 class EzyApplicationTests {
 
@@ -19,7 +22,17 @@ class EzyApplicationTests {
 
 		// Then
 		System.out.println("기대하는 값은= "+expectValue);
+		System.out.println("============================");
 		assertThat(jwtKey.equals(expectValue));
 	}
 
+	@PostConstruct
+	protected String encodeInit(){
+		return jwtKey = Base64.getEncoder().encodeToString(jwtKey.getBytes());
+	}
+
+	@Test
+	void SECRET_KEY_ENCODE_검증(){
+		System.out.println("encode 결과 값은: "+encodeInit());
+	}
 }
