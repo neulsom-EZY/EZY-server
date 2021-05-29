@@ -1,7 +1,6 @@
 package com.server.EZY.security;
 
 import com.server.EZY.exception.CustomException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
