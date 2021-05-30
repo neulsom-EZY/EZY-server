@@ -1,5 +1,6 @@
 package com.server.EZY.model.user;
 
+import com.server.EZY.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "User")
@@ -35,4 +37,6 @@ public class UserEntity {
     @Enumerated(value = EnumType.STRING)
     private Permission permission;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
 }
