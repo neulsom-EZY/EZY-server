@@ -12,11 +12,9 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
-@Table(name = "User")
-@Builder
+@Entity @Table(name = "User")
+@Builder @Getter
 @NoArgsConstructor @AllArgsConstructor
-@Getter
 public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
