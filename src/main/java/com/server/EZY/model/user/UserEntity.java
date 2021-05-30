@@ -1,6 +1,5 @@
 package com.server.EZY.model.user;
 
-import com.server.EZY.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.server.EZY.model;
+package com.server.EZY.model.user;
 
 import org.springframework.security.core.GrantedAuthority;
 
