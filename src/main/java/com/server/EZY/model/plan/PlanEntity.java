@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.*;
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Getter
-public class Plan {
+public class PlanEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PlanId")
@@ -39,6 +39,7 @@ public class Plan {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "PlanDType")
     private PlanDType planDType;
+
 
     /**
      * TeamPlanEntity 와 연관관계 편의 메서드
