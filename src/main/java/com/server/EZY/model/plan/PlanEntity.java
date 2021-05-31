@@ -40,6 +40,20 @@ public class PlanEntity {
     @Column(name = "PlanDType")
     private PlanDType planDType;
 
+    /**
+     * TeamPlanEntity 와 연관관계 편의 메서드
+     *
+     * @param personalPlanEntity
+     */
+    public void updatePersonalPlanEntity(PersonalPlanEntity personalPlanEntity){
+        if(personalPlanEntity == null || planDType != TEAM_PLAN){
+            this.personalPlanEntity = personalPlanEntity;
+            this.planDType = PERSONAL_PLAN;
+        }else {
+            throw new NullPointerException();
+        }
+
+    }
 
     /**
      * TeamPlanEntity 와 연관관계 편의 메서드
@@ -47,11 +61,12 @@ public class PlanEntity {
      * @param teamPlanEntity
      */
     public void updateTeamPlanEntity(TeamPlanEntity teamPlanEntity){
-        if(teamPlanEntity != null || personalPlanEntity == null || planDType != PERSONAL_PLAN){
+        if(personalPlanEntity == null || planDType != TEAM_PLAN){
             this.teamPlanEntity = teamPlanEntity;
             this.planDType = PlanDType.TEAM_PLAN;
-        }else
+        }else {
             throw new NullPointerException();
+        }
 
     }
 }
