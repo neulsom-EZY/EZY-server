@@ -39,4 +39,18 @@ public class Plan {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "PlanDType")
     private PlanDType planDType;
+
+    /**
+     * TeamPlanEntity 와 연관관계 편의 메서드
+     *
+     * @param teamPlanEntity
+     */
+    public void updateTeamPlanEntity(TeamPlanEntity teamPlanEntity){
+        if(teamPlanEntity != null || personalPlanEntity == null || planDType != PERSONAL_PLAN){
+            this.teamPlanEntity = teamPlanEntity;
+            this.planDType = PlanDType.TEAM_PLAN;
+        }else
+            throw new NullPointerException();
+
+    }
 }
