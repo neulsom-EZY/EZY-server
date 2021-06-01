@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import static com.server.EZY.model.plan.PlanDType.*;
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
 @Entity
@@ -21,15 +22,16 @@ public class PlanEntity {
     @Column(name = "PlanId")
     private Long planIdx;
 
+    //team 일정의 경우 UserEntity 를 통해 인원을 가져올 수 있다.
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "UserId")
     private UserEntity userEntity;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
     @JoinColumn(name = "PersonalPlanId")
     private PersonalPlanEntity personalPlanEntity;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = {MERGE, PERSIST})
     @JoinColumn(name = "TeamPlanId")
     private TeamPlanEntity teamPlanEntity;
 
