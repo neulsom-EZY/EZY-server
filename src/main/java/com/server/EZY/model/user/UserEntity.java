@@ -1,19 +1,27 @@
 package com.server.EZY.model.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static javax.persistence.EnumType.*;
 
 @Entity
 @Table(name = "User")
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Getter
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserId")
@@ -32,7 +40,47 @@ public class UserEntity {
     private String phoneNumber;
 
     @Column(name = "Permission", nullable = false)
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = STRING)
     private Permission permission;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(STRING)
+    @Builder.Default
+    private List<Role> roles = new ArrayList<>();
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername() {
+        return this.nickname;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
