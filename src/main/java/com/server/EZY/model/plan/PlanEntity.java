@@ -3,8 +3,6 @@ package com.server.EZY.model.plan;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,8 +13,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @Table(name = "Plan")
-@Builder
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class PlanEntity {
 
@@ -41,32 +38,32 @@ public class PlanEntity {
     private PlanDType planDType;
 
     /**
-     * TeamPlanEntity 와 연관관계 편의 메서드
-     *
+     * PersonalPlanEntity 과 UserEntity 로 객체 생성
+     * @param userEntity
      * @param personalPlanEntity
      */
-    public void updatePersonalPlanEntity(PersonalPlanEntity personalPlanEntity){
-        if(personalPlanEntity == null || planDType != TEAM_PLAN){
+    public PlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity){
+        if(userEntity != null || personalPlanEntity != null || this.teamPlanEntity == null) {
+            this.userEntity = userEntity;
             this.personalPlanEntity = personalPlanEntity;
             this.planDType = PERSONAL_PLAN;
-        }else {
+        }else{
             throw new NullPointerException();
         }
-
     }
 
     /**
-     * TeamPlanEntity 와 연관관계 편의 메서드
-     *
+     * TeamPlan 과 UserEntity 로 객체 생성
+     * @param userEntity
      * @param teamPlanEntity
      */
-    public void updateTeamPlanEntity(TeamPlanEntity teamPlanEntity){
-        if(personalPlanEntity == null || planDType != TEAM_PLAN){
+    public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
+        if(userEntity != null || teamPlanEntity != null || this.personalPlanEntity != null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
+            this.userEntity = userEntity;
             this.teamPlanEntity = teamPlanEntity;
-            this.planDType = PlanDType.TEAM_PLAN;
-        }else {
-            throw new NullPointerException();
+            this.planDType = TEAM_PLAN;
+        }else{
+            throw new NullPointerException(); // 임의로 넣은 Exception 수정예정
         }
-
     }
 }
