@@ -1,11 +1,15 @@
 package com.server.EZY.model.user;
 
 import com.server.EZY.repository.user.UserRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,13 +17,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 class UserEntityTest {
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Autowired private UserRepository userRepo;
+
 
     @Test
     @DisplayName("UserEntity 컬럼 최대길이 제약조건 확인")
     void userEntity_최대길이검증(){
 
-        //given
+        //######## given ########//
         UserEntity userEntity = UserEntity.builder()
                 .nickname("JsonWebTok")
                 .password("JsonWebTok")
@@ -27,11 +35,17 @@ class UserEntityTest {
                 .permission(Permission.PERMISSION)
                 .build();
 
-        //when
-        UserEntity userEntitySave = userRepo.save(userEntity);
+        //######## when ########//
+        // entity save 후 영속화 헤제
+        userRepo.saveAndFlush(userEntity);
+        em.detach(userEntity);
 
-        //then
-        assertThat(userEntitySave).isEqualTo(userEntitySave);
+        Long userIdx = userEntity.getUserIdx();
+        System.out.println(userIdx);
+        UserEntity userEntitySave = userRepo.findById(userIdx).get();
+
+        //######## then ########//
+        assertThat(userEntity == userEntitySave);
     }
 
     @Test
