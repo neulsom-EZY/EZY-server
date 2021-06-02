@@ -1,16 +1,16 @@
 package com.server.EZY.model.user;
 
-import com.server.EZY.repository.UserRepository;
+import com.server.EZY.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringBootTest
+@DataJpaTest
 @Transactional
 class UserEntityTest {
 
@@ -35,7 +35,7 @@ class UserEntityTest {
         String phoneNumber = user.getPhoneNumber();
         Permission permission = user.getPermission();
 
-        //than
+        //then
         assertThat(nickname.length()).isEqualTo(10);
         assertThat(password.length()).isEqualTo(10);
         assertThat(phoneNumber.length()).isEqualTo(11);
@@ -54,10 +54,10 @@ class UserEntityTest {
 
             userRepo.save(user);
         }catch(ConstraintViolationException e){
-            e.printStackTrace();
+            printException(e);
             return;
         }
-        throw new Exception(); // exception이 발생되지 않으면 테스트 코드가 실패한다.
+        throw new Exception(); // ConstraintViolationException exception 이 발생되지 않으면 테스트 코드가 실패한다.
     }
 
     @Test
@@ -72,10 +72,16 @@ class UserEntityTest {
 
             userRepo.save(user);
         }catch(ConstraintViolationException e){
-            e.printStackTrace();
+            printException(e);
             return;
         }
-        throw new Exception(); // exception이 발생되지 않으면 테스트 코드가 실패한다.
+        throw new Exception(); // ConstraintViolationException exception 이 발생되지 않으면 테스트 코드가 실패한다.
+    }
+
+    void printException(Exception e){
+        System.out.println("################################################################### Exception msg ###################################################################\n");
+        e.printStackTrace();
+        System.out.println("################################################################### Exception done ###################################################################\n");
     }
 
 }
