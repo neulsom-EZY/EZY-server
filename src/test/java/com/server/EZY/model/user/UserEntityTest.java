@@ -24,7 +24,7 @@ class UserEntityTest {
 
 
     @Test
-    @DisplayName("UserEntity 컬럼 최대길이 제약조건 확인")
+    @DisplayName("UserEntity DB값 정상적으로 insert 하는지 검증")
     void userEntity_최대길이검증(){
 
         //######## given ########//
