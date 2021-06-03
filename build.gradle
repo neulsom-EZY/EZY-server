@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.server'
@@ -49,5 +50,44 @@ dependencies {
 }
 
 test {
+	jacoco {
+		destinationFile = file("$buildDir/jacoco/jacoco.exec")
+	}
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport'
+}
+
+jacoco {
+	toolVersion = '0.8.7'
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled true
+		csv.enabled false
+		xml.enabled false
+	}
+	finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			// CLASS단위로, Line CoverateRatio 가 60% 이상이어야 한다.
+			enabled = false
+			element = 'CLASS'
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.30
+			}
+
+			// CLASS단위로, 빈 줄을 제외한 Line수를 최대 200으로 제한한다.
+			limit {
+				counter = 'LINE'
+				value = 'TOTALCOUNT'
+				maximum = 200
+			}
+		}
+	}
 }
