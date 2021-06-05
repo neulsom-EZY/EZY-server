@@ -48,7 +48,7 @@ public class PlanEntity {
      * @param personalPlanEntity
      */
     public PlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity){
-        if(userEntity != null || personalPlanEntity != null || this.teamPlanEntity == null) {
+        if(userEntity != null && personalPlanEntity != null && this.teamPlanEntity == null) {
             this.userEntity = userEntity;
             this.personalPlanEntity = personalPlanEntity;
             this.planDType = PERSONAL_PLAN;
@@ -63,7 +63,7 @@ public class PlanEntity {
      * @param teamPlanEntity
      */
     public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
-        if(userEntity != null || teamPlanEntity != null || this.personalPlanEntity != null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
+        if(userEntity != null && teamPlanEntity != null && this.personalPlanEntity != null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
             this.userEntity = userEntity;
             this.teamPlanEntity = teamPlanEntity;
             this.planDType = TEAM_PLAN;
