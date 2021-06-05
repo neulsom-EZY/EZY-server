@@ -105,6 +105,7 @@ class UserEntityTest {
                 .phoneNumber("01037283839")
                 .roles(userRole)
                 .build();
+
         List<String> userRoles = userEntity.getRoles().stream().map(Enum::name).collect(Collectors.toList());
         Collection<? extends GrantedAuthority> getRoleConvertSimpleGrantedAuthority = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
