@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.EnumType.*;
 
@@ -50,7 +52,8 @@ public class UserEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<String> rolesConvertString = this.roles.stream().map(role -> String.valueOf(role)).collect(Collectors.toList());
+        return rolesConvertString.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
