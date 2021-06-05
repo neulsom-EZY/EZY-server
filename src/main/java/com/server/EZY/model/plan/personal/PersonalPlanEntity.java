@@ -47,6 +47,5 @@ public class PersonalPlanEntity {
             name = "Category",
             joinColumns = @JoinColumn(name = "PersonalPlanId")
     )
-    @Builder.Default
     private List<String> categories = new ArrayList<>();
 }
