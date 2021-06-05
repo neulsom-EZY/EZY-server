@@ -47,7 +47,7 @@ public class UserEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(STRING)
     @Builder.Default
-    private final List<Role> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
