@@ -44,7 +44,7 @@ public class PersonalPlanEntity {
     @Column(name = "Category")
     @ElementCollection(fetch = EAGER)
     @CollectionTable(
-            name = "PersonalPlanCategory",
+            name = "Category",
             joinColumns = @JoinColumn(name = "PersonalPlanId")
     )
     @Builder.Default
