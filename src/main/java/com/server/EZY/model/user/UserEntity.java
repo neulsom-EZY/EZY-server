@@ -47,12 +47,13 @@ public class UserEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(STRING)
     @Builder.Default
-    private List<Role> roles = new ArrayList<>();
+    private final List<Role> roles = new ArrayList<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<String> rolesConvertString = this.roles.stream().map(role -> String.valueOf(role)).collect(Collectors.toList());
+        // List<Role> 형태를 Stream을 사용하여 roles 원소의 값을 String으로 바꿔주는 name()을 이용하여 List<String>형태로 변환(GrantedAuthority의 생성자는 String 타입을 받기 때문)
+        List<String> rolesConvertString = this.roles.stream().map(Enum::name).collect(Collectors.toList());
         return rolesConvertString.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
