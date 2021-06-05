@@ -22,19 +22,22 @@ public class PlanEntity {
     @Column(name = "PlanId")
     private Long planIdx;
 
-    //team 일정의 경우 UserEntity 를 통해 인원을 가져올 수 있다.
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "UserId")
     private UserEntity userEntity;
 
+    //PersonalPlan은 Plan과 1 : 1관계 이므로 Plan이 삭제되면 PersonalPlan이 삭제되야되고 역으로 PersonalPlan이 삭제되면 Plan이 삭제돼야 된다.
     @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
     @JoinColumn(name = "PersonalPlanId")
     private PersonalPlanEntity personalPlanEntity;
 
+    // User : Plan : TeamPlan = N : 1 : M
+    //TeamPlan는 Plan에서 여러명의 User가 TeamPlan을 가르키므로 한사람의 PlanEntity가 삭제됨으로 인하여 TeamPlan 자체가 삭제되면 안되므로 REMOVE를 제외했다.
     @ManyToOne(fetch = LAZY, cascade = {MERGE, PERSIST})
     @JoinColumn(name = "TeamPlanId")
     private TeamPlanEntity teamPlanEntity;
 
+    // Plan을 통해 PersonalPlan을 조인할지 TeamPlan을 조인할지 결정해주는 컬럼
     @Enumerated(value = EnumType.STRING)
     @Column(name = "PlanDType")
     private PlanDType planDType;
