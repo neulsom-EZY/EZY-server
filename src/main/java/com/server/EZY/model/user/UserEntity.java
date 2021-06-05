@@ -16,8 +16,7 @@ import java.util.List;
 
 import static javax.persistence.EnumType.*;
 
-@Entity
-@Table(name = "User")
+@Entity @Table(name = "User")
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Getter

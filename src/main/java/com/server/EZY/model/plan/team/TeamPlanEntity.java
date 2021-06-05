@@ -13,8 +13,7 @@ import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
-@Entity
-@Table(name = "TeamPlan")
+@Entity @Table(name = "TeamPlan")
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Getter

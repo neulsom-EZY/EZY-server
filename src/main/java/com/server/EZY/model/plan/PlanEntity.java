@@ -12,8 +12,7 @@ import static com.server.EZY.model.plan.PlanDType.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
-@Entity
-@Table(name = "Plan")
+@Entity @Table(name = "Plan")
 @NoArgsConstructor
 @Getter
 public class PlanEntity {
@@ -44,6 +43,8 @@ public class PlanEntity {
 
     /**
      * PersonalPlanEntity 과 UserEntity 로 객체 생성
+     *
+     *
      * @param userEntity
      * @param personalPlanEntity
      */
