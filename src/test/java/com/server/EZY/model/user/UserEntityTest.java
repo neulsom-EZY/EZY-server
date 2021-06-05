@@ -4,12 +4,15 @@ import com.server.EZY.repository.user.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,6 +36,7 @@ class UserEntityTest {
                 .password("JsonWebTok")
                 .phoneNumber("01012345678")
                 .permission(Permission.PERMISSION)
+                .roles(Collections.singletonList(Role.ROLE_ADMIN))
                 .build();
 
         //######## when ########//
@@ -84,6 +88,32 @@ class UserEntityTest {
             return;
         }
         throw new Exception(); // ConstraintViolationException exception 이 발생되지 않으면 테스트 코드가 실패한다.
+    }
+
+    @Test
+    @DisplayName("UserEntity UserDetails를 구현한 Method 값 검증")
+    void userEntity_UserDetails_구현한_Method_값_검증(){
+
+        //######## given ########//
+        List<Role> userRole = new ArrayList<>();
+        userRole.add(Role.ROLE_CLIENT);
+        userRole.add(Role.ROLE_ADMIN);
+        UserEntity userEntity = UserEntity.builder()
+                .nickname("siwony")
+                .permission(Permission.PERMISSION)
+                .password("siwony1234")
+                .phoneNumber("01037283839")
+                .roles(userRole)
+                .build();
+        List<String> userRoles = userEntity.getRoles().stream().map(Enum::name).collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> getRoleConvertSimpleGrantedAuthority = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
+        //######## when, than ########//
+        assertThat(userEntity.getUsername()).isEqualTo(userEntity.getNickname());
+        assertThat(userEntity.getAuthorities()).isEqualTo(getRoleConvertSimpleGrantedAuthority);
+        assertThat(userEntity.isAccountNonExpired()).isTrue();
+        assertThat(userEntity.isCredentialsNonExpired()).isTrue();
+        assertThat(userEntity.isEnabled()).isTrue();
     }
 
     void printException(Exception e){
