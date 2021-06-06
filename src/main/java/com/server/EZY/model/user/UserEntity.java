@@ -1,19 +1,28 @@
 package com.server.EZY.model.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "User")
+import static javax.persistence.EnumType.*;
+
+@Entity @Table(name = "User")
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Getter
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserId")
@@ -32,7 +41,49 @@ public class UserEntity {
     private String phoneNumber;
 
     @Column(name = "Permission", nullable = false)
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = STRING)
     private Permission permission;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(STRING)
+    @Builder.Default
+    private List<Role> roles = new ArrayList<>();
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // List<Role> 형태를 Stream을 사용하여 roles 원소의 값을 String으로 바꿔주는 name()을 이용하여 List<String>형태로 변환(GrantedAuthority의 생성자는 String 타입을 받기 때문)
+        List<String> rolesConvertString = this.roles.stream().map(Enum::name).collect(Collectors.toList());
+        return rolesConvertString.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername() {
+        return this.nickname;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

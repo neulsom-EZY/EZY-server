@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.team;
 
-import com.server.EZY.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +11,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "TeamPlan")
+import static javax.persistence.FetchType.*;
+
+@Entity @Table(name = "TeamPlan")
 @Builder
 @NoArgsConstructor @AllArgsConstructor
 @Getter
@@ -44,16 +44,10 @@ public class TeamPlanEntity {
     private boolean repeat;
 
     @Column(name = "Category")
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = EAGER)
     @CollectionTable(
-            name = "TeamPlanCategory",
+            name = "Category",
             joinColumns = @JoinColumn(name = "TeamId")
     )
-    @Builder.Default
     private List<String> categories = new ArrayList<>();
-
-    @OneToOne
-    @JoinColumn(name = "UserTeamId")
-    private UserTeamEntity userTeamEntity;
-
 }
