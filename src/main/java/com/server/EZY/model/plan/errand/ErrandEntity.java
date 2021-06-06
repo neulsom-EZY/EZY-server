@@ -6,8 +6,7 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
-@Entity
-@Table(name = "Errand")
+@Entity @Table(name = "Errand")
 public class ErrandEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

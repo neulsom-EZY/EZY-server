@@ -19,9 +19,8 @@ import java.util.stream.Collectors;
 import static javax.persistence.EnumType.*;
 
 @Entity @Table(name = "User")
-@Builder
+@Builder @Getter
 @NoArgsConstructor @AllArgsConstructor
-@Getter
 public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +51,7 @@ public class UserEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // List<Role> 형태를 Stream을 사용하여 roles 원소의 값을 String으로 바꿔주는 name()을 이용하여 List<String>형태로 변환(GrantedAuthority의 생성자는 String 타입을 받기 때문)
+        // List<Role> 형태를 Stream을 사용하여 roles 원소의 값을 String으로 바꿔주는 Enum.name()을 이용하여 List<String>형태로 변환(GrantedAuthority의 생성자는 String 타입을 받기 때문)
         List<String> rolesConvertString = this.roles.stream().map(Enum::name).collect(Collectors.toList());
         return rolesConvertString.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
