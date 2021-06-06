@@ -1,7 +1,7 @@
 package com.server.EZY.security;
 
 import com.server.EZY.exception.CustomException;
-import com.server.EZY.model.Role;
+import com.server.EZY.model.user.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

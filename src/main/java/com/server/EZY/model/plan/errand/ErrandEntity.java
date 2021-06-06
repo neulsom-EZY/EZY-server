@@ -4,8 +4,9 @@ import com.server.EZY.model.user.UserEntity;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "Errand")
+import static javax.persistence.FetchType.*;
+
+@Entity @Table(name = "Errand")
 public class ErrandEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +37,7 @@ public class ErrandEntity {
     @Column(name = "ErrandResponseStatus")
     private ResponseStatus responseStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "UserId")
     private UserEntity userEntity;
 }
