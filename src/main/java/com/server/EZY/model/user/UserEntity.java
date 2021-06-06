@@ -19,9 +19,8 @@ import java.util.stream.Collectors;
 import static javax.persistence.EnumType.*;
 
 @Entity @Table(name = "User")
-@Builder
+@Builder @Getter
 @NoArgsConstructor @AllArgsConstructor
-@Getter
 public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

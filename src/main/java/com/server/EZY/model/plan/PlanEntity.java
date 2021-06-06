@@ -13,8 +13,7 @@ import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
 @Entity @Table(name = "Plan")
-@NoArgsConstructor
-@Getter
+@NoArgsConstructor @Getter
 public class PlanEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

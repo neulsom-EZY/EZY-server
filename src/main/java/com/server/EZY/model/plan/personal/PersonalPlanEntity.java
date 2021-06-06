@@ -11,9 +11,8 @@ import java.util.List;
 import static javax.persistence.FetchType.*;
 
 @Entity @Table(name = "PersonalPlan")
-@Builder
+@Builder @Getter
 @NoArgsConstructor @AllArgsConstructor
-@Getter
 public class PersonalPlanEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
