@@ -25,14 +25,13 @@ public class PlanEntity {
     @JoinColumn(name = "UserId")
     private UserEntity userEntity;
 
-    //PersonalPlan은 Plan과 1 : 1관계 이므로 Plan이 삭제되면 PersonalPlan이 삭제되야되고 역으로 PersonalPlan이 삭제되면 Plan이 삭제돼야 된다.
+    //PlanEntity가  저장, 병합, 삭제가 일어때 PersonalPlanEntity에 전의됩니다.
     @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
     @JoinColumn(name = "PersonalPlanId")
     private PersonalPlanEntity personalPlanEntity;
 
-    // User : Plan : TeamPlan = N : 1 : M
-    //TeamPlan는 Plan에서 여러명의 User가 TeamPlan을 가르키므로 한사람의 PlanEntity가 삭제됨으로 인하여 TeamPlan 자체가 삭제되면 안되므로 REMOVE를 제외했다.
-    @ManyToOne(fetch = LAZY, cascade = {MERGE, PERSIST})
+    //PlanEntity가 저장, 병합이 일어때 TeamPlanEntity에 전의됩니다.
+    @ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
     @JoinColumn(name = "TeamPlanId")
     private TeamPlanEntity teamPlanEntity;
 
