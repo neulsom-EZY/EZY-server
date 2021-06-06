@@ -48,5 +48,6 @@ public class TeamPlanEntity {
             name = "Category",
             joinColumns = @JoinColumn(name = "TeamId")
     )
+    @Builder.Default
     private List<String> categories = new ArrayList<>();
 }
