@@ -87,6 +87,7 @@ jacocoTestReport {
 					'**/exception/**'
 					,'**/dto/**'
 					,'**/EZY/EzyApplication*'
+					,'**/EZY/**/*Test*'
 			])
 		})
 	}
@@ -96,12 +97,27 @@ jacocoTestReport {
 jacocoTestCoverageVerification {
 	violationRules {
 		rule {
+			// 룰을 키고 끌 수 있다.
+			enabled = true
+
+			// 룰을 체크할 단위
 			element = 'BUNDLE'
+
+			// Java 바이트코드 를 통한 코드실행
 			limit {
-				counter = 'CLASS'
+				counter = 'INSTRUCTION'
 				value = 'COVEREDRATIO'
-				minimum = 0.30
+				minimum = 0.70
 			}
+
+			// 브렌치(분기문) 커버리지
+			limit{
+				counter = 'BRANCH'
+				value = 'COVEREDRATIO'
+				minimum = 0
+			}
+
+
 
 		}
 	}
