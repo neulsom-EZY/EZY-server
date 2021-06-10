@@ -1,4 +1,4 @@
-package com.server.EZY.repository;
+package com.server.EZY.repository.user;
 
 import com.server.EZY.model.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

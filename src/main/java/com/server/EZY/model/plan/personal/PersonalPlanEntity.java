@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.personal;
 
-import com.server.EZY.model.user.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "PersonalPlan")
-@Builder
+import static javax.persistence.FetchType.*;
+
+@Entity @Table(name = "PersonalPlan")
+@Builder @Getter
 @NoArgsConstructor @AllArgsConstructor
-@Getter
 public class PersonalPlanEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,15 +40,11 @@ public class PersonalPlanEntity {
     private boolean repeat;
 
     @Column(name = "Category")
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = EAGER)
     @CollectionTable(
-            name = "PersonalPlanCategory",
+            name = "Category",
             joinColumns = @JoinColumn(name = "PersonalPlanId")
     )
     @Builder.Default
     private List<String> categories = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UserId")
-    private UserEntity user;
 }
