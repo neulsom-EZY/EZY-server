@@ -1,7 +1,8 @@
 package com.server.EZY.model.user;
 
 import com.server.EZY.repository.user.UserRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +15,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
@@ -24,7 +25,6 @@ class UserEntityTest {
     private EntityManager em;
 
     @Autowired private UserRepository userRepo;
-
 
     @Test
     @DisplayName("UserEntity DB값 정상적으로 insert 하는지 검증")
@@ -49,7 +49,7 @@ class UserEntityTest {
         UserEntity userEntitySave = userRepo.findById(userIdx).get();
 
         //######## then ########//
-        assertThat(userEntity == userEntitySave);
+        assertEquals(userEntity, userEntitySave);
     }
 
     @Test
@@ -94,7 +94,7 @@ class UserEntityTest {
     @DisplayName("UserEntity UserDetails를 구현한 Method 값 검증")
     void userEntity_UserDetails_구현한_Method_값_검증(){
 
-        //######## given ########//
+        // Given
         List<Role> userRole = new ArrayList<>();
         userRole.add(Role.ROLE_CLIENT);
         userRole.add(Role.ROLE_ADMIN);
@@ -109,12 +109,21 @@ class UserEntityTest {
         List<String> userRoles = userEntity.getRoles().stream().map(Enum::name).collect(Collectors.toList());
         Collection<? extends GrantedAuthority> getRoleConvertSimpleGrantedAuthority = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-        //######## when, than ########//
-        assertThat(userEntity.getUsername()).isEqualTo(userEntity.getNickname());
-        assertThat(userEntity.getAuthorities()).isEqualTo(getRoleConvertSimpleGrantedAuthority);
-        assertThat(userEntity.isAccountNonExpired()).isTrue();
-        assertThat(userEntity.isCredentialsNonExpired()).isTrue();
-        assertThat(userEntity.isEnabled()).isTrue();
+        // When
+        String getUsername = userEntity.getUsername();
+        Collection<? extends GrantedAuthority> getAuthorities = userEntity.getAuthorities();
+        boolean getAccountNonExpired = userEntity.isAccountNonExpired();
+        boolean getAccountNonLocked = userEntity.isAccountNonLocked();
+        boolean getCredentialsNonExpired = userEntity.isCredentialsNonExpired();
+        boolean getEnabled = userEntity.isEnabled();
+
+        // Then
+        assertEquals(getUsername, userEntity.getNickname());
+        assertEquals(getAuthorities, getRoleConvertSimpleGrantedAuthority);
+        assertEquals(getAccountNonExpired, true);
+        assertEquals(getAccountNonLocked, true);
+        assertEquals(getCredentialsNonExpired, true);
+        assertEquals(getEnabled, true);
     }
 
     void printException(Exception e){
