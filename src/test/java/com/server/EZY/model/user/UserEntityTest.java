@@ -8,8 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 
 import java.util.*;
@@ -18,11 +16,8 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@DataJpaTest
+@DataJpaTest // DataJpa만 Test 할것이다.
 class UserEntityTest {
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Autowired private UserRepository userRepo;
 
@@ -30,7 +25,7 @@ class UserEntityTest {
     @DisplayName("UserEntity DB값 정상적으로 insert 하는지 검증")
     void userEntity_최대길이검증(){
 
-        //######## given ########//
+        // Given
         UserEntity userEntity = UserEntity.builder()
                 .nickname("JsonWebTok")
                 .password("JsonWebTok")
@@ -39,17 +34,12 @@ class UserEntityTest {
                 .roles(Collections.singletonList(Role.ROLE_ADMIN))
                 .build();
 
-        //######## when ########//
-        // entity save 후 영속화 헤제
-        userRepo.saveAndFlush(userEntity);
-        em.detach(userEntity);
+        // When
+        // UserEntity save 후 flush(DB에 쿼리를 날린다.)
+        UserEntity savedUserEntity = userRepo.saveAndFlush(userEntity);
 
-        Long userIdx = userEntity.getUserIdx();
-        System.out.println(userIdx);
-        UserEntity userEntitySave = userRepo.findById(userIdx).get();
-
-        //######## then ########//
-        assertEquals(userEntity, userEntitySave);
+        // Then
+        assertEquals(userEntity, savedUserEntity);
     }
 
     @Test
