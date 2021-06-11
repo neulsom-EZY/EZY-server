@@ -25,7 +25,7 @@ class PersonalPlanEntityTest {
         WHEN.add(Calendar.HOUR_OF_DAY, 12);
         WHEN.add(Calendar.MINUTE, 30);
         String WHERE = "광주소프트웨어마이스터고등학교";
-        String WHAT = "고양이는 귀여워";
+        String WHAT = "EZY 개발";
         String WHO = "전지환, 정시원";
         boolean REPEAT = true;
 
@@ -38,8 +38,9 @@ class PersonalPlanEntityTest {
                 .repeat(REPEAT)
                 .build();
 
+        PersonalPlanEntity savePersonalPlanEntity = personalPlanRepo.save(personalPlanEntity);
+
         // When
-        PersonalPlanEntity savePersonalPlanEntity = personalPlanRepo.saveAndFlush(personalPlanEntity);
         //DB에 저정된 PersonalPlanEntity 가져오기
         PersonalPlanEntity savedDbPersonalPlanEntity = personalPlanRepo.getById(savePersonalPlanEntity.getPersonalPlanIdx());
 
