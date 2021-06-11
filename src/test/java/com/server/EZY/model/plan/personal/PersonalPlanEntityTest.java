@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.validation.ConstraintViolationException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,5 +52,34 @@ class PersonalPlanEntityTest {
         assertEquals(savedDbPersonalPlanEntity.getWhat(), WHAT);
         assertEquals(savedDbPersonalPlanEntity.getWho(), WHO);
         assertEquals(savedDbPersonalPlanEntity.getRepeat(), REPEAT);
+    }
+
+    @Test @DisplayName("PersonalPlanEntity null 제약조건 검증")
+    void PersonalPlanEntity_null제약조건_검증_및_글자수_검증(){
+        PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity();
+
+        assertThrows(ConstraintViolationException.class, ()->{
+            personalPlanRepo.save(personalPlanEntity);
+        });
+    }
+
+    @Test @DisplayName("PersonalPlanEntity 글자수 제약조건 검증")
+    void PersonalPlanEntity_글자수_제약조건_검증(){
+        PersonalPlanEntity personalPlanEntityBlankPlanName = PersonalPlanEntity.builder()
+                .planName("")
+                .build();
+
+        assertThrows(ConstraintViolationException.class, ()->{
+            personalPlanRepo.save(personalPlanEntityBlankPlanName);
+        });
+
+        PersonalPlanEntity personalPlanEntityPlanNameOver30 = PersonalPlanEntity.builder()
+                .planName("aeifjhsadfjpaoisefjapsioefjoisaefjoisaepjfasoiefjiaosefjaosiefjoiasejfijasfihaseoihasefhafsdlk")
+                .build();
+
+        assertThrows(ConstraintViolationException.class, ()->{
+            personalPlanRepo.save(personalPlanEntityPlanNameOver30);
+        });
+        assertEquals(personalPlanEntityPlanNameOver30.getPlanName().length() > 30, true);
     }
 }
