@@ -109,10 +109,4 @@ class UserEntityTest {
         assertEquals(getEnabled, true);
     }
 
-    void printException(Exception e){
-        System.out.println("################################################################### Exception msg ###################################################################\n");
-        e.printStackTrace();
-        System.out.println("################################################################### Exception done ###################################################################\n");
-    }
-
 }
