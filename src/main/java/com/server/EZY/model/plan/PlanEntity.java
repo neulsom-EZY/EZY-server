@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.server.EZY.model.plan.PlanDType.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
@@ -39,6 +42,14 @@ public class PlanEntity {
     @Column(name = "PlanDType")
     private PlanDType planDType;
 
+    @Column(name = "Category")
+    @ElementCollection(fetch = EAGER)
+    @CollectionTable(
+            name = "Category",
+            joinColumns = @JoinColumn(name = "PlanId")
+    )
+    private List<String> categories = new ArrayList<>();
+
     /**
      * PersonalPlanEntity 과 UserEntity 로 객체 생성
      *
@@ -52,8 +63,15 @@ public class PlanEntity {
             this.personalPlanEntity = personalPlanEntity;
             this.planDType = PERSONAL_PLAN;
         }else{
-            throw new NullPointerException();
+            throw new IllegalArgumentException("PersonalPlanEntity 또는 UserEntity가 null입니다.");
         }
+    }
+    public PlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity, List<String> categories){
+        this(personalPlanEntity, userEntity);
+        if(categories != null)
+            this.categories = categories;
+        else
+            throw new IllegalArgumentException("categories 가 null 입니다.");
     }
 
     /**
@@ -67,7 +85,14 @@ public class PlanEntity {
             this.teamPlanEntity = teamPlanEntity;
             this.planDType = TEAM_PLAN;
         }else{
-            throw new NullPointerException(); // 임의로 넣은 Exception 수정예정
+            throw new IllegalArgumentException("TeamPlanEntity 또는 UserEntity가 null입니다."); // 임의로 넣은 Exception 수정예정
         }
+    }
+    public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity, List<String> categories){
+        this(teamPlanEntity, userEntity);
+        if(categories != null)
+            this.categories = categories;
+        else
+            throw new IllegalArgumentException("categories 가 null 입니다.");
     }
 }
