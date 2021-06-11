@@ -43,22 +43,18 @@ class UserEntityTest {
     }
 
     @Test
-    @DisplayName("UserEntity 최대길이_초과시_Exception 검증 (Exception 발생시 Test 성공)")
+    @DisplayName("UserEntity 최대길이_초과시_Exception 검증 (ConstraintViolationException 발생시 Test 성공)")
     void userEntity_최대길이_초과_Exception_검증() throws Exception {
-        try{
-            UserEntity user = UserEntity.builder()
-                    .nickname("JsonWebTok1")
-                    .password("JsonWebTok2")
-                    .phoneNumber("010123456783")
-                    .permission(Permission.PERMISSION)
-                    .build();
+        UserEntity user = UserEntity.builder()
+                .nickname("JsonWebTok1")
+                .password("JsonWebTok2")
+                .phoneNumber("010123456783")
+                .permission(Permission.PERMISSION)
+                .build();
 
+        assertThrows(ConstraintViolationException.class,  () ->{
             userRepo.save(user);
-        }catch(ConstraintViolationException e){
-            printException(e);
-            return;
-        }
-        throw new Exception(); // ConstraintViolationException exception 이 발생되지 않으면 테스트 코드가 실패한다.
+        });
     }
 
     @Test
