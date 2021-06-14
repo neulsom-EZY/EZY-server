@@ -1,5 +1,6 @@
 package com.server.EZY.model.user;
 
+import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import static javax.persistence.EnumType.*;
@@ -43,7 +45,6 @@ public class UserEntity implements UserDetails {
     @Enumerated(value = STRING)
     private Permission permission;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(STRING)
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
