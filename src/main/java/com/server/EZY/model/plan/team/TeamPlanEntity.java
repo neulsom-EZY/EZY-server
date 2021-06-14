@@ -22,7 +22,7 @@ public class TeamPlanEntity {
     @Size(min = 1, max = 30)
     private String planName;
 
-    @Column(name = "PlanWhen")
+    @Column(name = "PlanWhen", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar when;
 

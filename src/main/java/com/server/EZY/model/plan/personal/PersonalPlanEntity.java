@@ -19,14 +19,14 @@ public class PersonalPlanEntity {
     @Size(min = 1, max = 30)
     private String planName;
 
-    @Column(name = "PlanWhen")
+    @Column(name = "PlanWhen", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar when;
 
     @Column(name = "PlanWhere")
     private String where;
 
-    @Column(name = "PlanWhat")
+    @Column(name = "PlanWhat", nullable = false)
     private String what;
 
     @Column(name = "PlanWho")

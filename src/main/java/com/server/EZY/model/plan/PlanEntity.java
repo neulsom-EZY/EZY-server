@@ -27,17 +27,17 @@ public class PlanEntity {
     @JoinColumn(name = "UserId")
     private UserEntity userEntity;
 
-    //PlanEntity가  저장, 병합, 삭제가 일어때 PersonalPlanEntity에 전의됩니다.
+    //PlanEntity가  저장, 병합, 삭제가 발생될때 PersonalPlanEntity에 전의됩니다.
     @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
     @JoinColumn(name = "PersonalPlanId")
     private PersonalPlanEntity personalPlanEntity;
 
-    //PlanEntity가 저장, 병합이 일어때 TeamPlanEntity에 전의됩니다.
+    //PlanEntity가 저장, 병합이 발생될때 TeamPlanEntity에 전의됩니다.
     @ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
     @JoinColumn(name = "TeamPlanId")
     private TeamPlanEntity teamPlanEntity;
 
-    // Plan을 통해 PersonalPlan을 조인할지 TeamPlan을 조인할지 결정해주는 컬럼
+    // 어떠한 join할 테이블의 타입 알려줌
     @Enumerated(value = EnumType.STRING)
     @Column(name = "PlanDType")
     private PlanDType planDType;
