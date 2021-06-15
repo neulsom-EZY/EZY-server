@@ -1,8 +1,10 @@
 package com.server.EZY.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,10 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -32,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Entry points
         http.authorizeRequests()//
-                .antMatchers("/users/signin").permitAll()//
-                .antMatchers("/users/signup").permitAll()//
+                .antMatchers("/v1/signin").permitAll()//
+                .antMatchers("/v1/signup").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
@@ -67,6 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManagerBean();
     }
 
 }
