@@ -2,7 +2,7 @@ package com.server.EZY.service;
 
 import com.server.EZY.dto.UserDto;
 import com.server.EZY.exception.CustomException;
-import com.server.EZY.repository.UserRepository;
+import com.server.EZY.repository.user.UserRepository;
 import com.server.EZY.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
