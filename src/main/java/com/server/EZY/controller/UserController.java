@@ -1,7 +1,7 @@
 package com.server.EZY.controller;
 
 import com.server.EZY.dto.UserDto;
-import com.server.EZY.repository.UserRepository;
+import com.server.EZY.repository.user.UserRepository;
 import com.server.EZY.service.UserService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
