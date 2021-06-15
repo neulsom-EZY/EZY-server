@@ -43,8 +43,9 @@ public class UserEntity implements UserDetails {
     @Enumerated(value = STRING)
     private Permission permission;
 
+    @Enumerated(STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(STRING)
+    @CollectionTable(name = "Role", joinColumns = @JoinColumn(name = "UserIdx"))
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
