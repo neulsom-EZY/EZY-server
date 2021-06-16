@@ -1,13 +1,21 @@
 package com.server.EZY.controller;
 
+import com.server.EZY.dto.LoginDto;
 import com.server.EZY.dto.UserDto;
+import com.server.EZY.model.user.UserEntity;
+import com.server.EZY.repository.user.UserRepository;
 import com.server.EZY.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Map;
+
 @SpringBootTest
+@Slf4j
 public class UserControllerTest {
 
     @Autowired
@@ -18,13 +26,38 @@ public class UserControllerTest {
         //given
         UserDto userDto = new UserDto();
         userDto.setNickname("JsonWebTok");
-        userDto.setPassword("1234");
+        userDto.setPassword("asdfasd");
         userDto.setPhoneNumber("01012341234");
 
         //when
-        String token = userService.signup(userDto); //password size shit!!
+        String token = userService.signup(userDto);
 
         //then
-        System.out.println("signup result = " + token);
+        log.info("signup result = " + token);
+    }
+
+    //signinTest를 위해 만들어진 before
+    @BeforeEach
+    public void before() {
+        UserDto userDto = new UserDto();
+        userDto.setNickname("BeforeEach");
+        userDto.setPassword("12345");
+        userDto.setPhoneNumber("01012345678");
+
+        userService.signup(userDto);
+    }
+
+    @Test
+    public void signInTest() {
+        //given
+        LoginDto loginDto = new LoginDto();
+        loginDto.setNickname("BeforeEach");
+        loginDto.setPassword("12345");
+        //when
+        Map<String, String> signInResult = userService.signin(loginDto);
+        //then
+        for (String s : signInResult.values()) {
+            log.info("s = " + s);
+        }
     }
 }
