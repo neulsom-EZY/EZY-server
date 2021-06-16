@@ -30,18 +30,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final MyUserDetails myUserDetails;
+//    private final MyUserDetails myUserDetails;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisUtil redisUtil;
-    private final UserDetails userDetails;
+//    private final RedisUtil redisUtil;
+//    private final UserDetails userDetails;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String accessToken = jwtTokenProvider.resolveToken(request);
+        try {
+            // 유효한 토큰인지 확인
+            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
+                // 토큰이 유효하면 토큰으로부터 유저 정보를 받아온다.
+                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+                // SecurityContext 에 Authentication 객체를 저장
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (ExpiredJwtException e) {
 
-        String accessJwt = jwtTokenProvider.resolveToken(request);
-        String refreshJwt = request.getHeader("RefreshToken");
-
-
+        }
 
         filterChain.doFilter(request, response);
     }

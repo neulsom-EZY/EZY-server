@@ -2,10 +2,7 @@ package com.server.EZY.security;
 
 import com.server.EZY.exception.CustomException;
 import com.server.EZY.model.user.Role;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -29,7 +26,7 @@ public class JwtTokenProvider {
     private long TOKEN_VALIDATION_SECOND = 360000; // 1h  360000
     private long REFRESH_TOKEN_VALIDATION_TIME = TOKEN_VALIDATION_SECOND * 24 * 180;
 
-    private MyUserDetails myUserDetails;
+    private final MyUserDetails myUserDetails;
 
     // Base64 encoded secret key
     @PostConstruct
@@ -86,6 +83,19 @@ public class JwtTokenProvider {
 //        System.out.println("roles = " + roles);
 //        return roles;
 //    }
+
+    public Claims extractAllClaims(String token) throws ExpiredJwtException {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public Boolean isTokenExpired(String token) {
+        final Date expiration = extractAllClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
 
     // header(Authorization)에서 token 값 가져오기
     public String resolveToken(HttpServletRequest req){
