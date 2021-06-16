@@ -33,6 +33,7 @@ public class UserDto {
     public UserEntity toEntity(){
         return UserEntity.builder()
                 .nickname(this.getNickname())
+                .password(this.getPassword())
                 .phoneNumber(this.getPhoneNumber())
                 .permission(Permission.PERMISSION)
                 .build();
