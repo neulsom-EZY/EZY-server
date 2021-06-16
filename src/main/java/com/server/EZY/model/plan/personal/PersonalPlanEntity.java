@@ -16,7 +16,7 @@ public class PersonalPlanEntity {
     private Long personalPlanIdx;
 
     @Column(name = "PlanName", nullable = false)
-    @Size(min = 1, max = 30)
+//    @Size(min = 1, max = 30)
     private String planName;
 
     @Column(name = "PlanWhen", nullable = false)
