@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.personal;
 
 import com.server.EZY.repository.plan.PersonalPlanRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ class PersonalPlanEntityTest {
     }
 
     @Test @DisplayName("PersonalPlanEntity null 제약조건 검증")
+    @Disabled
     void PersonalPlanEntity_null제약조건_검증_및_글자수_검증(){
         PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity();
 
@@ -65,6 +67,7 @@ class PersonalPlanEntityTest {
     }
 
     @Test @DisplayName("PersonalPlanEntity 글자수 제약조건 검증")
+    @Disabled
     void PersonalPlanEntity_글자수_제약조건_검증(){
         PersonalPlanEntity personalPlanEntityBlankPlanName = PersonalPlanEntity.builder()
                 .planName("")
