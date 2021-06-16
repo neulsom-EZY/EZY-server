@@ -12,4 +12,9 @@ public class ControllerTest {
     public String testTest() {
         return "EZY-test";
     }
+
+    @GetMapping("/user")
+    public String roleTest() {
+        return "Hello~";
+    }
 }
