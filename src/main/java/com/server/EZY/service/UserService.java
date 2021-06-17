@@ -25,7 +25,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
     private final RedisUtil redisUtil;
 
     public Map<String, String> signin(LoginDto loginDto){
@@ -38,7 +37,8 @@ public class UserService {
         String accessToken = jwtTokenProvider.createToken(loginDto.getNickname(), loginDto.toEntity().getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken(loginDto.getNickname());
 
-        redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, 360000);
+        redisUtil.deleteData(loginDto.getNickname()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
+        redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, 360000 * 1000l* 24 * 180);
         Map<String ,String> map = new HashMap<>();
         map.put("nickname", loginDto.getNickname());
         map.put("accessToken", accessToken); // accessToken 반환

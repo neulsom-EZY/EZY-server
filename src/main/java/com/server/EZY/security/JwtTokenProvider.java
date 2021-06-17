@@ -1,11 +1,10 @@
 package com.server.EZY.security;
 
-import com.server.EZY.exception.CustomException;
 import com.server.EZY.model.user.Role;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,10 +14,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -27,7 +26,7 @@ public class JwtTokenProvider {
 
 //    private long TOKEN_VALIDATION_SECOND = 360000; // 1h  360000
     private static final long TOKEN_VALIDATION_SECOND = 60 * 1000l; // 1/60초 유효기간으로 인해 Forbidden이 뜨는지 테스트 하기 위함
-    private long REFRESH_TOKEN_VALIDATION_TIME = TOKEN_VALIDATION_SECOND * 24 * 180;
+    private long REFRESH_TOKEN_VALIDATION_TIME = TOKEN_VALIDATION_SECOND * 24 * 180; //6months
 
     private final MyUserDetails myUserDetails;
 
@@ -80,13 +79,6 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-//    //Get Roles
-//    public List<Role> getRoles(String token){
-//        List<Role> roles = (List<Role>) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("auth");
-//        System.out.println("roles = " + roles);
-//        return roles;
-//    }
-
     public Claims extractAllClaims(String token) throws ExpiredJwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
@@ -95,9 +87,9 @@ public class JwtTokenProvider {
                 .getBody();
     }
 
-    public Boolean isTokenExpired(String token) {
-        final Date expiration = extractAllClaims(token).getExpiration();
-        return expiration.before(new Date());
+    //왜 안되냐 이 놈 ㅠ
+    public List<Role> getRoles(String token){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("auth", List.class);
     }
 
     // header(Authorization)에서 token 값 가져오기
@@ -109,17 +101,19 @@ public class JwtTokenProvider {
         return null;
     }
 
+    public String resolveRefreshToken(HttpServletRequest req){
+        String refreshToken = req.getHeader("RefreshToken");
+        if(refreshToken != null){
+            return  refreshToken.substring(7);
+        }
+        return null;
+    }
+
     //token 검증 (유효성, 만료일자 확인)
     public boolean validateToken(String token) {
-//        try {
-//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-//            return true;
-//        } catch (JwtException | IllegalArgumentException e) {
-//            throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
+            return !claims.getBody().getExpiration().before(new Date()); //유효기간 만료 시 false 반환
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
             return false;
