@@ -35,13 +35,13 @@ public class UserService {
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
         if (!passwordCheck) throw new UserNotFoundException();
 
-        String token = jwtTokenProvider.createToken(loginDto.getNickname(), loginDto.toEntity().getRoles());
+        String accessToken = jwtTokenProvider.createToken(loginDto.getNickname(), loginDto.toEntity().getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken(loginDto.getNickname());
 
         redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, 360000);
         Map<String ,String> map = new HashMap<>();
         map.put("nickname", loginDto.getNickname());
-        map.put("accessToken", token); // accessToken 반환
+        map.put("accessToken", accessToken); // accessToken 반환
         map.put("refreshToken", refreshToken); // refreshToken 반환
 
         return map;

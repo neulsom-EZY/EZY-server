@@ -9,11 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,8 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secretKey")
     private String secretKey;
 
-    private long TOKEN_VALIDATION_SECOND = 360000; // 1h  360000
+//    private long TOKEN_VALIDATION_SECOND = 360000; // 1h  360000
+    private static final long TOKEN_VALIDATION_SECOND = 60 * 1000l; // 1/60초 유효기간으로 인해 Forbidden이 뜨는지 테스트 하기 위함
     private long REFRESH_TOKEN_VALIDATION_TIME = TOKEN_VALIDATION_SECOND * 24 * 180;
 
     private final MyUserDetails myUserDetails;
@@ -108,11 +111,18 @@ public class JwtTokenProvider {
 
     //token 검증 (유효성, 만료일자 확인)
     public boolean validateToken(String token) {
+//        try {
+//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+//            return true;
+//        } catch (JwtException | IllegalArgumentException e) {
+//            throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+            return false;
         }
     }
 }

@@ -37,15 +37,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         String accessToken = jwtTokenProvider.resolveToken(request);
+        String nickname = null;
+
         try {
-            // 유효한 토큰인지 확인
-            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
-                // 토큰이 유효하면 토큰으로부터 유저 정보를 받아온다.
-                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-                // SecurityContext 에 Authentication 객체를 저장
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+
         } catch (ExpiredJwtException e) {
             log.info("ExpiredJwtException : " + e);
         }
