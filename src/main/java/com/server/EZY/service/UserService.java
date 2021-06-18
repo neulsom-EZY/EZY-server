@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
