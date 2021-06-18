@@ -24,10 +24,7 @@ public class UserControllerTest {
     @Test
     public void signupTest() {
         //given
-        UserDto userDto = new UserDto();
-        userDto.setNickname("JsonWebTok");
-        userDto.setPassword("asdfasd");
-        userDto.setPhoneNumber("01012341234");
+        UserDto userDto = new UserDto("JsonWebTok", "asdfasd", "01012341234");
 
         //when
         String token = userService.signup(userDto);

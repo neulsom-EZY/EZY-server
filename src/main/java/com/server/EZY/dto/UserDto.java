@@ -32,6 +32,12 @@ public class UserDto {
     @JsonIgnore
     private Permission permission;
 
+    public UserDto(String nickname, String password, String phoneNumber) {
+        this.nickname = nickname;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
+
     public UserEntity toEntity(){
         return UserEntity.builder()
                 .nickname(this.getNickname())
