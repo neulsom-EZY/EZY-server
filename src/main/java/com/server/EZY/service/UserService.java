@@ -39,7 +39,6 @@ public class UserService {
 
         redisUtil.deleteData(loginDto.getNickname()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
         redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, 360000 * 1000l* 24 * 180);
-        System.out.println("redisUtil.getData(loginDto.getNickname()) = " + redisUtil.getData(loginDto.getNickname())); //refreshToken
         Map<String ,String> map = new HashMap<>();
         map.put("nickname", loginDto.getNickname());
         map.put("accessToken", "Bearer " + accessToken); // accessToken 반환
