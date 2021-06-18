@@ -7,12 +7,15 @@ import com.server.EZY.repository.user.UserRepository;
 import com.server.EZY.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -31,6 +34,7 @@ public class UserControllerTest {
 
         //then
         log.info("signup result = " + token);
+        assertEquals(true, token!=null);
     }
 
     //signinTest를 위해 만들어진 before
@@ -55,6 +59,7 @@ public class UserControllerTest {
         //then
         for (String s : signInResult.values()) {
             log.info("s = " + s);
+            assertEquals(true, s!=null);
         }
     }
 }
