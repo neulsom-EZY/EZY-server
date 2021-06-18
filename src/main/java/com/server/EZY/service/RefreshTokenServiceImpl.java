@@ -27,6 +27,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         UserDto userDto = new UserDto();
         List<Role> roles = userDto.toEntity().getRoles();
 
+        //나중에 세부적으로 customException을 만들어 클라이언트에게 에러메세지 반환하도록 변경 (예를 들어 Token값들이 null일 때)
         String accessToken = jwtTokenProvider.resolveToken(request);
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 
@@ -34,25 +35,17 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         String newAccessToken = null;
         String newRefreshToken = null;
 
-        if (refreshToken != null && accessToken != null) {
+        String nickname = jwtTokenProvider.getUsername(accessToken);
 
-            String nickname = jwtTokenProvider.getUsername(accessToken);
+        if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
 
-            if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
-
-                newAccessToken = jwtTokenProvider.createToken(nickname, roles);
-                newRefreshToken = jwtTokenProvider.createRefreshToken();
-                map.put("nickname", nickname);
-                map.put("NewAccessToken", "Bearer " + newAccessToken); // NewAccessToken 반환
-                map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
-                return map;
-            }
-        } else {
-            String message = "다시 로그인하세요.";
-            map.put("message", message);
+            newAccessToken = jwtTokenProvider.createToken(nickname, roles);
+            newRefreshToken = jwtTokenProvider.createRefreshToken();
+            map.put("nickname", nickname);
+            map.put("NewAccessToken", "Bearer " + newAccessToken); // NewAccessToken 반환
+            map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
             return map;
         }
-
         return map;
     }
 }
