@@ -19,8 +19,13 @@ public class RedisTest {
     public void redisTest() {
         redisUtil.deleteData("EZY");
         redisUtil.setData("EZY", "EZY-test");
-        System.out.println(redisUtil.getData("EZY"));
+        System.out.println(redisUtil.getData("BeforeEach"));
         Assertions.assertThat(redisUtil.getData("EZY")).isEqualTo("EZY-test");
+    }
+
+    @Test
+    public void redisToken() {
+        System.out.println(redisUtil.getData("BeforeEach"));
     }
 
 
