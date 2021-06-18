@@ -31,14 +31,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 
         Map<String ,String> map = new HashMap<>();
-
         String newAccessToken = null;
         String newRefreshToken = null;
 
-
-
         if (refreshToken != null && accessToken != null) {
+
             String nickname = jwtTokenProvider.getUsername(accessToken);
+
             if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
 
                 newAccessToken = jwtTokenProvider.createToken(nickname, roles);
