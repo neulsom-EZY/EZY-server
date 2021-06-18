@@ -24,8 +24,7 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secretKey")
     private String secretKey;
 
-//    private long TOKEN_VALIDATION_SECOND = 360000; // 1h  360000
-    private static final long TOKEN_VALIDATION_SECOND = 60 * 1000l; // 1/60초 유효기간으로 인해 Forbidden이 뜨는지 테스트 하기 위함
+    private long TOKEN_VALIDATION_SECOND = 360000; // 1h  360000
     private long REFRESH_TOKEN_VALIDATION_TIME = TOKEN_VALIDATION_SECOND * 24 * 180; //6months
 
     private final MyUserDetails myUserDetails;
@@ -54,8 +53,8 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createRefreshToken(String username){
-        Claims claims = Jwts.claims().setSubject(username);
+    public String createRefreshToken(){
+        Claims claims = Jwts.claims().setSubject(null);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_TOKEN_VALIDATION_TIME); //Expire Time
@@ -77,19 +76,6 @@ public class JwtTokenProvider {
     //token에서 회원 정보 추출
     public String getUsername(String token){
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public Claims extractAllClaims(String token) throws ExpiredJwtException {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    //왜 안되냐 이 놈 ㅠ
-    public List<Role> getRoles(String token){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("auth", List.class);
     }
 
     // header(Authorization)에서 token 값 가져오기

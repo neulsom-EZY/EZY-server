@@ -35,14 +35,15 @@ public class UserService {
         if (!passwordCheck) throw new UserNotFoundException();
 
         String accessToken = jwtTokenProvider.createToken(loginDto.getNickname(), loginDto.toEntity().getRoles());
-        String refreshToken = jwtTokenProvider.createRefreshToken(loginDto.getNickname());
+        String refreshToken = jwtTokenProvider.createRefreshToken();
 
         redisUtil.deleteData(loginDto.getNickname()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
         redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, 360000 * 1000l* 24 * 180);
+        System.out.println("redisUtil.getData(loginDto.getNickname()) = " + redisUtil.getData(loginDto.getNickname())); //refreshToken
         Map<String ,String> map = new HashMap<>();
         map.put("nickname", loginDto.getNickname());
-        map.put("accessToken", accessToken); // accessToken 반환
-        map.put("refreshToken", refreshToken); // refreshToken 반환
+        map.put("accessToken", "Bearer " + accessToken); // accessToken 반환
+        map.put("refreshToken", "Bearer " + refreshToken); // refreshToken 반환
 
         return map;
     }
@@ -51,7 +52,9 @@ public class UserService {
             userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userRepository.save(userDto.toEntity());
 
-            return jwtTokenProvider.createToken(userDto.getNickname(), userDto.toEntity().getRoles());
+            String token = jwtTokenProvider.createToken(userDto.getNickname(), userDto.toEntity().getRoles());
+
+            return "Bearer " + token;
         } else {
             throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }

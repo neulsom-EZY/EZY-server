@@ -2,6 +2,7 @@ package com.server.EZY.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.server.EZY.model.user.Permission;
+import com.server.EZY.model.user.Role;
 import com.server.EZY.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Collections;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -32,6 +34,7 @@ public class LoginDto {
                 .nickname(this.getNickname())
                 .password(this.getPassword())
                 .permission(Permission.PERMISSION)
+                .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();
     }
 }
