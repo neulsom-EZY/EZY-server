@@ -31,5 +31,15 @@ class PlanEntityTest {
                 .build();
     }
 
+    UserEntity userEntityInit(){
+        return UserEntity.builder()
+                .nickname(RandomString.make(10))
+                .password(RandomString.make(10))
+                .phoneNumber("01012341234")
+                .permission(Permission.PERMISSION)
+                .roles(Collections.singletonList(Role.ROLE_CLIENT))
+                .build();
+    }
+
 
 }
