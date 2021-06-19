@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.Permission;
 import com.server.EZY.model.user.Role;
 import com.server.EZY.model.user.UserEntity;
@@ -40,7 +41,7 @@ class PlanEntityTest {
         UserEntity user = UserEntity.builder()
                 .nickname(RandomString.make(10))
                 .password(RandomString.make(10))
-                .phoneNumber("01012341234")
+                .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
                 .permission(Permission.PERMISSION)
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();
