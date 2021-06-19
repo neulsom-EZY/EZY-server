@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.team;
 
+import com.server.EZY.model.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,10 @@ public class TeamPlanEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TeamId")
     private Long teamIdx;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserId", nullable = false)
+    private UserEntity teamLeader;
 
     @Column(name = "PlanName", nullable = false)
     @Size(min = 1, max = 30)
