@@ -41,8 +41,9 @@ class PlanEntityTest {
     }
 
     // Test 편의를 위한 teamPlanEntity 생성
-    TeamPlanEntity teamPlanEntityInit(){
+    TeamPlanEntity teamPlanEntityInit(UserEntity leader){
         return TeamPlanEntity.builder()
+                .teamLeader(leader)
                 .planName(RandomString.make(10))
                 .what(RandomString.make(20))
                 .when(Calendar.getInstance())
@@ -63,8 +64,8 @@ class PlanEntityTest {
     }
 
 
-    @Test @DisplayName("PersonalPlan 생성 및 저장 테스트")
-    void PersonalPlan를_통해_PlanEntity생성_검증(){
+    @Test @DisplayName("PersonalPlan 를 통한 PlanEntity 생성 및 저장 테스트")
+    void PlanEntity_PersonalPlanEntity_생성및저장_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
         UserEntity userEntity = userEntityInit();
@@ -92,7 +93,7 @@ class PlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들의 각각 null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
+    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들을 각각 null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
     void PersonalPlan를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
@@ -134,7 +135,7 @@ class PlanEntityTest {
         planRepo.saveAll(userAPlans);
 
         UserEntity userB = userEntityInit();
-        TeamPlanEntity userABTeamPlan = teamPlanEntityInit();
+        TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
         List<PlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
                 new PlanEntity[] {new PlanEntity(userABTeamPlan, userA), new PlanEntity(userABTeamPlan, userB)}
         ));
