@@ -37,13 +37,14 @@ class PlanEntityTest {
     }
 
     UserEntity userEntityInit(){
-        return UserEntity.builder()
+        UserEntity user = UserEntity.builder()
                 .nickname(RandomString.make(10))
                 .password(RandomString.make(10))
                 .phoneNumber("01012341234")
                 .permission(Permission.PERMISSION)
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();
+        return userRepo.save(user);
     }
 
 
@@ -52,7 +53,6 @@ class PlanEntityTest {
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
         UserEntity userEntity = userEntityInit();
-        userRepo.save(userEntity);
 
         List<String> categories = Collections.singletonList("공부");
         PlanEntity planEntity = new PlanEntity(
@@ -82,7 +82,6 @@ class PlanEntityTest {
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
         UserEntity userEntity = userEntityInit();
-        userRepo.save(userEntity);
 
         PersonalPlanEntity nullPersonalPlanEntity = null;
         UserEntity nullUserEntity = null;
