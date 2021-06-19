@@ -109,14 +109,7 @@ jacocoTestCoverageVerification {
 			limit {
 				counter = 'INSTRUCTION'
 				value = 'COVEREDRATIO'
-				minimum = 0.70
-			}
-
-			// 브렌치(분기문) 커버리지
-			limit{
-				counter = 'BRANCH'
-				value = 'COVEREDRATIO'
-				minimum = 0
+				minimum = 0.50
 			}
 		}
 	}
