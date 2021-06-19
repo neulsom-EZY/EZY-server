@@ -76,4 +76,34 @@ class PlanEntityTest {
         assertEquals(getPersonalPlanEntity, personalPlanEntity);
         assertEquals(getCategories.get(0), categories.get(0));
     }
+
+    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
+    void PersonalPlan를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
+        // Given
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        UserEntity userEntity = userEntityInit();
+        userRepo.save(userEntity);
+
+        PersonalPlanEntity nullPersonalPlanEntity = null;
+        UserEntity nullUserEntity = null;
+
+        // When
+        IllegalArgumentException planConstructException1 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(nullPersonalPlanEntity, userEntity, Collections.singletonList(RandomString.make(10)))
+        );
+        IllegalArgumentException planConstructException2 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(personalPlanEntity, nullUserEntity, Collections.singletonList(RandomString.make(10)))
+        );
+        IllegalArgumentException planConstructException3 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(nullPersonalPlanEntity, nullUserEntity, Collections.singletonList(RandomString.make(10)))
+        );
+        IllegalArgumentException planConstructException4 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(personalPlanEntity, userEntity, null)
+        );
+
+        assertEquals(planConstructException1.getClass(), IllegalArgumentException.class);
+        assertEquals(planConstructException2.getClass(), IllegalArgumentException.class);
+        assertEquals(planConstructException3.getClass(), IllegalArgumentException.class);
+        assertEquals(planConstructException4.getClass(), IllegalArgumentException.class);
+    }
 }
