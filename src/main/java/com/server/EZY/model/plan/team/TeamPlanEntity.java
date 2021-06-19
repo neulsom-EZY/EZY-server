@@ -34,7 +34,4 @@ public class TeamPlanEntity {
 
     @Column(name = "PlanWho")
     private String who;
-
-    @Column(name = "PlanRepeat")
-    private boolean repeat;
 }
