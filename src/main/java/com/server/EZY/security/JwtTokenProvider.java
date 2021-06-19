@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-    @Value("${security.jwt.token.secretKey")
+    @Value("${security.jwt.token.secretKey}")
     private String secretKey;
 
     private long TOKEN_VALIDATION_SECOND = 360000; // 1h  360000
