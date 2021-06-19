@@ -83,13 +83,14 @@ class PlanEntityTest {
         UserEntity getUserEntity = savedPlanEntity.getUserEntity();
         PlanDType getPlanDType = savedPlanEntity.getPlanDType();
         PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
         List<String> getCategories = savedPlanEntity.getCategories();
-
 
         // Then
         assertEquals(getUserEntity, userEntity);
         assertEquals(getPlanDType, PlanDType.PERSONAL_PLAN);
         assertEquals(getPersonalPlanEntity, personalPlanEntity);
+        assertEquals(getTeamPlanEntity, null);
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
@@ -155,5 +156,33 @@ class PlanEntityTest {
         assertEquals(savedUserAPlansSize, 2);
         assertEquals(savedUserAPersonalPlan1, userAPersonalPlan1);
         assertEquals(savedUserAPersonalPlan2, userAPersonalPlan2);
+    }
+
+    @Test @DisplayName("TeamPlanEntity 를 통한 PlanEntity 생성 및 저장 테스트")
+    void PlanEntity_TeamPlanEntity_생성및저장_검증(){
+        // Given
+        UserEntity userAEntity = userEntityInit();
+        TeamPlanEntity teamPlanEntity = teamPlanEntityInit(userAEntity);
+
+        List<String> categories = Collections.singletonList("공부");
+        PlanEntity planEntity = new PlanEntity(teamPlanEntity, userAEntity, categories);
+
+        // When
+        PlanEntity savedPlanEntity = planRepo.save(planEntity);
+
+        UserEntity getUserEntity = savedPlanEntity.getUserEntity();
+        PlanDType getPlanDType = savedPlanEntity.getPlanDType();
+        PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
+        UserEntity getTeamLeader = savedPlanEntity.getTeamPlanEntity().getTeamLeader();
+        List<String> getCategories = savedPlanEntity.getCategories();
+
+        // Then
+        assertEquals(getUserEntity, userAEntity);
+        assertEquals(getPlanDType, PlanDType.TEAM_PLAN);
+        assertEquals(getPersonalPlanEntity, null);
+        assertEquals(getTeamPlanEntity, teamPlanEntity);
+        assertEquals(getTeamLeader, userAEntity);
+        assertEquals(getCategories.get(0), categories.get(0));
     }
 }
