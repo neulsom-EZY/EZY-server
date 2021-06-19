@@ -5,6 +5,7 @@ import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 
@@ -15,6 +16,7 @@ import static com.server.EZY.model.plan.PlanDType.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
+@Slf4j
 @Entity @Table(name = "Plan")
 @NoArgsConstructor @Getter
 public class PlanEntity {
@@ -63,6 +65,9 @@ public class PlanEntity {
             this.personalPlanEntity = personalPlanEntity;
             this.planDType = PERSONAL_PLAN;
         }else{
+            log.debug("=== PersonalPlanEntity 또는 UserEntity가 null입니다. ===");
+            log.debug("userEntity = {} ", userEntity);
+            log.debug("personalPlanEntity = {} ", personalPlanEntity);
             throw new IllegalArgumentException("PersonalPlanEntity 또는 UserEntity가 null입니다.");
         }
     }
@@ -80,11 +85,14 @@ public class PlanEntity {
      * @param teamPlanEntity
      */
     public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
-        if(userEntity != null && teamPlanEntity != null && this.personalPlanEntity != null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
+        if(userEntity != null && teamPlanEntity != null && this.personalPlanEntity == null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
             this.userEntity = userEntity;
             this.teamPlanEntity = teamPlanEntity;
             this.planDType = TEAM_PLAN;
         }else{
+            log.debug("=== TeamPlanEntity 또는 UserEntity가 null입니다. ===");
+            log.debug("userEntity = {} ", userEntity);
+            log.debug("teamPlanEntity = {} ", teamPlanEntity);
             throw new IllegalArgumentException("TeamPlanEntity 또는 UserEntity가 null입니다."); // 임의로 넣은 Exception 수정예정
         }
     }

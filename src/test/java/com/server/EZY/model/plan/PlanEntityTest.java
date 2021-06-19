@@ -27,16 +27,28 @@ class PlanEntityTest {
     @Autowired PersonalPlanRepository personalPlanRepo;
     @Autowired TeamPlanRepository teamPlanRepo;
 
+    // Test 편의를 위한 personalPlanEntity 생성
     PersonalPlanEntity personalPlanEntityInit(){
         return PersonalPlanEntity.builder()
                 .planName(RandomString.make(10))
                 .what(RandomString.make(20))
+                .who(RandomString.make(20))
                 .when(Calendar.getInstance())
                 .where(RandomString.make(20))
                 .repeat(false)
                 .build();
     }
 
+    TeamPlanEntity teamPlanEntityInit(){
+        return TeamPlanEntity.builder()
+                .planName(RandomString.make(10))
+                .what(RandomString.make(20))
+                .when(Calendar.getInstance())
+                .where(RandomString.make(20))
+                .build();
+    }
+
+    // Test 편의를 위한 유저 생성 userEntityInit
     UserEntity userEntityInit(){
         UserEntity user = UserEntity.builder()
                 .nickname(RandomString.make(10))
