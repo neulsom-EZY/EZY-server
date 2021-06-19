@@ -1,13 +1,13 @@
 package com.server.EZY;
 
-import static org.assertj.core.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.PostConstruct;
 import java.util.Base64;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class EzyApplicationTests {
