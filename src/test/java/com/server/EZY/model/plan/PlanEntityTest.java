@@ -103,15 +103,16 @@ class PlanEntityTest {
         PersonalPlanEntity nullPersonalPlanEntity = null;
         UserEntity nullUserEntity = null;
 
+        final List<String> CATEGORIES = Collections.singletonList(RandomString.make(10));
         // When
         IllegalArgumentException planConstructException1 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullPersonalPlanEntity, userEntity, Collections.singletonList(RandomString.make(10)))
+                , () -> new PlanEntity(nullPersonalPlanEntity, userEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException2 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(personalPlanEntity, nullUserEntity, Collections.singletonList(RandomString.make(10)))
+                , () -> new PlanEntity(personalPlanEntity, nullUserEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException3 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullPersonalPlanEntity, nullUserEntity, Collections.singletonList(RandomString.make(10)))
+                , () -> new PlanEntity(nullPersonalPlanEntity, nullUserEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException4 = assertThrows(IllegalArgumentException.class
                 , () -> new PlanEntity(personalPlanEntity, userEntity, null)
@@ -185,4 +186,38 @@ class PlanEntityTest {
         assertEquals(getTeamLeader, userAEntity);
         assertEquals(getCategories.get(0), categories.get(0));
     }
+
+    @Test @DisplayName("TeamPlanEntity, UserEntity, Categories 값들을 각각 null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
+    void TeamPlanEntity를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
+        // Given
+        UserEntity userEntity = userEntityInit();
+        TeamPlanEntity teamPlanEntity = teamPlanEntityInit(userEntity);
+
+        TeamPlanEntity nullTeamPlanEntity = null;
+        UserEntity nullUserEntity = null;
+
+        final List<String> CATEGORIES = Collections.singletonList(RandomString.make(10));
+
+        // When
+        IllegalArgumentException planConstructException1 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(nullTeamPlanEntity, userEntity, CATEGORIES)
+        );
+        IllegalArgumentException planConstructException2 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(teamPlanEntity, nullUserEntity, CATEGORIES)
+        );
+        IllegalArgumentException planConstructException3 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(nullTeamPlanEntity, nullUserEntity, CATEGORIES)
+        );
+        IllegalArgumentException planConstructException4 = assertThrows(IllegalArgumentException.class
+                , () -> new PlanEntity(teamPlanEntity, userEntity, null)
+        );
+
+        // Then
+        assertEquals(planConstructException1.getClass(), IllegalArgumentException.class);
+        assertEquals(planConstructException2.getClass(), IllegalArgumentException.class);
+        assertEquals(planConstructException3.getClass(), IllegalArgumentException.class);
+        assertEquals(planConstructException4.getClass(), IllegalArgumentException.class);
+    }
+
+
 }
