@@ -75,7 +75,7 @@ public class UserControllerTest {
 
         actions
                 .andDo(print())
-                .andExpect(status().isCreated()); //http status 200  추후 201 isCreated()로 수정 (내부 로직 수정 후)
+                .andExpect(status().isCreated()); //http status 201 created
     }
 
     @Test
