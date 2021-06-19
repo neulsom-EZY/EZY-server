@@ -13,6 +13,7 @@ import java.util.Collections;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDto {
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)

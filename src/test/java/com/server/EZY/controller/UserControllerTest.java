@@ -50,13 +50,21 @@ public class UserControllerTest {
     public void before(@Autowired UserController userController) {
         mvc = MockMvcBuilders.standaloneSetup(userController).build();
 
-        UserDto userDto = new UserDto("JsonWebTok", "1234", "01012345678");
+        UserDto userDto = UserDto.builder()
+                .nickname("JsonWebTok")
+                .password("1234")
+                .phoneNumber("01012345678")
+                .build();
         userService.signup(userDto);
     }
 
     @Test
     public void signupTest() throws Exception {
-        UserDto userDto = new UserDto("JsonWebTok", "1234", "01012341234");
+        UserDto userDto = UserDto.builder()
+                .nickname("JsonWebTok")
+                .password("1234")
+                .phoneNumber("01012345678")
+                .build();
 
         String content = objectMapper.writeValueAsString(userDto);
 
@@ -67,13 +75,15 @@ public class UserControllerTest {
 
         actions
                 .andDo(print())
-                .andExpect(status().isOk()); //http status 200
+                .andExpect(status().isCreated()); //http status 200  추후 201 isCreated()로 수정 (내부 로직 수정 후)
     }
 
     @Test
     public void signInTest() throws Exception {
-        //given
-        LoginDto loginDto = new LoginDto("BeforeEach", "12345");
+        LoginDto loginDto = LoginDto.builder()
+                .nickname("JsonWebTok")
+                .password("1234")
+                .build();
 
         String content = objectMapper.writeValueAsString(loginDto);
 
