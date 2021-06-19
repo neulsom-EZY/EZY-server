@@ -29,6 +29,11 @@ public class LoginDto {
     @JsonIgnore
     private Permission permission;
 
+    public LoginDto(String nickname, String password) {
+        this.nickname = nickname;
+        this.password = password;
+    }
+
     public UserEntity toEntity(){
         return UserEntity.builder()
                 .nickname(this.getNickname())
