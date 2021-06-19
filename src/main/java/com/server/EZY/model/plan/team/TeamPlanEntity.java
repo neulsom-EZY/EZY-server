@@ -31,7 +31,4 @@ public class TeamPlanEntity {
 
     @Column(name = "PlanWhat")
     private String what;
-
-    @Column(name = "PlanWho")
-    private String who;
 }
