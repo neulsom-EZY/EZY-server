@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +40,7 @@ class PlanEntityTest {
                 .build();
     }
 
+    // Test 편의를 위한 teamPlanEntity 생성
     TeamPlanEntity teamPlanEntityInit(){
         return TeamPlanEntity.builder()
                 .planName(RandomString.make(10))
@@ -90,7 +92,7 @@ class PlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
+    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들의 각각 null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
     void PersonalPlan를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
@@ -113,9 +115,44 @@ class PlanEntityTest {
                 , () -> new PlanEntity(personalPlanEntity, userEntity, null)
         );
 
+        // Then
         assertEquals(planConstructException1.getClass(), IllegalArgumentException.class);
         assertEquals(planConstructException2.getClass(), IllegalArgumentException.class);
         assertEquals(planConstructException3.getClass(), IllegalArgumentException.class);
         assertEquals(planConstructException4.getClass(), IllegalArgumentException.class);
+    }
+
+    @Test @DisplayName("UserA를 통한 PersonalPlanEntity 조회 검증")
+    void PersonalPlan_조회_검증(){
+        // Given
+        UserEntity userA = userEntityInit();
+        PersonalPlanEntity userAPersonalPlan1 = personalPlanEntityInit();
+        PersonalPlanEntity userAPersonalPlan2 = personalPlanEntityInit();
+        List<PlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
+                new PlanEntity[] {new PlanEntity(userAPersonalPlan1, userA), new PlanEntity(userAPersonalPlan2, userA)})
+        );
+        planRepo.saveAll(userAPlans);
+
+        UserEntity userB = userEntityInit();
+        TeamPlanEntity userABTeamPlan = teamPlanEntityInit();
+        List<PlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
+                new PlanEntity[] {new PlanEntity(userABTeamPlan, userA), new PlanEntity(userABTeamPlan, userB)}
+        ));
+        planRepo.saveAll(ABTeamPlan);
+
+        // When
+        List<PlanEntity> savedUserAPlans = planRepo.findAllByUserEntityAndPersonalPlanEntityNotNull(userA);
+
+        // Than
+        int savedUserAPlansSize = savedUserAPlans.size();
+        PlanEntity savedUserAPlan1 = savedUserAPlans.get(0);
+        PersonalPlanEntity savedUserAPersonalPlan1 = savedUserAPlan1.getPersonalPlanEntity();
+
+        PlanEntity savedUserAPlan2 = savedUserAPlans.get(1);
+        PersonalPlanEntity savedUserAPersonalPlan2 = savedUserAPlan2.getPersonalPlanEntity();
+
+        assertEquals(savedUserAPlansSize, 2);
+        assertEquals(savedUserAPersonalPlan1, userAPersonalPlan1);
+        assertEquals(savedUserAPersonalPlan2, userAPersonalPlan2);
     }
 }
