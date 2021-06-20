@@ -5,13 +5,18 @@ import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.UserEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.server.EZY.model.plan.PlanDType.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
+@Slf4j
 @Entity @Table(name = "Plan")
 @NoArgsConstructor @Getter
 public class PlanEntity {
@@ -24,20 +29,28 @@ public class PlanEntity {
     @JoinColumn(name = "UserId")
     private UserEntity userEntity;
 
-    //PlanEntity가  저장, 병합, 삭제가 일어때 PersonalPlanEntity에 전의됩니다.
+    //PlanEntity가  저장, 병합, 삭제가 발생될때 PersonalPlanEntity에 전의됩니다.
     @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
     @JoinColumn(name = "PersonalPlanId")
     private PersonalPlanEntity personalPlanEntity;
 
-    //PlanEntity가 저장, 병합이 일어때 TeamPlanEntity에 전의됩니다.
+    //PlanEntity가 저장, 병합이 발생될때 TeamPlanEntity에 전의됩니다.
     @ManyToOne(fetch = LAZY, cascade = {PERSIST, MERGE})
     @JoinColumn(name = "TeamPlanId")
     private TeamPlanEntity teamPlanEntity;
 
-    // Plan을 통해 PersonalPlan을 조인할지 TeamPlan을 조인할지 결정해주는 컬럼
+    // 어떠한 join할 테이블의 타입 알려줌
     @Enumerated(value = EnumType.STRING)
     @Column(name = "PlanDType")
     private PlanDType planDType;
+
+    @Column(name = "Category")
+    @ElementCollection(fetch = EAGER)
+    @CollectionTable(
+            name = "Category",
+            joinColumns = @JoinColumn(name = "PlanId")
+    )
+    private List<String> categories = new ArrayList<>();
 
     /**
      * PersonalPlanEntity 과 UserEntity 로 객체 생성
@@ -52,8 +65,18 @@ public class PlanEntity {
             this.personalPlanEntity = personalPlanEntity;
             this.planDType = PERSONAL_PLAN;
         }else{
-            throw new NullPointerException();
+            log.debug("=== PersonalPlanEntity 또는 UserEntity가 null입니다. ===");
+            log.debug("userEntity = {} ", userEntity);
+            log.debug("personalPlanEntity = {} ", personalPlanEntity);
+            throw new IllegalArgumentException("PersonalPlanEntity 또는 UserEntity가 null입니다.");
         }
+    }
+    public PlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity, List<String> categories){
+        this(personalPlanEntity, userEntity);
+        if(categories != null)
+            this.categories = categories;
+        else
+            throw new IllegalArgumentException("categories 가 null 입니다.");
     }
 
     /**
@@ -62,12 +85,22 @@ public class PlanEntity {
      * @param teamPlanEntity
      */
     public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
-        if(userEntity != null && teamPlanEntity != null && this.personalPlanEntity != null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
+        if(userEntity != null && teamPlanEntity != null && this.personalPlanEntity == null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
             this.userEntity = userEntity;
             this.teamPlanEntity = teamPlanEntity;
             this.planDType = TEAM_PLAN;
         }else{
-            throw new NullPointerException(); // 임의로 넣은 Exception 수정예정
+            log.debug("=== TeamPlanEntity 또는 UserEntity가 null입니다. ===");
+            log.debug("userEntity = {} ", userEntity);
+            log.debug("teamPlanEntity = {} ", teamPlanEntity);
+            throw new IllegalArgumentException("TeamPlanEntity 또는 UserEntity가 null입니다."); // 임의로 넣은 Exception 수정예정
         }
+    }
+    public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity, List<String> categories){
+        this(teamPlanEntity, userEntity);
+        if(categories != null)
+            this.categories = categories;
+        else
+            throw new IllegalArgumentException("categories 가 null 입니다.");
     }
 }

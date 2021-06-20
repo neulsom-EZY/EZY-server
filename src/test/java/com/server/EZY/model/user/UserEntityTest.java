@@ -1,36 +1,32 @@
 package com.server.EZY.model.user;
 
 import com.server.EZY.repository.user.UserRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@DataJpaTest
+@DataJpaTest // DataJpa만 Test 할것이다.
 class UserEntityTest {
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Autowired private UserRepository userRepo;
-
 
     @Test
     @DisplayName("UserEntity DB값 정상적으로 insert 하는지 검증")
     void userEntity_최대길이검증(){
 
-        //######## given ########//
+        // Given
         UserEntity userEntity = UserEntity.builder()
                 .nickname("JsonWebTok")
                 .password("JsonWebTok")
@@ -39,62 +35,50 @@ class UserEntityTest {
                 .roles(Collections.singletonList(Role.ROLE_ADMIN))
                 .build();
 
-        //######## when ########//
-        // entity save 후 영속화 헤제
-        userRepo.saveAndFlush(userEntity);
-        em.detach(userEntity);
+        // When
+        // UserEntity save 후 flush(DB에 쿼리를 날린다.)
+        UserEntity savedUserEntity = userRepo.saveAndFlush(userEntity);
 
-        Long userIdx = userEntity.getUserIdx();
-        System.out.println(userIdx);
-        UserEntity userEntitySave = userRepo.findById(userIdx).get();
-
-        //######## then ########//
-        assertThat(userEntity == userEntitySave);
+        // Then
+        assertEquals(userEntity, savedUserEntity);
     }
 
     @Test @Disabled
     @DisplayName("UserEntity 최대길이_초과시_Exception 검증 (Exception 발생시 Test 성공)")
     void userEntity_최대길이_초과_Exception_검증() throws Exception {
-        try{
-            UserEntity user = UserEntity.builder()
-                    .nickname("JsonWebTok1")
-                    .password("JsonWebTok2")
-                    .phoneNumber("010123456783")
-                    .permission(Permission.PERMISSION)
-                    .build();
+        UserEntity user = UserEntity.builder()
+                .nickname("JsonWebTok1")
+                .password("JsonWebTok2")
+                .phoneNumber("010123456783")
+                .permission(Permission.PERMISSION)
+                .build();
 
+        assertThrows(ConstraintViolationException.class,  () ->{
             userRepo.save(user);
-        }catch(ConstraintViolationException e){
-            printException(e);
-            return;
-        }
-        throw new Exception(); // ConstraintViolationException exception 이 발생되지 않으면 테스트 코드가 실패한다.
+        });
     }
 
     @Test @Disabled
     @DisplayName("UserEntity 최대길이_미만시_Exception 검증 (Exception 발생시 Test 성공)")
     void userEntity_최소길이_미만_Exception_검증() throws Exception {
-        try{
-            UserEntity user = UserEntity.builder()
-                    .nickname("")
-                    .password("123")
-                    .phoneNumber("0103629383")
-                    .permission(Permission.PERMISSION)
-                    .build();
+        UserEntity user = UserEntity.builder()
+                .nickname("")
+                .password("123")
+                .phoneNumber("0103629383")
+                .permission(Permission.PERMISSION)
+                .build();
 
+        assertThrows(ConstraintViolationException.class, () ->{
             userRepo.save(user);
-        }catch(ConstraintViolationException e){
-            printException(e);
-            return;
-        }
-        throw new Exception(); // ConstraintViolationException exception 이 발생되지 않으면 테스트 코드가 실패한다.
+        });
+
     }
 
     @Test
     @DisplayName("UserEntity UserDetails를 구현한 Method 값 검증")
     void userEntity_UserDetails_구현한_Method_값_검증(){
 
-        //######## given ########//
+        // Given
         List<Role> userRole = new ArrayList<>();
         userRole.add(Role.ROLE_CLIENT);
         userRole.add(Role.ROLE_ADMIN);
@@ -109,18 +93,21 @@ class UserEntityTest {
         List<String> userRoles = userEntity.getRoles().stream().map(Enum::name).collect(Collectors.toList());
         Collection<? extends GrantedAuthority> getRoleConvertSimpleGrantedAuthority = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
-        //######## when, than ########//
-        assertThat(userEntity.getUsername()).isEqualTo(userEntity.getNickname());
-        assertThat(userEntity.getAuthorities()).isEqualTo(getRoleConvertSimpleGrantedAuthority);
-        assertThat(userEntity.isAccountNonExpired()).isTrue();
-        assertThat(userEntity.isCredentialsNonExpired()).isTrue();
-        assertThat(userEntity.isEnabled()).isTrue();
-    }
+        // When
+        String getUsername = userEntity.getUsername();
+        Collection<? extends GrantedAuthority> getAuthorities = userEntity.getAuthorities();
+        boolean getAccountNonExpired = userEntity.isAccountNonExpired();
+        boolean getAccountNonLocked = userEntity.isAccountNonLocked();
+        boolean getCredentialsNonExpired = userEntity.isCredentialsNonExpired();
+        boolean getEnabled = userEntity.isEnabled();
 
-    void printException(Exception e){
-        System.out.println("################################################################### Exception msg ###################################################################\n");
-        e.printStackTrace();
-        System.out.println("################################################################### Exception done ###################################################################\n");
+        // Then
+        assertEquals(getUsername, userEntity.getNickname());
+        assertEquals(getAuthorities, getRoleConvertSimpleGrantedAuthority);
+        assertEquals(getAccountNonExpired, true);
+        assertEquals(getAccountNonLocked, true);
+        assertEquals(getCredentialsNonExpired, true);
+        assertEquals(getEnabled, true);
     }
 
 }

@@ -4,11 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static javax.persistence.FetchType.*;
+import java.util.Calendar;
 
 @Entity @Table(name = "PersonalPlan")
 @Builder @Getter
@@ -23,28 +19,19 @@ public class PersonalPlanEntity {
 //    @Size(min = 1, max = 30)
     private String planName;
 
-    @Column(name = "PlanWhen")
+    @Column(name = "PlanWhen", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date when;
+    private Calendar when;
 
     @Column(name = "PlanWhere")
     private String where;
 
-    @Column(name = "PlanWhat")
+    @Column(name = "PlanWhat", nullable = false)
     private String what;
 
     @Column(name = "PlanWho")
     private String who;
 
     @Column(name = "PlanRepeat")
-    private boolean repeat;
-
-    @Column(name = "Category")
-    @ElementCollection(fetch = EAGER)
-    @CollectionTable(
-            name = "Category",
-            joinColumns = @JoinColumn(name = "PersonalPlanId")
-    )
-    @Builder.Default
-    private List<String> categories = new ArrayList<>();
+    private Boolean repeat;
 }
