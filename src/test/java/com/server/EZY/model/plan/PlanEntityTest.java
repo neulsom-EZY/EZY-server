@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,7 +93,7 @@ class PlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들을 각각 null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
+    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들을 이용한 PlanEntity 생성자 Exception 검증")
     void PersonalPlan를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
@@ -187,7 +186,7 @@ class PlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("TeamPlanEntity, UserEntity, Categories 값들을 각각 null로 PlanEntity생성시 Exception 검증 (생성자 검증)")
+    @Test @DisplayName("TeamPlanEntity, UserEntity, Categories 값들을 이용한 PlanEntity 생성자 Exception 검증")
     void TeamPlanEntity를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         UserEntity userEntity = userEntityInit();

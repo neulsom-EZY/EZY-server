@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
-    List<PlanEntity> findAllByUserEntityAndPersonalPlanEntityNotNull(UserEntity userEntity);
+    List<PlanEntity> findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(UserEntity userEntity);
+    List<PlanEntity> findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(UserEntity userEntity);
 }
