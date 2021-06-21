@@ -1,6 +1,16 @@
 package com.server.EZY.model.plan.personal;
 
+import com.server.EZY.model.plan.PlanDType;
+import com.server.EZY.model.plan.PlanEntity;
+import com.server.EZY.model.plan.team.TeamPlanEntity;
+import com.server.EZY.model.user.Permission;
+import com.server.EZY.model.user.Role;
+import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.repository.plan.PersonalPlanRepository;
+import com.server.EZY.repository.plan.PlanRepository;
+import com.server.EZY.repository.plan.TeamPlanRepository;
+import com.server.EZY.repository.user.UserRepository;
+import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,74 +26,107 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonalPlanEntityTest {
 
     @Autowired private PersonalPlanRepository personalPlanRepo;
+    @Autowired UserRepository userRepo;
+    @Autowired PlanRepository planRepo;
+    @Autowired TeamPlanRepository teamPlanRepo;
 
-    @Test @DisplayName("PersonalPlanEntity 제약조건의 최대길이에 따라 저장이 잘 되는지 검증")
-    void PersonalPlanEntity_최대길이_제약조건_검증(){
-        // Given
-        String PLAN_NAME = "PersonalPlanEntity_최대길이_제약조건검증";
-        Calendar WHEN = Calendar.getInstance();
-        WHEN.set(2021, Calendar.JUNE, 12);
-        WHEN.add(Calendar.HOUR_OF_DAY, 12);
-        WHEN.add(Calendar.MINUTE, 30);
-        String WHERE = "광주소프트웨어마이스터고등학교";
-        String WHAT = "EZY 개발";
-        String WHO = "전지환, 정시원";
-        boolean REPEAT = true;
-
-        PersonalPlanEntity personalPlanEntity = PersonalPlanEntity.builder()
-                .planName(PLAN_NAME)
-                .when(WHEN)
-                .where(WHERE)
-                .what(WHAT)
-                .who(WHO)
-                .repeat(REPEAT)
+    // Test 편의를 위한 personalPlanEntity 생성
+    PersonalPlanEntity personalPlanEntityInit(){
+        return PersonalPlanEntity.builder()
+                .planName(RandomString.make(10))
+                .what(RandomString.make(20))
+                .who(RandomString.make(20))
+                .when(Calendar.getInstance())
+                .where(RandomString.make(20))
+                .repeat(false)
                 .build();
+    }
 
-        PersonalPlanEntity savePersonalPlanEntity = personalPlanRepo.save(personalPlanEntity);
+    // Test 편의를 위한 teamPlanEntity 생성
+    TeamPlanEntity teamPlanEntityInit(UserEntity leader){
+        return TeamPlanEntity.builder()
+                .teamLeader(leader)
+                .planName(RandomString.make(10))
+                .what(RandomString.make(20))
+                .when(Calendar.getInstance())
+                .where(RandomString.make(20))
+                .build();
+    }
+
+    // Test 편의를 위한 유저 생성 userEntityInit
+    UserEntity userEntityInit(){
+        UserEntity user = UserEntity.builder()
+                .nickname(RandomString.make(10))
+                .password(RandomString.make(10))
+                .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
+                .permission(Permission.PERMISSION)
+                .roles(Collections.singletonList(Role.ROLE_CLIENT))
+                .build();
+        return userRepo.save(user);
+    }
+
+
+    @Test @DisplayName("PersonalPlan 를 통한 PlanEntity 생성 및 저장 테스트")
+    void PlanEntity_PersonalPlanEntity_생성및저장_검증(){
+        // Given
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        UserEntity userEntity = userEntityInit();
+
+        List<String> categories = Collections.singletonList("공부");
+        PlanEntity planEntity = new PlanEntity(
+                personalPlanEntity
+                ,userEntity
+                ,categories
+        );
 
         // When
-        //DB에 저정된 PersonalPlanEntity 가져오기
-        PersonalPlanEntity savedDbPersonalPlanEntity = personalPlanRepo.getById(savePersonalPlanEntity.getPersonalPlanIdx());
+        PlanEntity savedPlanEntity = planRepo.save(planEntity);
+
+        UserEntity getUserEntity = savedPlanEntity.getUserEntity();
+        PlanDType getPlanDType = savedPlanEntity.getPlanDType();
+        PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
+        List<String> getCategories = savedPlanEntity.getCategories();
+
+        // Then
+        assertEquals(getUserEntity, userEntity);
+        assertEquals(getPlanDType, PlanDType.PERSONAL_PLAN);
+        assertEquals(getPersonalPlanEntity, personalPlanEntity);
+        assertEquals(getTeamPlanEntity, null);
+        assertEquals(getCategories.get(0), categories.get(0));
+    }
+
+    @Test @DisplayName("UserA를 통한 PersonalPlanEntity 조회 검증")
+    void PersonalPlan_조회_검증(){
+        // Given
+        UserEntity userA = userEntityInit();
+        PersonalPlanEntity userAPersonalPlan1 = personalPlanEntityInit();
+        PersonalPlanEntity userAPersonalPlan2 = personalPlanEntityInit();
+        List<PlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
+                new PlanEntity[] {new PlanEntity(userAPersonalPlan1, userA), new PlanEntity(userAPersonalPlan2, userA)})
+        );
+        planRepo.saveAll(userAPlans);
+
+        UserEntity userB = userEntityInit();
+        TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
+        List<PlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
+                new PlanEntity[] {new PlanEntity(userABTeamPlan, userA), new PlanEntity(userABTeamPlan, userB)}
+        ));
+        planRepo.saveAll(ABTeamPlan);
+
+        // When
+        List<PlanEntity> savedUserAPlans = planRepo.findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(userA);
 
         // Than
-        // DB에 저장된값이 처음 입력한값이랑 같은지 비교
-        assertEquals(savedDbPersonalPlanEntity.getPersonalPlanIdx(), savedDbPersonalPlanEntity.getPersonalPlanIdx());
-        assertEquals(savedDbPersonalPlanEntity.getPlanName(), PLAN_NAME);
-        assertEquals(savedDbPersonalPlanEntity.getWhen(), WHEN);
-        assertEquals(savedDbPersonalPlanEntity.getWhere(), WHERE);
-        assertEquals(savedDbPersonalPlanEntity.getWhat(), WHAT);
-        assertEquals(savedDbPersonalPlanEntity.getWho(), WHO);
-        assertEquals(savedDbPersonalPlanEntity.getRepeat(), REPEAT);
-    }
+        int savedUserAPlansSize = savedUserAPlans.size();
+        PlanEntity savedUserAPlan1 = savedUserAPlans.get(0);
+        PersonalPlanEntity savedUserAPersonalPlan1 = savedUserAPlan1.getPersonalPlanEntity();
 
-    @Test @DisplayName("PersonalPlanEntity null 제약조건 검증")
-    @Disabled
-    void PersonalPlanEntity_null제약조건_검증_및_글자수_검증(){
-        PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity();
+        PlanEntity savedUserAPlan2 = savedUserAPlans.get(1);
+        PersonalPlanEntity savedUserAPersonalPlan2 = savedUserAPlan2.getPersonalPlanEntity();
 
-        assertThrows(ConstraintViolationException.class, ()->{
-            personalPlanRepo.save(personalPlanEntity);
-        });
-    }
-
-    @Test @DisplayName("PersonalPlanEntity 글자수 제약조건 검증")
-    @Disabled
-    void PersonalPlanEntity_글자수_제약조건_검증(){
-        PersonalPlanEntity personalPlanEntityBlankPlanName = PersonalPlanEntity.builder()
-                .planName("")
-                .build();
-
-        assertThrows(ConstraintViolationException.class, ()->{
-            personalPlanRepo.save(personalPlanEntityBlankPlanName);
-        });
-
-        PersonalPlanEntity personalPlanEntityPlanNameOver30 = PersonalPlanEntity.builder()
-                .planName("aeifjhsadfjpaoisefjapsioefjoisaefjoisaepjfasoiefjiaosefjaosiefjoiasejfijasfihaseoihasefhafsdlk")
-                .build();
-
-        assertThrows(ConstraintViolationException.class, ()->{
-            personalPlanRepo.save(personalPlanEntityPlanNameOver30);
-        });
-        assertEquals(personalPlanEntityPlanNameOver30.getPlanName().length() > 30, true);
+        assertEquals(savedUserAPlansSize, 2);
+        assertEquals(savedUserAPersonalPlan1, userAPersonalPlan1);
+        assertEquals(savedUserAPersonalPlan2, userAPersonalPlan2);
     }
 }

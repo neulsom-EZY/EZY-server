@@ -124,40 +124,6 @@ class PlanEntityTest {
         assertEquals(planConstructException4.getClass(), IllegalArgumentException.class);
     }
 
-    @Test @DisplayName("UserA를 통한 PersonalPlanEntity 조회 검증")
-    void PersonalPlan_조회_검증(){
-        // Given
-        UserEntity userA = userEntityInit();
-        PersonalPlanEntity userAPersonalPlan1 = personalPlanEntityInit();
-        PersonalPlanEntity userAPersonalPlan2 = personalPlanEntityInit();
-        List<PlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
-                new PlanEntity[] {new PlanEntity(userAPersonalPlan1, userA), new PlanEntity(userAPersonalPlan2, userA)})
-        );
-        planRepo.saveAll(userAPlans);
-
-        UserEntity userB = userEntityInit();
-        TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
-        List<PlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
-                new PlanEntity[] {new PlanEntity(userABTeamPlan, userA), new PlanEntity(userABTeamPlan, userB)}
-        ));
-        planRepo.saveAll(ABTeamPlan);
-
-        // When
-        List<PlanEntity> savedUserAPlans = planRepo.findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(userA);
-
-        // Than
-        int savedUserAPlansSize = savedUserAPlans.size();
-        PlanEntity savedUserAPlan1 = savedUserAPlans.get(0);
-        PersonalPlanEntity savedUserAPersonalPlan1 = savedUserAPlan1.getPersonalPlanEntity();
-
-        PlanEntity savedUserAPlan2 = savedUserAPlans.get(1);
-        PersonalPlanEntity savedUserAPersonalPlan2 = savedUserAPlan2.getPersonalPlanEntity();
-
-        assertEquals(savedUserAPlansSize, 2);
-        assertEquals(savedUserAPersonalPlan1, userAPersonalPlan1);
-        assertEquals(savedUserAPersonalPlan2, userAPersonalPlan2);
-    }
-
     @Test @DisplayName("TeamPlanEntity 를 통한 PlanEntity 생성 및 저장 테스트")
     void PlanEntity_TeamPlanEntity_생성및저장_검증(){
         // Given
@@ -217,56 +183,4 @@ class PlanEntityTest {
         assertEquals(planConstructException3.getClass(), IllegalArgumentException.class);
         assertEquals(planConstructException4.getClass(), IllegalArgumentException.class);
     }
-
-    @Test @DisplayName("UserA를 통한 TeamPlanEntity 조회 검증")
-    void TeamPlan_조회_검증(){
-        // Given
-        // 유저A는 개인일정, A의 팀일정, B와 함깨하는 팀일정이 있다.
-        UserEntity userA = userEntityInit();
-        TeamPlanEntity userATeamPlan = teamPlanEntityInit(userA);
-        PersonalPlanEntity userAPersonalPlan = personalPlanEntityInit();
-        List<PlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
-                new PlanEntity[]{new PlanEntity(userAPersonalPlan, userA), new PlanEntity(userATeamPlan, userA)})
-        );
-        planRepo.saveAll(userAPlans);
-
-
-        UserEntity userB = userEntityInit();
-        TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
-        List<PlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
-                new PlanEntity[] {new PlanEntity(userABTeamPlan, userA), new PlanEntity(userABTeamPlan, userB)}
-        ));
-        planRepo.saveAll(ABTeamPlan);
-
-        // When
-        List<PlanEntity> savedUserAPlans = planRepo.findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(userA);
-
-        int savedUserAPlansSize = savedUserAPlans.size();
-        PlanEntity savedUserAPlan = savedUserAPlans.get(0);
-        TeamPlanEntity savedUserATeamPlan = savedUserAPlan.getTeamPlanEntity();
-        PlanEntity savedUserABPlan = savedUserAPlans.get(1);
-        TeamPlanEntity savedUserABTeamPlan = savedUserABPlan.getTeamPlanEntity();
-
-        PlanEntity savedUserBPlan = planRepo.findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(userB).get(0);
-
-
-        // Than
-
-        assertEquals(savedUserAPlansSize, 2);
-
-        // ATeam 검증
-        assertEquals(savedUserAPlan.getPlanDType(), PlanDType.TEAM_PLAN);
-        assertEquals(savedUserATeamPlan, userATeamPlan);
-        assertEquals(savedUserATeamPlan.getTeamLeader(), userA);
-
-        //ABTeam검증
-        assertEquals(savedUserABPlan.getPlanDType(), PlanDType.TEAM_PLAN);
-        assertEquals(savedUserABTeamPlan, userABTeamPlan);
-        assertEquals(savedUserABTeamPlan.getTeamLeader(), userB);
-
-        // A와 B가 함께 있는 Team
-        assertEquals(savedUserBPlan.getTeamPlanEntity(), savedUserABTeamPlan);
-    }
-
-
 }
