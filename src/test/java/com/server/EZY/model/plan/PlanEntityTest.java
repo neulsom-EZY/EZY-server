@@ -104,16 +104,16 @@ class PlanEntityTest {
 
         final List<String> CATEGORIES = Collections.singletonList(RandomString.make(10));
         // When
-        IllegalArgumentException planConstructException1 = assertThrows(IllegalArgumentException.class
+        Throwable planConstructException1 = assertThrows(IllegalArgumentException.class
                 , () -> new PlanEntity(nullPersonalPlanEntity, userEntity, CATEGORIES)
         );
-        IllegalArgumentException planConstructException2 = assertThrows(IllegalArgumentException.class
+        Throwable planConstructException2 = assertThrows(IllegalArgumentException.class
                 , () -> new PlanEntity(personalPlanEntity, nullUserEntity, CATEGORIES)
         );
-        IllegalArgumentException planConstructException3 = assertThrows(IllegalArgumentException.class
+        Throwable planConstructException3 = assertThrows(IllegalArgumentException.class
                 , () -> new PlanEntity(nullPersonalPlanEntity, nullUserEntity, CATEGORIES)
         );
-        IllegalArgumentException planConstructException4 = assertThrows(IllegalArgumentException.class
+        Throwable planConstructException4 = assertThrows(IllegalArgumentException.class
                 , () -> new PlanEntity(personalPlanEntity, userEntity, null)
         );
 
