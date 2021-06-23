@@ -11,6 +11,7 @@ import com.server.EZY.repository.plan.PersonalPlanRepository;
 import com.server.EZY.repository.plan.PlanRepository;
 import com.server.EZY.repository.plan.TeamPlanRepository;
 import com.server.EZY.repository.user.UserRepository;
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
@@ -169,5 +170,28 @@ class PersonalPlanEntityTest {
         assertNotEquals(beforeUpdatePersonalPlanEntity.getWho(), updatedPersonalPlanEntity.getWho());
         assertNotEquals(beforeUpdatePersonalPlanEntity.getWhere(), updatedPersonalPlanEntity.getWhere());
         assertNotEquals(beforeUpdatePersonalPlanEntity.getRepeat(), updatedPersonalPlanEntity.getRepeat());
+    }
+
+    @Test @DisplayName("PersonalPlan 삭제 검증")
+    @Transactional
+    void PersonalPlan_삭제_검증(){
+        // Given
+        UserEntity userEntity = userEntityInit();
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        PlanEntity planEntity = new PlanEntity(personalPlanEntity, userEntity);
+        PlanEntity savedPlanEntity = planRepo.saveAndFlush(planEntity);
+        em.clear();
+
+        PersonalPlanEntity beforeUpdatePersonalPlanEntity = planEntity.getPersonalPlanEntity();
+
+        // When
+        planRepo.delete(planEntity);
+        Throwable planNotFoundException = assertThrows(Throwable.class,
+                () -> planRepo.findById(savedPlanEntity.getPlanIdx()).get()
+        );
+
+
+        // Then
+        assertEquals(planNotFoundException.getClass(), NoSuchElementException.class);
     }
 }
