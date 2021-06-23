@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.personal;
 
+import com.fasterxml.jackson.databind.ser.std.CalendarSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,4 +35,13 @@ public class PersonalPlanEntity {
 
     @Column(name = "PlanRepeat")
     private Boolean repeat;
+
+    public void updatePersonalPlan(PersonalPlanEntity updatePersonalPlan){
+        this.planName = updatePersonalPlan.planName != null ? updatePersonalPlan.planName : this.planName;
+        this.when = updatePersonalPlan.when != null ? updatePersonalPlan.when : this.when;
+        this.where = updatePersonalPlan.where != null ? updatePersonalPlan.where : this.where;
+        this.what = updatePersonalPlan.what != null ? updatePersonalPlan.what : this.what;
+        this.who = updatePersonalPlan.who != null ? updatePersonalPlan.who : this.who;
+        this.repeat = updatePersonalPlan.repeat != null ? updatePersonalPlan.repeat : this.repeat;
+    }
 }
