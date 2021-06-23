@@ -190,7 +190,6 @@ class PersonalPlanEntityTest {
                 () -> planRepo.findById(savedPlanEntity.getPlanIdx()).get()
         );
 
-
         // Then
         assertEquals(planNotFoundException.getClass(), NoSuchElementException.class);
     }
