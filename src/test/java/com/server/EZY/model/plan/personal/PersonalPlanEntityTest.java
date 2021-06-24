@@ -11,7 +11,6 @@ import com.server.EZY.repository.plan.PersonalPlanRepository;
 import com.server.EZY.repository.plan.PlanRepository;
 import com.server.EZY.repository.plan.TeamPlanRepository;
 import com.server.EZY.repository.user.UserRepository;
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @DataJpaTest
+@Rollback(value = true) // update 쿼리 확인할떄 false
 class PersonalPlanEntityTest {
 
     @Autowired private PersonalPlanRepository personalPlanRepo;
@@ -137,7 +137,7 @@ class PersonalPlanEntityTest {
         assertEquals(savedUserAPersonalPlan2, userAPersonalPlan2);
     }
 
-    @Test @DisplayName("PersonalPlan 업데이트 검증")
+    @Test @DisplayName("PersonalPlan 업데이트 검증 (rollBack=true시 update 쿼리가 날라가지 않음)")
     @Transactional
     void PersonalPlan_업데이트_검증(){
         // Given
@@ -162,7 +162,6 @@ class PersonalPlanEntityTest {
                 .toEntity()
         );
         PersonalPlanEntity updatedPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
-        planRepo.save(savedPlanEntity);
 
         // Then
         assertNotEquals(beforeUpdatePersonalPlanEntity.getPlanName(), updatedPersonalPlanEntity.getPlanName());
