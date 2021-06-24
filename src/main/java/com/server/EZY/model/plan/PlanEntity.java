@@ -54,11 +54,10 @@ public class PlanEntity {
     private List<String> categories = new ArrayList<>();
 
     /**
-     * PersonalPlanEntity 과 UserEntity 로 객체 생성
+     * 개일일정(PlanEntity)를 생성하기 위한 생성자 (Category 제외)
      *
-     *
-     * @param userEntity
-     * @param personalPlanEntity
+     * @param personalPlanEntity 개인일정을 만들기 위한 PersonalPlanEntity 타입의 매개변수
+     * @param userEntity 어떤 유저의 일정인지 연관관계를 맻는 UserEntity 타입의 매개변수
      */
     public PlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity){
         if(userEntity != null && personalPlanEntity != null && this.teamPlanEntity == null) {
@@ -72,6 +71,16 @@ public class PlanEntity {
             throw new IllegalArgumentException("PersonalPlanEntity 또는 UserEntity가 null입니다.");
         }
     }
+
+    /**
+     * 개인일정(PersonalPlan)을 생성하기 위한 생성자 (Category 포함)
+     *
+     * @param personalPlanEntity 개인일정을 만들기 위한 PersonalPlanEntity 타입의 매개변수
+     * @param userEntity 어떤 유저의 일정인지 연관 관계를 맻는 UserEntity 타입의 매개변수
+     * @param categories 현재 일정에 대한 카테고리를 지정하는 List&#60;String&#62;타입의 매개변수
+     * @throws IllegalArgumentException List&#60;String&#62;타입의 categories가 null일경우
+     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생(임시)
+     */
     public PlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity, List<String> categories){
         this(personalPlanEntity, userEntity);
         if(categories != null)
@@ -81,7 +90,8 @@ public class PlanEntity {
     }
 
     /**
-     * 팀일정(TeamPlan)을 생성하기 위한 생성자 (Category 제외)
+     * 개인일정(PersonalPlan)을 생성하기 위한 생성자 (Category 제외)
+     *
      * @param teamPlanEntity 팀일정을 만들기 위한 TeamPlanEntity 타입의 매개변수
      * @param userEntity 어떤 유저의 일정인지 연관관계를 맻는 UserEntity 타입의 매개변수
      * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생(임시)
@@ -101,6 +111,7 @@ public class PlanEntity {
     }
     /**
      * 팀일정(TeamPlan)을 생성하기 위한 생성자 TeamPlanEntity UserEntity를 매개변수로 받는 생성자를 호출한다. (Category 포함)
+     *
      * @param teamPlanEntity 팀일정(TeamPlan)을 만들기 위한 TeamPlanEntity 타입의 매개변수
      * @param userEntity 어떤 유저의 일정인지 연관 관계를 맻는 UserEntity 타입의 매개변수
      * @param categories 현재 일정에 대한 카테고리를 지정하는 List&#60;String&#62;타입의 매개변수
