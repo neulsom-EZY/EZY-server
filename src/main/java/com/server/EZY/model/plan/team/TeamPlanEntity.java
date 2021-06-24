@@ -39,7 +39,7 @@ public class TeamPlanEntity {
 
     public void updateTeamPlan(TeamPlanEntity updatedTeamPlanEntity, UserEntity teamLeader) throws Exception {
         // 팀리더만 검증
-        if(teamLeader.getUsername().equals(teamLeader.getUsername())){
+        if(this.teamLeader.getUsername().equals(teamLeader.getUsername())){
             this.what = updatedTeamPlanEntity.what != null ? updatedTeamPlanEntity.what : this.what;
             this.planName = updatedTeamPlanEntity.planName != null ? updatedTeamPlanEntity.planName : this.planName;
             this.when = updatedTeamPlanEntity.when != null ? updatedTeamPlanEntity.when : this.when;
