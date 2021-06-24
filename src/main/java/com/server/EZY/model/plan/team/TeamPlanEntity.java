@@ -27,6 +27,9 @@ public class TeamPlanEntity {
     @Size(min = 1, max = 30)
     private String planName;
 
+    @Column(name = "PlanWhat")
+    private String what;
+
     @Column(name = "PlanWhen", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar when;
@@ -34,6 +37,14 @@ public class TeamPlanEntity {
     @Column(name = "PlanWhere")
     private String where;
 
-    @Column(name = "PlanWhat")
-    private String what;
+    public void updateTeamPlan(TeamPlanEntity updatedTeamPlanEntity, UserEntity teamLeader) throws Exception {
+        // 팀리더만 검증
+        if(teamLeader.getUsername().equals(teamLeader.getUsername())){
+            this.what = updatedTeamPlanEntity.what != null ? updatedTeamPlanEntity.what : this.what;
+            this.planName = updatedTeamPlanEntity.planName != null ? updatedTeamPlanEntity.planName : this.planName;
+            this.when = updatedTeamPlanEntity.when != null ? updatedTeamPlanEntity.when : this.when;
+            this.where = updatedTeamPlanEntity.where != null ? updatedTeamPlanEntity.where : this.where;
+        }else
+            throw new Exception("팀리더만 변경할 수 있습니다.");
+    }
 }
