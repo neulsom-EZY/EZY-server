@@ -150,4 +150,40 @@ class TeamPlanEntityTest {
         assertEquals(beforeUpdatedTeamPlanEntity.getTeamLeader().getUserIdx(), updatedTeamPlanEntity.getTeamLeader().getUserIdx());
     }
 
+    @Test @DisplayName("팀원이 TeamPlan업데이트시 예외 검증")
+    void TeamPlan_업데이트_예외_팀맴버가_수정할경우_검증() throws Exception {
+        // Given
+        UserEntity teamLeader = userEntityInit();
+        UserEntity teamMemberA = userEntityInit();
+        TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(teamLeader);
+        planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamLeader));
+        PlanEntity savedMemberATeamPlanEntity = planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
+        em.clear();
+
+        // When
+        savedMemberATeamPlanEntity = planRepo.getById(savedMemberATeamPlanEntity.getPlanIdx());
+        PlanEntity finalSavedMemberATeamPlanEntity = savedMemberATeamPlanEntity; // 람다에서는 final 혹인 원본값을 copy한 유사 final을 사용해야 하므로
+        Throwable savedTeamPlanException = assertThrows(Exception.class, () ->
+                finalSavedMemberATeamPlanEntity.getTeamPlanEntity().updateTeamPlan(
+                        TeamPlanUpdateDto.builder()
+                                .planName("변경한 TeamPlan")
+                                .what("변경할 TeamPlan")
+                                .where("광주소프트웨어공고")
+                                .when(Calendar.getInstance())
+                                .build()
+                                .toEntity(),
+                        teamMemberA
+                )
+        );
+        TeamPlanEntity updatedTeamPlanEntity = finalSavedMemberATeamPlanEntity.getTeamPlanEntity();
+
+        // Then
+        assertEquals(savedTeamPlanException.getClass(), Exception.class);
+        assertEquals(beforeUpdatedTeamPlanEntity.getPlanName(), updatedTeamPlanEntity.getPlanName());
+        assertEquals(beforeUpdatedTeamPlanEntity.getWhat(), updatedTeamPlanEntity.getWhat());
+        assertEquals(beforeUpdatedTeamPlanEntity.getWhen(), updatedTeamPlanEntity.getWhen());
+        assertEquals(beforeUpdatedTeamPlanEntity.getWhere(), updatedTeamPlanEntity.getWhere());
+        assertEquals(beforeUpdatedTeamPlanEntity.getTeamLeader().getUserIdx(), updatedTeamPlanEntity.getTeamLeader().getUserIdx());
+    }
+
 }
