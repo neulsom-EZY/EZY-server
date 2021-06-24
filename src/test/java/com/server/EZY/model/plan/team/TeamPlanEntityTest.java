@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.team;
 
+import com.server.EZY.dto.TeamPlanUpdateDto;
 import com.server.EZY.model.plan.PlanDType;
 import com.server.EZY.model.plan.PlanEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
@@ -15,18 +16,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@Rollback(value = true) // update 쿼리 확인할떄 false
 class TeamPlanEntityTest {
 
     @Autowired UserRepository userRepo;
     @Autowired PlanRepository planRepo;
     @Autowired PersonalPlanRepository personalPlanRepo;
     @Autowired TeamPlanRepository teamPlanRepo;
+    @PersistenceContext EntityManager em;
 
     // Test 편의를 위한 personalPlanEntity 생성
     PersonalPlanEntity personalPlanEntityInit(){
@@ -112,4 +119,35 @@ class TeamPlanEntityTest {
         // A와 B가 함께 있는 Team
         assertEquals(savedUserBPlan.getTeamPlanEntity(), savedUserABTeamPlan);
     }
+
+    @Test @DisplayName("TeamPlan업데이트 검증(rollBack=true시 update 쿼리가 날라가지 않음)")
+    void TeamPlan_업데이트_검증() throws Exception {
+        // Given
+        UserEntity userEntityTeamLeader = userEntityInit();
+        TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(userEntityTeamLeader);
+        PlanEntity savedTeamPlan = planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, userEntityTeamLeader));
+        em.clear();
+
+        // When
+        savedTeamPlan = planRepo.getById(savedTeamPlan.getPlanIdx());
+        savedTeamPlan.getTeamPlanEntity().updateTeamPlan(
+                TeamPlanUpdateDto.builder()
+                        .planName("변경한 TeamPlan")
+                        .what("변경할 TeamPlan")
+                        .where("광주소프트웨어공고")
+                        .when(Calendar.getInstance())
+                        .build()
+                .toEntity(),
+                userEntityTeamLeader // 팀리더만 teamEntity 팀리더를 Entity에 넘겨주어 검증후 업데이트 된다.
+        );
+        TeamPlanEntity updatedTeamPlanEntity = savedTeamPlan.getTeamPlanEntity();
+
+        // Then
+        assertNotEquals(beforeUpdatedTeamPlanEntity.getPlanName(), updatedTeamPlanEntity.getPlanName());
+        assertNotEquals(beforeUpdatedTeamPlanEntity.getWhat(), updatedTeamPlanEntity.getWhat());
+        assertNotEquals(beforeUpdatedTeamPlanEntity.getWhen(), updatedTeamPlanEntity.getWhen());
+        assertNotEquals(beforeUpdatedTeamPlanEntity.getWhere(), updatedTeamPlanEntity.getWhere());
+        assertEquals(beforeUpdatedTeamPlanEntity.getTeamLeader().getUserIdx(), updatedTeamPlanEntity.getTeamLeader().getUserIdx());
+    }
+
 }
