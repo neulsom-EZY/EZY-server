@@ -90,7 +90,7 @@ public class PlanEntity {
     }
 
     /**
-     * 개인일정(PersonalPlan)을 생성하기 위한 생성자 (Category 제외)
+     * 팀일정(TeamPlan)을 생성하기 위한 생성자 (Category 제외)
      *
      * @param teamPlanEntity 팀일정을 만들기 위한 TeamPlanEntity 타입의 매개변수
      * @param userEntity 어떤 유저의 일정인지 연관관계를 맻는 UserEntity 타입의 매개변수
