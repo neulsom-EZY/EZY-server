@@ -3,6 +3,7 @@ package com.server.EZY.model.plan;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.UserEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,12 +81,14 @@ public class PlanEntity {
     }
 
     /**
-     * TeamPlan 과 UserEntity 로 객체 생성
-     * @param userEntity
-     * @param teamPlanEntity
+     * 팀일정(TeamPlan)을 생성하기 위한 생성자 (Category 제외)
+     * @param teamPlanEntity 팀일정을 만들기 위한 TeamPlanEntity 타입의 매개변수
+     * @param userEntity 어떤 유저의 일정인지 연관관계를 맻는 UserEntity 타입의 매개변수
+     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생(임시)
+     * @author 정시원
      */
     public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
-        if(userEntity != null && teamPlanEntity != null && this.personalPlanEntity == null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
+        if(userEntity != null && teamPlanEntity != null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
             this.userEntity = userEntity;
             this.teamPlanEntity = teamPlanEntity;
             this.planDType = TEAM_PLAN;
@@ -96,6 +99,15 @@ public class PlanEntity {
             throw new IllegalArgumentException("TeamPlanEntity 또는 UserEntity가 null입니다."); // 임의로 넣은 Exception 수정예정
         }
     }
+    /**
+     * 팀일정(TeamPlan)을 생성하기 위한 생성자 TeamPlanEntity UserEntity를 매개변수로 받는 생성자를 호출한다. (Category 포함)
+     * @param teamPlanEntity 팀일정(TeamPlan)을 만들기 위한 TeamPlanEntity 타입의 매개변수
+     * @param userEntity 어떤 유저의 일정인지 연관 관계를 맻는 UserEntity 타입의 매개변수
+     * @param categories 현재 일정에 대한 카테고리를 지정하는 List&#60;String&#62;타입의 매개변수
+     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생(임시)
+     * @throws IllegalArgumentException List&#60;String&#62;타입의 categories가 null일경우
+     * @author 정시원
+     */
     public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity, List<String> categories){
         this(teamPlanEntity, userEntity);
         if(categories != null)
