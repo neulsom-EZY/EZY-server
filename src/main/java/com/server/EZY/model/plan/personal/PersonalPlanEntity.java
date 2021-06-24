@@ -1,10 +1,8 @@
 package com.server.EZY.model.plan.personal;
 
-import com.fasterxml.jackson.databind.ser.std.CalendarSerializer;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Calendar;
 
 @Entity @Table(name = "PersonalPlan")
@@ -36,6 +34,13 @@ public class PersonalPlanEntity {
     @Column(name = "PlanRepeat")
     private Boolean repeat;
 
+    /**
+     * 현재 PersonalPlan의 필드값을 업데이트 하는 함수다.<br>
+     * 현재 Entity의 값을 바꾸기 위해 PersonalPlanEntity타입의 updatePersonalPlan를 인수로 받아 <br>
+     * updatedTeamPlanEntity 안에 있는 각각의 필드의 값이 null이 아니면 현재 Entity의 값을 변경한다.<br>
+     * @param updatePersonalPlan 바꾸고 싶은 필드의 값이 들어있는 TeamPlanEntity 타입의 매개변수
+     * @auther 정시원
+     */
     public void updatePersonalPlan(PersonalPlanEntity updatePersonalPlan){
         this.planName = updatePersonalPlan.planName != null ? updatePersonalPlan.planName : this.planName;
         this.when = updatePersonalPlan.when != null ? updatePersonalPlan.when : this.when;
