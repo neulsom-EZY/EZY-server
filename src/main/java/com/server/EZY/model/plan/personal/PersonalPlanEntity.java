@@ -7,7 +7,7 @@ import java.util.Calendar;
 
 @Entity @Table(name = "PersonalPlan")
 @Builder @Getter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class PersonalPlanEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
