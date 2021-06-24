@@ -16,10 +16,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.Rollback;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -102,7 +104,6 @@ class TeamPlanEntityTest {
 
 
         // Than
-
         assertEquals(savedUserAPlansSize, 2);
 
         // ATeam 검증
@@ -161,7 +162,7 @@ class TeamPlanEntityTest {
 
         // When
         savedMemberATeamPlanEntity = planRepo.getById(savedMemberATeamPlanEntity.getPlanIdx());
-        PlanEntity finalSavedMemberATeamPlanEntity = savedMemberATeamPlanEntity; // 람다에서는 final 혹인 원본값을 copy한 유사 final을 사용해야 하므로
+        PlanEntity finalSavedMemberATeamPlanEntity = savedMemberATeamPlanEntity; // 람다에서는 final 혹은 원본값을 copy한 유사 final을 사용해야 하므로
         Throwable savedTeamPlanException = assertThrows(Exception.class, () ->
                 finalSavedMemberATeamPlanEntity.getTeamPlanEntity().updateTeamPlan(
                         TeamPlanUpdateDto.builder()
@@ -170,8 +171,8 @@ class TeamPlanEntityTest {
                                 .where("광주소프트웨어공고")
                                 .when(Calendar.getInstance())
                                 .build()
-                                .toEntity(),
-                        teamMemberA
+                                .toEntity()
+                        ,teamMemberA
                 )
         );
         TeamPlanEntity updatedTeamPlanEntity = finalSavedMemberATeamPlanEntity.getTeamPlanEntity();
@@ -185,4 +186,26 @@ class TeamPlanEntityTest {
         assertEquals(beforeUpdatedTeamPlanEntity.getTeamLeader().getUserIdx(), updatedTeamPlanEntity.getTeamLeader().getUserIdx());
     }
 
+    @Test @DisplayName("TeamPlanEntity삭제 검증")
+    void teamPlanEntity_삭제_검증(){
+        // Given
+        UserEntity teamLeader = userEntityInit();
+        UserEntity teamMemberA = userEntityInit();
+        TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(teamLeader);
+        planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamLeader));
+        PlanEntity savedMemberATeamPlanEntity = planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
+        em.clear();
+
+        // When
+        savedMemberATeamPlanEntity = planRepo.getById(savedMemberATeamPlanEntity.getPlanIdx());
+        planRepo.deleteById(savedMemberATeamPlanEntity.getPlanIdx());
+
+        PlanEntity finalSavedMemberATeamPlanEntity = savedMemberATeamPlanEntity; // 람다에서는 final 혹인 원본값을 copy한 유사 final을 사용해야 하므로
+        Throwable deleteException = assertThrows(EmptyResultDataAccessException.class,
+                () -> planRepo.deleteById(finalSavedMemberATeamPlanEntity.getPlanIdx())
+        );
+
+        // Then
+        assertEquals(deleteException.getClass(), EmptyResultDataAccessException.class);
+    }
 }
