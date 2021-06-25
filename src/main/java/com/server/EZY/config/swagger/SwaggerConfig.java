@@ -1,4 +1,4 @@
-package com.server.EZY.config;
+package com.server.EZY.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.server.EZY.config;
+package com.server.EZY.config.web;
 
 import io.swagger.models.HttpMethod;
 import org.springframework.context.annotation.Configuration;
