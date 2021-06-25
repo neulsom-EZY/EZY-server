@@ -1,10 +1,10 @@
-package com.server.EZY.controller;
+package com.server.EZY.model.user.controller;
 
 import com.server.EZY.model.user.dto.LoginDto;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
-import com.server.EZY.service.UserService;
+import com.server.EZY.model.user.service.UserService;
 import com.server.EZY.util.RedisUtil;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;

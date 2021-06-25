@@ -1,4 +1,4 @@
-package com.server.EZY.service;
+package com.server.EZY.model.user.service;
 
 import com.server.EZY.model.user.dto.LoginDto;
 import com.server.EZY.model.user.dto.UserDto;

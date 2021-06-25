@@ -1,8 +1,8 @@
 package com.server.EZY.model.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.server.EZY.model.user.Permission;
-import com.server.EZY.model.user.Role;
+import com.server.EZY.model.user.enumType.Permission;
+import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.UserEntity;
 import lombok.*;
 

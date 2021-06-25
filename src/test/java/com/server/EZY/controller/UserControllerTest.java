@@ -1,9 +1,10 @@
 package com.server.EZY.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.EZY.model.user.controller.UserController;
 import com.server.EZY.model.user.dto.LoginDto;
 import com.server.EZY.model.user.dto.UserDto;
-import com.server.EZY.service.UserService;
+import com.server.EZY.model.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

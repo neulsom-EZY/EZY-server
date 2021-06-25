@@ -1,8 +1,7 @@
-package com.server.EZY.controller;
+package com.server.EZY.model.user.controller.jwt;
 
-import com.server.EZY.service.RefreshTokenService;
+import com.server.EZY.model.user.service.jwt.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

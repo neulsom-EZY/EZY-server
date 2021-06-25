@@ -1,11 +1,11 @@
 package com.server.EZY.model.plan.team;
 
 import com.server.EZY.model.plan.team.dto.TeamPlanUpdateDto;
-import com.server.EZY.model.plan.plan.PlanDType;
+import com.server.EZY.model.plan.plan.enumType.PlanDType;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.user.Permission;
-import com.server.EZY.model.user.Role;
+import com.server.EZY.model.user.enumType.Permission;
+import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;

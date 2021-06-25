@@ -1,7 +1,7 @@
-package com.server.EZY.service;
+package com.server.EZY.model.user.service.jwt;
 
 import com.server.EZY.model.user.dto.UserDto;
-import com.server.EZY.model.user.Role;
+import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;

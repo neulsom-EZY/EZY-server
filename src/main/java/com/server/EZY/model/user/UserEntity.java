@@ -1,5 +1,7 @@
 package com.server.EZY.model.user;
 
+import com.server.EZY.model.user.enumType.Permission;
+import com.server.EZY.model.user.enumType.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.plan;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import com.server.EZY.model.plan.plan.enumType.PlanDType;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.UserEntity;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.server.EZY.model.plan.plan.PlanDType.*;
+import static com.server.EZY.model.plan.plan.enumType.PlanDType.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 

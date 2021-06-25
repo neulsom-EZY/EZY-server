@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand;
 
+import com.server.EZY.model.plan.errand.enumType.ResponseStatus;
 import com.server.EZY.model.user.UserEntity;
 
 import javax.persistence.*;

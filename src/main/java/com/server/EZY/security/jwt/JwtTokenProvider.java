@@ -1,6 +1,6 @@
 package com.server.EZY.security.jwt;
 
-import com.server.EZY.model.user.Role;
+import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.security.Authentication.MyUserDetails;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
