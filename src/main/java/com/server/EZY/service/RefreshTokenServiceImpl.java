@@ -2,11 +2,9 @@ package com.server.EZY.service;
 
 import com.server.EZY.dto.UserDto;
 import com.server.EZY.model.user.Role;
-import com.server.EZY.security.JwtTokenProvider;
-import com.server.EZY.service.RefreshTokenService;
+import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

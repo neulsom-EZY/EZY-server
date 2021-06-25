@@ -1,9 +1,9 @@
-package com.server.EZY.security;
+package com.server.EZY.security.jwt;
 
 import com.server.EZY.model.user.Role;
+import com.server.EZY.security.Authentication.MyUserDetails;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

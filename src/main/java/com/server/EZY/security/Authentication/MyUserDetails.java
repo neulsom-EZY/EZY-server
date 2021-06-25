@@ -1,4 +1,4 @@
-package com.server.EZY.security;
+package com.server.EZY.security.Authentication;
 
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.repository.UserRepository;

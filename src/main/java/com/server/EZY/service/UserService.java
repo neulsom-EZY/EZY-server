@@ -6,7 +6,7 @@ import com.server.EZY.exception.CustomException;
 import com.server.EZY.exception.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.security.JwtTokenProvider;
+import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

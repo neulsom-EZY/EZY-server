@@ -2,22 +2,14 @@ package com.server.EZY.security;
 
 
 import com.server.EZY.dto.UserDto;
-import com.server.EZY.exception.AccessTokenExpiredException;
-import com.server.EZY.exception.UserNotFoundException;
-import com.server.EZY.model.user.Role;
+import com.server.EZY.security.Authentication.MyUserDetails;
+import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.util.List;
 
 
 @SpringBootTest

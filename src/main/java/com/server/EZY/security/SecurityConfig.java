@@ -1,7 +1,7 @@
 package com.server.EZY.security;
 
-import com.server.EZY.model.user.Role;
-import lombok.RequiredArgsConstructor;
+import com.server.EZY.security.jwt.JwtTokenFilterConfigurer;
+import com.server.EZY.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
