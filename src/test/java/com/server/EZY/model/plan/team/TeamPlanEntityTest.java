@@ -1,6 +1,6 @@
 package com.server.EZY.model.plan.team;
 
-import com.server.EZY.dto.TeamPlanUpdateDto;
+import com.server.EZY.model.plan.team.dto.TeamPlanUpdateDto;
 import com.server.EZY.model.plan.plan.PlanDType;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;

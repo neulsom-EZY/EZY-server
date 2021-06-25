@@ -1,7 +1,7 @@
 package com.server.EZY.service;
 
-import com.server.EZY.dto.LoginDto;
-import com.server.EZY.dto.UserDto;
+import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;

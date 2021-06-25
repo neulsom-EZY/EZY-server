@@ -1,4 +1,4 @@
-package com.server.EZY.dto;
+package com.server.EZY.model.plan.team.dto;
 
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import lombok.*;

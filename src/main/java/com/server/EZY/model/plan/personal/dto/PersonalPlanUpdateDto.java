@@ -1,4 +1,4 @@
-package com.server.EZY.dto;
+package com.server.EZY.model.plan.personal.dto;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.server.EZY.dto;
+package com.server.EZY.model.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.server.EZY.model.user.Permission;
@@ -14,8 +14,7 @@ import java.util.Collections;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginDto {
-
+public class UserDto {
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)
     private String nickname;
@@ -24,18 +23,24 @@ public class LoginDto {
     @Size(min = 4, max = 10)
     private String password;
 
+    @NotBlank(message = "phoneNumber should be valid")
+    @Size(min = 11, max = 11)
+    private String phoneNumber;
+
     @JsonIgnore
     private Permission permission;
 
-    public LoginDto(String nickname, String password) {
+    public UserDto(String nickname, String password, String phoneNumber) {
         this.nickname = nickname;
         this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
     public UserEntity toEntity(){
         return UserEntity.builder()
                 .nickname(this.getNickname())
                 .password(this.getPassword())
+                .phoneNumber(this.getPhoneNumber())
                 .permission(Permission.PERMISSION)
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();

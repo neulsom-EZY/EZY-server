@@ -1,7 +1,7 @@
 package com.server.EZY.controller;
 
-import com.server.EZY.dto.LoginDto;
-import com.server.EZY.dto.UserDto;
+import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.service.UserService;

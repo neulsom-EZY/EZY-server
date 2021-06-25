@@ -1,7 +1,7 @@
 package com.server.EZY.security;
 
 
-import com.server.EZY.dto.UserDto;
+import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.security.Authentication.MyUserDetails;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
