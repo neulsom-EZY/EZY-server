@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PersonalPlanRepository extends JpaRepository<PersonalPlanEntity, Long> {
+    PersonalPlanEntity findByPersonalPlanIdx(Long personalPlanIdx);
 }
