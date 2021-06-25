@@ -1,4 +1,4 @@
-package com.server.EZY.repository.plan;
+package com.server.EZY.model.plan.team.repository;
 
 
 import com.server.EZY.model.plan.team.TeamPlanEntity;

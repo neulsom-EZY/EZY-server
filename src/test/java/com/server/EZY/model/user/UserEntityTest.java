@@ -1,6 +1,6 @@
 package com.server.EZY.model.user;
 
-import com.server.EZY.repository.user.UserRepository;
+import com.server.EZY.model.user.repository.UserRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

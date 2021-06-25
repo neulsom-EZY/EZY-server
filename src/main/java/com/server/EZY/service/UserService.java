@@ -5,13 +5,11 @@ import com.server.EZY.dto.UserDto;
 import com.server.EZY.exception.CustomException;
 import com.server.EZY.exception.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.repository.user.UserRepository;
+import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -2,18 +2,16 @@ package com.server.EZY.controller;
 
 import com.server.EZY.dto.LoginDto;
 import com.server.EZY.dto.UserDto;
-import com.server.EZY.repository.user.UserRepository;
+import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.JwtTokenProvider;
 import com.server.EZY.service.UserService;
 import com.server.EZY.util.RedisUtil;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController

@@ -1,9 +1,8 @@
 package com.server.EZY.security;
 
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.repository.user.UserRepository;
+import com.server.EZY.model.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

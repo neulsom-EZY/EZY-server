@@ -1,16 +1,16 @@
 package com.server.EZY.model.plan.personal;
 
 import com.server.EZY.dto.PersonalPlanUpdateDto;
-import com.server.EZY.model.plan.PlanDType;
-import com.server.EZY.model.plan.PlanEntity;
+import com.server.EZY.model.plan.plan.PlanDType;
+import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.Permission;
 import com.server.EZY.model.user.Role;
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.repository.plan.PersonalPlanRepository;
-import com.server.EZY.repository.plan.PlanRepository;
-import com.server.EZY.repository.plan.TeamPlanRepository;
-import com.server.EZY.repository.user.UserRepository;
+import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
+import com.server.EZY.model.plan.plan.repository.PlanRepository;
+import com.server.EZY.model.plan.team.repository.TeamPlanRepository;
+import com.server.EZY.model.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;

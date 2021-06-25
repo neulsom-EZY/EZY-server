@@ -1,4 +1,4 @@
-package com.server.EZY.repository.plan;
+package com.server.EZY.model.plan.personal.repository;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
