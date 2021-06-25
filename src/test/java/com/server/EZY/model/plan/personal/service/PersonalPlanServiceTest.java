@@ -30,6 +30,8 @@ class PersonalPlanServiceTest {
                 .who("시원이, 태현이")
                 .repeat(false)
                 .build();
+
+        String result = personalPlanService.savePersonalPlan(myPersonalPlan);
     }
 
     @Test
