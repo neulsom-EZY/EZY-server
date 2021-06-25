@@ -6,17 +6,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 import java.util.Calendar;
 
 @Getter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class PersonalPlanDto {
+    @NotBlank
     private String planName;
-    @Temporal(TemporalType.TIMESTAMP)
+    @NotBlank
     private Calendar when;
     private String where;
+    @NotBlank
     private String what;
     private String who;
     private Boolean repeat;
