@@ -1,6 +1,6 @@
 package com.server.EZY.security.jwt;
 
-import com.server.EZY.exception.CustomException;
+import com.server.EZY.exception.response.CustomException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

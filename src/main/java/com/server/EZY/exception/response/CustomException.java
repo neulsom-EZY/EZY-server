@@ -1,4 +1,4 @@
-package com.server.EZY.exception;
+package com.server.EZY.exception.response;
 
 import org.springframework.http.HttpStatus;
 
