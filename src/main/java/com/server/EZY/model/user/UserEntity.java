@@ -56,6 +56,10 @@ public class UserEntity implements UserDetails {
         return rolesConvertString.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
