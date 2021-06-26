@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 .apiInfo(this.apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors
-                .basePackage("com.server.EZY.controller"))
+                .basePackage("com.server.EZY"))
                 .paths(PathSelectors.ant("/v1/**"))
                 .build();
     }
