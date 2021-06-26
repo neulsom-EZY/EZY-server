@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
 	id 'jacoco'
 }
@@ -51,6 +52,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testCompileOnly 'org.projectlombok:lombok'
+
+	// *** querydsl *** //
+	implementation 'com.querydsl:querydsl-jpa'
 }
 
 test {
@@ -72,6 +76,23 @@ test {
 	useJUnitPlatform()
 	finalizedBy 'jacocoTestReport'
 }
+
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+//querydsl 추가 끝
 
 jacoco {
 	toolVersion = '0.8.7'
