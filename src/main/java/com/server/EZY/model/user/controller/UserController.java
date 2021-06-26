@@ -18,10 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")
 public class UserController {
-    private final UserRepository userRepository;
     private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final RedisUtil redisUtil;
 
     @PostMapping("/signup")
     @ResponseStatus( HttpStatus.CREATED )
