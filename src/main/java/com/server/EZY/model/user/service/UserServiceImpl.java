@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
      * 전화번호를 인증하는 로직
      * @param phoneNumberDto phoneNumber
      * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
-     * @return true
+     * @return true (findByPhoneNumber로 User를 찾았을 때) / false는 뜨지 않습니다.. 무조건 false
      * @author 배태현
      */
     @Override
