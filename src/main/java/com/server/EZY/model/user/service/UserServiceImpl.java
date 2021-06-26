@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         return withdrawalDto.getNickname() + "회원 회원탈퇴완료";
     }
 
-    static String getCurrentUserEntity() {
+    static String getCurrentUserNickname() {
         String nickname = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {

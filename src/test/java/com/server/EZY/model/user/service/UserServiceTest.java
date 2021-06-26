@@ -52,7 +52,7 @@ public class UserServiceTest {
         System.out.println(context);
 
         //then
-        String currentUserNickname = userServiceImpl.getCurrentUserEntity();
+        String currentUserNickname = userServiceImpl.getCurrentUserNickname();
         assertEquals("배태현", currentUserNickname);
     }
 }
