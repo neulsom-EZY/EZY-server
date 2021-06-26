@@ -7,9 +7,12 @@ import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
 import com.server.EZY.model.user.UserEntity;
+import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.model.user.service.UserService;
+import com.server.EZY.model.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,15 +25,34 @@ import java.util.List;
 public class PersonalPlanService {
     private final PlanRepository planRepository;
     private final PersonalPlanRepository personalPlanRepository;
+    private final UserServiceImpl userService;
+    private final UserRepository userRepository;
+    private final PlanEntity planEntity;
 
+    /**
+     *
+     * @param myPersonalPlan
+     * @param personalPlanCategory
+     * @return personalPlanName
+     * @author 전지환
+     */
     @Transactional
     public String savePersonalPlan(PersonalPlanDto myPersonalPlan, List<String> personalPlanCategory){
-        UserEntity currentUserEntity = UserService.currentUserEnity();
-        PlanEntity planEntity = new PlanEntity(
-                currentUserEntity,
-                myPersonalPlan,
-                personalPlanCategory
-        );
+        String loginUserNickname = userService.getCurrentUserNickname();
+        UserEntity loginUserEntity = currentUserEntity(loginUserNickname);
+
+        if(personalPlanCategory.size() == 0){
+            PlanEntity planEntity = new PlanEntity(
+                    myPersonalPlan.toEntity(),
+                    loginUserEntity
+            );
+        } else {
+            PlanEntity planEntity = new PlanEntity(
+                    myPersonalPlan.toEntity(),
+                    loginUserEntity,
+                    personalPlanCategory
+            );
+        }
 
         PlanEntity savedPlanEntity = planRepository.save(planEntity);
 
@@ -46,5 +68,9 @@ public class PersonalPlanService {
         } else {
             throw new Exception("변경하고자 하는 일정이 존재하지 않습니다.");
         }
+    }
+
+    public UserEntity currentUserEntity(String loginUserNickname){
+        return userRepository.findByNickname(loginUserNickname);
     }
 }
