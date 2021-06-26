@@ -1,11 +1,13 @@
 package com.server.EZY.model.user.service;
 
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.dto.UserDto;
+import com.server.EZY.model.user.controller.UserController;
+import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,14 +15,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Transactional
 public class UserServiceTest {
 
     @Autowired
@@ -33,6 +38,8 @@ public class UserServiceTest {
     private RedisUtil redisUtil;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private UserService userService;
 
     @Test
     void GetUserEntity(){
@@ -62,4 +69,91 @@ public class UserServiceTest {
         assertEquals("배태현", currentUserNickname);
     }
 
+    @Test
+    public void signupTest() {
+        //given
+        UserDto userDto = UserDto.builder()
+                .nickname("나야나 배따횬~~")
+                .password("0809")
+                .phoneNumber("01008090809")
+                .build();
+        //when
+        String signup = userService.signup(userDto);
+
+        //then
+        assertTrue(true, String.valueOf(signup != null));
+    }
+
+    @BeforeEach
+    public void before(@Autowired UserController userController) {
+
+        UserDto userDto = UserDto.builder()
+                .nickname("바따햔")
+                .password("0809")
+                .phoneNumber("01012345678")
+                .build();
+        userService.signup(userDto);
+    }
+
+    @Test
+    public void signinTest() {
+        //given
+        LoginDto loginDto = LoginDto.builder()
+                .nickname("바따햔")
+                .password("0809")
+                .build();
+        //when
+        Map<String, String> signin = userService.signin(loginDto);
+        //then
+        assertTrue(true, String.valueOf(signin != null));
+    }
+
+    @Test
+    public void logoutTest() {
+        //given
+
+        //when
+
+        //then
+
+    }
+
+    @Test
+    public void validPhoneNumber() {
+        //given
+        PhoneNumberDto phoneNumberDto = PhoneNumberDto.builder()
+                .phoneNumber("01012345678")
+                .build();
+        //when
+        Boolean aBoolean = userService.validPhoneNumber(phoneNumberDto);
+        //then
+        assertEquals(true, aBoolean);
+    }
+
+    @Test
+    public void changePasswordTest() {
+        //given
+        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+                .nickname("바따햔")
+                .currentPassword("0809")
+                .newPassword("20040809")
+                .build();
+        //when
+        String changePassword = userService.changePassword(passwordChangeDto);
+        //then
+        assertEquals("바따햔회원 비밀번호 변경완료", changePassword);
+    }
+
+    @Test
+    public void withdrawalTest() {
+        //given
+        WithdrawalDto withdrawalDto = WithdrawalDto.builder()
+                .nickname("바따햔")
+                .password("0809")
+                .build();
+        //when
+        String withdrawal = userService.withdrawal(withdrawalDto);
+        //then
+        assertEquals("바따햔회원 회원탈퇴완료", withdrawal);
+    }
 }
