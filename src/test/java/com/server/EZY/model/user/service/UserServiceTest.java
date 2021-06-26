@@ -109,16 +109,6 @@ public class UserServiceTest {
     }
 
     @Test
-    public void logoutTest() {
-        //given
-
-        //when
-
-        //then
-
-    }
-
-    @Test
     public void validPhoneNumber() {
         //given
         PhoneNumberDto phoneNumberDto = PhoneNumberDto.builder()
