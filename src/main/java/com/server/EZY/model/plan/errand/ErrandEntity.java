@@ -37,8 +37,4 @@ public class ErrandEntity {
 
     @Column(name = "ErrandResponseStatus")
     private ResponseStatus responseStatus;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "UserId")
-    private UserEntity userEntity;
 }
