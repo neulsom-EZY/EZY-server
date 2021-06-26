@@ -121,8 +121,9 @@ public class JwtTokenProvider {
         String bearerToken = req.getHeader("Authorization");
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
             return  bearerToken.substring(7);
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
@@ -135,8 +136,9 @@ public class JwtTokenProvider {
         String refreshToken = req.getHeader("RefreshToken");
         if(refreshToken != null){
             return  refreshToken.substring(7);
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
