@@ -8,12 +8,8 @@ import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.model.user.service.UserService;
 import com.server.EZY.model.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +26,12 @@ public class PersonalPlanService {
     private final PlanEntity planEntity;
 
     /**
-     *
-     * @param myPersonalPlan
-     * @param personalPlanCategory
-     * @return personalPlanName
+     * PersonalPlan 을 저장하는 서비스 메서드 입니다 <br>
+     * 1. category list 사이즈가 0 일때는 -> category 없는 planEntity 에 set 해줍니다. <br>
+     * 2. category list 사이즈가 > 0 일때 -> category는 있는 planEntity 에 set 해줍니다. <br>
+     * @param myPersonalPlan <br>
+     * @param personalPlanCategory <br>
+     * @return personalPlanName <br>
      * @author 전지환
      */
     @Transactional
@@ -46,12 +44,14 @@ public class PersonalPlanService {
                     myPersonalPlan.toEntity(),
                     loginUserEntity
             );
+            planRepository.save(planEntity);
         } else {
-            PlanEntity planEntity = new PlanEntity(
+            PlanEntity planEntityWithCategory = new PlanEntity(
                     myPersonalPlan.toEntity(),
                     loginUserEntity,
                     personalPlanCategory
             );
+            planRepository.save(planEntityWithCategory);
         }
 
         PlanEntity savedPlanEntity = planRepository.save(planEntity);
