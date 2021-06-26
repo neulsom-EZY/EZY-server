@@ -54,8 +54,8 @@ class ErrandEntityTest {
         return errandEntity;
     }
 
-    @Test @DisplayName("ErrandEntity 저장 검증")
-    void ErrandEntity_저장_검증(){
+    @Test @DisplayName("ErrandEntity 저장 조회 검증")
+    void ErrandEntity_저장_조히_검증(){
         // Given
         UserEntity userA = userEntityInit();
         UserEntity userB = userEntityInit();
@@ -121,5 +121,20 @@ class ErrandEntityTest {
         assertEquals(RESPONSE_STATUS, updatedErrandEntity.getResponseStatus());
     }
 
+    @Test
+    void ErrandEntity_삭제_검증(){
+        // Given
+        UserEntity userA = userEntityInit();
+        UserEntity userB = userEntityInit();
 
+        ErrandEntity beforeUpdateErrandEntity = errandRepo.saveAndFlush(errandEntityInit(userA, userB));
+
+        // When
+        errandRepo.deleteById(beforeUpdateErrandEntity.getErrandIdx());
+
+        // Than
+        assertThrows(Exception.class,
+                () -> errandRepo.getById(beforeUpdateErrandEntity.getErrandIdx())
+        );
+    }
 }
