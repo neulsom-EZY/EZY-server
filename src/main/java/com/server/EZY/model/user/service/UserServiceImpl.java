@@ -64,6 +64,12 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    /**
+     * 로그아웃하는 로직 (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
+     * @param request HttpServletRequest
+     * @return "로그아웃 되었습니다."
+     * @author 배태현
+     */
     @Override
     public String logout(HttpServletRequest request) {
         String accessToken = jwtTokenProvider.resolveToken(request);
@@ -72,6 +78,13 @@ public class UserServiceImpl implements UserService {
         return "로그아웃 되었습니다.";
     }
 
+    /**
+     * 전화번호를 인증하는 로직
+     * @param phoneNumberDto phoneNumber
+     * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
+     * @return true
+     * @author 배태현
+     */
     @Override
     public Boolean validPhoneNumber(PhoneNumberDto phoneNumberDto) {
         UserEntity findByPhoneNumber = userRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber());
@@ -79,6 +92,12 @@ public class UserServiceImpl implements UserService {
         else return true;
     }
 
+    /**
+     * 비밀번호를 변경하는 로직
+     * @param passwordChangeDto nickname, currentPassword, newPassword
+     * @return (회원닉네임)회원 비밀번호 변경완료
+     * @author 배태현
+     */
     @Override
     @Transactional
     public String changePassword(PasswordChangeDto passwordChangeDto) {
@@ -90,6 +109,11 @@ public class UserServiceImpl implements UserService {
         return passwordChangeDto.getNickname() + "회원 비밀번호 변경완료";
     }
 
+    /**
+     * 회원탈퇴 로직
+     * @param withdrawalDto withdrawalDto
+     * @return (회원이름)회원 회원탈퇴완료
+     */
     @Override
     @Transactional
     public String withdrawal(WithdrawalDto withdrawalDto) {
@@ -101,6 +125,10 @@ public class UserServiceImpl implements UserService {
         return withdrawalDto.getNickname() + "회원 회원탈퇴완료";
     }
 
+    /**
+     * 현재 로그인 되어있는(인증되어있는) User의 nickname을 반환하는 메서드
+     * @return nickname
+     */
     static String getCurrentUserNickname() {
         String nickname = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

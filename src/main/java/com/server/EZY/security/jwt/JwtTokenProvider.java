@@ -114,12 +114,15 @@ public class JwtTokenProvider {
     /**
      * http header에서 accessToken을 가져오는 메소드입니다.
      * @param req HttpServletRequest
-     * @return true = accesstoken, false = null
+     * @return true = accesstoken, false = null / (accessToken == null) - 다시 로그인 해주세요
      * @author 배태현
      */
     public String resolveToken(HttpServletRequest req){
         String bearerToken = req.getHeader("Authorization");
-        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
+        if (bearerToken == null) {
+            return "다시 로그인 해주세요";
+        }
+        if(bearerToken.startsWith("Bearer ")){
             return  bearerToken.substring(7);
         } else {
             return null;
