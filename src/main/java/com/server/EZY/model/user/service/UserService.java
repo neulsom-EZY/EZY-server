@@ -1,6 +1,9 @@
 package com.server.EZY.model.user.service;
 
+import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -34,4 +37,5 @@ public interface UserService {
     String changePassword(PasswordChangeDto passwordChangeDto);
 
     String withdrawal(WithdrawalDto withdrawalDto);
+
 }

@@ -9,6 +9,8 @@ import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,5 +101,14 @@ public class UserServiceImpl implements UserService {
         return withdrawalDto.getNickname() + "회원 회원탈퇴완료";
     }
 
-
+    static String getCurrentUserEntity() {
+        String nickname = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails) {
+            nickname = ((UserDetails) principal).getUsername();
+        } else{
+            nickname = principal.toString();
+        }
+        return nickname;
+    }
 }
