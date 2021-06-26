@@ -9,6 +9,7 @@ import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,7 +40,7 @@ class PersonalPlanServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @BeforeEach
+    @BeforeEach @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
     public void 로그인_세션(){
         /**
          * Given
@@ -69,7 +70,7 @@ class PersonalPlanServiceTest {
         System.out.println(context);
     }
 
-    @Test
+    @Test @DisplayName("개인일정 추가 - category.size == 0")
     public void 개인일정추가(){
         /**
          * Given 1st
