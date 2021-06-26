@@ -14,8 +14,9 @@ public class ErrandEntity {
     @Column(name = "ErrandIdx")
     private Long errandIdx;
 
-    @Column(name = "SenderId")
-    private Long senderIdx;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "UserId", nullable = false)
+    private UserEntity userEntity;
 
     @Column(name = "RecipientId")
     private Long recipientIdx;
