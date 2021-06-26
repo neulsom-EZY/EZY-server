@@ -10,4 +10,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByNickname(String nickName);
     // UserService 에서 사용.
     boolean existsByNickname(String nickname);
+    UserEntity findByPhoneNumber(String phoneNumber);
 }
