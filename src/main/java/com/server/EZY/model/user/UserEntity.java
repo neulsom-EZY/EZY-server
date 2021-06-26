@@ -85,4 +85,12 @@ public class UserEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname != null ? nickname : this.nickname;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password != null ? password : this.password;
+    }
 }
