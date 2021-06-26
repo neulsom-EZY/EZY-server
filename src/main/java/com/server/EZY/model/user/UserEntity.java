@@ -34,7 +34,7 @@ public class UserEntity implements UserDetails {
 //    @Size(min = 4, max = 10)
     private String password;
 
-    @Column(name = "PhoneNumber")
+    @Column(name = "PhoneNumber", nullable = false)
 //    @Size(min = 11, max = 11)
     private String phoneNumber;
 
