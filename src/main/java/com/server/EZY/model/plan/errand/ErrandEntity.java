@@ -5,6 +5,8 @@ import com.server.EZY.model.user.UserEntity;
 
 import javax.persistence.*;
 
+import java.util.Calendar;
+
 import static javax.persistence.FetchType.*;
 
 @Entity @Table(name = "Errand")
@@ -31,10 +33,10 @@ public class ErrandEntity {
     private String where;
 
     @Column(name = "ErrandUntil")
-    private String until;
+    private Calendar startAt;
 
     @Column(name = "ErrandDestination")
-    private String destination;
+    private Calendar endAt;
 
     @Column(name = "ErrandResponseStatus")
     private ResponseStatus responseStatus;
