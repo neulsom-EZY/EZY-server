@@ -42,8 +42,8 @@ public class PersonalPlanService {
         PlanEntity savedPlanEntity;
 
         /**
-         * if -> category list 사이즈가 0 일때는 -> category 없는 planEntity 에 set 해줍니다. <br>
-         * else -> category list 사이즈가 > 0 일때 -> category 있는 planEntity 에 set 해줍니다. <br>
+         * if -> category list 사이즈가 0 일때는 -> category 없는 planEntity 에 set 해줍니다.
+         * else -> category list 사이즈가 > 0 일때 -> category 있는 planEntity 에 set 해줍니다.
          */
         if(personalPlanCategory.size() == 0){
             PlanEntity planEntity = new PlanEntity(

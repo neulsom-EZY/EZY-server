@@ -28,7 +28,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Commit
+@Transactional
 class PersonalPlanServiceTest {
 
     @Autowired
@@ -102,28 +102,5 @@ class PersonalPlanServiceTest {
          * -> categroy에 아무것도 저장한 내용이 없으니.. size expected:0 이 Equals로 true 입니다!
          */
         assertEquals(0, result.getCategories().size());
-    }
-
-    @Test
-    public void 개인일정변경() throws Exception {
-        /**
-         * Given
-         * wannaChangeIdx: 변경을 원하는 일정의 Idx 를 저장합니다.
-         * wannaUpdatePlan: 변경을 원하는 내용을 저장합니다.
-         */
-        Long wannaChangeIdx = personalPlanRepository.findByPlanName("지환이랑 놀기").getPersonalPlanIdx();
-        PersonalPlanUpdateDto wannaUpdatePlan = PersonalPlanUpdateDto.builder()
-                .planName("태현이랑 놀기")
-                .when(Calendar.getInstance())
-                .where("잠실, 강남")
-                .who("유진이랑")
-                .repeat(false)
-                .build();
-
-        // when
-        personalPlanService.updatePersonalPlan(wannaUpdatePlan, wannaChangeIdx);
-
-        // then
-        assertEquals(true, personalPlanRepository.findByPlanName("태현이랑 놀기") != null);
     }
 }
