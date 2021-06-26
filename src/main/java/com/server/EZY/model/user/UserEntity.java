@@ -34,7 +34,7 @@ public class UserEntity implements UserDetails {
 //    @Size(min = 4, max = 10)
     private String password;
 
-    @Column(name = "PhoneNumber")
+    @Column(name = "PhoneNumber", nullable = false)
 //    @Size(min = 11, max = 11)
     private String phoneNumber;
 
@@ -54,6 +54,10 @@ public class UserEntity implements UserDetails {
         // List<Role> 형태를 Stream을 사용하여 roles 원소의 값을 String으로 바꿔주는 Enum.name()을 이용하여 List<String>형태로 변환(GrantedAuthority의 생성자는 String 타입을 받기 때문)
         List<String> rolesConvertString = this.roles.stream().map(Enum::name).collect(Collectors.toList());
         return rolesConvertString.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
