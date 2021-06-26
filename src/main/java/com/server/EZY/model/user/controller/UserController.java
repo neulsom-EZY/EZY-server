@@ -33,4 +33,9 @@ public class UserController {
     public Map<String, String> signin(@Valid @RequestBody LoginDto loginDto) throws Exception {
         return userService.signin(loginDto);
     }
+
+    @PutMapping ("/pwd-change")
+    public String passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+        return userService.changePassword(passwordChangeDto);
+    }
 }

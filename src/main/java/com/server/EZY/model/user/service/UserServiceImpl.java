@@ -3,10 +3,7 @@ package com.server.EZY.model.user.service;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.dto.LoginDto;
-import com.server.EZY.model.user.dto.PasswordChangeDto;
-import com.server.EZY.model.user.dto.PhoneNumberDto;
-import com.server.EZY.model.user.dto.UserDto;
+import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
@@ -16,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,8 +63,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String logout() {
-        return null;
+    public String logout(HttpServletRequest request) {
+        String accessToken = jwtTokenProvider.resolveToken(request);
+        String username = jwtTokenProvider.getUsername(accessToken);
+        redisUtil.deleteData(username);
+        return "로그아웃 되었습니다.";
     }
 
     @Override
@@ -88,8 +89,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String changeNickname() {
-        return null;
+    @Transactional
+    public String withdrawal(WithdrawalDto withdrawalDto) {
+        UserEntity findUser = userRepository.findByNickname(withdrawalDto.getNickname());
+        if (findUser == null) throw new UserNotFoundException();
+        if (passwordEncoder.matches(withdrawalDto.getPassword(), findUser.getPassword())) {
+            userRepository.deleteById(findUser.getUserIdx());
+        }
+        return withdrawalDto.getNickname() + "회원 회원탈퇴완료";
     }
 
 

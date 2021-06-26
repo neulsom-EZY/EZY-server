@@ -1,10 +1,8 @@
 package com.server.EZY.model.user.service;
 
-import com.server.EZY.model.user.dto.LoginDto;
-import com.server.EZY.model.user.dto.PasswordChangeDto;
-import com.server.EZY.model.user.dto.PhoneNumberDto;
-import com.server.EZY.model.user.dto.UserDto;
+import com.server.EZY.model.user.dto.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -29,11 +27,11 @@ public interface UserService {
      */
     Map<String, String> signin(LoginDto loginDto);
 
-    String logout();
+    String logout(HttpServletRequest request);
 
     Boolean validPhoneNumber(PhoneNumberDto phoneNumberDto);
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 
-    String changeNickname();
+    String withdrawal(WithdrawalDto withdrawalDto);
 }
