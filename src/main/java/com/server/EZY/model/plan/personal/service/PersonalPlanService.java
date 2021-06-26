@@ -21,7 +21,6 @@ import java.util.List;
 public class PersonalPlanService {
     private final PlanRepository planRepository;
     private final PersonalPlanRepository personalPlanRepository;
-    private final UserServiceImpl userService;
     private final UserRepository userRepository;
     private PlanEntity planEntity;
 
@@ -35,7 +34,7 @@ public class PersonalPlanService {
     @Transactional
     public PlanEntity savePersonalPlan(PersonalPlanDto myPersonalPlan, List<String> personalPlanCategory){
         // loginUserNickname 은 userService 에 Public static 으로 선언 된 method를 사용합니다.
-        String loginUserNickname = userService.getCurrentUserNickname();
+        String loginUserNickname = UserServiceImpl.getCurrentUserNickname();
         // currentUserEntity 를 사용하여 loginUserNickname 으로 찾은 Entity 를 저장합니다.
         UserEntity loginUserEntity = currentUserEntity(loginUserNickname);
         // return 할 savedPlanEntity 필드를 메서드 내에서 전역 선언 합니다.
