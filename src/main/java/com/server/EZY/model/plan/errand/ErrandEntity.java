@@ -42,4 +42,11 @@ public class ErrandEntity {
     @Column(name = "ErrandResponseStatus")
     private ResponseStatus responseStatus;
 
+    public void updateErrand(ErrandEntity updatedErrandEntity){
+        this.errandName = updatedErrandEntity.errandName != null ? updatedErrandEntity.errandName : this.errandName;
+        this.where = updatedErrandEntity.where != null ? updatedErrandEntity.where : this.where;
+        this.startAt = updatedErrandEntity.startAt != null ? updatedErrandEntity.startAt : this.startAt;
+        this.endAt = updatedErrandEntity.endAt != null ? updatedErrandEntity.endAt : this.endAt;
+        this.responseStatus = updatedErrandEntity.responseStatus != null ? updatedErrandEntity.responseStatus : this.responseStatus;
+    }
 }

@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.errand;
 
 import com.fasterxml.jackson.databind.ser.std.CalendarSerializer;
+import com.server.EZY.model.plan.errand.dto.ErrandUpdateDto;
 import com.server.EZY.model.plan.errand.enumType.ResponseStatus;
 import com.server.EZY.model.plan.errand.repository.ErrandRepository;
 import com.server.EZY.model.user.UserEntity;
@@ -53,7 +54,7 @@ class ErrandEntityTest {
         return errandEntity;
     }
 
-    @Test @DisplayName("ErrandEntity sava 검증")
+    @Test @DisplayName("ErrandEntity 저장 검증")
     void ErrandEntity_저장_검증(){
         // Given
         UserEntity userA = userEntityInit();
@@ -85,4 +86,40 @@ class ErrandEntityTest {
         assertEquals(0, savedErrandEntity.getEndAt().compareTo(END_AT));
         assertEquals(RESPONSE_STATUS, savedErrandEntity.getResponseStatus());
     }
+
+    @Test @DisplayName("ErrandEntity 수정 검증")
+    void ErrandEntity_수정_검증(){
+        // Given
+        UserEntity userA = userEntityInit();
+        UserEntity userB = userEntityInit();
+
+        ErrandEntity beforeUpdateErrandEntity = errandRepo.saveAndFlush(errandEntityInit(userA, userB));
+
+        // When
+        final String ERRAND_NAME = "가랏 희철이!! 메이커스페이스!";
+        final String WHERE = "광주하드웨어공고겸마이스터고등학교";
+        final Calendar START_AT = Calendar.getInstance(); START_AT.set(2021, 4, 18);
+        final Calendar END_AT = Calendar.getInstance(); END_AT.set(2021, 4, 22);
+        final ResponseStatus RESPONSE_STATUS = ResponseStatus.READ;
+        ErrandEntity updatedErrandEntity = ErrandUpdateDto.builder()
+                .errandName(ERRAND_NAME)
+                .where(WHERE)
+                .startAt(START_AT)
+                .endAt(END_AT)
+                .responseStatus(RESPONSE_STATUS)
+                .build()
+                .toEntity();
+
+        beforeUpdateErrandEntity.updateErrand(updatedErrandEntity);
+        updatedErrandEntity = errandRepo.save(beforeUpdateErrandEntity);
+
+        // Then
+        assertEquals(ERRAND_NAME, updatedErrandEntity.getErrandName());
+        assertEquals(WHERE, updatedErrandEntity.getWhere());
+        assertEquals(0, updatedErrandEntity.getStartAt().compareTo(START_AT));
+        assertEquals(0, updatedErrandEntity.getEndAt().compareTo(END_AT));
+        assertEquals(RESPONSE_STATUS, updatedErrandEntity.getResponseStatus());
+    }
+
+
 }
