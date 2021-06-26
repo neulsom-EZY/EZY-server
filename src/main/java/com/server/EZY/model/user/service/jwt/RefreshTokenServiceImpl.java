@@ -34,6 +34,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         String nickname = jwtTokenProvider.getUsername(accessToken);
 
+        if (redisUtil.getData(nickname) == null) {
+            map.put("message", "로그아웃된 토큰입니다.");
+            return map;
+        }
+
         if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
             redisUtil.deleteData(nickname);//refreshToken이 저장되어있는 레디스 초기화 후
             newAccessToken = jwtTokenProvider.createToken(nickname, roles);
@@ -44,6 +49,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
             return map;
         }
+
         return map;
     }
 }
