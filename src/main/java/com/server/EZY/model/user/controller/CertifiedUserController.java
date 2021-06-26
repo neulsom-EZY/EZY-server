@@ -31,12 +31,14 @@ public class CertifiedUserController {
     }
 
     @DeleteMapping("/logout")
+    @ResponseStatus( HttpStatus.OK )
     public String logout(HttpServletRequest request) {
         return userService.logout(request);
     }
 
     @GetMapping ("/withdrawal")
-    public String withdrawal(@RequestBody WithdrawalDto withdrawalDto) {
+    @ResponseStatus( HttpStatus.NO_CONTENT )
+    public String withdrawal(@Valid @RequestBody WithdrawalDto withdrawalDto) {
         return userService.withdrawal(withdrawalDto);
     }
 }

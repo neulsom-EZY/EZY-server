@@ -35,6 +35,7 @@ public class UserController {
     }
 
     @PutMapping ("/pwd-change")
+    @ResponseStatus( HttpStatus.OK )
     public String passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
         return userService.changePassword(passwordChangeDto);
     }
