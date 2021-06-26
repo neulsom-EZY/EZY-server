@@ -4,6 +4,8 @@ import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.security.jwt.JwtTokenProvider;
+import com.server.EZY.util.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +29,10 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Autowired
     private UserServiceImpl userServiceImpl;
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Test
     void GetUserEntity(){
@@ -55,4 +61,5 @@ public class UserServiceTest {
         String currentUserNickname = userServiceImpl.getCurrentUserNickname();
         assertEquals("배태현", currentUserNickname);
     }
+
 }
