@@ -27,9 +27,6 @@ public class PersonalPlanService {
 
     /**
      * PersonalPlan 을 저장하는 서비스 메서드 입니다 <br>
-     * 1. category list 사이즈가 0 일때는 -> category 없는 planEntity 에 set 해줍니다. <br>
-     * 2. category list 사이즈가 > 0 일때 -> category는 있는 planEntity 에 set 해줍니다. <br>
-     * 3. 메서드 수행 시, 저장되는 savedPlanEntity 을 return 해줍니다.
      * @param myPersonalPlan <br>
      * @param personalPlanCategory <br>
      * @return personalPlanName <br>
@@ -37,10 +34,17 @@ public class PersonalPlanService {
      */
     @Transactional
     public PlanEntity savePersonalPlan(PersonalPlanDto myPersonalPlan, List<String> personalPlanCategory){
+        // loginUserNickname 은 userService 에 Public static 으로 선언 된 method를 사용합니다.
         String loginUserNickname = userService.getCurrentUserNickname();
+        // currentUserEntity 를 사용하여 loginUserNickname 으로 찾은 Entity 를 저장합니다.
         UserEntity loginUserEntity = currentUserEntity(loginUserNickname);
+        // return 할 savedPlanEntity 필드를 메서드 내에서 전역 선언 합니다.
         PlanEntity savedPlanEntity;
 
+        /**
+         * if -> category list 사이즈가 0 일때는 -> category 없는 planEntity 에 set 해줍니다. <br>
+         * else -> category list 사이즈가 > 0 일때 -> category 있는 planEntity 에 set 해줍니다. <br>
+         */
         if(personalPlanCategory.size() == 0){
             PlanEntity planEntity = new PlanEntity(
                     myPersonalPlan.toEntity(),
@@ -72,6 +76,11 @@ public class PersonalPlanService {
         }
     }
 
+    /**
+     * 이 메서드는 임시적으로 선언한 메서드이며, userNickname을 통해 Entity를 찾아 return 해줍니다.
+     * @param loginUserNickname
+     * @return UserEntity
+     */
     public UserEntity currentUserEntity(String loginUserNickname){
         return userRepository.findByNickname(loginUserNickname);
     }
