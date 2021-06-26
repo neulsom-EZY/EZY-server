@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.ConstraintViolationException;
 
@@ -78,7 +80,7 @@ class UserEntityTest {
 
     @Test
     @DisplayName("UserEntity UserDetails를 구현한 Method 값 검증")
-    void userEntity_UserDetails_구현한_Method_값_검증(){
+    void userEntity_UserDetails_구현한_Method_값_검증() {
 
         // Given
         List<Role> userRole = new ArrayList<>();
@@ -111,5 +113,4 @@ class UserEntityTest {
         assertEquals(getCredentialsNonExpired, true);
         assertEquals(getEnabled, true);
     }
-
 }
