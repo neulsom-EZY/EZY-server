@@ -1,8 +1,10 @@
 package com.server.EZY.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.user.controller.UserController;
 import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.PasswordChangeDto;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -80,6 +81,26 @@ public class UserControllerTest {
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
+
+        actions
+                .andDo(print())
+                .andExpect(status().isOk()); //http status 200
+    }
+
+    @Test
+    public void pwdChangeTest() throws Exception {
+
+        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+                .nickname("배태현")
+                .currentPassword("1234")
+                .newPassword("string")
+                .build();
+
+        String content = objectMapper.writeValueAsString(passwordChangeDto);
+
+        final ResultActions actions = mvc.perform(put("/v1/pwd-change")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
 
         actions
                 .andDo(print())
