@@ -142,15 +142,17 @@ class PlanRepositorySupportTest {
                         categories
                 )
         ).limit(16).collect(Collectors.toList());
-
         /**
-         * When
          * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
          * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
          */
         List<PlanEntity> planEntityList = planRepository.saveAll(planEntities);
         List<PlanEntity> planEntityList_2 = planRepository.saveAll(planEntities_2);
-        // 지환이의 유저 엔티티로 된 게시글을 모두 조회합니다.
+
+        /**
+         * When
+         * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
+         */
         List<PlanEntity> allByUserId = planRepository.findAllPersonalPlanByUserEntity(userEntity_j);
 
         /**
@@ -158,5 +160,53 @@ class PlanRepositorySupportTest {
          * 지환이의 개인 일정이 총 16개가 맞나요? success!
          */
         assertEquals(16, allByUserId.size());
+    }
+
+    @Test @DisplayName("PersonalPlanService에 있는 getAllMyPersonalPlan 메서드를 사용할 수 있나요?")
+    public void 개인일정_모두_찾기() {
+        /**
+         * Given
+         * 1. personalPlanEntity 는 미리 메서드화 한 planEntity Builder를 추가시킵니다.
+         * 2. userEntity_t 는 태현이의 유저 정보 save 메서드를 호출합니다.
+         * 3. userEntity_j 는 지환이의 유저 정보 save 메서드를 호출합니다.
+         */
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        UserEntity userEntity_t = userEntity_태현();
+        UserEntity userEntity_j = userEntity_지환();
+        List<String> categories = Collections.singletonList("지환이와 데이트");
+        // 태현이의 Plan을 12개 추가합니다.
+        List<PlanEntity> planEntities = Stream.generate(
+                () -> new PlanEntity(
+                        personalPlanEntity,
+                        userEntity_t,
+                        categories
+                )
+        ).limit(12).collect(Collectors.toList());
+        // 지환이의 Plan을 16개 추가합니다.
+        List<PlanEntity> planEntities_2 = Stream.generate(
+                () -> new PlanEntity(
+                        personalPlanEntity,
+                        userEntity_j,
+                        categories
+                )
+        ).limit(16).collect(Collectors.toList());
+        /**
+         * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
+         * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
+         */
+        List<PlanEntity> planEntityList = planRepository.saveAll(planEntities);
+        List<PlanEntity> planEntityList_2 = planRepository.saveAll(planEntities_2);
+
+        /**
+         * When
+         * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
+         */
+        List<PlanEntity> allMyPersonalPlan = personalPlanService.getAllMyPersonalPlan(userEntity_j);
+
+        /**
+         * Then
+         * 지환이의 개인 일정이 총 16개가 맞나요? success!
+         */
+        assertEquals(16, allMyPersonalPlan.size());
     }
 }
