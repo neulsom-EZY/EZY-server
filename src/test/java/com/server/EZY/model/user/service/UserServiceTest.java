@@ -125,6 +125,47 @@ public class UserServiceTest {
     @Test
     public void changePasswordTest() {
         //given
+        UserEntity currentUser = currentUser();
+
+        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+                .nickname("배태현")
+                .currentPassword("1234")
+                .newPassword("20040809")
+                .build();
+        //when
+        if (currentUser != null) {
+            String changePassword = userService.changePassword(passwordChangeDto);
+            assertEquals("배태현회원 비밀번호 변경완료", changePassword);
+        } else {
+            log.info("비밀번호 변경 테스트 실패");
+        }
+    }
+
+    @Test
+    public void withdrawalTest() {
+        //given
+        UserEntity currentUser = currentUser();
+
+        WithdrawalDto withdrawalDto = WithdrawalDto.builder()
+                .nickname("배태현")
+                .password("1234")
+                .build();
+
+        //when
+        if (currentUser != null) {
+            String withdrawal = userService.withdrawal(withdrawalDto);
+            assertEquals("배태현회원 회원탈퇴완료", withdrawal);
+        } else {
+            log.info("회원탈퇴 테스트 실패");
+        }
+    }
+
+    /**
+     * 로그인이 되어있는 유저를 만들기위해 뺀 메서드
+     * @return loginUser(현재 로그인되어있는 유저)
+     * @author 배태현
+     */
+    public UserEntity currentUser() {
         UserDto userDto = UserDto.builder()
                 .nickname("배태현")
                 .password("1234")
@@ -148,32 +189,7 @@ public class UserServiceTest {
         //then
         String currentUserNickname = userServiceImpl.getCurrentUserNickname();
         assertEquals("배태현", currentUserNickname);
-        UserEntity loginUserNickname = userRepository.findByNickname(currentUserNickname);
-
-        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .nickname(currentUserNickname)
-                .currentPassword("1234")
-                .newPassword("20040809")
-                .build();
-        //when
-        if (loginUserNickname != null) {
-            String changePassword = userService.changePassword(passwordChangeDto);
-            assertEquals("배태현회원 비밀번호 변경완료", changePassword);
-        } else {
-            log.info("비밀번호 변경 테스트 실패");
-        }
-    }
-
-    @Test
-    public void withdrawalTest() {
-        //given
-        WithdrawalDto withdrawalDto = WithdrawalDto.builder()
-                .nickname("바따햔")
-                .password("0809")
-                .build();
-        //when
-        String withdrawal = userService.withdrawal(withdrawalDto);
-        //then
-        assertEquals("바따햔회원 회원탈퇴완료", withdrawal);
+        UserEntity loginUser = userRepository.findByNickname(currentUserNickname);
+        return loginUser;
     }
 }
