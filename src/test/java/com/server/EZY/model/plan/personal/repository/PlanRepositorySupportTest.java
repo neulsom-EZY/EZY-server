@@ -1,18 +1,15 @@
 package com.server.EZY.model.plan.personal.repository;
 
-import com.querydsl.jpa.JPQLQueryFactory;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
+import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
+import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
-import org.aspectj.lang.annotation.After;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,13 +26,16 @@ import javax.persistence.Basic;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class PlanRepositorySupportTest {
-    private PlanRepositorySupport planRepositorySupport;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -44,6 +44,8 @@ class PlanRepositorySupportTest {
     private PlanRepository planRepository;
     @Autowired
     private PersonalPlanService personalPlanService;
+    @Autowired
+    private PersonalPlanRepository personalPlanRepository;
 
     @BeforeEach @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
     public void 로그인_세션(){
@@ -55,11 +57,11 @@ class PlanRepositorySupportTest {
                 .nickname("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
-                .build();
+               .build();
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(userDto.toEntity());
-        System.out.println("======== saved =========");햣 ㄴ
+        System.out.println("======== saved =========");
 
         /**
          * When
@@ -75,14 +77,9 @@ class PlanRepositorySupportTest {
         System.out.println(context);
     }
 
-    @AfterEach @DisplayName("Data 섞임 방지 메서드")
-    public void tearDown() throws Exception{
-        planRepository.deleteAllInBatch();
-    }
-
-    @DisplayName("개인일정을 랜덤으로 세트 합니다")
-    public PersonalPlanDto personalPlanEntityInit(){
-        return PersonalPlanDto.builder()
+    // Test 편의를 위한 personalPlanEntity 생성
+    PersonalPlanEntity personalPlanEntityInit(){
+        return PersonalPlanEntity.builder()
                 .planName(RandomString.make(10))
                 .what(RandomString.make(20))
                 .who(RandomString.make(20))
@@ -92,19 +89,74 @@ class PlanRepositorySupportTest {
                 .build();
     }
 
+    // Test 편의를 위한 유저 생성 userEntityInit
+    UserEntity userEntity_태현(){
+        UserEntity user = UserEntity.builder()
+                .nickname("배태현")
+                .password(RandomString.make(10))
+                .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
+                .permission(Permission.PERMISSION)
+                .roles(Collections.singletonList(Role.ROLE_CLIENT))
+                .build();
+        return userRepository.save(user);
+    }
+
+    // Test 편의를 위한 유저 생성 userEntityInit
+    UserEntity userEntity_지환(){
+        UserEntity user = UserEntity.builder()
+                .nickname("전지환")
+                .password(RandomString.make(10))
+                .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
+                .permission(Permission.PERMISSION)
+                .roles(Collections.singletonList(Role.ROLE_CLIENT))
+                .build();
+        return userRepository.save(user);
+    }
+
+
     @Test @DisplayName("개인일정을 userId를 통해 다 조회할 수 있나요?")
     void 내_개인일정을_다_가져와() {
         /**
          * Given
-         * 1. personalCategory 변수를 선언합니다.
-         * 2. service/save 에 미리 지정한 personalPlanInit 메서드와 category 를 파라미터로 넘겨줍니다.
+         * 1. personalPlanEntity 는 미리 메서드화 한 planEntity Builder를 추가시킵니다.
+         * 2. userEntity_t 는 태현이의 유저 정보 save 메서드를 호출합니다.
+         * 3. userEntity_j 는 지환이의 유저 정보 save 메서드를 호출합니다.
          */
-        List<String> personalPlanCategory = new ArrayList<>();
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        UserEntity userEntity_t = userEntity_태현();
+        UserEntity userEntity_j = userEntity_지환();
+        List<String> categories = Collections.singletonList("지환이와 데이트");
+        // 태현이의 Plan을 12개 추가합니다.
+        List<PlanEntity> planEntities = Stream.generate(
+                () -> new PlanEntity(
+                        personalPlanEntity,
+                        userEntity_t,
+                        categories
+                )
+        ).limit(12).collect(Collectors.toList());
+        // 지환이의 Plan을 16개 추가합니다.
+        List<PlanEntity> planEntities_2 = Stream.generate(
+                () -> new PlanEntity(
+                        personalPlanEntity,
+                        userEntity_j,
+                        categories
+                )
+        ).limit(16).collect(Collectors.toList());
 
-        personalPlanService.savePersonalPlan(personalPlanEntityInit(), personalPlanCategory);
+        /**
+         * When
+         * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
+         * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
+         */
+        List<PlanEntity> planEntityList = planRepository.saveAll(planEntities);
+        List<PlanEntity> planEntityList_2 = planRepository.saveAll(planEntities_2);
+        // 지환이의 유저 엔티티로 된 게시글을 모두 조회합니다.
+        List<PlanEntity> allByUserId = planRepository.findAllPersonalPlanByUserEntity(userEntity_j);
 
-        //when
-        List<PlanEntity> allByUserId = planRepositorySupport
-                .findAllByUserId(userRepository.findByNickname("배태현").getUserIdx());
+        /**
+         * Then
+         * 지환이의 개인 일정이 총 16개가 맞나요? success!
+         */
+        assertEquals(16, allByUserId.size());
     }
 }
