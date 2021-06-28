@@ -62,9 +62,15 @@ public class PersonalPlanService {
         return savedPlanEntity;
     }
 
-//    public List<PlanEntity> getPersonalPlanAll(){
-//
-//    }
+    /**
+     * 이 메서드는 엔티티를 넘겨주면 그 엔티티에 해당하는 모든 개인 일정을 조회합니다.
+     * @param userEntity
+     * @return PlanEntity
+     * @author 전지환
+     */
+    public List<PlanEntity> getAllMyPersonalPlan(UserEntity userEntity){
+        return planRepository.findAllPersonalPlanByUserEntity(userEntity);
+    }
 
     /**
      * 이 메서드는 임시적으로 선언한 메서드이며, userNickname을 통해 Entity를 찾아 return 해줍니다.
