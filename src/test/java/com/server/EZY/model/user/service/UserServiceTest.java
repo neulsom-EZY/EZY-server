@@ -7,6 +7,7 @@ import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
+@Slf4j
 public class UserServiceTest {
 
     @Autowired
@@ -123,15 +125,43 @@ public class UserServiceTest {
     @Test
     public void changePasswordTest() {
         //given
+        UserDto userDto = UserDto.builder()
+                .nickname("배태현")
+                .password("1234")
+                .phoneNumber("01012341234")
+                .build();
+
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.save(userDto.toEntity());
+        System.out.println("======== saved =========");
+
+        // when login session 발급
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                userDto.getNickname(),
+                userDto.getPassword(),
+                List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(token);
+        System.out.println("=================================");
+        System.out.println(context);
+
+        //then
+        String currentUserNickname = userServiceImpl.getCurrentUserNickname();
+        assertEquals("배태현", currentUserNickname);
+        UserEntity loginUserNickname = userRepository.findByNickname(currentUserNickname);
+
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .nickname("바따햔")
-                .currentPassword("0809")
+                .nickname(currentUserNickname)
+                .currentPassword("1234")
                 .newPassword("20040809")
                 .build();
         //when
-        String changePassword = userService.changePassword(passwordChangeDto);
-        //then
-        assertEquals("바따햔회원 비밀번호 변경완료", changePassword);
+        if (loginUserNickname != null) {
+            String changePassword = userService.changePassword(passwordChangeDto);
+            assertEquals("배태현회원 비밀번호 변경완료", changePassword);
+        } else {
+            log.info("비밀번호 변경 테스트 실패");
+        }
     }
 
     @Test
