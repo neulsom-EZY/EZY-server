@@ -9,6 +9,7 @@ import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,6 +50,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DisplayName("회원가입 테스트")
     public void signupTest() throws Exception {
         UserDto userDto = UserDto.builder()
                 .nickname("JsonWebTok")
@@ -69,6 +71,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DisplayName("로그인 테스트")
     public void signInTest() throws Exception {
         LoginDto loginDto = LoginDto.builder()
                 .nickname("JsonWebTok")
@@ -88,6 +91,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DisplayName("비밀번호 변경 테스트")
     public void pwdChangeTest() throws Exception {
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
