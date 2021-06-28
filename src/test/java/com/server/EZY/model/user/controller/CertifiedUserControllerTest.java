@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,6 +45,7 @@ public class CertifiedUserControllerTest {
     }
 
     @Test
+    @DisplayName("전화번호 인증 테스트")
     public void validPhoneNumber() throws Exception {
         PhoneNumberDto phoneNumberDto = PhoneNumberDto.builder()
                 .phoneNumber("01012341234")
@@ -62,6 +64,7 @@ public class CertifiedUserControllerTest {
     }
 
     @Test
+    @DisplayName("비밀번호 변경 테스트")
     public void passwordChange() throws Exception {
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .nickname("배태현")
@@ -81,6 +84,7 @@ public class CertifiedUserControllerTest {
     }
 
     @Test
+    @DisplayName("로그아웃 테스트")
     public void logoutTest() throws Exception {
 
         final ResultActions actions = mvc.perform(delete("/v1/user/logout")
@@ -93,6 +97,7 @@ public class CertifiedUserControllerTest {
     }
     
     @Test
+    @DisplayName("회원탈퇴 테스트")
     public void withdrawalTest() throws Exception {
 
         WithdrawalDto withdrawalDto = WithdrawalDto.builder()
