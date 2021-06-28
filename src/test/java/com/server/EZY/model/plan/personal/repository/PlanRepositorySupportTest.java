@@ -6,6 +6,7 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.model.plan.plan.PlanEntity;
+import com.server.EZY.model.plan.plan.repository.PlanRepository;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
@@ -40,6 +41,8 @@ class PlanRepositorySupportTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private PlanRepository planRepository;
+    @Autowired
     private PersonalPlanService personalPlanService;
 
     @BeforeEach @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
@@ -56,7 +59,7 @@ class PlanRepositorySupportTest {
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userRepository.save(userDto.toEntity());
-        System.out.println("======== saved =========");
+        System.out.println("======== saved =========");햣 ㄴ
 
         /**
          * When
@@ -72,9 +75,9 @@ class PlanRepositorySupportTest {
         System.out.println(context);
     }
 
-    @AfterEach
+    @AfterEach @DisplayName("Data 섞임 방지 메서드")
     public void tearDown() throws Exception{
-
+        planRepository.deleteAllInBatch();
     }
 
     @DisplayName("개인일정을 랜덤으로 세트 합니다")
@@ -97,6 +100,7 @@ class PlanRepositorySupportTest {
          * 2. service/save 에 미리 지정한 personalPlanInit 메서드와 category 를 파라미터로 넘겨줍니다.
          */
         List<String> personalPlanCategory = new ArrayList<>();
+
         personalPlanService.savePersonalPlan(personalPlanEntityInit(), personalPlanCategory);
 
         //when
