@@ -79,7 +79,7 @@ public class PlanEntity {
      * @param userEntity 어떤 유저의 일정인지 연관 관계를 맻는 UserEntity 타입의 매개변수
      * @param categories 현재 일정에 대한 카테고리를 지정하는 List&#60;String&#62;타입의 매개변수
      * @throws IllegalArgumentException List&#60;String&#62;타입의 categories가 null일경우
-     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생(임시)
+     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생
      */
     public PlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity, List<String> categories){
         this(personalPlanEntity, userEntity);
@@ -94,7 +94,7 @@ public class PlanEntity {
      *
      * @param teamPlanEntity 팀일정을 만들기 위한 TeamPlanEntity 타입의 매개변수
      * @param userEntity 어떤 유저의 일정인지 연관관계를 맻는 UserEntity 타입의 매개변수
-     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생(임시)
+     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생
      * @author 정시원
      */
     public PlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
@@ -115,7 +115,7 @@ public class PlanEntity {
      * @param teamPlanEntity 팀일정(TeamPlan)을 만들기 위한 TeamPlanEntity 타입의 매개변수
      * @param userEntity 어떤 유저의 일정인지 연관 관계를 맻는 UserEntity 타입의 매개변수
      * @param categories 현재 일정에 대한 카테고리를 지정하는 List&#60;String&#62;타입의 매개변수
-     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생(임시)
+     * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생
      * @throws IllegalArgumentException List&#60;String&#62;타입의 categories가 null일경우
      * @author 정시원
      */
