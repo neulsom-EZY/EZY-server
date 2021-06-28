@@ -9,6 +9,7 @@ import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,6 +45,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
+    @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void GetUserEntity(){
         //Given
         UserDto userDto = UserDto.builder()
@@ -72,6 +74,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 테스트")
     public void signupTest() {
         //given
         UserDto userDto = UserDto.builder()
@@ -98,6 +101,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("로그인 테스트")
     public void signinTest() {
         //given
         LoginDto loginDto = LoginDto.builder()
@@ -111,6 +115,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("전화번호 인증 테스트")
     public void validPhoneNumber() {
         //given
         PhoneNumberDto phoneNumberDto = PhoneNumberDto.builder()
@@ -123,6 +128,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호 변경 테스트")
     public void changePasswordTest() {
         //given
         UserEntity currentUser = currentUser();
@@ -142,6 +148,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴 테스트")
     public void withdrawalTest() {
         //given
         UserEntity currentUser = currentUser();
