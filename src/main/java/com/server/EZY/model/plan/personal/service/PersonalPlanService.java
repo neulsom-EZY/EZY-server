@@ -62,7 +62,7 @@ public class PersonalPlanService {
     }
 
     /**
-     * 이 메서드는 엔티티를 넘겨주면 그 엔티티에 해당하는 모든 개인 일정을 조회합니다.
+     * 이 메서드는 유저 엔티티를 넘겨주면 그 유저에 해당하는 모든 개인 일정을 조회합니다.
      * @param userEntity
      * @return PlanEntity
      * @author 전지환
@@ -71,8 +71,15 @@ public class PersonalPlanService {
         return planRepository.findAllPersonalPlanByUserEntity(userEntity);
     }
 
-    public PlanEntity getThisPersonalPlan(Long planId){
-
+    /**
+     * 이 메서드는 유저 엔티티와 PersonalPlanId 를 넘겨주면 해당 PlanEntity 를 조회합니다.
+     * @param userEntity
+     * @param personalPlanId
+     * @return PlanEntity
+     * @author 전지환
+     */
+    public PlanEntity getThisPersonalPlan(UserEntity userEntity, Long personalPlanId){
+        return planRepository.findByPersonalPlanByUserEntityAndPlanIdx(userEntity, personalPlanId);
     }
 
     /**
