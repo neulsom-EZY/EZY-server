@@ -24,7 +24,7 @@ public class PlanRepositoryImpl implements PlanRepositoryCustom{
     }
 
     @Override
-    public PlanEntity findByPersonalPlanByUserEntityAndPlanIdx(UserEntity userEntity, Long planId) {
+    public PlanEntity findThisPlanByUserEntityAndPlanIdx(UserEntity userEntity, Long planId) {
         return queryFactory
                 .selectFrom(planEntity)
                 .where(

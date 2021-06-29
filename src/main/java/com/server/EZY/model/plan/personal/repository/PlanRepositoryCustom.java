@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PlanRepositoryCustom {
     List<PlanEntity> findAllPersonalPlanByUserEntity (UserEntity userEntity);
-    PlanEntity findByPersonalPlanByUserEntityAndPlanIdx (UserEntity userEntity, Long personalPlanId);
+    PlanEntity findThisPlanByUserEntityAndPlanIdx (UserEntity userEntity, Long personalPlanId);
 }
