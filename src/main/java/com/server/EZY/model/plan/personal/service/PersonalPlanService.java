@@ -79,7 +79,7 @@ public class PersonalPlanService {
      * @author 전지환
      */
     public PlanEntity getThisPersonalPlan(UserEntity userEntity, Long personalPlanId){
-        return planRepository.findByPersonalPlanByUserEntityAndPlanIdx(userEntity, personalPlanId);
+        return planRepository.findThisPlanByUserEntityAndPlanIdx(userEntity, personalPlanId);
     }
 
     /**
