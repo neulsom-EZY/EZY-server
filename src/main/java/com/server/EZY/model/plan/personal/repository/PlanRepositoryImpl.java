@@ -22,4 +22,15 @@ public class PlanRepositoryImpl implements PlanRepositoryCustom{
                         planEntity.planDType.eq(PlanDType.PERSONAL_PLAN)
                 ).fetch();
     }
+
+    @Override
+    public PlanEntity findThisPlanByUserEntityAndPlanIdx(UserEntity userEntity, Long planId) {
+        return queryFactory
+                .selectFrom(planEntity)
+                .where(
+                        planEntity.userEntity.eq(userEntity),
+                        planEntity.personalPlanEntity.personalPlanIdx.eq(planId),
+                        planEntity.planDType.eq(PlanDType.PERSONAL_PLAN)
+                ).fetchOne();
+    }
 }

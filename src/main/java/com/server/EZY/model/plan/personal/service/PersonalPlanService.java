@@ -2,7 +2,6 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
@@ -63,13 +62,24 @@ public class PersonalPlanService {
     }
 
     /**
-     * 이 메서드는 엔티티를 넘겨주면 그 엔티티에 해당하는 모든 개인 일정을 조회합니다.
+     * 이 메서드는 유저 엔티티를 넘겨주면 그 유저에 해당하는 모든 개인 일정을 조회합니다.
      * @param userEntity
      * @return PlanEntity
      * @author 전지환
      */
     public List<PlanEntity> getAllMyPersonalPlan(UserEntity userEntity){
         return planRepository.findAllPersonalPlanByUserEntity(userEntity);
+    }
+
+    /**
+     * 이 메서드는 유저 엔티티와 PersonalPlanId 를 넘겨주면 해당 PlanEntity 를 조회합니다.
+     * @param userEntity
+     * @param personalPlanId
+     * @return PlanEntity
+     * @author 전지환
+     */
+    public PlanEntity getThisPersonalPlan(UserEntity userEntity, Long personalPlanId){
+        return planRepository.findThisPlanByUserEntityAndPlanIdx(userEntity, personalPlanId);
     }
 
     /**

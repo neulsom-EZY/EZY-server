@@ -20,6 +20,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Basic;
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Commit
 class PlanRepositorySupportTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -47,7 +49,7 @@ class PlanRepositorySupportTest {
     @Autowired
     private PersonalPlanRepository personalPlanRepository;
 
-    @BeforeEach @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
+    @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
     public void 로그인_세션(){
         /**
          * Given
@@ -208,5 +210,51 @@ class PlanRepositorySupportTest {
          * 지환이의 개인 일정이 총 16개가 맞나요? success!
          */
         assertEquals(16, allMyPersonalPlan.size());
+    }
+
+    @Test @DisplayName("PersonalPlanIdx를 넘겨줘서 해당 PlanEntity 가져오기")
+    public void 이_일정을_찾아주세요(){
+        /**
+         * Given
+         * 1. personalPlanEntity 는 미리 메서드화 한 planEntity Builder를 추가시킵니다.
+         * 2. userEntity_t 는 태현이의 유저 정보 save 메서드를 호출합니다.
+         * 3. userEntity_j 는 지환이의 유저 정보 save 메서드를 호출합니다.
+         */
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        UserEntity userEntity_t = userEntity_태현();
+        UserEntity userEntity_j = userEntity_지환();
+        List<String> categories_j = Collections.singletonList("지환이와 데이트");
+        List<String> categories_t = Collections.singletonList("태현이와 데이트");
+
+        PlanEntity planEntity_j = new PlanEntity(
+                personalPlanEntity,
+                userEntity_j,
+                categories_j
+        );
+
+        PlanEntity planEntity_t = new PlanEntity(
+                personalPlanEntity,
+                userEntity_t,
+                categories_t
+        );
+
+        /**
+         * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
+         * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
+         */
+        PlanEntity j_saved_plan = planRepository.save(planEntity_j);
+        PlanEntity t_saved_plan = planRepository.save(planEntity_t);
+
+        /**
+         * When
+         * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
+         */
+        PlanEntity getThisPlan = personalPlanService.getThisPersonalPlan(userEntity_j, planEntity_j.getPlanIdx());
+
+        /**
+         * Then
+         * 가져온 Plan의 카테고리가 예상 값과 일치하나요?
+         */
+        assertEquals(categories_j, getThisPlan.getCategories());
     }
 }
