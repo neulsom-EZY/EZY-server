@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/v1/user")
+@RequestMapping(value = "/v1/user") //로그인이 되어있고 Role type이 "ROLE_CLIENT"인 유저만 접근할 수 있다
 public class CertifiedUserController {
 
     private final UserService userService;
