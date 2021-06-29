@@ -25,6 +25,12 @@ public class PlanRepositoryImpl implements PlanRepositoryCustom{
 
     @Override
     public PlanEntity findByPersonalPlanByUserEntityAndPlanIdx(UserEntity userEntity, Long planId) {
-        return null;
+        return queryFactory
+                .selectFrom(planEntity)
+                .where(
+                        planEntity.userEntity.eq(userEntity),
+                        planEntity.personalPlanEntity.personalPlanIdx.eq(planId),
+                        planEntity.planDType.eq(PlanDType.PERSONAL_PLAN)
+                ).fetchOne();
     }
 }
