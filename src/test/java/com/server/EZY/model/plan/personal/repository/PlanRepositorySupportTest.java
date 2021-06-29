@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.personal.repository;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
@@ -256,5 +257,43 @@ class PlanRepositorySupportTest {
          * 가져온 Plan의 카테고리가 예상 값과 일치하나요?
          */
         assertEquals(categories_j, getThisPlan.getCategories());
+    }
+
+    @Test @DisplayName("일정 변경을 요청합니다.")
+    public void 일정_변경() throws Exception {
+        /**
+         * Given
+         * 1. personalPlanEntity 는 미리 메서드화 한 planEntity Builder를 추가시킵니다.
+         * 2. userEntity_j 는 지환이의 유저 정보 세트 메서드를 호출합니다.
+         */
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        UserEntity userEntity_j = userEntity_지환();
+        List<String> categories_j = Collections.singletonList("지환이와 데이트");
+
+        PlanEntity planEntity_j = new PlanEntity(
+                personalPlanEntity,
+                userEntity_j,
+                categories_j
+        );
+
+        /**
+         * 1. j_saved_plan 는 지환이의 일정을 save 합니다.
+         */
+        PlanEntity j_saved_plan = planRepository.save(planEntity_j);
+
+        //When
+        PersonalPlanUpdateDto personalPlanUpdateDto = PersonalPlanUpdateDto.builder()
+                .planName("Gsm에서 지환이랑 놀기")
+                .who("jihwan")
+                .where("Gsm")
+                .what("코딩")
+                .when(Calendar.getInstance())
+                .repeat(true)
+                .build();
+
+        personalPlanService.updateThisPersonalPlan(planEntity_j.getPlanIdx(), personalPlanUpdateDto);
+
+        //Then
+        assertEquals(true, personalPlanRepository.findByPlanName("Gsm에서 지환이랑 놀기") != null);
     }
 }
