@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
 
-
     @Override
     public String signup(UserDto userDto) {
         if(!userRepository.existsByNickname(userDto.getNickname())){
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 로그아웃하는 로직 (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
+     * 로그아웃하는 서비스 로직 (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
      * @param request HttpServletRequest
      * @return "로그아웃 되었습니다."
      * @author 배태현
@@ -79,10 +78,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 전화번호를 인증하는 로직
+     * 전화번호를 인증하는 서비스 로직
      * @param phoneNumberDto phoneNumber
      * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
-     * @return true (findByPhoneNumber로 User를 찾았을 때) / false는 뜨지 않습니다.. 무조건 false
+     * @return true (findByPhoneNumber로 User를 찾았을 때) / false는 뜨지 않습니다.. 무조건 true
      * @author 배태현
      */
     @Override
@@ -93,7 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 비밀번호를 변경하는 로직
+     * 비밀번호를 변경하는 서비스 로직
      * @param passwordChangeDto nickname, currentPassword, newPassword
      * @return (회원닉네임)회원 비밀번호 변경완료
      * @author 배태현
@@ -110,7 +109,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 회원탈퇴 로직
+     * 회원탈퇴 서비스 로직
      * @param withdrawalDto withdrawalDto
      * @return (회원이름)회원 회원탈퇴완료
      * @author 배태현
