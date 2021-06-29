@@ -24,7 +24,7 @@ public interface UserService {
      * 로그인을 하는 서비스 로직 입니다.
      * @param loginDto
      * @exception 1. nickname을 통해 회원을 찾을 수 있나요? -> false, UserNotFoundException();
-     *            2. 해당 회원의 비밀번호가 loginDto.getPassword()와 일치하나요? -> false, UserNotFoundException();
+     * @exception 2. 해당 회원의 비밀번호가 loginDto.getPassword()와 일치하나요? -> false, UserNotFoundException();
      * @return 서두에 있는 모든 조건을 만족할 시에  Map<String ,String> 을 반환 합니다.
      * @author 전지환
      */
