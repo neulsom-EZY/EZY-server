@@ -239,8 +239,8 @@ class PlanRepositorySupportTest {
         );
 
         /**
-         * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
-         * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
+         * 1. j_saved_plan 는 지환이의 일정을 save 합니다.
+         * 2. t_saved_plan 는 태현이의 일정을 save 합니다.
          */
         PlanEntity j_saved_plan = planRepository.save(planEntity_j);
         PlanEntity t_saved_plan = planRepository.save(planEntity_t);
