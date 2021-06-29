@@ -277,11 +277,14 @@ class PlanRepositorySupportTest {
         );
 
         /**
-         * 1. j_saved_plan 는 지환이의 일정을 save 합니다.
+         * j_saved_plan은 지환이의 일정을 save 합니다.
          */
         PlanEntity j_saved_plan = planRepository.save(planEntity_j);
 
-        //When
+        /**
+         * 1. personalPlanUpdateDto 로 일정 변경사항을 세트합니다.
+         * 2. service/updateThisPersonalPlan 에 기존 planIdx 와 변경사항Dto를 넘겨줍니다.
+         */
         PersonalPlanUpdateDto personalPlanUpdateDto = PersonalPlanUpdateDto.builder()
                 .planName("Gsm에서 지환이랑 놀기")
                 .who("jihwan")
@@ -293,7 +296,10 @@ class PlanRepositorySupportTest {
 
         personalPlanService.updateThisPersonalPlan(planEntity_j.getPlanIdx(), personalPlanUpdateDto);
 
-        //Then
+        /**
+         * Then
+         * 변경사항 세트한 Dto의 PlanName으로 변경 됐습니까?
+         */
         assertEquals(true, personalPlanRepository.findByPlanName("Gsm에서 지환이랑 놀기") != null);
     }
 }
