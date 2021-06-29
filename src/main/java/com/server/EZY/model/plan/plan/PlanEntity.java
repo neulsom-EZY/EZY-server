@@ -32,7 +32,7 @@ public class PlanEntity {
 
     //PlanEntity가  저장, 병합, 삭제가 발생될때 PersonalPlanEntity에 전의됩니다.
     @OneToOne(fetch = LAZY, cascade = {PERSIST, MERGE, REMOVE})
-    @JoinColumn(name = "PersonalPlanId")
+    @JoinColumn(name = "PersonalPlanId", unique = true)
     private PersonalPlanEntity personalPlanEntity;
 
     //PlanEntity가 저장, 병합이 발생될때 TeamPlanEntity에 전의됩니다.
