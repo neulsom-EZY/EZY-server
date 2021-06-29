@@ -2,6 +2,7 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
@@ -80,6 +81,23 @@ public class PersonalPlanService {
      */
     public PlanEntity getThisPersonalPlan(UserEntity userEntity, Long personalPlanId){
         return planRepository.findThisPlanByUserEntityAndPlanIdx(userEntity, personalPlanId);
+    }
+
+    /**
+     * 이 메서드는 personalPlanIdx를 param 으로 받아 일정을 찾고, 그 일정을 원하는 변경사항으로 변경하는 메서드 입니다.
+     * @param personalPlanIdx
+     * @param personalPlanUpdateDto
+     * @throws Exception
+     * @author 전지환
+     */
+    @Transactional
+    public void updateThisPersonalPlan(Long personalPlanIdx, PersonalPlanUpdateDto personalPlanUpdateDto) throws Exception {
+        PersonalPlanEntity updatePersonalEntity = personalPlanRepository.findByPersonalPlanIdx(personalPlanIdx);
+        if(updatePersonalEntity != null){
+            updatePersonalEntity.updatePersonalPlan(personalPlanUpdateDto.toEntity());
+        } else {
+            throw new Exception("해당 일정이 없습니다. 업데이트 실패");
+        }
     }
 
     /**
