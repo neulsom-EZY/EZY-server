@@ -22,18 +22,52 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
+    /**
+     * 회원가입 controller
+     * @param userDto userDto
+     * @return accessToken
+     * @throws Exception Exception
+     * @author 배태현
+     */
     @PostMapping("/signup")
     @ResponseStatus( HttpStatus.CREATED )
     public String signup(@ApiParam("Signup User") @RequestBody UserDto userDto) throws Exception {
         return userService.signup(userDto);
     }
 
+    /**
+     * 로그인 controller
+     * @param loginDto loginDto
+     * @return nickname ,accessToken, refreshToken
+     * @throws Exception Exception
+     * @author 배태현
+     */
     @PostMapping("/signin")
     @ResponseStatus( HttpStatus.OK )
     public Map<String, String> signin(@Valid @RequestBody LoginDto loginDto) throws Exception {
         return userService.signin(loginDto);
     }
 
+    /**
+     * 로그인을 하지 않았을 때 전화번호 인증
+     * @param phoneNumberDto phoneNumberDto
+     * @return (true || false)
+     * @author 배태현
+     */
+    @PostMapping("/phoneNumber")
+    @ResponseStatus( HttpStatus.OK )
+    public Boolean validPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
+        return userService.validPhoneNumber(phoneNumberDto);
+    }
+
+    /**
+     * 로그인을 하지 않았을 때 <br>
+     * "/v1/phoneNumber"에서 전화번호 인증 후 <br>
+     * 비밀번호를 변경하게하는 controller <br>
+     * @param passwordChangeDto passwordChangeDto
+     * @return (회원이름)회원 비밀번호 변경완료
+     * @author 배태현
+     */
     @PutMapping ("/pwd-change")
     @ResponseStatus( HttpStatus.OK )
     public String passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
