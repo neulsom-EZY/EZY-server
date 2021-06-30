@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CurrentUser {
+public class CurrentUserUtil {
 
     /**
      * 현재 로그인 되어있는(인증되어있는) User의 nickname을 반환하는 메서드
