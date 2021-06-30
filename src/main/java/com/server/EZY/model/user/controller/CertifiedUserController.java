@@ -21,8 +21,7 @@ public class CertifiedUserController {
     /**
      * 로그인이 되어있을 때 휴대폰인증을 하는 로직
      * @param phoneNumberDto phoneNumberDto
-     * @return 전화번호 인증을 성공했을 때 true
-     * @return 전화번호 인증을 실패했을 때 false
+     * @return true or false
      * @author 배태현
      */
     @PostMapping("/phoneNumber")

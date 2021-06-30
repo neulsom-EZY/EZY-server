@@ -51,8 +51,7 @@ public class UserController {
     /**
      * 로그인을 하지 않았을 때 전화번호 인증
      * @param phoneNumberDto phoneNumberDto
-     * @return 전화번호 인증이 성공했을 때 true
-     * @return 전화번호 인증이 실패했을 때 false
+     * @return true or false
      * @author 배태현
      */
     @PostMapping("/phoneNumber")
