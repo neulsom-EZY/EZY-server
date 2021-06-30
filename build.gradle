@@ -111,6 +111,7 @@ jacocoTestReport {
 					,'**/dto/**'
 					,'**/EZY/EzyApplication*'
 					,'**/EZY/**/*Test*'
+					,'**/EZY/**/Q*' // Q class 제거
 			])
 		})
 	}
