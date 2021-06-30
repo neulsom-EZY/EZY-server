@@ -42,6 +42,7 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql : trace
+    com.server.EZY.model: debug
 
 ### Security ###
 security:
