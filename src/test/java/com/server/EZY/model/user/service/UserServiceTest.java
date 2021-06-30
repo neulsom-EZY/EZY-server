@@ -5,6 +5,7 @@ import com.server.EZY.model.user.controller.UserController;
 import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.util.CurrentUser;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +37,13 @@ public class UserServiceTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserServiceImpl userServiceImpl;
-    @Autowired
     private RedisUtil redisUtil;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CurrentUser currentUser;
 
     @Test
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
@@ -69,7 +70,7 @@ public class UserServiceTest {
         System.out.println(context);
 
         //then
-        String currentUserNickname = userServiceImpl.getCurrentUserNickname();
+        String currentUserNickname = currentUser.getCurrentUserNickname();
         assertEquals("배태현", currentUserNickname);
     }
 
@@ -194,7 +195,7 @@ public class UserServiceTest {
         System.out.println(context);
 
         //then
-        String currentUserNickname = userServiceImpl.getCurrentUserNickname();
+        String currentUserNickname = currentUser.getCurrentUserNickname();
         assertEquals("배태현", currentUserNickname);
         UserEntity loginUser = userRepository.findByNickname(currentUserNickname);
         return loginUser;
