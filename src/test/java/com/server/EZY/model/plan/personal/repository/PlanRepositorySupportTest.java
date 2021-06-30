@@ -37,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Commit
 class PlanRepositorySupportTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -132,7 +131,7 @@ class PlanRepositorySupportTest {
         // 태현이의 Plan을 12개 추가합니다.
         List<PlanEntity> planEntities = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
+                        personalPlanEntityInit(),
                         userEntity_t,
                         categories
                 )
@@ -140,7 +139,7 @@ class PlanRepositorySupportTest {
         // 지환이의 Plan을 16개 추가합니다.
         List<PlanEntity> planEntities_2 = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
+                        personalPlanEntityInit(),
                         userEntity_j,
                         categories
                 )
@@ -180,7 +179,7 @@ class PlanRepositorySupportTest {
         // 태현이의 Plan을 12개 추가합니다.
         List<PlanEntity> planEntities = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
+                        personalPlanEntityInit(),
                         userEntity_t,
                         categories
                 )
@@ -188,7 +187,7 @@ class PlanRepositorySupportTest {
         // 지환이의 Plan을 16개 추가합니다.
         List<PlanEntity> planEntities_2 = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
+                        personalPlanEntityInit(),
                         userEntity_j,
                         categories
                 )
@@ -228,13 +227,13 @@ class PlanRepositorySupportTest {
         List<String> categories_t = Collections.singletonList("태현이와 데이트");
 
         PlanEntity planEntity_j = new PlanEntity(
-                personalPlanEntity,
+                personalPlanEntityInit(),
                 userEntity_j,
                 categories_j
         );
 
         PlanEntity planEntity_t = new PlanEntity(
-                personalPlanEntity,
+                personalPlanEntityInit(),
                 userEntity_t,
                 categories_t
         );
@@ -271,7 +270,7 @@ class PlanRepositorySupportTest {
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
 
         PlanEntity planEntity_j = new PlanEntity(
-                personalPlanEntity,
+                personalPlanEntityInit(),
                 userEntity_j,
                 categories_j
         );

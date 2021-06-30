@@ -9,6 +9,7 @@ import com.server.EZY.model.plan.plan.repository.PlanRepository;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.model.user.service.UserServiceImpl;
+import com.server.EZY.model.user.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,7 +106,7 @@ public class PersonalPlanService {
      * @return UserEntity
      */
     public UserEntity currentUserEntity(){
-        String loginUserNickname = UserServiceImpl.getCurrentUserNickname();
+        String loginUserNickname = CurrentUserUtil.getCurrentUserNickname();
         return userRepository.findByNickname(loginUserNickname);
     }
 }
