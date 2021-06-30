@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.personal.repository;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
@@ -239,8 +240,8 @@ class PlanRepositorySupportTest {
         );
 
         /**
-         * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
-         * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
+         * 1. j_saved_plan 는 지환이의 일정을 save 합니다.
+         * 2. t_saved_plan 는 태현이의 일정을 save 합니다.
          */
         PlanEntity j_saved_plan = planRepository.save(planEntity_j);
         PlanEntity t_saved_plan = planRepository.save(planEntity_t);
@@ -256,5 +257,49 @@ class PlanRepositorySupportTest {
          * 가져온 Plan의 카테고리가 예상 값과 일치하나요?
          */
         assertEquals(categories_j, getThisPlan.getCategories());
+    }
+
+    @Test @DisplayName("일정 변경을 요청합니다.")
+    public void 일정_변경() throws Exception {
+        /**
+         * Given
+         * 1. personalPlanEntity 는 미리 메서드화 한 planEntity Builder를 추가시킵니다.
+         * 2. userEntity_j 는 지환이의 유저 정보 세트 메서드를 호출합니다.
+         */
+        PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
+        UserEntity userEntity_j = userEntity_지환();
+        List<String> categories_j = Collections.singletonList("지환이와 데이트");
+
+        PlanEntity planEntity_j = new PlanEntity(
+                personalPlanEntity,
+                userEntity_j,
+                categories_j
+        );
+
+        /**
+         * j_saved_plan은 지환이의 일정을 save 합니다.
+         */
+        PlanEntity j_saved_plan = planRepository.save(planEntity_j);
+
+        /**
+         * 1. personalPlanUpdateDto 로 일정 변경사항을 세트합니다.
+         * 2. service/updateThisPersonalPlan 에 기존 planIdx 와 변경사항Dto를 넘겨줍니다.
+         */
+        PersonalPlanUpdateDto personalPlanUpdateDto = PersonalPlanUpdateDto.builder()
+                .planName("Gsm에서 지환이랑 놀기")
+                .who("jihwan")
+                .where("Gsm")
+                .what("코딩")
+                .when(Calendar.getInstance())
+                .repeat(true)
+                .build();
+
+        personalPlanService.updateThisPersonalPlan(planEntity_j.getPlanIdx(), personalPlanUpdateDto);
+
+        /**
+         * Then
+         * 변경사항 세트한 Dto의 PlanName으로 변경 됐습니까?
+         */
+        assertEquals(true, personalPlanRepository.findByPlanName("Gsm에서 지환이랑 놀기") != null);
     }
 }
