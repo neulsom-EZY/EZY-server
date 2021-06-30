@@ -23,6 +23,7 @@ public class PersonalPlanService {
     private final PlanRepository planRepository;
     private final PersonalPlanRepository personalPlanRepository;
     private final UserRepository userRepository;
+    private final CurrentUserUtil currentUserUtil;
     private PlanEntity planEntity;
 
     /**
@@ -35,10 +36,9 @@ public class PersonalPlanService {
     @Transactional
     public PlanEntity savePersonalPlan(PersonalPlanDto myPersonalPlan, List<String> personalPlanCategory){
         // 로그인된 userEntity를 불러옵니다.
-        UserEntity loginUserEntity = currentUserEntity();
+        UserEntity loginUserEntity = currentUserUtil.getCurrentUser();
         // return 할 savedPlanEntity 필드를 메서드 내에서 전역 선언 합니다.
         PlanEntity savedPlanEntity;
-
         /**
          * if -> category list 사이즈가 0 일때는 -> category 없는 planEntity 에 set 해줍니다.
          * else -> category list 사이즈가 > 0 일때 -> category 있는 planEntity 에 set 해줍니다.
