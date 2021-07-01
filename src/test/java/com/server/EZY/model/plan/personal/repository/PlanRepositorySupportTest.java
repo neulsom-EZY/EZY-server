@@ -229,7 +229,7 @@ class PlanRepositorySupportTest {
 
         PlanEntity planEntity_j = new PlanEntity(
                 personalPlanEntityInit(),
-                userEntity_j,
+                beforeSavedUser,
                 categories_j
         );
 
@@ -250,7 +250,7 @@ class PlanRepositorySupportTest {
          * When
          * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
          */
-        PlanEntity getThisPlan = personalPlanService.getThisPersonalPlan(userEntity_j, planEntity_j.getPlanIdx());
+        PlanEntity getThisPlan = personalPlanService.getThisPersonalPlan(planEntity_j.getPlanIdx());
 
         /**
          * Then
