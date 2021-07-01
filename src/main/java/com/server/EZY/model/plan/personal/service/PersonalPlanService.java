@@ -65,12 +65,12 @@ public class PersonalPlanService {
 
     /**
      * 이 메서드는 유저 엔티티를 넘겨주면 그 유저에 해당하는 모든 개인 일정을 조회합니다.
-     * @param userEntity
      * @return PlanEntity
      * @author 전지환
      */
-    public List<PlanEntity> getAllMyPersonalPlan(UserEntity userEntity){
-        return planRepository.findAllPersonalPlanByUserEntity(userEntity);
+    public List<PlanEntity> getAllMyPersonalPlan(){
+        UserEntity currentUserEntity = currentUserUtil.getCurrentUser();
+        return planRepository.findAllPersonalPlanByUserEntity(currentUserEntity);
     }
 
     /**
