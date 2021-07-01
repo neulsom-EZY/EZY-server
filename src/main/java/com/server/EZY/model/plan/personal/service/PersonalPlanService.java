@@ -74,14 +74,14 @@ public class PersonalPlanService {
     }
 
     /**
-     * 이 메서드는 유저 엔티티와 PersonalPlanId 를 넘겨주면 해당 PlanEntity 를 조회합니다.
-     * @param userEntity
+     * 이 메서드는 PersonalPlanId 를 넘겨주면 로그인 된 userEntity 와 PlanEntity 를 비교하여 조회합니다.
      * @param personalPlanId
      * @return PlanEntity
      * @author 전지환
      */
-    public PlanEntity getThisPersonalPlan(UserEntity userEntity, Long personalPlanId){
-        return planRepository.findThisPlanByUserEntityAndPlanIdx(userEntity, personalPlanId);
+    public PlanEntity getThisPersonalPlan(Long personalPlanId){
+        UserEntity currentUserEntity = currentUserUtil.getCurrentUser();
+        return planRepository.findThisPlanByUserEntityAndPlanIdx(currentUserEntity, personalPlanId);
     }
 
     /**
