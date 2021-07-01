@@ -100,13 +100,4 @@ public class PersonalPlanService {
             throw new Exception("해당 일정이 없습니다. 업데이트 실패");
         }
     }
-
-    /**
-     * 이 메서드는 임시적으로 선언한 메서드이며, userNickname을 통해 Entity를 찾아 return 해줍니다.
-     * @return UserEntity
-     */
-    public UserEntity currentUserEntity(){
-        String loginUserNickname = CurrentUserUtil.getCurrentUserNickname();
-        return userRepository.findByNickname(loginUserNickname);
-    }
 }
