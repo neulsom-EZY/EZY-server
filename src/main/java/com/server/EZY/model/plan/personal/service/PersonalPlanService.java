@@ -93,6 +93,11 @@ public class PersonalPlanService {
      */
     @Transactional
     public void updateThisPersonalPlan(Long personalPlanIdx, PersonalPlanUpdateDto personalPlanUpdateDto) throws Exception {
+        // 현재 로그인 된 user 가져오기.
+        UserEntity currentUserEntity = currentUserUtil.getCurrentUser();
+        // planEntity에 이 userEntity와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
+        planRepository.findThisPlanByUserEntityAndPlanIdx(currentUserEntity, personalPlanIdx);
+        // personalPlanIdx 넣어 조회하기.
         PersonalPlanEntity updatePersonalEntity = personalPlanRepository.findByPersonalPlanIdx(personalPlanIdx);
         if(updatePersonalEntity != null){
             updatePersonalEntity.updatePersonalPlan(personalPlanUpdateDto.toEntity());
