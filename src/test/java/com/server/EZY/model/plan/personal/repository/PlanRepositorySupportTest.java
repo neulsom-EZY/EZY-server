@@ -37,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Commit
 class PlanRepositorySupportTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -49,20 +50,22 @@ class PlanRepositorySupportTest {
     @Autowired
     private PersonalPlanRepository personalPlanRepository;
 
-    @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
+    // BeforeEach 로 saved 된 회원 Entity를 전역에서 사용하기 위해.
+    UserEntity beforeSavedUser;
+    @BeforeEach @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
     public void 로그인_세션(){
         /**
          * Given
          * 로그인을 수행하기 위해 먼저, user 아래 정보를 참고하여 저장합니다.
          */
         UserDto userDto = UserDto.builder()
-                .nickname("배태현")
+                .nickname("짱짱짱")
                 .password("1234")
                 .phoneNumber("01012341234")
                .build();
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        beforeSavedUser = userRepository.save(userDto.toEntity());
         System.out.println("======== saved =========");
 
         /**
@@ -176,11 +179,11 @@ class PlanRepositorySupportTest {
         UserEntity userEntity_t = userEntity_태현();
         UserEntity userEntity_j = userEntity_지환();
         List<String> categories = Collections.singletonList("지환이와 데이트");
-        // 태현이의 Plan을 12개 추가합니다.
+        // BeforeEach 짱짱짱 Plan을 12개 추가합니다.
         List<PlanEntity> planEntities = Stream.generate(
                 () -> new PlanEntity(
                         personalPlanEntityInit(),
-                        userEntity_t,
+                        beforeSavedUser,
                         categories
                 )
         ).limit(12).collect(Collectors.toList());
@@ -201,15 +204,15 @@ class PlanRepositorySupportTest {
 
         /**
          * When
-         * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
+         * 짱짱짱 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
          */
-        List<PlanEntity> allMyPersonalPlan = personalPlanService.getAllMyPersonalPlan(userEntity_j);
+        List<PlanEntity> allMyPersonalPlan = personalPlanService.getAllMyPersonalPlan();
 
         /**
          * Then
-         * 지환이의 개인 일정이 총 16개가 맞나요? success!
+         * 짱짱짱 개인 일정이 총 12개가 맞나요? success!
          */
-        assertEquals(16, allMyPersonalPlan.size());
+        assertEquals(12, allMyPersonalPlan.size());
     }
 
     @Test @DisplayName("PersonalPlanIdx를 넘겨줘서 해당 PlanEntity 가져오기")
