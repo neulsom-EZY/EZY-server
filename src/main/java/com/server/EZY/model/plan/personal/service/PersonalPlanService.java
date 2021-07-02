@@ -7,8 +7,6 @@ import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.plan.plan.repository.PlanRepository;
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.model.user.service.UserServiceImpl;
 import com.server.EZY.model.user.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +20,7 @@ import java.util.List;
 public class PersonalPlanService {
     private final PlanRepository planRepository;
     private final PersonalPlanRepository personalPlanRepository;
-    private final UserRepository userRepository;
     private final CurrentUserUtil currentUserUtil;
-    private PlanEntity planEntity;
 
     /**
      * PersonalPlan 을 저장하는 서비스 메서드 입니다 <br>
