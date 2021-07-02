@@ -319,11 +319,14 @@ class PlanRepositorySupportTest {
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
         // Dto, Category 를 Save 로직에 넘겨줍니다.
         PlanEntity planEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
+        // Exception이 잘 catch 되는지 확인하기 위한 로직을 추가합니다.
+        boolean exceptionCatched = false;
 
         /**
          * When
          * 1. personalPlanUpdateDto 로 일정 변경사항을 세트합니다.
          * 2. service/updateThisPersonalPlan 에 기존 planIdx 와 변경사항Dto를 넘겨줍니다.
+         * 3. try catch 문으로 없는 일정Idx 를 넘겨줄때 Exception이 잘 잡히는지 확인합니다.
          */
         PersonalPlanUpdateDto personalPlanUpdateDto = PersonalPlanUpdateDto.builder()
                 .planName("Gsm에서 지환이랑 놀기")
@@ -336,8 +339,19 @@ class PlanRepositorySupportTest {
 
         personalPlanService.updateThisPersonalPlan(planEntity.getPlanIdx(), personalPlanUpdateDto);
 
-        // Then
+        try {
+            personalPlanService.updateThisPersonalPlan(2L, personalPlanUpdateDto);
+        } catch (Exception e){
+            exceptionCatched = true;
+        }
+
+        /**
+         * Then
+         * 1. 업데이트한 일정 제목이 존재하는지. -> 검증완료
+         * 2. Exception이 제대로 잡혔는지. -> 검증완료
+         */
         assertEquals(true, personalPlanRepository.findByPlanName(personalPlanUpdateDto.getPlanName()) != null);
+        assertTrue(exceptionCatched);
     }
 
     @Test @DisplayName("Service 로직을 이용하여 삭제")
