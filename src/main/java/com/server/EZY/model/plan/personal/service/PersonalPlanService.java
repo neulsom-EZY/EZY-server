@@ -102,6 +102,12 @@ public class PersonalPlanService {
         }
     }
 
+    /**
+     * 이 메서드는 personalPlanIdx를 넘겨 일정을 찾고 삭제하는 메서드 입니다.
+     * @param personalPlanIdx
+     * @throws Exception
+     * @author 전지환
+     */
     public void deleteThisPersonalPlan(Long personalPlanIdx) throws Exception {
         // 현재 로그인 된 user 가져오기.
         Long currentUserIdx = currentUserUtil.getCurrentUser().getUserIdx();
