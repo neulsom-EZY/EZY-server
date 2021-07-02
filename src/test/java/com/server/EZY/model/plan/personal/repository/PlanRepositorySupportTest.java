@@ -36,7 +36,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Commit
 class PlanRepositorySupportTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -307,6 +306,7 @@ class PlanRepositorySupportTest {
     @Test @DisplayName("모든 처리를 service 메서드를 사용해서 한 일정변경")
     public void 일정을_변경해_주세요() throws Exception {
         /**
+         * Given
          * PersonalPlan을 Dto를 사용해서 Set 합니다.
          */
         PersonalPlanDto myPersonalPlan = PersonalPlanDto.builder()
@@ -322,6 +322,7 @@ class PlanRepositorySupportTest {
         PlanEntity planEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
 
         /**
+         * When
          * 1. personalPlanUpdateDto 로 일정 변경사항을 세트합니다.
          * 2. service/updateThisPersonalPlan 에 기존 planIdx 와 변경사항Dto를 넘겨줍니다.
          */
@@ -336,6 +337,48 @@ class PlanRepositorySupportTest {
 
         personalPlanService.updateThisPersonalPlan(planEntity.getPlanIdx(), personalPlanUpdateDto);
 
+        // Then
         assertEquals(true, personalPlanRepository.findByPlanName(personalPlanUpdateDto.getPlanName()) != null);
+    }
+
+    @Test @DisplayName("Service 로직을 이용하여 삭제")
+    public void 이_일정을_삭제해주세요() throws Exception {
+        /**
+         * Given
+         * PersonalPlan을 Dto를 사용해서 Set 합니다.
+         */
+        PersonalPlanDto myPersonalPlan = PersonalPlanDto.builder()
+                .planName("지환이집에서 치킨먹기")
+                .when(Calendar.getInstance())
+                .where("지환이집")
+                .who("김형록")
+                .what("치킨먹기")
+                .repeat(false).build();
+        // Save method에 넘겨줄 카테고리를 작성합니다.
+        List<String> categories_j = Collections.singletonList("지환이와 데이트");
+        // Dto, Category 를 Save 로직에 넘겨줍니다.
+        PlanEntity planEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
+        // Exception이 잘 catch 되는지 확인하기 위한 로직을 추가합니다.
+        boolean exceptionCatched = false;
+
+        /**
+         * When
+         * 1. deleteThisPersonalPlan에 방금 저장한 PlanEntity.getIdx를 넣는다.
+         * 2. deleteThisPersonalPlan에 존재하지 않는 Idx를 넣는다.
+         */
+        personalPlanService.deleteThisPersonalPlan(planEntity.getPlanIdx());
+        try {
+            personalPlanService.deleteThisPersonalPlan(2L);
+        } catch (Exception e){
+            exceptionCatched = true;
+        }
+
+        /**
+         * Then
+         * 1. PersonalPlan에 지환이집에서 치킨먹기가 없는게 true 인지 : 검증완료
+         * 2. When 없는 존재하지 않는 Idx를 넣었을때 Exception이 잘 잡히는지 : 검증완료
+         */
+        assertEquals(true, personalPlanRepository.findByPlanName("지환이집에서 치킨먹기") == null);
+        assertTrue(exceptionCatched);
     }
 }
