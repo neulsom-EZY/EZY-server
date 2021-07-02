@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.personal.repository;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.model.plan.plan.PlanEntity;
@@ -301,5 +302,40 @@ class PlanRepositorySupportTest {
          * 변경사항 세트한 Dto의 PlanName으로 변경 됐습니까?
          */
         assertEquals(true, personalPlanRepository.findByPlanName("Gsm에서 지환이랑 놀기") != null);
+    }
+
+    @Test @DisplayName("모든 처리를 service 메서드를 사용해서 한 일정변경")
+    public void 일정을_변경해_주세요() throws Exception {
+        /**
+         * PersonalPlan을 Dto를 사용해서 Set 합니다.
+         */
+        PersonalPlanDto myPersonalPlan = PersonalPlanDto.builder()
+                .planName("지환이집에서 치킨먹기")
+                .when(Calendar.getInstance())
+                .where("지환이집")
+                .who("김형록")
+                .what("치킨먹기")
+                .repeat(false).build();
+        // Save method에 넘겨줄 카테고리를 작성합니다.
+        List<String> categories_j = Collections.singletonList("지환이와 데이트");
+        // Dto, Category 를 Save 로직에 넘겨줍니다.
+        PlanEntity planEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
+
+        /**
+         * 1. personalPlanUpdateDto 로 일정 변경사항을 세트합니다.
+         * 2. service/updateThisPersonalPlan 에 기존 planIdx 와 변경사항Dto를 넘겨줍니다.
+         */
+        PersonalPlanUpdateDto personalPlanUpdateDto = PersonalPlanUpdateDto.builder()
+                .planName("Gsm에서 지환이랑 놀기")
+                .who("jihwan")
+                .where("Gsm")
+                .what("코딩")
+                .when(Calendar.getInstance())
+                .repeat(true)
+                .build();
+
+        personalPlanService.updateThisPersonalPlan(planEntity.getPlanIdx(), personalPlanUpdateDto);
+
+        assertEquals(true, personalPlanRepository.findByPlanName(personalPlanUpdateDto.getPlanName()) != null);
     }
 }
