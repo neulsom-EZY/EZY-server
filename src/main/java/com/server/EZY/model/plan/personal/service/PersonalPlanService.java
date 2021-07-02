@@ -91,7 +91,7 @@ public class PersonalPlanService {
     public void updateThisPersonalPlan(Long personalPlanIdx, PersonalPlanUpdateDto personalPlanUpdateDto) throws Exception {
         // 현재 로그인 된 user 가져오기.
         Long currentUserIdx = currentUserUtil.getCurrentUser().getUserIdx();
-        // planEntity에 이 userEntity와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
+        // planEntity에 이 userIdx와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
         planRepository.findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(currentUserIdx, personalPlanIdx);
         // personalPlanIdx 넣어 조회하기.
         PersonalPlanEntity updatePersonalEntity = personalPlanRepository.findByPersonalPlanIdx(personalPlanIdx);
@@ -99,6 +99,19 @@ public class PersonalPlanService {
             updatePersonalEntity.updatePersonalPlan(personalPlanUpdateDto.toEntity());
         } else {
             throw new Exception("해당 일정이 없습니다. 업데이트 실패");
+        }
+    }
+
+    public void deleteThisPersonalPlan(Long personalPlanIdx) throws Exception {
+        // 현재 로그인 된 user 가져오기.
+        Long currentUserIdx = currentUserUtil.getCurrentUser().getUserIdx();
+        // planEntity에 이 userIdx와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
+        PlanEntity wannaDeletePersonalPlan = planRepository.findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(currentUserIdx, personalPlanIdx);
+        if(wannaDeletePersonalPlan != null) {
+            // PersonalPlan 삭제하기
+            planRepository.delete(wannaDeletePersonalPlan);
+        } else {
+            throw new Exception("삭제하고자 하는 일정이 존재하지 않습니다.");
         }
     }
 }
