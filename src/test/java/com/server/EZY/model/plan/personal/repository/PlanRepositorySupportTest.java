@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.personal.repository;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.model.plan.plan.PlanEntity;
@@ -21,12 +22,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Basic;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Commit
 class PlanRepositorySupportTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,20 +47,22 @@ class PlanRepositorySupportTest {
     @Autowired
     private PersonalPlanRepository personalPlanRepository;
 
-    @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
+    // BeforeEach 로 saved 된 회원 Entity를 전역에서 사용하기 위해.
+    UserEntity beforeSavedUser;
+    @BeforeEach @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
     public void 로그인_세션(){
         /**
          * Given
          * 로그인을 수행하기 위해 먼저, user 아래 정보를 참고하여 저장합니다.
          */
         UserDto userDto = UserDto.builder()
-                .nickname("배태현")
+                .nickname("짱짱짱")
                 .password("1234")
                 .phoneNumber("01012341234")
                .build();
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        beforeSavedUser = userRepository.save(userDto.toEntity());
         System.out.println("======== saved =========");
 
         /**
@@ -132,7 +131,7 @@ class PlanRepositorySupportTest {
         // 태현이의 Plan을 12개 추가합니다.
         List<PlanEntity> planEntities = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
+                        personalPlanEntityInit(),
                         userEntity_t,
                         categories
                 )
@@ -140,7 +139,7 @@ class PlanRepositorySupportTest {
         // 지환이의 Plan을 16개 추가합니다.
         List<PlanEntity> planEntities_2 = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
+                        personalPlanEntityInit(),
                         userEntity_j,
                         categories
                 )
@@ -177,18 +176,18 @@ class PlanRepositorySupportTest {
         UserEntity userEntity_t = userEntity_태현();
         UserEntity userEntity_j = userEntity_지환();
         List<String> categories = Collections.singletonList("지환이와 데이트");
-        // 태현이의 Plan을 12개 추가합니다.
+        // BeforeEach 짱짱짱 Plan을 12개 추가합니다.
         List<PlanEntity> planEntities = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
-                        userEntity_t,
+                        personalPlanEntityInit(),
+                        beforeSavedUser,
                         categories
                 )
         ).limit(12).collect(Collectors.toList());
         // 지환이의 Plan을 16개 추가합니다.
         List<PlanEntity> planEntities_2 = Stream.generate(
                 () -> new PlanEntity(
-                        personalPlanEntity,
+                        personalPlanEntityInit(),
                         userEntity_j,
                         categories
                 )
@@ -202,15 +201,15 @@ class PlanRepositorySupportTest {
 
         /**
          * When
-         * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
+         * 짱짱짱 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
          */
-        List<PlanEntity> allMyPersonalPlan = personalPlanService.getAllMyPersonalPlan(userEntity_j);
+        List<PlanEntity> allMyPersonalPlan = personalPlanService.getAllMyPersonalPlan();
 
         /**
          * Then
-         * 지환이의 개인 일정이 총 16개가 맞나요? success!
+         * 짱짱짱 개인 일정이 총 12개가 맞나요? success!
          */
-        assertEquals(16, allMyPersonalPlan.size());
+        assertEquals(12, allMyPersonalPlan.size());
     }
 
     @Test @DisplayName("PersonalPlanIdx를 넘겨줘서 해당 PlanEntity 가져오기")
@@ -228,13 +227,13 @@ class PlanRepositorySupportTest {
         List<String> categories_t = Collections.singletonList("태현이와 데이트");
 
         PlanEntity planEntity_j = new PlanEntity(
-                personalPlanEntity,
-                userEntity_j,
+                personalPlanEntityInit(),
+                beforeSavedUser,
                 categories_j
         );
 
         PlanEntity planEntity_t = new PlanEntity(
-                personalPlanEntity,
+                personalPlanEntityInit(),
                 userEntity_t,
                 categories_t
         );
@@ -250,7 +249,7 @@ class PlanRepositorySupportTest {
          * When
          * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
          */
-        PlanEntity getThisPlan = personalPlanService.getThisPersonalPlan(userEntity_j, planEntity_j.getPlanIdx());
+        PlanEntity getThisPlan = personalPlanService.getThisPersonalPlan(planEntity_j.getPlanIdx());
 
         /**
          * Then
@@ -271,7 +270,7 @@ class PlanRepositorySupportTest {
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
 
         PlanEntity planEntity_j = new PlanEntity(
-                personalPlanEntity,
+                personalPlanEntityInit(),
                 userEntity_j,
                 categories_j
         );
@@ -301,5 +300,98 @@ class PlanRepositorySupportTest {
          * 변경사항 세트한 Dto의 PlanName으로 변경 됐습니까?
          */
         assertEquals(true, personalPlanRepository.findByPlanName("Gsm에서 지환이랑 놀기") != null);
+    }
+
+    @Test @DisplayName("모든 처리를 service 메서드를 사용해서 한 일정변경")
+    public void 일정을_변경해_주세요() throws Exception {
+        /**
+         * Given
+         * PersonalPlan을 Dto를 사용해서 Set 합니다.
+         */
+        PersonalPlanDto myPersonalPlan = PersonalPlanDto.builder()
+                .planName("지환이집에서 치킨먹기")
+                .when(Calendar.getInstance())
+                .where("지환이집")
+                .who("김형록")
+                .what("치킨먹기")
+                .repeat(false).build();
+        // Save method에 넘겨줄 카테고리를 작성합니다.
+        List<String> categories_j = Collections.singletonList("지환이와 데이트");
+        // Dto, Category 를 Save 로직에 넘겨줍니다.
+        PlanEntity planEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
+        // Exception이 잘 catch 되는지 확인하기 위한 로직을 추가합니다.
+        boolean exceptionCatched = false;
+
+        /**
+         * When
+         * 1. personalPlanUpdateDto 로 일정 변경사항을 세트합니다.
+         * 2. service/updateThisPersonalPlan 에 기존 planIdx 와 변경사항Dto를 넘겨줍니다.
+         * 3. try catch 문으로 없는 일정Idx 를 넘겨줄때 Exception이 잘 잡히는지 확인합니다.
+         */
+        PersonalPlanUpdateDto personalPlanUpdateDto = PersonalPlanUpdateDto.builder()
+                .planName("Gsm에서 지환이랑 놀기")
+                .who("jihwan")
+                .where("Gsm")
+                .what("코딩")
+                .when(Calendar.getInstance())
+                .repeat(true)
+                .build();
+
+        personalPlanService.updateThisPersonalPlan(planEntity.getPlanIdx(), personalPlanUpdateDto);
+
+        try {
+            personalPlanService.updateThisPersonalPlan(2L, personalPlanUpdateDto);
+        } catch (Exception e){
+            exceptionCatched = true;
+        }
+
+        /**
+         * Then
+         * 1. 업데이트한 일정 제목이 존재하는지. -> 검증완료
+         * 2. Exception이 제대로 잡혔는지. -> 검증완료
+         */
+        assertEquals(true, personalPlanRepository.findByPlanName(personalPlanUpdateDto.getPlanName()) != null);
+        assertTrue(exceptionCatched);
+    }
+
+    @Test @DisplayName("Service 로직을 이용하여 삭제")
+    public void 이_일정을_삭제해주세요() throws Exception {
+        /**
+         * Given
+         * PersonalPlan을 Dto를 사용해서 Set 합니다.
+         */
+        PersonalPlanDto myPersonalPlan = PersonalPlanDto.builder()
+                .planName("지환이집에서 치킨먹기")
+                .when(Calendar.getInstance())
+                .where("지환이집")
+                .who("김형록")
+                .what("치킨먹기")
+                .repeat(false).build();
+        // Save method에 넘겨줄 카테고리를 작성합니다.
+        List<String> categories_j = Collections.singletonList("지환이와 데이트");
+        // Dto, Category 를 Save 로직에 넘겨줍니다.
+        PlanEntity planEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
+        // Exception이 잘 catch 되는지 확인하기 위한 로직을 추가합니다.
+        boolean exceptionCatched = false;
+
+        /**
+         * When
+         * 1. deleteThisPersonalPlan에 방금 저장한 PlanEntity.getIdx를 넣는다.
+         * 2. deleteThisPersonalPlan에 존재하지 않는 Idx를 넣는다.
+         */
+        personalPlanService.deleteThisPersonalPlan(planEntity.getPlanIdx());
+        try {
+            personalPlanService.deleteThisPersonalPlan(2L);
+        } catch (Exception e){
+            exceptionCatched = true;
+        }
+
+        /**
+         * Then
+         * 1. PersonalPlan에 지환이집에서 치킨먹기가 없는게 true 인지 : 검증완료
+         * 2. When 없는 존재하지 않는 Idx를 넣었을때 Exception이 잘 잡히는지 : 검증완료
+         */
+        assertEquals(true, personalPlanRepository.findByPlanName("지환이집에서 치킨먹기") == null);
+        assertTrue(exceptionCatched);
     }
 }
