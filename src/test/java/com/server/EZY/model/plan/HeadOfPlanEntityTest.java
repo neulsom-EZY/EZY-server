@@ -25,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HeadOfPlanEntityTest {
 
     @Autowired UserRepository userRepo;
-    @Autowired
-    HeadOfPlanRepository planRepo;
+    @Autowired HeadOfPlanRepository headOfPlanRepository;
     @Autowired PersonalPlanRepository personalPlanRepo;
     @Autowired TeamPlanRepository teamPlanRepo;
 
@@ -66,7 +65,7 @@ class HeadOfPlanEntityTest {
     }
 
 
-    @Test @DisplayName("PersonalPlan 를 통한 PlanEntity 생성 및 저장 테스트")
+    @Test @DisplayName("PersonalPlan 를 통한 HeadOfPlanEntity 생성 및 저장 테스트")
     void PlanEntity_PersonalPlanEntity_생성및저장_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
@@ -80,7 +79,7 @@ class HeadOfPlanEntityTest {
         );
 
         // When
-        HeadOfPlanEntity savedHeadOfPlanEntity = planRepo.save(headOfPlanEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
 
         UserEntity getUserEntity = savedHeadOfPlanEntity.getUserEntity();
         PlanDType getPlanDType = savedHeadOfPlanEntity.getPlanDType();
@@ -96,7 +95,7 @@ class HeadOfPlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들을 이용한 PlanEntity 생성자 Exception 검증")
+    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들을 이용한 HeadOfPlanEntity 생성자 Exception 검증")
     void PersonalPlan를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
@@ -127,7 +126,7 @@ class HeadOfPlanEntityTest {
         assertEquals(planConstructException4.getClass(), IllegalArgumentException.class);
     }
 
-    @Test @DisplayName("TeamPlanEntity 를 통한 PlanEntity 생성 및 저장 테스트")
+    @Test @DisplayName("TeamPlanEntity 를 통한 HeadOfPlanEntity 생성 및 저장 테스트")
     void PlanEntity_TeamPlanEntity_생성및저장_검증(){
         // Given
         UserEntity userAEntity = userEntityInit();
@@ -137,7 +136,7 @@ class HeadOfPlanEntityTest {
         HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(teamPlanEntity, userAEntity, categories);
 
         // When
-        HeadOfPlanEntity savedHeadOfPlanEntity = planRepo.save(headOfPlanEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
 
         UserEntity getUserEntity = savedHeadOfPlanEntity.getUserEntity();
         PlanDType getPlanDType = savedHeadOfPlanEntity.getPlanDType();
@@ -155,7 +154,7 @@ class HeadOfPlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("TeamPlanEntity, UserEntity, Categories 값들을 이용한 PlanEntity 생성자 Exception 검증")
+    @Test @DisplayName("TeamPlanEntity, UserEntity, Categories 값들을 이용한 HeadOfPlanEntity 생성자 Exception 검증")
     void TeamPlanEntity를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         UserEntity userEntity = userEntityInit();

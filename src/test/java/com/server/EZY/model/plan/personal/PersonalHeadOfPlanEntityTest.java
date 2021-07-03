@@ -33,8 +33,7 @@ class PersonalHeadOfPlanEntityTest {
 
     @Autowired private PersonalPlanRepository personalPlanRepo;
     @Autowired UserRepository userRepo;
-    @Autowired
-    HeadOfPlanRepository planRepo;
+    @Autowired HeadOfPlanRepository headOfPlanRepository;
     @Autowired TeamPlanRepository teamPlanRepo;
     @PersistenceContext EntityManager em;
 
@@ -88,7 +87,7 @@ class PersonalHeadOfPlanEntityTest {
         );
 
         // When
-        HeadOfPlanEntity savedHeadOfPlanEntity = planRepo.save(headOfPlanEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
 
         UserEntity getUserEntity = savedHeadOfPlanEntity.getUserEntity();
         PlanDType getPlanDType = savedHeadOfPlanEntity.getPlanDType();
@@ -113,17 +112,17 @@ class PersonalHeadOfPlanEntityTest {
         List<HeadOfPlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
                 new HeadOfPlanEntity[] {new HeadOfPlanEntity(userAPersonalPlan1, userA), new HeadOfPlanEntity(userAPersonalPlan2, userA)})
         );
-        planRepo.saveAll(userAPlans);
+        headOfPlanRepository.saveAll(userAPlans);
 
         UserEntity userB = userEntityInit();
         TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
         List<HeadOfPlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
                 new HeadOfPlanEntity[] {new HeadOfPlanEntity(userABTeamPlan, userA), new HeadOfPlanEntity(userABTeamPlan, userB)}
         ));
-        planRepo.saveAll(ABTeamPlan);
+        headOfPlanRepository.saveAll(ABTeamPlan);
 
         // When
-        List<HeadOfPlanEntity> savedUserAPlans = planRepo.findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(userA);
+        List<HeadOfPlanEntity> savedUserAPlans = headOfPlanRepository.findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(userA);
 
         // Than
         int savedUserAPlansSize = savedUserAPlans.size();
@@ -145,13 +144,13 @@ class PersonalHeadOfPlanEntityTest {
         UserEntity userEntity = userEntityInit();
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
         HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(personalPlanEntity, userEntity);
-        HeadOfPlanEntity savedHeadOfPlanEntity = planRepo.saveAndFlush(headOfPlanEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(headOfPlanEntity);
         em.clear();
 
         PersonalPlanEntity beforeUpdatePersonalPlanEntity = headOfPlanEntity.getPersonalPlanEntity();
 
         // When
-        savedHeadOfPlanEntity = planRepo.getById(savedHeadOfPlanEntity.getHeadOfPlanIdx());
+        savedHeadOfPlanEntity = headOfPlanRepository.getById(savedHeadOfPlanEntity.getHeadOfPlanIdx());
         savedHeadOfPlanEntity.getPersonalPlanEntity().updatePersonalPlan(
                 PersonalPlanUpdateDto.builder()
                         .planName("변경된 일정 이름")
@@ -179,15 +178,15 @@ class PersonalHeadOfPlanEntityTest {
         UserEntity userEntity = userEntityInit();
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
         HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(personalPlanEntity, userEntity);
-        HeadOfPlanEntity savedHeadOfPlanEntity = planRepo.saveAndFlush(headOfPlanEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(headOfPlanEntity);
         em.clear();
 
         PersonalPlanEntity beforeUpdatePersonalPlanEntity = headOfPlanEntity.getPersonalPlanEntity();
 
         // When
-        planRepo.delete(headOfPlanEntity);
+        headOfPlanRepository.delete(headOfPlanEntity);
         Throwable planNotFoundException = assertThrows(Throwable.class,
-                () -> planRepo.findById(savedHeadOfPlanEntity.getHeadOfPlanIdx()).get()
+                () -> headOfPlanRepository.findById(savedHeadOfPlanEntity.getHeadOfPlanIdx()).get()
         );
 
         // Then
