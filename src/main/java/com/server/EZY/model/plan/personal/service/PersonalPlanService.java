@@ -77,7 +77,7 @@ public class PersonalPlanService {
      */
     public HeadOfPlanEntity getThisPersonalPlan(Long personalPlanId){
         UserEntity currentUserEntity = currentUserUtil.getCurrentUser();
-        return headOfPlanRepository.findThisPlanByUserEntityAndPlanIdx(currentUserEntity, personalPlanId);
+        return headOfPlanRepository.findThisPlanByUserEntityAndHeadOfPlanIdx(currentUserEntity, personalPlanId);
     }
 
     /**
