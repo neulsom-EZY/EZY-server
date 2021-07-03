@@ -1,11 +1,11 @@
 package com.server.EZY.model.plan.personal.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.EZY.model.plan.plan.PlanEntity;
-import com.server.EZY.model.plan.plan.enumType.PlanDType;
+import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
+import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
 import com.server.EZY.model.user.UserEntity;
 import lombok.RequiredArgsConstructor;
-import static com.server.EZY.model.plan.plan.QPlanEntity.planEntity;
+import static com.server.EZY.model.plan.headOfPlan.QHeadOfPlanEntity.headOfPlanEntity;
 
 import java.util.List;
 
@@ -14,33 +14,33 @@ public class PlanRepositoryImpl implements PlanRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<PlanEntity> findAllPersonalPlanByUserEntity (UserEntity userEntity) {
+    public List<HeadOfPlanEntity> findAllPersonalPlanByUserEntity (UserEntity userEntity) {
         return queryFactory
-                .selectFrom(planEntity)
+                .selectFrom(headOfPlanEntity)
                 .where(
-                        planEntity.userEntity.eq(userEntity),
-                        planEntity.planDType.eq(PlanDType.PERSONAL_PLAN)
+                        headOfPlanEntity.userEntity.eq(userEntity),
+                        headOfPlanEntity.planDType.eq(PlanDType.PERSONAL_PLAN)
                 ).fetch();
     }
 
     @Override
-    public PlanEntity findThisPlanByUserEntityAndPlanIdx(UserEntity userEntity, Long planId) {
+    public HeadOfPlanEntity findThisPlanByUserEntityAndHeadOfPlanIdx(UserEntity userEntity, Long planId) {
         return queryFactory
-                .selectFrom(planEntity)
+                .selectFrom(headOfPlanEntity)
                 .where(
-                        planEntity.userEntity.eq(userEntity),
-                        planEntity.personalPlanEntity.personalPlanIdx.eq(planId),
-                        planEntity.planDType.eq(PlanDType.PERSONAL_PLAN)
+                        headOfPlanEntity.userEntity.eq(userEntity),
+                        headOfPlanEntity.personalPlanEntity.personalPlanIdx.eq(planId),
+                        headOfPlanEntity.planDType.eq(PlanDType.PERSONAL_PLAN)
                 ).fetchOne();
     }
 
     @Override
-    public PlanEntity findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(Long userIdx, Long personalPlanIdx) {
+    public HeadOfPlanEntity findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(Long userIdx, Long personalPlanIdx) {
         return queryFactory
-                .selectFrom(planEntity)
+                .selectFrom(headOfPlanEntity)
                 .where(
-                        planEntity.userEntity.userIdx.eq(userIdx),
-                        planEntity.personalPlanEntity.personalPlanIdx.eq(personalPlanIdx)
+                        headOfPlanEntity.userEntity.userIdx.eq(userIdx),
+                        headOfPlanEntity.personalPlanEntity.personalPlanIdx.eq(personalPlanIdx)
                 ).fetchOne();
     }
 }

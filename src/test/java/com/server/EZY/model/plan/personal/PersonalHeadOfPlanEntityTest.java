@@ -1,14 +1,14 @@
 package com.server.EZY.model.plan.personal;
 
 import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
-import com.server.EZY.model.plan.plan.enumType.PlanDType;
-import com.server.EZY.model.plan.plan.PlanEntity;
+import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
+import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
-import com.server.EZY.model.plan.plan.repository.PlanRepository;
+import com.server.EZY.model.plan.headOfPlan.repository.HeadOfPlanRepository;
 import com.server.EZY.model.plan.team.repository.TeamPlanRepository;
 import com.server.EZY.model.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +29,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @DataJpaTest
 @Rollback(value = true) // update 쿼리 확인할떄 false
-class PersonalPlanEntityTest {
+class PersonalHeadOfPlanEntityTest {
 
     @Autowired private PersonalPlanRepository personalPlanRepo;
     @Autowired UserRepository userRepo;
-    @Autowired PlanRepository planRepo;
+    @Autowired HeadOfPlanRepository headOfPlanRepository;
     @Autowired TeamPlanRepository teamPlanRepo;
     @PersistenceContext EntityManager em;
 
@@ -80,20 +80,20 @@ class PersonalPlanEntityTest {
         UserEntity userEntity = userEntityInit();
 
         List<String> categories = Collections.singletonList("공부");
-        PlanEntity planEntity = new PlanEntity(
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(
                 personalPlanEntity
                 ,userEntity
                 ,categories
         );
 
         // When
-        PlanEntity savedPlanEntity = planRepo.save(planEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
 
-        UserEntity getUserEntity = savedPlanEntity.getUserEntity();
-        PlanDType getPlanDType = savedPlanEntity.getPlanDType();
-        PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
-        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
-        List<String> getCategories = savedPlanEntity.getCategories();
+        UserEntity getUserEntity = savedHeadOfPlanEntity.getUserEntity();
+        PlanDType getPlanDType = savedHeadOfPlanEntity.getPlanDType();
+        PersonalPlanEntity getPersonalPlanEntity = savedHeadOfPlanEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedHeadOfPlanEntity.getTeamPlanEntity();
+        List<String> getCategories = savedHeadOfPlanEntity.getCategories();
 
         // Then
         assertEquals(getUserEntity, userEntity);
@@ -109,27 +109,27 @@ class PersonalPlanEntityTest {
         UserEntity userA = userEntityInit();
         PersonalPlanEntity userAPersonalPlan1 = personalPlanEntityInit();
         PersonalPlanEntity userAPersonalPlan2 = personalPlanEntityInit();
-        List<PlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
-                new PlanEntity[] {new PlanEntity(userAPersonalPlan1, userA), new PlanEntity(userAPersonalPlan2, userA)})
+        List<HeadOfPlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
+                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userAPersonalPlan1, userA), new HeadOfPlanEntity(userAPersonalPlan2, userA)})
         );
-        planRepo.saveAll(userAPlans);
+        headOfPlanRepository.saveAll(userAPlans);
 
         UserEntity userB = userEntityInit();
         TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
-        List<PlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
-                new PlanEntity[] {new PlanEntity(userABTeamPlan, userA), new PlanEntity(userABTeamPlan, userB)}
+        List<HeadOfPlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
+                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userABTeamPlan, userA), new HeadOfPlanEntity(userABTeamPlan, userB)}
         ));
-        planRepo.saveAll(ABTeamPlan);
+        headOfPlanRepository.saveAll(ABTeamPlan);
 
         // When
-        List<PlanEntity> savedUserAPlans = planRepo.findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(userA);
+        List<HeadOfPlanEntity> savedUserAPlans = headOfPlanRepository.findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(userA);
 
         // Than
         int savedUserAPlansSize = savedUserAPlans.size();
-        PlanEntity savedUserAPlan1 = savedUserAPlans.get(0);
+        HeadOfPlanEntity savedUserAPlan1 = savedUserAPlans.get(0);
         PersonalPlanEntity savedUserAPersonalPlan1 = savedUserAPlan1.getPersonalPlanEntity();
 
-        PlanEntity savedUserAPlan2 = savedUserAPlans.get(1);
+        HeadOfPlanEntity savedUserAPlan2 = savedUserAPlans.get(1);
         PersonalPlanEntity savedUserAPersonalPlan2 = savedUserAPlan2.getPersonalPlanEntity();
 
         assertEquals(savedUserAPlansSize, 2);
@@ -143,15 +143,15 @@ class PersonalPlanEntityTest {
         // Given
         UserEntity userEntity = userEntityInit();
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
-        PlanEntity planEntity = new PlanEntity(personalPlanEntity, userEntity);
-        PlanEntity savedPlanEntity = planRepo.saveAndFlush(planEntity);
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(personalPlanEntity, userEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(headOfPlanEntity);
         em.clear();
 
-        PersonalPlanEntity beforeUpdatePersonalPlanEntity = planEntity.getPersonalPlanEntity();
+        PersonalPlanEntity beforeUpdatePersonalPlanEntity = headOfPlanEntity.getPersonalPlanEntity();
 
         // When
-        savedPlanEntity = planRepo.getById(savedPlanEntity.getPlanIdx());
-        savedPlanEntity.getPersonalPlanEntity().updatePersonalPlan(
+        savedHeadOfPlanEntity = headOfPlanRepository.getById(savedHeadOfPlanEntity.getHeadOfPlanIdx());
+        savedHeadOfPlanEntity.getPersonalPlanEntity().updatePersonalPlan(
                 PersonalPlanUpdateDto.builder()
                         .planName("변경된 일정 이름")
                         .when(Calendar.getInstance())
@@ -161,7 +161,7 @@ class PersonalPlanEntityTest {
                         .build()
                 .toEntity()
         );
-        PersonalPlanEntity updatedPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
+        PersonalPlanEntity updatedPersonalPlanEntity = savedHeadOfPlanEntity.getPersonalPlanEntity();
 
         // Then
         assertNotEquals(beforeUpdatePersonalPlanEntity.getPlanName(), updatedPersonalPlanEntity.getPlanName());
@@ -177,16 +177,16 @@ class PersonalPlanEntityTest {
         // Given
         UserEntity userEntity = userEntityInit();
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
-        PlanEntity planEntity = new PlanEntity(personalPlanEntity, userEntity);
-        PlanEntity savedPlanEntity = planRepo.saveAndFlush(planEntity);
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(personalPlanEntity, userEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(headOfPlanEntity);
         em.clear();
 
-        PersonalPlanEntity beforeUpdatePersonalPlanEntity = planEntity.getPersonalPlanEntity();
+        PersonalPlanEntity beforeUpdatePersonalPlanEntity = headOfPlanEntity.getPersonalPlanEntity();
 
         // When
-        planRepo.delete(planEntity);
+        headOfPlanRepository.delete(headOfPlanEntity);
         Throwable planNotFoundException = assertThrows(Throwable.class,
-                () -> planRepo.findById(savedPlanEntity.getPlanIdx()).get()
+                () -> headOfPlanRepository.findById(savedHeadOfPlanEntity.getHeadOfPlanIdx()).get()
         );
 
         // Then
