@@ -124,21 +124,4 @@ public class UserServiceImpl implements UserService {
         }
         return withdrawalDto.getNickname() + "회원 회원탈퇴완료";
     }
-
-
-    /**
-     * 현재 로그인 되어있는(인증되어있는) User의 nickname을 반환하는 메서드
-     * @return nickname
-     * @author 배태현
-     */
-    public static String getCurrentUserNickname() {
-        String nickname = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
-        } else{
-            nickname = principal.toString();
-        }
-        return nickname;
-    }
 }

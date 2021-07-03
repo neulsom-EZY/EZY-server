@@ -1,8 +1,6 @@
 package com.server.EZY.model.plan.personal.service;
 
-import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.plan.PlanEntity;
 import com.server.EZY.model.user.dto.UserDto;
