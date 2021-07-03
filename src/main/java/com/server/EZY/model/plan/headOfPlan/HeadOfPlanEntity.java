@@ -1,7 +1,7 @@
-package com.server.EZY.model.plan.planManagement;
+package com.server.EZY.model.plan.headOfPlan;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.plan.planManagement.enumType.PlanDType;
+import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.UserEntity;
 import lombok.Getter;
@@ -13,18 +13,18 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.server.EZY.model.plan.planManagement.enumType.PlanDType.*;
+import static com.server.EZY.model.plan.headOfPlan.enumType.PlanDType.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
 @Slf4j
-@Entity @Table(name = "Plan")
+@Entity @Table(name = "HeadOfPlan")
 @NoArgsConstructor @Getter
-public class PlanManagementEntity {
+public class HeadOfPlanEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PlanId")
-    private Long planIdx;
+    @Column(name = "HeadOfPlanId")
+    private Long headOfPlanIdx;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "UserId")
@@ -49,17 +49,17 @@ public class PlanManagementEntity {
     @ElementCollection(fetch = EAGER)
     @CollectionTable(
             name = "Category",
-            joinColumns = @JoinColumn(name = "PlanId")
+            joinColumns = @JoinColumn(name = "HeadOfPlanId")
     )
     private List<String> categories = new ArrayList<>();
 
     /**
-     * 개일일정(PlanEntity)를 생성하기 위한 생성자 (Category 제외)
+     * 개일일정(PersonalPlanEntity)를 생성하기 위한 생성자 (Category 제외)
      *
      * @param personalPlanEntity 개인일정을 만들기 위한 PersonalPlanEntity 타입의 매개변수
      * @param userEntity 어떤 유저의 일정인지 연관관계를 맻는 UserEntity 타입의 매개변수
      */
-    public PlanManagementEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity){
+    public HeadOfPlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity){
         if(userEntity != null && personalPlanEntity != null && this.teamPlanEntity == null) {
             this.userEntity = userEntity;
             this.personalPlanEntity = personalPlanEntity;
@@ -81,7 +81,7 @@ public class PlanManagementEntity {
      * @throws IllegalArgumentException List&#60;String&#62;타입의 categories가 null일경우
      * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생
      */
-    public PlanManagementEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity, List<String> categories){
+    public HeadOfPlanEntity(PersonalPlanEntity personalPlanEntity, UserEntity userEntity, List<String> categories){
         this(personalPlanEntity, userEntity);
         if(categories != null)
             this.categories = categories;
@@ -97,7 +97,7 @@ public class PlanManagementEntity {
      * @throws IllegalArgumentException TeamPlanEntity 혹은 UserEntity가 null일경우 발생
      * @author 정시원
      */
-    public PlanManagementEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
+    public HeadOfPlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity){
         if(userEntity != null && teamPlanEntity != null) { // null check 및 팀일정 과 단체일정이 중복되지 않도록
             this.userEntity = userEntity;
             this.teamPlanEntity = teamPlanEntity;
@@ -119,7 +119,7 @@ public class PlanManagementEntity {
      * @throws IllegalArgumentException List&#60;String&#62;타입의 categories가 null일경우
      * @author 정시원
      */
-    public PlanManagementEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity, List<String> categories){
+    public HeadOfPlanEntity(TeamPlanEntity teamPlanEntity, UserEntity userEntity, List<String> categories){
         this(teamPlanEntity, userEntity);
         if(categories != null)
             this.categories = categories;

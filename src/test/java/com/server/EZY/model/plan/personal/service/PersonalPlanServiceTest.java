@@ -2,7 +2,7 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
-import com.server.EZY.model.plan.planManagement.PlanManagementEntity;
+import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
@@ -92,7 +92,7 @@ class PersonalPlanServiceTest {
          * personalPlanService.savePersonalPlan 에 알맞는 param 값을 넘겨줍니다.
          * -> 수행 됐다면 result 에 저장된 Entity 값이 담기겠지요.
          */
-        PlanManagementEntity result = personalPlanService.savePersonalPlan(myPersonalPlan, personalPlanCategory);
+        HeadOfPlanEntity result = personalPlanService.savePersonalPlan(myPersonalPlan, personalPlanCategory);
 
         /**
          * Then
