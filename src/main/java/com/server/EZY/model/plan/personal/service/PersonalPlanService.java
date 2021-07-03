@@ -52,7 +52,7 @@ public class PersonalPlanService {
                     loginUserEntity,
                     personalPlanCategory
             );
-            // PlanEntity 에는 personalPlan 과의 연관관계가 맺어 있습니다. 그대로 save 요청합니다.
+            // HeadOfPlanEntity 에는 personalPlan 과의 연관관계가 맺어 있습니다. 그대로 save 요청합니다.
             savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntityWithCategory);
         }
         // savedPlanEntity return 해줍니다.
@@ -61,7 +61,7 @@ public class PersonalPlanService {
 
     /**
      * 이 메서드는 유저 엔티티를 넘겨주면 그 유저에 해당하는 모든 개인 일정을 조회합니다.
-     * @return PlanEntity
+     * @return HeadOfPlanEntity
      * @author 전지환
      */
     public List<HeadOfPlanEntity> getAllMyPersonalPlan(){
@@ -72,7 +72,7 @@ public class PersonalPlanService {
     /**
      * 이 메서드는 PersonalPlanId 를 넘겨주면 로그인 된 userEntity 와 PlanEntity 를 비교하여 조회합니다.
      * @param personalPlanId
-     * @return PlanEntity
+     * @return HeadOfPlanEntity
      * @author 전지환
      */
     public HeadOfPlanEntity getThisPersonalPlan(Long personalPlanId){
@@ -91,7 +91,7 @@ public class PersonalPlanService {
     public void updateThisPersonalPlan(Long personalPlanIdx, PersonalPlanUpdateDto personalPlanUpdateDto) throws Exception {
         // 현재 로그인 된 user 가져오기.
         Long currentUserIdx = currentUserUtil.getCurrentUser().getUserIdx();
-        // planEntity에 이 userIdx와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
+        // HeadOfPlanEntity에 이 userIdx와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
         headOfPlanRepository.findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(currentUserIdx, personalPlanIdx);
         // personalPlanIdx 넣어 조회하기.
         PersonalPlanEntity updatePersonalEntity = personalPlanRepository.findByPersonalPlanIdx(personalPlanIdx);
@@ -111,7 +111,7 @@ public class PersonalPlanService {
     public void deleteThisPersonalPlan(Long personalPlanIdx) throws Exception {
         // 현재 로그인 된 user 가져오기.
         Long currentUserIdx = currentUserUtil.getCurrentUser().getUserIdx();
-        // planEntity에 이 userIdx와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
+        // headOfPlanEntity에 이 userIdx와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
         HeadOfPlanEntity wannaDeletePersonalPlan = headOfPlanRepository.findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(currentUserIdx, personalPlanIdx);
         if(wannaDeletePersonalPlan != null) {
             // PersonalPlan 삭제하기
