@@ -1,5 +1,7 @@
 package com.server.EZY.model.plan.team.service;
 
+import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
+import com.server.EZY.model.plan.headOfPlan.repository.HeadOfPlanRepository;
 import com.server.EZY.model.plan.team.dto.TeamPlanDto;
 import com.server.EZY.model.plan.team.repository.TeamPlanRepository;
 import com.server.EZY.model.user.UserEntity;
@@ -35,6 +37,9 @@ class TeamPlanServiceTest {
     private TeamPlanService teamPlanService;
     @Autowired
     private TeamPlanRepository teamPlanRepository;
+    @Autowired
+    private HeadOfPlanRepository headOfPlanRepository;
+
 
     UserEntity teamLeaderEntity;
     @BeforeEach
@@ -80,10 +85,11 @@ class TeamPlanServiceTest {
                 .build();
 
         //when
-        teamPlanService.saveTeamPlan(teamPlan);
+        HeadOfPlanEntity saveTeamPlan = teamPlanService.saveTeamPlan(teamPlan);
 
         //Then
         assertEquals(true, teamPlanRepository.findByPlanName(teamPlan.getPlanName()) != null);
+        assertEquals(true, saveTeamPlan.getUserEntity().getNickname() == teamLeaderEntity.getNickname());
     }
 
 }
