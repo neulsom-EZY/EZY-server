@@ -2,7 +2,7 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
-import com.server.EZY.model.plan.plan.PlanEntity;
+import com.server.EZY.model.plan.planManagement.PlanManagementEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
@@ -16,7 +16,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -93,7 +92,7 @@ class PersonalPlanServiceTest {
          * personalPlanService.savePersonalPlan 에 알맞는 param 값을 넘겨줍니다.
          * -> 수행 됐다면 result 에 저장된 Entity 값이 담기겠지요.
          */
-        PlanEntity result = personalPlanService.savePersonalPlan(myPersonalPlan, personalPlanCategory);
+        PlanManagementEntity result = personalPlanService.savePersonalPlan(myPersonalPlan, personalPlanCategory);
 
         /**
          * Then

@@ -4,8 +4,8 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
-import com.server.EZY.model.plan.plan.PlanEntity;
-import com.server.EZY.model.plan.plan.repository.PlanRepository;
+import com.server.EZY.model.plan.planManagement.PlanManagementEntity;
+import com.server.EZY.model.plan.planManagement.repository.PlanRepository;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -30,33 +30,33 @@ public class PersonalPlanService {
      * @author 전지환
      */
     @Transactional
-    public PlanEntity savePersonalPlan(PersonalPlanDto myPersonalPlan, List<String> personalPlanCategory){
+    public PlanManagementEntity savePersonalPlan(PersonalPlanDto myPersonalPlan, List<String> personalPlanCategory){
         // 로그인된 userEntity를 불러옵니다.
         UserEntity loginUserEntity = currentUserUtil.getCurrentUser();
         // return 할 savedPlanEntity 필드를 메서드 내에서 전역 선언 합니다.
-        PlanEntity savedPlanEntity;
+        PlanManagementEntity savedPlanManagementEntity;
         /**
          * if -> category list 사이즈가 0 일때는 -> category 없는 planEntity 에 set 해줍니다.
          * else -> category list 사이즈가 > 0 일때 -> category 있는 planEntity 에 set 해줍니다.
          */
         if(personalPlanCategory.size() == 0){
-            PlanEntity planEntity = new PlanEntity(
+            PlanManagementEntity planManagementEntity = new PlanManagementEntity(
                     myPersonalPlan.toEntity(),
                     loginUserEntity
             );
             // PlanEntity 에는 personalPlan 과의 연관관계가 맺어 있습니다. 그대로 save 요청합니다.
-            savedPlanEntity = planRepository.save(planEntity);
+            savedPlanManagementEntity = planRepository.save(planManagementEntity);
         } else {
-            PlanEntity planEntityWithCategory = new PlanEntity(
+            PlanManagementEntity planManagementEntityWithCategory = new PlanManagementEntity(
                     myPersonalPlan.toEntity(),
                     loginUserEntity,
                     personalPlanCategory
             );
             // PlanEntity 에는 personalPlan 과의 연관관계가 맺어 있습니다. 그대로 save 요청합니다.
-            savedPlanEntity = planRepository.save(planEntityWithCategory);
+            savedPlanManagementEntity = planRepository.save(planManagementEntityWithCategory);
         }
         // savedPlanEntity return 해줍니다.
-        return savedPlanEntity;
+        return savedPlanManagementEntity;
     }
 
     /**
@@ -64,7 +64,7 @@ public class PersonalPlanService {
      * @return PlanEntity
      * @author 전지환
      */
-    public List<PlanEntity> getAllMyPersonalPlan(){
+    public List<PlanManagementEntity> getAllMyPersonalPlan(){
         UserEntity currentUserEntity = currentUserUtil.getCurrentUser();
         return planRepository.findAllPersonalPlanByUserEntity(currentUserEntity);
     }
@@ -75,7 +75,7 @@ public class PersonalPlanService {
      * @return PlanEntity
      * @author 전지환
      */
-    public PlanEntity getThisPersonalPlan(Long personalPlanId){
+    public PlanManagementEntity getThisPersonalPlan(Long personalPlanId){
         UserEntity currentUserEntity = currentUserUtil.getCurrentUser();
         return planRepository.findThisPlanByUserEntityAndPlanIdx(currentUserEntity, personalPlanId);
     }
@@ -112,7 +112,7 @@ public class PersonalPlanService {
         // 현재 로그인 된 user 가져오기.
         Long currentUserIdx = currentUserUtil.getCurrentUser().getUserIdx();
         // planEntity에 이 userIdx와 personalIdx를 and 로 넘겨 존재하는지 확인하기.
-        PlanEntity wannaDeletePersonalPlan = planRepository.findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(currentUserIdx, personalPlanIdx);
+        PlanManagementEntity wannaDeletePersonalPlan = planRepository.findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx(currentUserIdx, personalPlanIdx);
         if(wannaDeletePersonalPlan != null) {
             // PersonalPlan 삭제하기
             planRepository.delete(wannaDeletePersonalPlan);
