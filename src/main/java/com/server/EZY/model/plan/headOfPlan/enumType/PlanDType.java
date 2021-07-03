@@ -1,4 +1,4 @@
-package com.server.EZY.model.plan.plan.enumType;
+package com.server.EZY.model.plan.headOfPlan.enumType;
 
 public enum PlanDType {
     PERSONAL_PLAN, TEAM_PLAN;

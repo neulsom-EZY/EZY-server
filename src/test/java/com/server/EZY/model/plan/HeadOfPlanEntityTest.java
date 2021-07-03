@@ -1,14 +1,14 @@
 package com.server.EZY.model.plan;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.plan.plan.enumType.PlanDType;
-import com.server.EZY.model.plan.plan.PlanEntity;
+import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
+import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
-import com.server.EZY.model.plan.plan.repository.PlanRepository;
+import com.server.EZY.model.plan.headOfPlan.repository.HeadOfPlanRepository;
 import com.server.EZY.model.plan.team.repository.TeamPlanRepository;
 import com.server.EZY.model.user.repository.UserRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
@@ -22,10 +22,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class PlanEntityTest {
+class HeadOfPlanEntityTest {
 
     @Autowired UserRepository userRepo;
-    @Autowired PlanRepository planRepo;
+    @Autowired HeadOfPlanRepository headOfPlanRepository;
     @Autowired PersonalPlanRepository personalPlanRepo;
     @Autowired TeamPlanRepository teamPlanRepo;
 
@@ -65,27 +65,27 @@ class PlanEntityTest {
     }
 
 
-    @Test @DisplayName("PersonalPlan 를 통한 PlanEntity 생성 및 저장 테스트")
+    @Test @DisplayName("PersonalPlan 를 통한 HeadOfPlanEntity 생성 및 저장 테스트")
     void PlanEntity_PersonalPlanEntity_생성및저장_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
         UserEntity userEntity = userEntityInit();
 
         List<String> categories = Collections.singletonList("공부");
-        PlanEntity planEntity = new PlanEntity(
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(
                 personalPlanEntity
                 ,userEntity
                 ,categories
         );
 
         // When
-        PlanEntity savedPlanEntity = planRepo.save(planEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
 
-        UserEntity getUserEntity = savedPlanEntity.getUserEntity();
-        PlanDType getPlanDType = savedPlanEntity.getPlanDType();
-        PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
-        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
-        List<String> getCategories = savedPlanEntity.getCategories();
+        UserEntity getUserEntity = savedHeadOfPlanEntity.getUserEntity();
+        PlanDType getPlanDType = savedHeadOfPlanEntity.getPlanDType();
+        PersonalPlanEntity getPersonalPlanEntity = savedHeadOfPlanEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedHeadOfPlanEntity.getTeamPlanEntity();
+        List<String> getCategories = savedHeadOfPlanEntity.getCategories();
 
         // Then
         assertEquals(getUserEntity, userEntity);
@@ -95,7 +95,7 @@ class PlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들을 이용한 PlanEntity 생성자 Exception 검증")
+    @Test @DisplayName("PersonalPlanEntity, UserEntity, Categories 값들을 이용한 HeadOfPlanEntity 생성자 Exception 검증")
     void PersonalPlan를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
@@ -107,16 +107,16 @@ class PlanEntityTest {
         final List<String> CATEGORIES = Collections.singletonList(RandomString.make(10));
         // When
         Throwable planConstructException1 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullPersonalPlanEntity, userEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullPersonalPlanEntity, userEntity, CATEGORIES)
         );
         Throwable planConstructException2 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(personalPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(personalPlanEntity, nullUserEntity, CATEGORIES)
         );
         Throwable planConstructException3 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullPersonalPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullPersonalPlanEntity, nullUserEntity, CATEGORIES)
         );
         Throwable planConstructException4 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(personalPlanEntity, userEntity, null)
+                , () -> new HeadOfPlanEntity(personalPlanEntity, userEntity, null)
         );
 
         // Then
@@ -126,24 +126,24 @@ class PlanEntityTest {
         assertEquals(planConstructException4.getClass(), IllegalArgumentException.class);
     }
 
-    @Test @DisplayName("TeamPlanEntity 를 통한 PlanEntity 생성 및 저장 테스트")
+    @Test @DisplayName("TeamPlanEntity 를 통한 HeadOfPlanEntity 생성 및 저장 테스트")
     void PlanEntity_TeamPlanEntity_생성및저장_검증(){
         // Given
         UserEntity userAEntity = userEntityInit();
         TeamPlanEntity teamPlanEntity = teamPlanEntityInit(userAEntity);
 
         List<String> categories = Collections.singletonList("공부");
-        PlanEntity planEntity = new PlanEntity(teamPlanEntity, userAEntity, categories);
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(teamPlanEntity, userAEntity, categories);
 
         // When
-        PlanEntity savedPlanEntity = planRepo.save(planEntity);
+        HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
 
-        UserEntity getUserEntity = savedPlanEntity.getUserEntity();
-        PlanDType getPlanDType = savedPlanEntity.getPlanDType();
-        PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
-        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
-        UserEntity getTeamLeader = savedPlanEntity.getTeamPlanEntity().getTeamLeader();
-        List<String> getCategories = savedPlanEntity.getCategories();
+        UserEntity getUserEntity = savedHeadOfPlanEntity.getUserEntity();
+        PlanDType getPlanDType = savedHeadOfPlanEntity.getPlanDType();
+        PersonalPlanEntity getPersonalPlanEntity = savedHeadOfPlanEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedHeadOfPlanEntity.getTeamPlanEntity();
+        UserEntity getTeamLeader = savedHeadOfPlanEntity.getTeamPlanEntity().getTeamLeader();
+        List<String> getCategories = savedHeadOfPlanEntity.getCategories();
 
         // Then
         assertEquals(getUserEntity, userAEntity);
@@ -154,7 +154,7 @@ class PlanEntityTest {
         assertEquals(getCategories.get(0), categories.get(0));
     }
 
-    @Test @DisplayName("TeamPlanEntity, UserEntity, Categories 값들을 이용한 PlanEntity 생성자 Exception 검증")
+    @Test @DisplayName("TeamPlanEntity, UserEntity, Categories 값들을 이용한 HeadOfPlanEntity 생성자 Exception 검증")
     void TeamPlanEntity를_통해_PlanEntity생성시_null로_생성시_exception_검증(){
         // Given
         UserEntity userEntity = userEntityInit();
@@ -167,16 +167,16 @@ class PlanEntityTest {
 
         // When
         IllegalArgumentException planConstructException1 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullTeamPlanEntity, userEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullTeamPlanEntity, userEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException2 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(teamPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(teamPlanEntity, nullUserEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException3 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullTeamPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullTeamPlanEntity, nullUserEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException4 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(teamPlanEntity, userEntity, null)
+                , () -> new HeadOfPlanEntity(teamPlanEntity, userEntity, null)
         );
 
         // Then
