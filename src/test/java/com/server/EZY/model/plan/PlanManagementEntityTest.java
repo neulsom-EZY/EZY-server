@@ -1,14 +1,14 @@
 package com.server.EZY.model.plan;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.plan.plan.enumType.PlanDType;
-import com.server.EZY.model.plan.plan.PlanEntity;
+import com.server.EZY.model.plan.planManagement.PlanManagementEntity;
+import com.server.EZY.model.plan.planManagement.enumType.PlanDType;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
-import com.server.EZY.model.plan.plan.repository.PlanRepository;
+import com.server.EZY.model.plan.planManagement.repository.PlanRepository;
 import com.server.EZY.model.plan.team.repository.TeamPlanRepository;
 import com.server.EZY.model.user.repository.UserRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
@@ -22,7 +22,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class PlanEntityTest {
+class PlanManagementEntityTest {
 
     @Autowired UserRepository userRepo;
     @Autowired PlanRepository planRepo;
@@ -72,20 +72,20 @@ class PlanEntityTest {
         UserEntity userEntity = userEntityInit();
 
         List<String> categories = Collections.singletonList("공부");
-        PlanEntity planEntity = new PlanEntity(
+        PlanManagementEntity planManagementEntity = new PlanManagementEntity(
                 personalPlanEntity
                 ,userEntity
                 ,categories
         );
 
         // When
-        PlanEntity savedPlanEntity = planRepo.save(planEntity);
+        PlanManagementEntity savedPlanManagementEntity = planRepo.save(planManagementEntity);
 
-        UserEntity getUserEntity = savedPlanEntity.getUserEntity();
-        PlanDType getPlanDType = savedPlanEntity.getPlanDType();
-        PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
-        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
-        List<String> getCategories = savedPlanEntity.getCategories();
+        UserEntity getUserEntity = savedPlanManagementEntity.getUserEntity();
+        PlanDType getPlanDType = savedPlanManagementEntity.getPlanDType();
+        PersonalPlanEntity getPersonalPlanEntity = savedPlanManagementEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedPlanManagementEntity.getTeamPlanEntity();
+        List<String> getCategories = savedPlanManagementEntity.getCategories();
 
         // Then
         assertEquals(getUserEntity, userEntity);
@@ -107,16 +107,16 @@ class PlanEntityTest {
         final List<String> CATEGORIES = Collections.singletonList(RandomString.make(10));
         // When
         Throwable planConstructException1 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullPersonalPlanEntity, userEntity, CATEGORIES)
+                , () -> new PlanManagementEntity(nullPersonalPlanEntity, userEntity, CATEGORIES)
         );
         Throwable planConstructException2 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(personalPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new PlanManagementEntity(personalPlanEntity, nullUserEntity, CATEGORIES)
         );
         Throwable planConstructException3 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullPersonalPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new PlanManagementEntity(nullPersonalPlanEntity, nullUserEntity, CATEGORIES)
         );
         Throwable planConstructException4 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(personalPlanEntity, userEntity, null)
+                , () -> new PlanManagementEntity(personalPlanEntity, userEntity, null)
         );
 
         // Then
@@ -133,17 +133,17 @@ class PlanEntityTest {
         TeamPlanEntity teamPlanEntity = teamPlanEntityInit(userAEntity);
 
         List<String> categories = Collections.singletonList("공부");
-        PlanEntity planEntity = new PlanEntity(teamPlanEntity, userAEntity, categories);
+        PlanManagementEntity planManagementEntity = new PlanManagementEntity(teamPlanEntity, userAEntity, categories);
 
         // When
-        PlanEntity savedPlanEntity = planRepo.save(planEntity);
+        PlanManagementEntity savedPlanManagementEntity = planRepo.save(planManagementEntity);
 
-        UserEntity getUserEntity = savedPlanEntity.getUserEntity();
-        PlanDType getPlanDType = savedPlanEntity.getPlanDType();
-        PersonalPlanEntity getPersonalPlanEntity = savedPlanEntity.getPersonalPlanEntity();
-        TeamPlanEntity getTeamPlanEntity = savedPlanEntity.getTeamPlanEntity();
-        UserEntity getTeamLeader = savedPlanEntity.getTeamPlanEntity().getTeamLeader();
-        List<String> getCategories = savedPlanEntity.getCategories();
+        UserEntity getUserEntity = savedPlanManagementEntity.getUserEntity();
+        PlanDType getPlanDType = savedPlanManagementEntity.getPlanDType();
+        PersonalPlanEntity getPersonalPlanEntity = savedPlanManagementEntity.getPersonalPlanEntity();
+        TeamPlanEntity getTeamPlanEntity = savedPlanManagementEntity.getTeamPlanEntity();
+        UserEntity getTeamLeader = savedPlanManagementEntity.getTeamPlanEntity().getTeamLeader();
+        List<String> getCategories = savedPlanManagementEntity.getCategories();
 
         // Then
         assertEquals(getUserEntity, userAEntity);
@@ -167,16 +167,16 @@ class PlanEntityTest {
 
         // When
         IllegalArgumentException planConstructException1 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullTeamPlanEntity, userEntity, CATEGORIES)
+                , () -> new PlanManagementEntity(nullTeamPlanEntity, userEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException2 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(teamPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new PlanManagementEntity(teamPlanEntity, nullUserEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException3 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(nullTeamPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new PlanManagementEntity(nullTeamPlanEntity, nullUserEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException4 = assertThrows(IllegalArgumentException.class
-                , () -> new PlanEntity(teamPlanEntity, userEntity, null)
+                , () -> new PlanManagementEntity(teamPlanEntity, userEntity, null)
         );
 
         // Then
