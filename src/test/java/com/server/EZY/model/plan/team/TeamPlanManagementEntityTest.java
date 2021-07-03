@@ -1,14 +1,14 @@
 package com.server.EZY.model.plan.team;
 
+import com.server.EZY.model.plan.planManagement.PlanManagementEntity;
 import com.server.EZY.model.plan.team.dto.TeamPlanUpdateDto;
-import com.server.EZY.model.plan.plan.enumType.PlanDType;
-import com.server.EZY.model.plan.plan.PlanEntity;
+import com.server.EZY.model.plan.planManagement.enumType.PlanDType;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
-import com.server.EZY.model.plan.plan.repository.PlanRepository;
+import com.server.EZY.model.plan.planManagement.repository.PlanRepository;
 import com.server.EZY.model.plan.team.repository.TeamPlanRepository;
 import com.server.EZY.model.user.repository.UserRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Rollback(value = true) // update 쿼리 확인할떄 false
-class TeamPlanEntityTest {
+class TeamPlanManagementEntityTest {
 
     @Autowired UserRepository userRepo;
     @Autowired PlanRepository planRepo;
@@ -77,29 +77,29 @@ class TeamPlanEntityTest {
         UserEntity userA = userEntityInit();
         TeamPlanEntity userATeamPlan = teamPlanEntityInit(userA);
         PersonalPlanEntity userAPersonalPlan = personalPlanEntityInit();
-        List<PlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
-                new PlanEntity[]{new PlanEntity(userAPersonalPlan, userA), new PlanEntity(userATeamPlan, userA)})
+        List<PlanManagementEntity> userAPlans = new ArrayList<>(Arrays.asList(
+                new PlanManagementEntity[]{new PlanManagementEntity(userAPersonalPlan, userA), new PlanManagementEntity(userATeamPlan, userA)})
         );
         planRepo.saveAll(userAPlans);
 
 
         UserEntity userB = userEntityInit();
         TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
-        List<PlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
-                new PlanEntity[] {new PlanEntity(userABTeamPlan, userA), new PlanEntity(userABTeamPlan, userB)}
+        List<PlanManagementEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
+                new PlanManagementEntity[] {new PlanManagementEntity(userABTeamPlan, userA), new PlanManagementEntity(userABTeamPlan, userB)}
         ));
         planRepo.saveAll(ABTeamPlan);
 
         // When
-        List<PlanEntity> savedUserAPlans = planRepo.findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(userA);
+        List<PlanManagementEntity> savedUserAPlans = planRepo.findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(userA);
 
         int savedUserAPlansSize = savedUserAPlans.size();
-        PlanEntity savedUserAPlan = savedUserAPlans.get(0);
+        PlanManagementEntity savedUserAPlan = savedUserAPlans.get(0);
         TeamPlanEntity savedUserATeamPlan = savedUserAPlan.getTeamPlanEntity();
-        PlanEntity savedUserABPlan = savedUserAPlans.get(1);
+        PlanManagementEntity savedUserABPlan = savedUserAPlans.get(1);
         TeamPlanEntity savedUserABTeamPlan = savedUserABPlan.getTeamPlanEntity();
 
-        PlanEntity savedUserBPlan = planRepo.findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(userB).get(0);
+        PlanManagementEntity savedUserBPlan = planRepo.findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(userB).get(0);
 
 
         // Than
@@ -124,7 +124,7 @@ class TeamPlanEntityTest {
         // Given
         UserEntity userEntityTeamLeader = userEntityInit();
         TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(userEntityTeamLeader);
-        PlanEntity savedTeamPlan = planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, userEntityTeamLeader));
+        PlanManagementEntity savedTeamPlan = planRepo.saveAndFlush(new PlanManagementEntity(beforeUpdatedTeamPlanEntity, userEntityTeamLeader));
         em.clear();
 
         // When
@@ -155,15 +155,15 @@ class TeamPlanEntityTest {
         UserEntity teamLeader = userEntityInit();
         UserEntity teamMemberA = userEntityInit();
         TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(teamLeader);
-        planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamLeader));
-        PlanEntity savedMemberATeamPlanEntity = planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
+        planRepo.saveAndFlush(new PlanManagementEntity(beforeUpdatedTeamPlanEntity, teamLeader));
+        PlanManagementEntity savedMemberATeamPlanManagementEntity = planRepo.saveAndFlush(new PlanManagementEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
         em.clear();
 
         // When
-        savedMemberATeamPlanEntity = planRepo.getById(savedMemberATeamPlanEntity.getPlanIdx());
-        PlanEntity finalSavedMemberATeamPlanEntity = savedMemberATeamPlanEntity; // 람다에서는 final 혹은 원본값을 copy한 유사 final을 사용해야 하므로
+        savedMemberATeamPlanManagementEntity = planRepo.getById(savedMemberATeamPlanManagementEntity.getPlanIdx());
+        PlanManagementEntity finalSavedMemberATeamPlanManagementEntity = savedMemberATeamPlanManagementEntity; // 람다에서는 final 혹은 원본값을 copy한 유사 final을 사용해야 하므로
         Throwable savedTeamPlanException = assertThrows(Exception.class, () ->
-                finalSavedMemberATeamPlanEntity.getTeamPlanEntity().updateTeamPlan(
+                finalSavedMemberATeamPlanManagementEntity.getTeamPlanEntity().updateTeamPlan(
                         TeamPlanUpdateDto.builder()
                                 .planName("변경한 TeamPlan")
                                 .what("변경할 TeamPlan")
@@ -174,7 +174,7 @@ class TeamPlanEntityTest {
                         ,teamMemberA
                 )
         );
-        TeamPlanEntity updatedTeamPlanEntity = finalSavedMemberATeamPlanEntity.getTeamPlanEntity();
+        TeamPlanEntity updatedTeamPlanEntity = finalSavedMemberATeamPlanManagementEntity.getTeamPlanEntity();
 
         // Then
         assertEquals(savedTeamPlanException.getClass(), Exception.class);
@@ -191,17 +191,17 @@ class TeamPlanEntityTest {
         UserEntity teamLeader = userEntityInit();
         UserEntity teamMemberA = userEntityInit();
         TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(teamLeader);
-        planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamLeader));
-        PlanEntity savedMemberATeamPlanEntity = planRepo.saveAndFlush(new PlanEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
+        planRepo.saveAndFlush(new PlanManagementEntity(beforeUpdatedTeamPlanEntity, teamLeader));
+        PlanManagementEntity savedMemberATeamPlanManagementEntity = planRepo.saveAndFlush(new PlanManagementEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
         em.clear();
 
         // When
-        savedMemberATeamPlanEntity = planRepo.getById(savedMemberATeamPlanEntity.getPlanIdx());
-        planRepo.deleteById(savedMemberATeamPlanEntity.getPlanIdx());
+        savedMemberATeamPlanManagementEntity = planRepo.getById(savedMemberATeamPlanManagementEntity.getPlanIdx());
+        planRepo.deleteById(savedMemberATeamPlanManagementEntity.getPlanIdx());
 
-        PlanEntity finalSavedMemberATeamPlanEntity = savedMemberATeamPlanEntity; // 람다에서는 final 혹인 원본값을 copy한 유사 final을 사용해야 하므로
+        PlanManagementEntity finalSavedMemberATeamPlanManagementEntity = savedMemberATeamPlanManagementEntity; // 람다에서는 final 혹인 원본값을 copy한 유사 final을 사용해야 하므로
         Throwable deleteException = assertThrows(EmptyResultDataAccessException.class,
-                () -> planRepo.deleteById(finalSavedMemberATeamPlanEntity.getPlanIdx())
+                () -> planRepo.deleteById(finalSavedMemberATeamPlanManagementEntity.getPlanIdx())
         );
 
         // Then
