@@ -1,0 +1,3 @@
+user-not-found:
+  code: "-900"
+  msg: "User could not be found."

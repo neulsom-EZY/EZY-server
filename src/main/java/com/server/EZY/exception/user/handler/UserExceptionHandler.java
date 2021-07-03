@@ -33,6 +33,6 @@ public class UserExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
-        return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
+        return responseService.getFailResult(Integer.valueOf(getMessage("user-not-found.code")), getMessage("user-not-found.msg"));
     }
 }

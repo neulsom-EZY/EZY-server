@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/pwd-change").permitAll()//
                 .antMatchers("/v1/user/**").hasRole("CLIENT")//
                 .antMatchers("/h2-console/**/**").permitAll()
+                .antMatchers("/exception/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
