@@ -19,17 +19,17 @@ import java.util.ResourceBundle;
 public class MessageConfiguration implements WebMvcConfigurer {
 
     @Bean // 세션 지역설정
-    public SessionLocaleResolver localResolver_s(){
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.KOREAN);
-        return slr;
+    public SessionLocaleResolver sessionLocalResolver(){
+        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+        sessionLocaleResolver.setDefaultLocale(Locale.KOREAN);
+        return sessionLocaleResolver;
     }
 
     @Bean // 지역설정을 변경하는 인터셉터.
     public LocaleChangeInterceptor localeChangeInterceptor(){
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-        lci.setParamName("lang");
-        return lci;
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        return localeChangeInterceptor;
     }
 
     @Override // 인터셉터를 시스템 레지스트리에 등록
@@ -42,13 +42,13 @@ public class MessageConfiguration implements WebMvcConfigurer {
             @Value("${spring.messages.basename}") String basename,
             @Value("${spring.messages.encoding") String encoding
     ){
-        YamlMessageSource ms = new YamlMessageSource();
-        ms.setBasename(basename);
-        ms.setDefaultEncoding(encoding);
-        ms.setAlwaysUseMessageFormat(true);
-        ms.setUseCodeAsDefaultMessage(true);
-        ms.setFallbackToSystemLocale(true);
-        return ms;
+        YamlMessageSource ymlMessageSource = new YamlMessageSource();
+        ymlMessageSource.setBasename(basename);
+        ymlMessageSource.setDefaultEncoding(encoding);
+        ymlMessageSource.setAlwaysUseMessageFormat(true);
+        ymlMessageSource.setUseCodeAsDefaultMessage(true);
+        ymlMessageSource.setFallbackToSystemLocale(true);
+        return ymlMessageSource;
     }
 
     // locale 정보에 따라 다른 yml 파일을 읽도록 처리
