@@ -1,4 +1,4 @@
-package com.server.EZY.exceptionAdvice.token;
+package com.server.EZY.exception.token;
 
 public class InvalidTokenException extends RuntimeException{
     public InvalidTokenException(String msg, Throwable t){

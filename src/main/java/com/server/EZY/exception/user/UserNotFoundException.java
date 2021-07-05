@@ -1,4 +1,4 @@
-package com.server.EZY.exceptionAdvice.user;
+package com.server.EZY.exception.user;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(String msg, Throwable t){
