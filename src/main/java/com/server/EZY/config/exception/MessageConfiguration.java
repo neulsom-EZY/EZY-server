@@ -18,26 +18,18 @@ import java.util.ResourceBundle;
 @Configuration
 public class MessageConfiguration implements WebMvcConfigurer {
 
-    // locale 정보에 따라 다른 yml 파일을 읽도록 처리
-    private static class YamlMessageSource extends ResourceBundleMessageSource {
-        @Override
-        protected ResourceBundle doGetBundle(String basename, Locale locale) throws MissingResourceException {
-            return ResourceBundle.getBundle(basename, locale, YamlResourceBundle.Control.INSTANCE);
-        }
-    }
-
-    @Bean // 세션을 통해 지역을 설정한다.
+    @Bean // 세션 지역설정
     public SessionLocaleResolver localResolver_s(){
-        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.KOREAN);
-        return sessionLocaleResolver;
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.KOREAN);
+        return slr;
     }
 
     @Bean // 지역설정을 변경하는 인터셉터.
     public LocaleChangeInterceptor localeChangeInterceptor(){
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("lang");
-        return localeChangeInterceptor;
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
     }
 
     @Override // 인터셉터를 시스템 레지스트리에 등록
@@ -50,13 +42,20 @@ public class MessageConfiguration implements WebMvcConfigurer {
             @Value("${spring.messages.basename}") String basename,
             @Value("${spring.messages.encoding") String encoding
     ){
-        YamlMessageSource yamlMessageSource = new YamlMessageSource();
-        yamlMessageSource.setBasename(basename);
-        yamlMessageSource.setDefaultEncoding(encoding);
-        yamlMessageSource.setAlwaysUseMessageFormat(true);
-        yamlMessageSource.setUseCodeAsDefaultMessage(true);
-        yamlMessageSource.setFallbackToSystemLocale(true);
-        return yamlMessageSource;
+        YamlMessageSource ms = new YamlMessageSource();
+        ms.setBasename(basename);
+        ms.setDefaultEncoding(encoding);
+        ms.setAlwaysUseMessageFormat(true);
+        ms.setUseCodeAsDefaultMessage(true);
+        ms.setFallbackToSystemLocale(true);
+        return ms;
     }
 
+    // locale 정보에 따라 다른 yml 파일을 읽도록 처리
+    private static class YamlMessageSource extends ResourceBundleMessageSource {
+        @Override
+        protected ResourceBundle doGetBundle(String basename, Locale locale) throws MissingResourceException {
+            return ResourceBundle.getBundle(basename, locale, YamlResourceBundle.Control.INSTANCE);
+        }
+    }
 }
