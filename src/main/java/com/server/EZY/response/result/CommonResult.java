@@ -2,10 +2,12 @@ package com.server.EZY.response.result;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor @AllArgsConstructor @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class CommonResult {
 
     @ApiModelProperty("응답 성공여부")
