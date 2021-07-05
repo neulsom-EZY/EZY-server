@@ -1,5 +1,6 @@
 package com.server.EZY.exception;
 
+import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     public CommonResult accessTokenExpiredException(Exception ex) {
         log.debug("=== Access Token Expired Exception 발생 ===");
         return getExceptionResponseObj("access-token-expired");
+    }
+
+    @Override
+    public CommonResult invalidTokenException(InvalidTokenException ex) {
+        log.debug("=== invalidTokenException 발생 ===");
+        return getExceptionResponseObj("invalid-token-exception");
     }
 
 

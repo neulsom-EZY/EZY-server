@@ -1,6 +1,7 @@
 package com.server.EZY.exception;
 
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
+import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
@@ -22,4 +23,8 @@ public interface ExceptionAdvice {
     @ExceptionHandler(AccessTokenExpiredException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult accessTokenExpiredException(Exception ex);
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    CommonResult invalidTokenException(InvalidTokenException ex);
 }
