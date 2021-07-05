@@ -12,8 +12,8 @@ user-not-found:
 
 access-token-expired:
   code: "-800"
-  msg: "엑세스 토큰이 만료되었습니다."
+  msg: "액세스 토큰이 만료되었습니다."
 
 invalid-token-exception:
   code: "-810"
-  msg: "토큰이 잘못되었습니다."
+  msg: "토큰이 올바르지 않습니다."

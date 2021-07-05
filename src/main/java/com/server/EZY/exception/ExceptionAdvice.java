@@ -14,16 +14,19 @@ public interface ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     CommonResult defaultException(Exception ex);
 
-    //*** User Exceptions ***//
+    /*** User Exceptions ***/
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult userNotFoundException(Exception ex);
 
-    //*** Token Exceptions ***//
+    /*** Token Exceptions ***/
+    // 액세스 토큰이 만료되었습니다.
     @ExceptionHandler(AccessTokenExpiredException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult accessTokenExpiredException(Exception ex);
 
+    // 올바르지 않는 토큰
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult invalidTokenException(InvalidTokenException ex);
