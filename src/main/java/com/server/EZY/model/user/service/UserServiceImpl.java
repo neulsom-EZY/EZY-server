@@ -1,7 +1,7 @@
 package com.server.EZY.model.user.service;
 
 import com.server.EZY.exception.response.CustomException;
-import com.server.EZY.exception.user.UserNotFoundException;
+import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.repository.UserRepository;
