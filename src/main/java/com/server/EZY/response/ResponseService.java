@@ -29,7 +29,7 @@ public class ResponseService {
      * CommonResult setting method
      * @param result
      * @param commonResponse
-     * @return
+     * @return CommonResult - 성공/실패 응답 객체 반환
      * @author 정시원
      */
     private CommonResult setResponseResult(CommonResult result, CommonResponse commonResponse){
@@ -49,7 +49,7 @@ public class ResponseService {
     }
 
     /**
-     * 단일건의 데이터가 있는 결과객체 반환
+     * 단일건의 데이터가 있는 결과 객체 반환
      * @param data 단일 데이터
      * @param <T> 단일 데이터 타입
      * @return SingleResult - 단일건의 데이터가 있는 결과객체
@@ -61,7 +61,7 @@ public class ResponseService {
 
 
     /**
-     * 다중값의 데이터가 있는 결과객체 반환
+     * 다중값의 데이터가 있는 결과 객체 반환
      * @param list 다중 데이터
      * @param <T> 다중 데이터 타입
      * @return SingleResult - 다중값의 데이터가 있는 결과객체
@@ -72,18 +72,20 @@ public class ResponseService {
     }
 
     /**
-     * 반환값이 없는 실패결과 객체 반환
+     * 실패결과 객체 반환
      * @return CommonResult 실패결과 객체
+     * @author 정시원
      */
     public CommonResult getFailResult() {
         return setResponseResult(new CommonResult(), CommonResponse.FAIL);
     }
 
     /**
-     * 실패결과 커스텀 세팅객체 반환
+     * 커스텀 실패결과 객체 반환
      * @param code 반환할 code
      * @param msg 반환할 message
      * @return CommonResult - 실패결과 객체
+     * @author 정시원
      */
     public CommonResult getFailResult(int code, String msg) {
         CommonResult result = new CommonResult();
