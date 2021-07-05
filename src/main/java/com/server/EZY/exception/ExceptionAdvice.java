@@ -39,6 +39,13 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage(code + ".code")), getMessage(code + ".msg"));
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    private CommonResult defaultException(Exception ex){
+        log.info("=== UnknownException 발생 === \n{}", ex.getMessage());
+        return getExceptionResponse("unknown");
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private CommonResult userNotFoundException(Exception ex){
