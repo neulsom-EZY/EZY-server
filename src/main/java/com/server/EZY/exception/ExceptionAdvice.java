@@ -1,6 +1,6 @@
-package com.server.EZY.exceptionAdvice;
+package com.server.EZY.exception;
 
-import com.server.EZY.exceptionAdvice.user.UserNotFoundException;
+import com.server.EZY.exception.user.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
