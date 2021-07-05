@@ -2,13 +2,9 @@ unknown:
   code: "-9999"
   msg: "An unknown error occurred."
 
-### 유저(User) Exception ###
-
 user-not-found:
   code: "-900"
   msg: "User could not be found."
-
-### 토큰(Token) Exception ###"
 
 access-token-expired:
   code: "-800"
