@@ -1,7 +1,11 @@
 unknown:
   code: "-9999"
-  msg: "알 수 없는 에러가 발생했습니다. 서버에 문의해주세요"
+  msg: "An unknown error occurred."
 
 user-not-found:
   code: "-900"
   msg: "User could not be found."
+
+access-token-expired:
+  code: "-800"
+  msg: "The access token has expired."
