@@ -1,9 +1,10 @@
-package com.server.EZY.exception;
+package com.server.EZY.exceptionAdvice;
 
-import com.server.EZY.exception.user.UserNotFoundException;
+import com.server.EZY.exceptionAdvice.user.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionAdvice {
@@ -40,6 +42,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private CommonResult userNotFoundException(Exception ex){
+        log.debug("userNotFoundException");
         return getExceptionResponse("user-not-found");
     }
 
