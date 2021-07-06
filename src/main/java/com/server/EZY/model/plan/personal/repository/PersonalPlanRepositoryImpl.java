@@ -10,7 +10,7 @@ import static com.server.EZY.model.plan.headOfPlan.QHeadOfPlanEntity.headOfPlanE
 import java.util.List;
 
 @RequiredArgsConstructor
-public class PlanRepositoryImpl implements PlanRepositoryCustom{
+public class PersonalPlanRepositoryImpl implements PersonalPlanRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
