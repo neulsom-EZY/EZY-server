@@ -66,7 +66,7 @@ class ExceptionAdviceTest {
         return messageSource.getMessage(code + ".msg", null, locale);
     }
 
-    @Test @DisplayName("UserNotFoundException 검증")
+    @Test @DisplayName("DefaultException 검증")
     void DefaultException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
