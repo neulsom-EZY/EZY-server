@@ -2,6 +2,7 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.user.UserExceptionController;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 
@@ -56,7 +57,7 @@ class ExceptionAdviceTest {
     }
 
     void printResult(CommonResult commonResult_KO, CommonResult commonResult_EN) throws JsonProcessingException {
-        log.info("\n=== TEST result ===\n{}\n{}", getResult(commonResult_KO), getResult(commonResult_EN));
+        log.info("\n=== TEST result ===\nKO: {}\nEN: {}", getResult(commonResult_KO), getResult(commonResult_EN));
     }
 
     int getExceptionCode(String code, Locale locale){
@@ -119,4 +120,29 @@ class ExceptionAdviceTest {
         printResult(commonResult_KO, commonResult_EN);
     }
 
+    @Test @DisplayName("AccessTokenException 검증")
+    void AccessTokenException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN, Locale.KOREA);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN, Locale.ENGLISH);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN, Locale.KOREA);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.accessTokenExpiredException(new AccessTokenExpiredException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.accessTokenExpiredException(new AccessTokenExpiredException());
+
+        // Then
+        assertEquals(ACCESS_TOKEN_EXCEPTION_CODE_KO, ACCESS_TOKEN_EXCEPTION_CODE_EN);
+
+        assertEquals(ACCESS_TOKEN_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(ACCESS_TOKEN_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(ACCESS_TOKEN_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(ACCESS_TOKEN_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
 }

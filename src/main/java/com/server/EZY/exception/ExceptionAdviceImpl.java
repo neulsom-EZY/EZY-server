@@ -66,7 +66,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
 
     @Override
     public CommonResult invalidTokenException(InvalidTokenException ex) {
-        log.debug("=== invalidTokenException 발생 ===");
+        log.debug("=== Invalid Token Exception 발생 ===");
         return getExceptionResponseObj("invalid-token-exception");
     }
 
