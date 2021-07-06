@@ -1,7 +1,7 @@
 package com.server.EZY.model.user.service;
 
 import com.server.EZY.exception.response.CustomException;
-import com.server.EZY.exception.user.UserNotFoundException;
+import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.repository.UserRepository;
@@ -9,8 +9,6 @@ import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

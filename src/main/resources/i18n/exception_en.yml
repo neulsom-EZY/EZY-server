@@ -1,0 +1,15 @@
+unknown:
+  code: "-9999"
+  msg: "An unknown error occurred."
+
+user-not-found:
+  code: "-900"
+  msg: "User could not be found."
+
+access-token-expired:
+  code: "-800"
+  msg: "The access token has expired."
+
+invalid-token:
+  code: "-810"
+  msg: "The token invalid"

@@ -4,8 +4,8 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
-import com.server.EZY.model.plan.planManagement.PlanManagementEntity;
-import com.server.EZY.model.plan.planManagement.repository.PlanRepository;
+import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
+import com.server.EZY.model.plan.headOfPlan.repository.HeadOfPlanRepository;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Permission;
@@ -35,13 +35,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class PlanRepositorySupportTest {
+class HeadOfPlanRepositorySupportTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private PlanRepository planRepository;
+    private HeadOfPlanRepository headOfPlanRepository;
     @Autowired
     private PersonalPlanService personalPlanService;
     @Autowired
@@ -129,16 +129,16 @@ class PlanRepositorySupportTest {
         UserEntity userEntity_j = userEntity_지환();
         List<String> categories = Collections.singletonList("지환이와 데이트");
         // 태현이의 Plan을 12개 추가합니다.
-        List<PlanManagementEntity> planEntities = Stream.generate(
-                () -> new PlanManagementEntity(
+        List<HeadOfPlanEntity> planEntities = Stream.generate(
+                () -> new HeadOfPlanEntity(
                         personalPlanEntityInit(),
                         userEntity_t,
                         categories
                 )
         ).limit(12).collect(Collectors.toList());
         // 지환이의 Plan을 16개 추가합니다.
-        List<PlanManagementEntity> planEntities_2 = Stream.generate(
-                () -> new PlanManagementEntity(
+        List<HeadOfPlanEntity> planEntities_2 = Stream.generate(
+                () -> new HeadOfPlanEntity(
                         personalPlanEntityInit(),
                         userEntity_j,
                         categories
@@ -148,14 +148,14 @@ class PlanRepositorySupportTest {
          * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
          * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
          */
-        List<PlanManagementEntity> planManagementEntityList = planRepository.saveAll(planEntities);
-        List<PlanManagementEntity> planManagementEntityList_2 = planRepository.saveAll(planEntities_2);
+        List<HeadOfPlanEntity> headOfPlanEntityList = headOfPlanRepository.saveAll(planEntities);
+        List<HeadOfPlanEntity> headOfPlanEntityList_2 = headOfPlanRepository.saveAll(planEntities_2);
 
         /**
          * When
          * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
          */
-        List<PlanManagementEntity> allByUserId = planRepository.findAllPersonalPlanByUserEntity(userEntity_j);
+        List<HeadOfPlanEntity> allByUserId = headOfPlanRepository.findAllPersonalPlanByUserEntity(userEntity_j);
 
         /**
          * Then
@@ -177,16 +177,16 @@ class PlanRepositorySupportTest {
         UserEntity userEntity_j = userEntity_지환();
         List<String> categories = Collections.singletonList("지환이와 데이트");
         // BeforeEach 짱짱짱 Plan을 12개 추가합니다.
-        List<PlanManagementEntity> planEntities = Stream.generate(
-                () -> new PlanManagementEntity(
+        List<HeadOfPlanEntity> planEntities = Stream.generate(
+                () -> new HeadOfPlanEntity(
                         personalPlanEntityInit(),
                         beforeSavedUser,
                         categories
                 )
         ).limit(12).collect(Collectors.toList());
         // 지환이의 Plan을 16개 추가합니다.
-        List<PlanManagementEntity> planEntities_2 = Stream.generate(
-                () -> new PlanManagementEntity(
+        List<HeadOfPlanEntity> planEntities_2 = Stream.generate(
+                () -> new HeadOfPlanEntity(
                         personalPlanEntityInit(),
                         userEntity_j,
                         categories
@@ -196,14 +196,14 @@ class PlanRepositorySupportTest {
          * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
          * 2. planEntityList_2 는 지환이의 plan 16개를 save 합니다.
          */
-        List<PlanManagementEntity> planManagementEntityList = planRepository.saveAll(planEntities);
-        List<PlanManagementEntity> planManagementEntityList_2 = planRepository.saveAll(planEntities_2);
+        List<HeadOfPlanEntity> headOfPlanEntityList = headOfPlanRepository.saveAll(planEntities);
+        List<HeadOfPlanEntity> headOfPlanEntityList_2 = headOfPlanRepository.saveAll(planEntities_2);
 
         /**
          * When
          * 짱짱짱 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
          */
-        List<PlanManagementEntity> allMyPersonalPlan = personalPlanService.getAllMyPersonalPlan();
+        List<HeadOfPlanEntity> allMyPersonalPlan = personalPlanService.getAllMyPersonalPlan();
 
         /**
          * Then
@@ -226,13 +226,13 @@ class PlanRepositorySupportTest {
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
         List<String> categories_t = Collections.singletonList("태현이와 데이트");
 
-        PlanManagementEntity planManagementEntity_j = new PlanManagementEntity(
+        HeadOfPlanEntity headOfPlanEntity_j = new HeadOfPlanEntity(
                 personalPlanEntityInit(),
                 beforeSavedUser,
                 categories_j
         );
 
-        PlanManagementEntity planManagementEntity_t = new PlanManagementEntity(
+        HeadOfPlanEntity headOfPlanEntity_t = new HeadOfPlanEntity(
                 personalPlanEntityInit(),
                 userEntity_t,
                 categories_t
@@ -242,14 +242,14 @@ class PlanRepositorySupportTest {
          * 1. j_saved_plan 는 지환이의 일정을 save 합니다.
          * 2. t_saved_plan 는 태현이의 일정을 save 합니다.
          */
-        PlanManagementEntity j_saved_plan = planRepository.save(planManagementEntity_j);
-        PlanManagementEntity t_saved_plan = planRepository.save(planManagementEntity_t);
+        HeadOfPlanEntity j_saved_plan = headOfPlanRepository.save(headOfPlanEntity_j);
+        HeadOfPlanEntity t_saved_plan = headOfPlanRepository.save(headOfPlanEntity_t);
 
         /**
          * When
          * 지환이 유저 엔티티에 해당하는 모든 개인일정을 찾습니다.
          */
-        PlanManagementEntity getThisPlan = personalPlanService.getThisPersonalPlan(planManagementEntity_j.getPlanIdx());
+        HeadOfPlanEntity getThisPlan = personalPlanService.getThisPersonalPlan(headOfPlanEntity_j.getHeadOfPlanIdx());
 
         /**
          * Then
@@ -269,7 +269,7 @@ class PlanRepositorySupportTest {
         UserEntity userEntity_j = userEntity_지환();
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
 
-        PlanManagementEntity planManagementEntity_j = new PlanManagementEntity(
+        HeadOfPlanEntity headOfPlanEntity_j = new HeadOfPlanEntity(
                 personalPlanEntityInit(),
                 userEntity_j,
                 categories_j
@@ -278,7 +278,7 @@ class PlanRepositorySupportTest {
         /**
          * j_saved_plan은 지환이의 일정을 save 합니다.
          */
-        PlanManagementEntity j_saved_plan = planRepository.save(planManagementEntity_j);
+        HeadOfPlanEntity j_saved_plan = headOfPlanRepository.save(headOfPlanEntity_j);
 
         /**
          * 1. personalPlanUpdateDto 로 일정 변경사항을 세트합니다.
@@ -293,7 +293,7 @@ class PlanRepositorySupportTest {
                 .repeat(true)
                 .build();
 
-        personalPlanService.updateThisPersonalPlan(planManagementEntity_j.getPlanIdx(), personalPlanUpdateDto);
+        personalPlanService.updateThisPersonalPlan(headOfPlanEntity_j.getHeadOfPlanIdx(), personalPlanUpdateDto);
 
         /**
          * Then
@@ -318,7 +318,7 @@ class PlanRepositorySupportTest {
         // Save method에 넘겨줄 카테고리를 작성합니다.
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
         // Dto, Category 를 Save 로직에 넘겨줍니다.
-        PlanManagementEntity planManagementEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
+        HeadOfPlanEntity headOfPlanEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
         // Exception이 잘 catch 되는지 확인하기 위한 로직을 추가합니다.
         boolean exceptionCatched = false;
 
@@ -337,7 +337,7 @@ class PlanRepositorySupportTest {
                 .repeat(true)
                 .build();
 
-        personalPlanService.updateThisPersonalPlan(planManagementEntity.getPlanIdx(), personalPlanUpdateDto);
+        personalPlanService.updateThisPersonalPlan(headOfPlanEntity.getHeadOfPlanIdx(), personalPlanUpdateDto);
 
         try {
             personalPlanService.updateThisPersonalPlan(2L, personalPlanUpdateDto);
@@ -370,7 +370,7 @@ class PlanRepositorySupportTest {
         // Save method에 넘겨줄 카테고리를 작성합니다.
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
         // Dto, Category 를 Save 로직에 넘겨줍니다.
-        PlanManagementEntity planManagementEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
+        HeadOfPlanEntity headOfPlanEntity = personalPlanService.savePersonalPlan(myPersonalPlan, categories_j);
         // Exception이 잘 catch 되는지 확인하기 위한 로직을 추가합니다.
         boolean exceptionCatched = false;
 
@@ -379,7 +379,7 @@ class PlanRepositorySupportTest {
          * 1. deleteThisPersonalPlan에 방금 저장한 PlanEntity.getIdx를 넣는다.
          * 2. deleteThisPersonalPlan에 존재하지 않는 Idx를 넣는다.
          */
-        personalPlanService.deleteThisPersonalPlan(planManagementEntity.getPlanIdx());
+        personalPlanService.deleteThisPersonalPlan(headOfPlanEntity.getHeadOfPlanIdx());
         try {
             personalPlanService.deleteThisPersonalPlan(2L);
         } catch (Exception e){
