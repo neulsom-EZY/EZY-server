@@ -5,6 +5,6 @@ import com.server.EZY.model.user.UserEntity;
 
 import java.util.List;
 
-public interface TeamRepositoryCustom {
+public interface TeamPlanRepositoryCustom {
     List<HeadOfPlanEntity> findAllTeamPlanByUserEntity(UserEntity userEntity);
 }
