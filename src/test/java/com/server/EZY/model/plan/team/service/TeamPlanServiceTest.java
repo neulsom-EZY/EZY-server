@@ -2,12 +2,16 @@ package com.server.EZY.model.plan.team.service;
 
 import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
 import com.server.EZY.model.plan.headOfPlan.repository.HeadOfPlanRepository;
+import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.plan.team.dto.TeamPlanDto;
 import com.server.EZY.model.plan.team.repository.TeamPlanRepository;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
+import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.util.CurrentUserUtil;
+import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,15 +22,20 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Commit
 class TeamPlanServiceTest {
 
     @Autowired
@@ -39,7 +48,8 @@ class TeamPlanServiceTest {
     private TeamPlanRepository teamPlanRepository;
     @Autowired
     private HeadOfPlanRepository headOfPlanRepository;
-
+    @Autowired
+    private CurrentUserUtil currentUserUtil;
 
     UserEntity teamLeaderEntity;
     @BeforeEach
@@ -73,6 +83,29 @@ class TeamPlanServiceTest {
         System.out.println(context);
     }
 
+    // Test 편의를 위한 teamPlanEntity 생성
+    TeamPlanEntity teamPlanEntityInit(UserEntity leader){
+        return TeamPlanEntity.builder()
+                .teamLeader(leader)
+                .planName(RandomString.make(10))
+                .what(RandomString.make(20))
+                .when(Calendar.getInstance())
+                .where(RandomString.make(20))
+                .build();
+    }
+
+    // Test 편의를 위한 유저 생성 userEntityInit
+    UserEntity userEntityInit(){
+        UserEntity user = UserEntity.builder()
+                .nickname(RandomString.make(10))
+                .password(RandomString.make(10))
+                .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
+                .permission(Permission.PERMISSION)
+                .roles(Collections.singletonList(Role.ROLE_CLIENT))
+                .build();
+        return userRepository.save(user);
+    }
+
     @Test @DisplayName("팀 일정이 잘 저장 되나요?")
     public void 팀_일정_저장(){
         //Given
@@ -92,4 +125,37 @@ class TeamPlanServiceTest {
         assertEquals(true, saveTeamPlan.getUserEntity().getNickname() == teamLeaderEntity.getNickname());
     }
 
+    @Test @DisplayName("모든 내 팀 일정이 잘 조회 되나요?")
+    public void 팀_일정_전체_조회(){
+        /**
+         * Given
+         * 1. login user를 leader 로 저장
+         * 2. anotheruser를 2_leader 로 저장
+         */
+        UserEntity leader = currentUserUtil.getCurrentUser();
+        UserEntity anotherUser = userEntityInit();
+        // 내가 찾을 team_plan
+        List<HeadOfPlanEntity> teamPlanEntity = Stream.generate(
+                () -> new HeadOfPlanEntity(
+                        teamPlanEntityInit(leader),
+                        leader
+                                                )
+        ).limit(10).collect(Collectors.toList());
+        // 다른 사람의 team_plan
+        List<HeadOfPlanEntity> a_teamPlanEntity = Stream.generate(
+                () -> new HeadOfPlanEntity(
+                        teamPlanEntityInit(anotherUser),
+                        anotherUser
+                )
+        ).limit(12).collect(Collectors.toList());
+
+        headOfPlanRepository.saveAll(teamPlanEntity);
+        headOfPlanRepository.saveAll(a_teamPlanEntity);
+
+        // When
+        List<HeadOfPlanEntity> myTeamPlanList= teamPlanService.getAllMyTeamPlan();
+
+        // Then
+        assertEquals(10, myTeamPlanList.size());
+    }
 }
