@@ -55,6 +55,9 @@ dependencies {
 
 	// *** querydsl *** //
 	implementation 'com.querydsl:querydsl-jpa'
+
+	// *** 다국어 처리를 위한 yaml-resource-bundle *** //
+	implementation 'net.rakugakibox.util:yaml-resource-bundle:1.2'
 }
 
 test {

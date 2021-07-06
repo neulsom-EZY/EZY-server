@@ -1,4 +1,4 @@
-package com.server.EZY.exception.token;
+package com.server.EZY.exception.token.exception;
 
 public class AccessTokenExpiredException extends RuntimeException{
     public AccessTokenExpiredException(String msg, Throwable t){
