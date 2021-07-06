@@ -15,7 +15,7 @@ public interface ExceptionAdvice {
     String USER_NOT_FOUND = "user-not-found";
 
     String ACCESS_TOKEN = "access-token-expired";
-    String INVALID_TOKEN = "invalid-token-code";
+    String INVALID_TOKEN = "invalid-token";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

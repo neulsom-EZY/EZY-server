@@ -3,6 +3,7 @@ package com.server.EZY.exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
+import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.UserExceptionController;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 
@@ -142,6 +143,32 @@ class ExceptionAdviceTest {
 
         assertEquals(ACCESS_TOKEN_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
         assertEquals(ACCESS_TOKEN_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("InvalidException 검증")
+    void InvalidException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int INVALID_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_TOKEN, Locale.KOREA);
+        final int INVALID_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_TOKEN, Locale.ENGLISH);
+        final String INVALID_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_TOKEN, Locale.KOREA);
+        final String INVALID_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_TOKEN, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.invalidTokenException(new InvalidTokenException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.invalidTokenException(new InvalidTokenException());
+
+        // Then
+        assertEquals(INVALID_EXCEPTION_CODE_KO, INVALID_EXCEPTION_CODE_EN);
+
+        assertEquals(INVALID_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(INVALID_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(INVALID_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(INVALID_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }

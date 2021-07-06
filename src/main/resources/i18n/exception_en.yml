@@ -10,6 +10,6 @@ access-token-expired:
   code: "-800"
   msg: "The access token has expired."
 
-invalid-token-exception:
+invalid-token:
   code: "-810"
   msg: "The token invalid"
