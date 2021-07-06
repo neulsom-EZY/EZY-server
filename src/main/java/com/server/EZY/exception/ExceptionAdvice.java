@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface ExceptionAdvice {
+    
+    String DEFAULT_EXCEPTION = "unknown";
+
+    String USER_NOT_FOUND = "user-not-found";
+
+    String ACCESS_TOKEN = "access-token-expired";
+    String INVALID_TOKEN = "invalid-token-code";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -18,13 +25,13 @@ public interface ExceptionAdvice {
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult userNotFoundException(Exception ex);
+    CommonResult userNotFoundException(UserNotFoundException ex);
 
     /*** Token Exceptions ***/
     // 액세스 토큰이 만료되었습니다.
     @ExceptionHandler(AccessTokenExpiredException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    CommonResult accessTokenExpiredException(Exception ex);
+    CommonResult accessTokenExpiredException(AccessTokenExpiredException ex);
 
     // 올바르지 않는 토큰
     @ExceptionHandler(InvalidTokenException.class)

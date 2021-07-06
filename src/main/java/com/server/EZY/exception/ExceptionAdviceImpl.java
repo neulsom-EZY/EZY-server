@@ -1,6 +1,8 @@
 package com.server.EZY.exception;
 
+import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -51,13 +53,13 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
 
     // 유저를 찾을 수 없습니다.
     @Override
-    public CommonResult userNotFoundException(Exception ex){
+    public CommonResult userNotFoundException(UserNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj("user-not-found");
     }
 
     @Override
-    public CommonResult accessTokenExpiredException(Exception ex) {
+    public CommonResult accessTokenExpiredException(AccessTokenExpiredException ex) {
         log.debug("=== Access Token Expired Exception 발생 ===");
         return getExceptionResponseObj("access-token-expired");
     }
