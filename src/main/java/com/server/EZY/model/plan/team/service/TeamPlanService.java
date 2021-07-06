@@ -26,4 +26,10 @@ public class TeamPlanService {
         );
         return headOfPlanRepository.save(headOfPlanEntity);
     }
+
+    public HeadOfPlanEntity getAllMyTeamPlan(){
+        UserEntity getCurrentUser = currentUserUtil.getCurrentUser();
+
+        return null;
+    }
 }
