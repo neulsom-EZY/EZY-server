@@ -93,5 +93,30 @@ class ExceptionAdviceTest {
         printResult(commonResult_KO, commonResult_EN);
     }
 
+    @Test @DisplayName("UserNotFoundException 검증")
+    void UserNotFoundException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int USER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.USER_NOT_FOUND, Locale.KOREA);
+        final int USER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.USER_NOT_FOUND, Locale.ENGLISH);
+        final String USER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.USER_NOT_FOUND, Locale.KOREA);
+        final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.USER_NOT_FOUND, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.userNotFoundException(new UserNotFoundException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.userNotFoundException(new UserNotFoundException());
+
+        // Then
+        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);
+
+        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
 
 }
