@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Commit
 class TeamPlanServiceTest {
 
     @Autowired
@@ -156,5 +157,51 @@ class TeamPlanServiceTest {
 
         // Then
         assertEquals(10, myTeamPlanList.size());
+    }
+
+    @Test @DisplayName("이 팀 일정이 잘 조회 되나요?")
+    public void This_팀_일정_조회(){
+        /**
+         * Given
+         * 1. 로그인 된 사용자가 10개의 팀 일정을 생성한다.
+         * 2. 저장을 요청한다.
+         */
+        UserEntity leader = currentUserUtil.getCurrentUser();
+        UserEntity anotherUser = userEntityInit();
+        // 내가 찾을 team_plan
+        List<HeadOfPlanEntity> teamPlanEntity = Stream.generate(
+                () -> new HeadOfPlanEntity(
+                        leader,
+                        teamPlanEntityInit(leader)
+                )
+        ).limit(10).collect(Collectors.toList());
+
+        TeamPlanDto teamPlan = TeamPlanDto.builder()
+                .teamLeader(teamLeaderEntity)
+                .planName("지환이랑 태현이랑 시원이랑 한컷")
+                .what("인생네컷")
+                .when(Calendar.getInstance())
+                .where("동명동")
+                .build();
+
+        headOfPlanRepository.saveAll(teamPlanEntity);
+        HeadOfPlanEntity getThisTeamPlanIdx = teamPlanService.saveTeamPlan(teamPlan);
+
+
+        /**
+         * When
+         * 로그인 된 사용자가 해당 plan을 조회한다.
+         * 내가 실제로 찾고 싶은 TeamIdx 를 넣어 Plan을 찾는다.
+         */
+        HeadOfPlanEntity result = teamPlanService.getThisTeamPlan(2L);
+        HeadOfPlanEntity find_result = teamPlanService.getThisTeamPlan(getThisTeamPlanIdx.getHeadOfPlanIdx());
+
+        /**
+         * Then
+         * 1. 내가 찾고자 하는 TeamEntity 의 PlanName 이 내가 지정한 PlanName과 같습니까?
+         * 2. 내가 2L을 넣어 찾은 TeamEntity의 회원이 내가 로그인한 회원과 일치합니까?
+         */
+        assertEquals(true, find_result.getTeamPlanEntity().getPlanName() == "지환이랑 태현이랑 시원이랑 한컷");
+        assertEquals(true, result.getUserEntity() == leader);
     }
 }
