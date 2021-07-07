@@ -74,9 +74,9 @@ class HeadOfPlanEntityTest {
         List<String> categories = Collections.singletonList("공부");
         HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(
                 userEntity
-                        , personalPlanEntity
-                        ,categories
-                );
+                , personalPlanEntity
+                ,categories
+        );
 
         // When
         HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);

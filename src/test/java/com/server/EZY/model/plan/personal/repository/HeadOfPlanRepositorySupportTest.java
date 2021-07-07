@@ -133,16 +133,16 @@ class HeadOfPlanRepositorySupportTest {
                 () -> new HeadOfPlanEntity(
                         userEntity_t,
                         personalPlanEntityInit(),
-                                        categories
-                                )
+                        categories
+                )
         ).limit(12).collect(Collectors.toList());
         // 지환이의 Plan을 16개 추가합니다.
         List<HeadOfPlanEntity> planEntities_2 = Stream.generate(
                 () -> new HeadOfPlanEntity(
                         userEntity_j,
                         personalPlanEntityInit(),
-                                        categories
-                                )
+                        categories
+                )
         ).limit(16).collect(Collectors.toList());
         /**
          * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
@@ -181,16 +181,16 @@ class HeadOfPlanRepositorySupportTest {
                 () -> new HeadOfPlanEntity(
                         beforeSavedUser,
                         personalPlanEntityInit(),
-                                        categories
-                                )
+                        categories
+                )
         ).limit(12).collect(Collectors.toList());
         // 지환이의 Plan을 16개 추가합니다.
         List<HeadOfPlanEntity> planEntities_2 = Stream.generate(
                 () -> new HeadOfPlanEntity(
                         userEntity_j,
                         personalPlanEntityInit(),
-                                        categories
-                                )
+                        categories
+                )
         ).limit(16).collect(Collectors.toList());
         /**
          * 1. planEntityList 는 태현이의 plan 12개를 save 합니다.
@@ -229,15 +229,14 @@ class HeadOfPlanRepositorySupportTest {
         HeadOfPlanEntity headOfPlanEntity_j = new HeadOfPlanEntity(
                 beforeSavedUser,
                 personalPlanEntityInit(),
-                        categories_j
-                );
+                categories_j
+        );
 
         HeadOfPlanEntity headOfPlanEntity_t = new HeadOfPlanEntity(
                 userEntity_t,
                 personalPlanEntityInit(),
-                        categories_t
-                );
-
+                categories_t
+        );
         /**
          * 1. j_saved_plan 는 지환이의 일정을 save 합니다.
          * 2. t_saved_plan 는 태현이의 일정을 save 합니다.
@@ -272,8 +271,8 @@ class HeadOfPlanRepositorySupportTest {
         HeadOfPlanEntity headOfPlanEntity_j = new HeadOfPlanEntity(
                 userEntity_j,
                 personalPlanEntityInit(),
-                        categories_j
-                );
+                categories_j
+        );
 
         /**
          * j_saved_plan은 지환이의 일정을 save 합니다.

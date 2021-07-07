@@ -137,14 +137,14 @@ class TeamPlanServiceTest {
                 () -> new HeadOfPlanEntity(
                         leader,
                         teamPlanEntityInit(leader)
-                                                                )
+                )
         ).limit(10).collect(Collectors.toList());
         // 다른 사람의 team_plan
         List<HeadOfPlanEntity> a_teamPlanEntity = Stream.generate(
                 () -> new HeadOfPlanEntity(
                         anotherUser,
                         teamPlanEntityInit(anotherUser)
-                                )
+                )
         ).limit(12).collect(Collectors.toList());
 
         headOfPlanRepository.saveAll(teamPlanEntity);
