@@ -3,6 +3,7 @@ package com.server.EZY.exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
+import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
@@ -136,6 +137,32 @@ class ExceptionAdviceTest {
 
         assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
         assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("CustomUnauthorizedExceptio 검증")
+    void CustomNotFoundException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
+        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
+        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
+        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.notFoundException(new CustomNotFoundException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.notFoundException(new CustomNotFoundException());
+
+        // Then
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO, CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN);
+
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }

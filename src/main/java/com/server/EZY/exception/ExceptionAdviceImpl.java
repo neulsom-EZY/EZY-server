@@ -44,11 +44,8 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     // 알수없는 에러
     @Override
     public CommonResult defaultException(Exception ex){
-        log.debug("=== UnknownException 발생 === \n{}", ex.getMessage());
+        log.info("=== UnknownException 발생 === \n{}", ex.getStackTrace());
         CommonResult exceptionResponseObj = getExceptionResponseObj(DEFAULT_EXCEPTION);
-        exceptionResponseObj.setMassage(
-                exceptionResponseObj.getMassage() + " 원인: \n" + ex.getMessage()
-        );
         return exceptionResponseObj;
     }
 
