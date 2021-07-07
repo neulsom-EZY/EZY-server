@@ -44,4 +44,9 @@ public class TeamPlanService {
         UserEntity getCurrentUser = currentUserUtil.getCurrentUser();
         return headOfPlanRepository.findAllTeamPlanByUserEntity(getCurrentUser);
     }
+
+    public HeadOfPlanEntity getThisTeamPlan(Long planIdx){
+        UserEntity getCurrentUser = currentUserUtil.getCurrentUser();
+        return headOfPlanRepository.findThisTeamPlanByUserEntityAndHeadOfPlanIdx(getCurrentUser, planIdx);
+    }
 }
