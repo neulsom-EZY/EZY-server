@@ -2,6 +2,7 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
@@ -109,6 +110,32 @@ class ExceptionAdviceTest {
 
         assertEquals(CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
         assertEquals(CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("CustomUnauthorizedExceptio 검증")
+    void CustomForbiddenException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
+        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
+        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
+        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.forbiddenException(new CustomForbiddenException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.forbiddenException(new CustomForbiddenException());
+
+        // Then
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO, CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN);
+
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }
