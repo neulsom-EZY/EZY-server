@@ -28,11 +28,4 @@ public class BasicErrorController implements ErrorController {
             else if(statusCode == UNAUTHORIZED.value()) throw new CustomUnauthorizedException();
         }
     }
-
-    @GetMapping("/c")
-    public CommonResult unauthorizedException(){
-        throw new CustomUnauthorizedException();
-    }
-
-
 }
