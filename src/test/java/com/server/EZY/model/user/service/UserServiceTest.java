@@ -5,7 +5,7 @@ import com.server.EZY.model.user.controller.UserController;
 import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.model.user.util.CurrentUserUtil;
+import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
