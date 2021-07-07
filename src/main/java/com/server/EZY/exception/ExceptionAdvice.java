@@ -13,11 +13,11 @@ public interface ExceptionAdvice {
     
     String DEFAULT_EXCEPTION = "unknown";
 
-    String CUSTOM_NOTFOUND_EXCEPTION = "not-found";
+    String CUSTOM_404_NOT_FOUND = "not-found";
 
     String USER_NOT_FOUND = "user-not-found";
 
-    String ACCESS_TOKEN = "access-token-expired";
+    String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
 
     @ExceptionHandler(Exception.class)

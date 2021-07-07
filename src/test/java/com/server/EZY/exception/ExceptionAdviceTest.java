@@ -9,8 +9,6 @@ import com.server.EZY.exception.user.exception.UserNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +18,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -125,10 +116,10 @@ class ExceptionAdviceTest {
     void AccessTokenException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int ACCESS_TOKEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN, Locale.KOREA);
-        final int ACCESS_TOKEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN, Locale.ENGLISH);
-        final String ACCESS_TOKEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN, Locale.KOREA);
-        final String ACCESS_TOKEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN, Locale.ENGLISH);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.accessTokenExpiredException(new AccessTokenExpiredException());

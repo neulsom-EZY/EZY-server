@@ -43,11 +43,11 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     @Override
     public CommonResult defaultException(Exception ex){
         log.debug("=== UnknownException 발생 === \n{}", ex.getMessage());
-        CommonResult exceptionResponseObj = getExceptionResponseObj("user-not-found");
+        CommonResult exceptionResponseObj = getExceptionResponseObj(DEFAULT_EXCEPTION);
         exceptionResponseObj.setMassage(
                 exceptionResponseObj.getMassage() + " 원인: \n" + ex.getMessage()
         );
-        return getExceptionResponseObj("unknown");
+        return exceptionResponseObj;
     }
 
     /*** Custom Server Exception ***/
@@ -55,7 +55,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     @Override
     public CommonResult notFoundException(CustomNotFoundException ex) {
         log.debug("=== notFoundException 발생 ===");
-        return getExceptionResponseObj(CUSTOM_NOTFOUND_EXCEPTION);
+        return getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
     }
 
     /*** UserException ***/
@@ -64,19 +64,19 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     @Override
     public CommonResult userNotFoundException(UserNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
-        return getExceptionResponseObj("user-not-found");
+        return getExceptionResponseObj(USER_NOT_FOUND);
     }
 
     @Override
     public CommonResult accessTokenExpiredException(AccessTokenExpiredException ex) {
         log.debug("=== Access Token Expired Exception 발생 ===");
-        return getExceptionResponseObj("access-token-expired");
+        return getExceptionResponseObj(ACCESS_TOKEN_EXPIRED);
     }
 
     @Override
     public CommonResult invalidTokenException(InvalidTokenException ex) {
         log.debug("=== Invalid Token Exception 발생 ===");
-        return getExceptionResponseObj("invalid-token");
+        return getExceptionResponseObj(INVALID_TOKEN);
     }
 
 
