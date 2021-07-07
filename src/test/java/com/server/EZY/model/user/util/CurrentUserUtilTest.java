@@ -29,6 +29,10 @@ class CurrentUserUtilTest {
     private PasswordEncoder passwordEncoder;
 
 
+    /**
+     * currentUserUtil에 만든 getCurrentUserNickname 메서드가 잘 동작하는지 확인하는 메서드
+     * @author 배태현
+     */
     @Test
     public void currentUserNickname() {
         //given
@@ -56,6 +60,10 @@ class CurrentUserUtilTest {
         assertEquals("배태현", currentUserNickname);
     }
 
+    /**
+     * currentUserUtil에 만든 getCurrentUser메서드가 잘 작동하는지 확인하는 테스트
+     * @author 배태현
+     */
     @Test
     public void currentUser() {
         //given
