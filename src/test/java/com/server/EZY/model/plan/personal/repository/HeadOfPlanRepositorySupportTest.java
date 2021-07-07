@@ -131,16 +131,16 @@ class HeadOfPlanRepositorySupportTest {
         // 태현이의 Plan을 12개 추가합니다.
         List<HeadOfPlanEntity> planEntities = Stream.generate(
                 () -> new HeadOfPlanEntity(
-                        personalPlanEntityInit(),
                         userEntity_t,
+                        personalPlanEntityInit(),
                         categories
                 )
         ).limit(12).collect(Collectors.toList());
         // 지환이의 Plan을 16개 추가합니다.
         List<HeadOfPlanEntity> planEntities_2 = Stream.generate(
                 () -> new HeadOfPlanEntity(
-                        personalPlanEntityInit(),
                         userEntity_j,
+                        personalPlanEntityInit(),
                         categories
                 )
         ).limit(16).collect(Collectors.toList());
@@ -179,16 +179,16 @@ class HeadOfPlanRepositorySupportTest {
         // BeforeEach 짱짱짱 Plan을 12개 추가합니다.
         List<HeadOfPlanEntity> planEntities = Stream.generate(
                 () -> new HeadOfPlanEntity(
-                        personalPlanEntityInit(),
                         beforeSavedUser,
+                        personalPlanEntityInit(),
                         categories
                 )
         ).limit(12).collect(Collectors.toList());
         // 지환이의 Plan을 16개 추가합니다.
         List<HeadOfPlanEntity> planEntities_2 = Stream.generate(
                 () -> new HeadOfPlanEntity(
-                        personalPlanEntityInit(),
                         userEntity_j,
+                        personalPlanEntityInit(),
                         categories
                 )
         ).limit(16).collect(Collectors.toList());
@@ -227,14 +227,14 @@ class HeadOfPlanRepositorySupportTest {
         List<String> categories_t = Collections.singletonList("태현이와 데이트");
 
         HeadOfPlanEntity headOfPlanEntity_j = new HeadOfPlanEntity(
-                personalPlanEntityInit(),
                 beforeSavedUser,
+                personalPlanEntityInit(),
                 categories_j
         );
 
         HeadOfPlanEntity headOfPlanEntity_t = new HeadOfPlanEntity(
-                personalPlanEntityInit(),
                 userEntity_t,
+                personalPlanEntityInit(),
                 categories_t
         );
 
@@ -270,8 +270,8 @@ class HeadOfPlanRepositorySupportTest {
         List<String> categories_j = Collections.singletonList("지환이와 데이트");
 
         HeadOfPlanEntity headOfPlanEntity_j = new HeadOfPlanEntity(
-                personalPlanEntityInit(),
                 userEntity_j,
+                personalPlanEntityInit(),
                 categories_j
         );
 
