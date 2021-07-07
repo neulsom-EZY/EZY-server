@@ -2,6 +2,10 @@ unknown:
   code: "-9999"
   msg: "An unknown error occurred."
 
+not-found:
+  code: "-1"
+  msg: "API not exist."
+
 user-not-found:
   code: "-900"
   msg: "User could not be found."

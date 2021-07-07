@@ -1,5 +1,6 @@
 package com.server.EZY.exception;
 
+import com.server.EZY.exception.custom.exception.CustomNotFoundException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
@@ -41,7 +42,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     // 알수없는 에러
     @Override
     public CommonResult defaultException(Exception ex){
-        log.info("=== UnknownException 발생 === \n{}", ex.getMessage());
+        log.debug("=== UnknownException 발생 === \n{}", ex.getMessage());
         CommonResult exceptionResponseObj = getExceptionResponseObj("user-not-found");
         exceptionResponseObj.setMassage(
                 exceptionResponseObj.getMassage() + " 원인: \n" + ex.getMessage()
@@ -49,7 +50,15 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
         return getExceptionResponseObj("unknown");
     }
 
-    //*** UserException ***//
+    /*** Custom Server Exception ***/
+
+    @Override
+    public CommonResult notFoundException(CustomNotFoundException ex) {
+        log.debug("=== notFoundException 발생 ===");
+        return getExceptionResponseObj(CUSTOM_NOTFOUND_EXCEPTION);
+    }
+
+    /*** UserException ***/
 
     // 유저를 찾을 수 없습니다.
     @Override

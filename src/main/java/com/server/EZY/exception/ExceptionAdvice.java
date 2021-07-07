@@ -1,5 +1,6 @@
 package com.server.EZY.exception;
 
+import com.server.EZY.exception.custom.exception.CustomNotFoundException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
@@ -12,6 +13,8 @@ public interface ExceptionAdvice {
     
     String DEFAULT_EXCEPTION = "unknown";
 
+    String CUSTOM_NOTFOUND_EXCEPTION = "not-found";
+
     String USER_NOT_FOUND = "user-not-found";
 
     String ACCESS_TOKEN = "access-token-expired";
@@ -20,6 +23,12 @@ public interface ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     CommonResult defaultException(Exception ex);
+
+    /*** Custom Server Exception ***/
+
+    @ExceptionHandler(CustomNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    CommonResult notFoundException(CustomNotFoundException ex);
 
     /*** User Exceptions ***/
 
