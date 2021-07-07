@@ -1,8 +1,8 @@
-package com.server.EZY.exception.custom;
+package com.server.EZY.exception.customError;
 
-import com.server.EZY.exception.custom.exception.CustomForbiddenException;
-import com.server.EZY.exception.custom.exception.CustomNotFoundException;
-import com.server.EZY.exception.custom.exception.CustomUnauthorizedException;
+import com.server.EZY.exception.customError.exception.CustomForbiddenException;
+import com.server.EZY.exception.customError.exception.CustomNotFoundException;
+import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.GetMapping;

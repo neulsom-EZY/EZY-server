@@ -1,8 +1,8 @@
 package com.server.EZY.exception;
 
-import com.server.EZY.exception.custom.exception.CustomForbiddenException;
-import com.server.EZY.exception.custom.exception.CustomNotFoundException;
-import com.server.EZY.exception.custom.exception.CustomUnauthorizedException;
+import com.server.EZY.exception.customError.exception.CustomForbiddenException;
+import com.server.EZY.exception.customError.exception.CustomNotFoundException;
+import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;

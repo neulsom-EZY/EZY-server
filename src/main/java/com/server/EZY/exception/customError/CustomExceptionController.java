@@ -1,4 +1,4 @@
-package com.server.EZY.exception.custom;
+package com.server.EZY.exception.customError;
 
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.web.bind.annotation.RequestMapping;

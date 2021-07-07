@@ -1,4 +1,4 @@
-package com.server.EZY.exception.custom.exception;
+package com.server.EZY.exception.customError.exception;
 
 public class CustomUnauthorizedException extends RuntimeException{
     public CustomUnauthorizedException(String msg, Throwable t){

@@ -1,4 +1,4 @@
-package com.server.EZY.exception.custom.exception;
+package com.server.EZY.exception.customError.exception;
 
 public class CustomForbiddenException extends RuntimeException{
     public CustomForbiddenException(String msg, Throwable t){
