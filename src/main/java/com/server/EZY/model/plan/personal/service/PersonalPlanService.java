@@ -41,15 +41,15 @@ public class PersonalPlanService {
          */
         if(personalPlanCategory.size() == 0){
             HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(
-                    myPersonalPlan.toEntity(),
-                    loginUserEntity
-            );
+                    loginUserEntity,
+                    myPersonalPlan.toEntity()
+                        );
             // PlanEntity 에는 personalPlan 과의 연관관계가 맺어 있습니다. 그대로 save 요청합니다.
             savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
         } else {
             HeadOfPlanEntity headOfPlanEntityWithCategory = new HeadOfPlanEntity(
-                    myPersonalPlan.toEntity(),
                     loginUserEntity,
+                    myPersonalPlan.toEntity(),
                     personalPlanCategory
             );
             // HeadOfPlanEntity 에는 personalPlan 과의 연관관계가 맺어 있습니다. 그대로 save 요청합니다.
