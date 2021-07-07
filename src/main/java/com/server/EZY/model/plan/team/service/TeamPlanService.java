@@ -44,4 +44,15 @@ public class TeamPlanService {
         UserEntity getCurrentUser = currentUserUtil.getCurrentUser();
         return headOfPlanRepository.findAllTeamPlanByUserEntity(getCurrentUser);
     }
+
+    /**
+     * 이 메서드는 찾고자 하는 PlanIdx 를 넘겨주면 해당 TeamEntity를 조회합니다.
+     * @param planIdx
+     * @return HeadOfPlanEntity
+     * @author 전지환
+     */
+    public HeadOfPlanEntity getThisTeamPlan(Long planIdx){
+        UserEntity getCurrentUser = currentUserUtil.getCurrentUser();
+        return headOfPlanRepository.findThisTeamPlanByUserEntityAndHeadOfPlanIdx(getCurrentUser, planIdx);
+    }
 }
