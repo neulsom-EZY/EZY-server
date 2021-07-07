@@ -2,12 +2,16 @@ unknown:
   code: "-9999"
   msg: "An unknown error occurred."
 
-forbidden:
+unauthorized:
   code: "-1"
+  msg: "Credentials are not valid."
+
+forbidden:
+  code: "-2"
   msg: "You do not have access."
 
 not-found:
-  code: "-2"
+  code: "-3"
   msg: "API not exist."
 
 user-not-found:

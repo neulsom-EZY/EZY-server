@@ -2,6 +2,7 @@ package com.server.EZY.exception.custom;
 
 import com.server.EZY.exception.custom.exception.CustomForbiddenException;
 import com.server.EZY.exception.custom.exception.CustomNotFoundException;
+import com.server.EZY.exception.custom.exception.CustomUnauthorizedException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,13 @@ public class BasicErrorController implements ErrorController {
 
             if(statusCode == NOT_FOUND.value()) throw new CustomNotFoundException();
             else if(statusCode == FORBIDDEN.value()) throw new CustomForbiddenException();
+            else if(statusCode == UNAUTHORIZED.value()) throw new CustomUnauthorizedException();
         }
+    }
+
+    @GetMapping("/c")
+    public CommonResult unauthorizedException(){
+        throw new CustomUnauthorizedException();
     }
 
 

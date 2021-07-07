@@ -2,6 +2,7 @@ package com.server.EZY.exception;
 
 import com.server.EZY.exception.custom.exception.CustomForbiddenException;
 import com.server.EZY.exception.custom.exception.CustomNotFoundException;
+import com.server.EZY.exception.custom.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
@@ -54,15 +55,21 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     /*** Custom Server Exception ***/
 
     @Override
-    public CommonResult notFoundException(CustomNotFoundException ex) {
-        log.debug("=== notFound Exception 발생 ===");
-        return getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
+    public CommonResult unauthorized(CustomUnauthorizedException ex) {
+        log.debug("=== Unauthorized Exception 발생 ===");
+        return getExceptionResponseObj(CUSTOM_401_UNAUTHORIZED);
     }
 
     @Override
     public CommonResult forbiddenException(CustomForbiddenException ex) {
-        log.debug("=== forbidden Exception 발생 ===");
+        log.debug("=== Forbidden Exception 발생 ===");
         return getExceptionResponseObj(CUSTOM_403_FORBIDDEN);
+    }
+
+    @Override
+    public CommonResult notFoundException(CustomNotFoundException ex) {
+        log.debug("=== NotFound Exception 발생 ===");
+        return getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
     }
 
     /*** UserException ***/
