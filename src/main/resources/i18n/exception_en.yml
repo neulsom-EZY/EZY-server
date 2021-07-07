@@ -2,8 +2,12 @@ unknown:
   code: "-9999"
   msg: "An unknown error occurred."
 
-not-found:
+forbidden:
   code: "-1"
+  msg: "You do not have access."
+
+not-found:
+  code: "-2"
   msg: "API not exist."
 
 user-not-found:

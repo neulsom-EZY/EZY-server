@@ -2,8 +2,12 @@ unknown:
   code: "-9999"
   msg: "알 수 없는 오류가 발생했습니다."
 
-not-found:
+forbidden:
   code: "-1"
+  msg: "접근 권한이 없습니다."
+
+not-found:
+  code: "-2"
   msg: "API가 존재하지 않습니다."
 
 user-not-found:
