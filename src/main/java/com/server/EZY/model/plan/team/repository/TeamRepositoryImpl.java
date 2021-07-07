@@ -22,4 +22,15 @@ public class TeamRepositoryImpl implements TeamPlanRepositoryCustom {
                         headOfPlanEntity.planDType.eq(PlanDType.TEAM_PLAN)
                 ).fetch();
     }
+
+    @Override
+    public HeadOfPlanEntity findThisTeamPlanByUserEntityAndHeadOfPlanIdx(UserEntity userEntity, Long planIdx) {
+        return queryFactory
+                .selectFrom(headOfPlanEntity)
+                .where(
+                        headOfPlanEntity.userEntity.eq(userEntity),
+                        headOfPlanEntity.headOfPlanIdx.eq(planIdx),
+                        headOfPlanEntity.planDType.eq(PlanDType.TEAM_PLAN)
+                ).fetchOne();
+    }
 }
