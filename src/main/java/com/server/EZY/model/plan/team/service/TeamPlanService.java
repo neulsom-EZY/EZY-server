@@ -29,9 +29,9 @@ public class TeamPlanService {
         UserEntity getCurrentUser = currentUserUtil.getCurrentUser();
         // team 일정과 user를 세트.
         HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(
-                teamPlanDto.toEntity(),
-                getCurrentUser
-        );
+                getCurrentUser,
+                teamPlanDto.toEntity()
+                );
         return headOfPlanRepository.save(headOfPlanEntity);
     }
 
