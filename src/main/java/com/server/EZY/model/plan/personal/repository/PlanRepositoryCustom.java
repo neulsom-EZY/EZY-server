@@ -5,7 +5,7 @@ import com.server.EZY.model.user.UserEntity;
 
 import java.util.List;
 
-public interface PersonalPlanRepositoryCustom {
+public interface PlanRepositoryCustom {
     List<HeadOfPlanEntity> findAllPersonalPlanByUserEntity (UserEntity userEntity);
     HeadOfPlanEntity findThisPlanByUserEntityAndHeadOfPlanIdx(UserEntity userEntity, Long personalPlanId);
     HeadOfPlanEntity findPlanEntityByUserEntity_UserIdxAndPersonalPlanEntity_PersonalPlanIdx (Long userIdx, Long personalPlanIdx);
