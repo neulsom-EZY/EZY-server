@@ -78,7 +78,7 @@ class TeamHeadOfPlanEntityTest {
         TeamPlanEntity userATeamPlan = teamPlanEntityInit(userA);
         PersonalPlanEntity userAPersonalPlan = personalPlanEntityInit();
         List<HeadOfPlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
-                new HeadOfPlanEntity[]{new HeadOfPlanEntity(userAPersonalPlan, userA), new HeadOfPlanEntity(userATeamPlan, userA)})
+                new HeadOfPlanEntity[]{new HeadOfPlanEntity(userA, userAPersonalPlan), new HeadOfPlanEntity(userA, userATeamPlan)})
         );
         headOfPlanRepository.saveAll(userAPlans);
 
@@ -86,7 +86,7 @@ class TeamHeadOfPlanEntityTest {
         UserEntity userB = userEntityInit();
         TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
         List<HeadOfPlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
-                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userABTeamPlan, userA), new HeadOfPlanEntity(userABTeamPlan, userB)}
+                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userA, userABTeamPlan), new HeadOfPlanEntity(userB, userABTeamPlan)}
         ));
         headOfPlanRepository.saveAll(ABTeamPlan);
 
@@ -124,7 +124,7 @@ class TeamHeadOfPlanEntityTest {
         // Given
         UserEntity userEntityTeamLeader = userEntityInit();
         TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(userEntityTeamLeader);
-        HeadOfPlanEntity savedTeamPlan = headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(beforeUpdatedTeamPlanEntity, userEntityTeamLeader));
+        HeadOfPlanEntity savedTeamPlan = headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(userEntityTeamLeader, beforeUpdatedTeamPlanEntity));
         em.clear();
 
         // When
@@ -155,8 +155,8 @@ class TeamHeadOfPlanEntityTest {
         UserEntity teamLeader = userEntityInit();
         UserEntity teamMemberA = userEntityInit();
         TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(teamLeader);
-        headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(beforeUpdatedTeamPlanEntity, teamLeader));
-        HeadOfPlanEntity savedMemberATeamHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
+        headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(teamLeader, beforeUpdatedTeamPlanEntity));
+        HeadOfPlanEntity savedMemberATeamHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(teamMemberA, beforeUpdatedTeamPlanEntity));
         em.clear();
 
         // When
@@ -191,8 +191,8 @@ class TeamHeadOfPlanEntityTest {
         UserEntity teamLeader = userEntityInit();
         UserEntity teamMemberA = userEntityInit();
         TeamPlanEntity beforeUpdatedTeamPlanEntity = teamPlanEntityInit(teamLeader);
-        headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(beforeUpdatedTeamPlanEntity, teamLeader));
-        HeadOfPlanEntity savedMemberATeamHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(beforeUpdatedTeamPlanEntity, teamMemberA));
+        headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(teamLeader, beforeUpdatedTeamPlanEntity));
+        HeadOfPlanEntity savedMemberATeamHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(new HeadOfPlanEntity(teamMemberA, beforeUpdatedTeamPlanEntity));
         em.clear();
 
         // When

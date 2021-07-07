@@ -73,10 +73,10 @@ class HeadOfPlanEntityTest {
 
         List<String> categories = Collections.singletonList("공부");
         HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(
-                personalPlanEntity
-                ,userEntity
-                ,categories
-        );
+                userEntity
+                        , personalPlanEntity
+                        ,categories
+                );
 
         // When
         HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
@@ -107,16 +107,16 @@ class HeadOfPlanEntityTest {
         final List<String> CATEGORIES = Collections.singletonList(RandomString.make(10));
         // When
         Throwable planConstructException1 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(nullPersonalPlanEntity, userEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(userEntity, nullPersonalPlanEntity, CATEGORIES)
         );
         Throwable planConstructException2 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(personalPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullUserEntity, personalPlanEntity, CATEGORIES)
         );
         Throwable planConstructException3 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(nullPersonalPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullUserEntity, nullPersonalPlanEntity, CATEGORIES)
         );
         Throwable planConstructException4 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(personalPlanEntity, userEntity, null)
+                , () -> new HeadOfPlanEntity(userEntity, personalPlanEntity, null)
         );
 
         // Then
@@ -133,7 +133,7 @@ class HeadOfPlanEntityTest {
         TeamPlanEntity teamPlanEntity = teamPlanEntityInit(userAEntity);
 
         List<String> categories = Collections.singletonList("공부");
-        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(teamPlanEntity, userAEntity, categories);
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(userAEntity, teamPlanEntity, categories);
 
         // When
         HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
@@ -167,16 +167,16 @@ class HeadOfPlanEntityTest {
 
         // When
         IllegalArgumentException planConstructException1 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(nullTeamPlanEntity, userEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(userEntity, nullTeamPlanEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException2 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(teamPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullUserEntity, teamPlanEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException3 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(nullTeamPlanEntity, nullUserEntity, CATEGORIES)
+                , () -> new HeadOfPlanEntity(nullUserEntity, nullTeamPlanEntity, CATEGORIES)
         );
         IllegalArgumentException planConstructException4 = assertThrows(IllegalArgumentException.class
-                , () -> new HeadOfPlanEntity(teamPlanEntity, userEntity, null)
+                , () -> new HeadOfPlanEntity(userEntity, teamPlanEntity, null)
         );
 
         // Then

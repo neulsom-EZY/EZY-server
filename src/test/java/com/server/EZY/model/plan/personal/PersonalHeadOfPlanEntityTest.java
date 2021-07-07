@@ -81,10 +81,10 @@ class PersonalHeadOfPlanEntityTest {
 
         List<String> categories = Collections.singletonList("공부");
         HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(
-                personalPlanEntity
-                ,userEntity
-                ,categories
-        );
+                userEntity
+                        , personalPlanEntity
+                        ,categories
+                );
 
         // When
         HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.save(headOfPlanEntity);
@@ -110,14 +110,14 @@ class PersonalHeadOfPlanEntityTest {
         PersonalPlanEntity userAPersonalPlan1 = personalPlanEntityInit();
         PersonalPlanEntity userAPersonalPlan2 = personalPlanEntityInit();
         List<HeadOfPlanEntity> userAPlans = new ArrayList<>(Arrays.asList(
-                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userAPersonalPlan1, userA), new HeadOfPlanEntity(userAPersonalPlan2, userA)})
+                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userA, userAPersonalPlan1), new HeadOfPlanEntity(userA, userAPersonalPlan2)})
         );
         headOfPlanRepository.saveAll(userAPlans);
 
         UserEntity userB = userEntityInit();
         TeamPlanEntity userABTeamPlan = teamPlanEntityInit(userB);
         List<HeadOfPlanEntity> ABTeamPlan = new ArrayList<>(Arrays.asList(
-                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userABTeamPlan, userA), new HeadOfPlanEntity(userABTeamPlan, userB)}
+                new HeadOfPlanEntity[] {new HeadOfPlanEntity(userA, userABTeamPlan), new HeadOfPlanEntity(userB, userABTeamPlan)}
         ));
         headOfPlanRepository.saveAll(ABTeamPlan);
 
@@ -143,7 +143,7 @@ class PersonalHeadOfPlanEntityTest {
         // Given
         UserEntity userEntity = userEntityInit();
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
-        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(personalPlanEntity, userEntity);
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(userEntity, personalPlanEntity);
         HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(headOfPlanEntity);
         em.clear();
 
@@ -177,7 +177,7 @@ class PersonalHeadOfPlanEntityTest {
         // Given
         UserEntity userEntity = userEntityInit();
         PersonalPlanEntity personalPlanEntity = personalPlanEntityInit();
-        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(personalPlanEntity, userEntity);
+        HeadOfPlanEntity headOfPlanEntity = new HeadOfPlanEntity(userEntity, personalPlanEntity);
         HeadOfPlanEntity savedHeadOfPlanEntity = headOfPlanRepository.saveAndFlush(headOfPlanEntity);
         em.clear();
 
