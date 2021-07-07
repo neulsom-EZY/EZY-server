@@ -52,8 +52,8 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
         return exceptionResponseObj;
     }
 
-    /*** Custom Server Exception ***/
 
+    /*** Custom Server Exception ***/
     @Override
     public CommonResult unauthorized(CustomUnauthorizedException ex) {
         log.debug("=== Unauthorized Exception 발생 ===");
@@ -72,15 +72,15 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
         return getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
     }
 
-    /*** UserException ***/
 
-    // 유저를 찾을 수 없습니다.
+    /*** UserException ***/
     @Override
     public CommonResult userNotFoundException(UserNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj(USER_NOT_FOUND);
     }
 
+    /*** Token Exceptions ***/
     @Override
     public CommonResult accessTokenExpiredException(AccessTokenExpiredException ex) {
         log.debug("=== Access Token Expired Exception 발생 ===");

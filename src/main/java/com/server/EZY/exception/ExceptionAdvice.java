@@ -29,7 +29,6 @@ public interface ExceptionAdvice {
     CommonResult defaultException(Exception ex);
 
     /*** Custom Server Exception ***/
-
     @ExceptionHandler(CustomUnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult unauthorized(CustomUnauthorizedException ex);
@@ -41,11 +40,13 @@ public interface ExceptionAdvice {
     @ExceptionHandler(CustomNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult notFoundException(CustomNotFoundException ex);
-    /*** User Exceptions ***/
 
+
+    /*** User Exceptions ***/
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult userNotFoundException(UserNotFoundException ex);
+
 
     /*** Token Exceptions ***/
     // 액세스 토큰이 만료되었습니다.
