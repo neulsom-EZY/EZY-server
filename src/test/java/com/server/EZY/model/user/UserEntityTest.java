@@ -3,11 +3,13 @@ package com.server.EZY.model.user;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest // DataJpa만 Test 할것이다.
+@Import(QueryDslTestConfig.class)
 class UserEntityTest {
 
     @Autowired private UserRepository userRepo;

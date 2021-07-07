@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.errand;
 
-import com.fasterxml.jackson.databind.ser.std.CalendarSerializer;
 import com.server.EZY.model.plan.errand.dto.ErrandUpdateDto;
 import com.server.EZY.model.plan.errand.enumType.ResponseStatus;
 import com.server.EZY.model.plan.errand.repository.ErrandRepository;
@@ -8,13 +7,13 @@ import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Import;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -22,6 +21,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@Import(QueryDslTestConfig.class)
 class ErrandEntityTest {
 
     @Autowired UserRepository userRepo;
