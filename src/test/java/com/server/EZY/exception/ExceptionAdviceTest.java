@@ -2,6 +2,9 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.EZY.exception.customError.exception.CustomForbiddenException;
+import com.server.EZY.exception.customError.exception.CustomNotFoundException;
+import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.UserExceptionController;
@@ -9,8 +12,6 @@ import com.server.EZY.exception.user.exception.UserNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +21,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -95,6 +89,84 @@ class ExceptionAdviceTest {
         printResult(commonResult_KO, commonResult_EN);
     }
 
+    @Test @DisplayName("CustomUnauthorizedExceptio 검증")
+    void CustomUnauthorizedException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.KOREA);
+        final int CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.ENGLISH);
+        final String CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.KOREA);
+        final String CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.unauthorized(new CustomUnauthorizedException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.unauthorized(new CustomUnauthorizedException());
+
+        // Then
+        assertEquals(CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_KO, CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_EN);
+
+        assertEquals(CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("CustomUnauthorizedExceptio 검증")
+    void CustomForbiddenException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
+        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
+        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
+        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.forbiddenException(new CustomForbiddenException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.forbiddenException(new CustomForbiddenException());
+
+        // Then
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO, CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN);
+
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(CUSTOM_FORBIDDEN_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("CustomUnauthorizedExceptio 검증")
+    void CustomNotFoundException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
+        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
+        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
+        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.notFoundException(new CustomNotFoundException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.notFoundException(new CustomNotFoundException());
+
+        // Then
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO, CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN);
+
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(CUSTOM_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
     @Test @DisplayName("UserNotFoundException 검증")
     void UserNotFoundException_검증() throws Exception {
         // Given
@@ -125,10 +197,10 @@ class ExceptionAdviceTest {
     void AccessTokenException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int ACCESS_TOKEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN, Locale.KOREA);
-        final int ACCESS_TOKEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN, Locale.ENGLISH);
-        final String ACCESS_TOKEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN, Locale.KOREA);
-        final String ACCESS_TOKEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN, Locale.ENGLISH);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.accessTokenExpiredException(new AccessTokenExpiredException());
