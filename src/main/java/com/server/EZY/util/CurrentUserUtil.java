@@ -1,4 +1,4 @@
-package com.server.EZY.model.user.util;
+package com.server.EZY.util;
 
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.repository.UserRepository;
