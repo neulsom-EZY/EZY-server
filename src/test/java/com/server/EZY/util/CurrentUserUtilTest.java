@@ -1,9 +1,10 @@
-package com.server.EZY.model.user.util;
+package com.server.EZY.util;
 
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

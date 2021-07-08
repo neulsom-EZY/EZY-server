@@ -10,7 +10,7 @@ import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.model.user.util.CurrentUserUtil;
+import com.server.EZY.util.CurrentUserUtil;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
