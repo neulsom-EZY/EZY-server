@@ -1,9 +1,10 @@
-package com.server.EZY.model.user.util;
+package com.server.EZY.util;
 
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
 import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
+@Transactional
 class CurrentUserUtilTest {
 
     @Autowired
