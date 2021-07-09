@@ -30,4 +30,15 @@ class ResponseServiceTest {
         assertEquals("실패하였습니다.", FAIL_MSG);
         assertEquals(1, FAIL_CODE);
     }
+
+    @Test @DisplayName("getSuccessResult 테스트")
+    void getSuccessResult_테스트(){
+        // Given When
+        CommonResult successResult = responseService.getSuccessResult();
+
+        // Then
+        assertEquals(true, successResult.isSuccess());
+        assertEquals(SUCCESS_MSG, successResult.getMassage());
+        assertEquals(SUCCESS_CODE, successResult.getCode());
+    }
 }
