@@ -2,6 +2,7 @@ package com.server.EZY.response;
 
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.response.result.ListResult;
+import com.server.EZY.response.result.SingleResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,23 @@ class ResponseServiceTest {
         assertEquals(false, successResult.isSuccess());
         assertEquals(FAIL_MSG, successResult.getMassage());
         assertEquals(FAIL_CODE, successResult.getCode());
+    }
+
+    @Test @DisplayName("getSingleResult 테스트")
+    void getSingleResult_테스트(){
+        //Given
+        String givenData = "정시원";
+
+        //When
+        SingleResult<String> singleResult = responseService.getSingleResult(givenData);
+
+        //Then
+        assertEquals(true, singleResult.isSuccess());
+        assertEquals(SUCCESS_CODE, singleResult.getCode());
+        assertEquals(SUCCESS_MSG, singleResult.getMassage());
+        assertEquals(givenData, singleResult.getData());
+
+        log.debug("SingleResult = {}", singleResult.getData());
     }
 
     @Test @DisplayName("getListResult 테스트")
