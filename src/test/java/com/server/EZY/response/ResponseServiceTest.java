@@ -28,7 +28,7 @@ class ResponseServiceTest {
     @Test @DisplayName("\"ResponseService.CommonResponse 실패시 message, code 검증")
     void CommonResponse_실패_message_code_검증(){
         assertEquals("실패하였습니다.", FAIL_MSG);
-        assertEquals(1, FAIL_CODE);
+        assertEquals(-1, FAIL_CODE);
     }
 
     @Test @DisplayName("getSuccessResult 테스트")
