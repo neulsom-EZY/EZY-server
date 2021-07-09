@@ -1,13 +1,18 @@
 package com.server.EZY.response;
 
 import com.server.EZY.response.result.CommonResult;
+import com.server.EZY.response.result.ListResult;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @SpringBootTest
 class ResponseServiceTest {
 
@@ -51,5 +56,22 @@ class ResponseServiceTest {
         assertEquals(false, successResult.isSuccess());
         assertEquals(FAIL_MSG, successResult.getMassage());
         assertEquals(FAIL_CODE, successResult.getCode());
+    }
+
+    @Test @DisplayName("getListResult 테스트")
+    void getListResult_테스트(){
+        //Given
+        List<String> givenData = List.of(new String[]{"배태현, 전지환, 정시원"});
+
+        //When
+        ListResult<String> listResult = responseService.getListResult(givenData);
+
+        //Then
+        assertEquals(true, listResult.isSuccess());
+        assertEquals(SUCCESS_CODE, listResult.getCode());
+        assertEquals(SUCCESS_MSG, listResult.getMassage());
+        assertEquals(givenData, listResult.getList());
+
+        log.debug("ListResult = {}", listResult.getList());
     }
 }
