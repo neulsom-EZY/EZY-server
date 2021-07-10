@@ -13,7 +13,7 @@ public class ResponseService {
 
     @Getter
     public enum CommonResponse{
-        SUCCESS(200, "성공하였습니다."),
+        SUCCESS(1, "성공하였습니다."),
         FAIL(-1, "실패하였습니다.");
 
         int code;
