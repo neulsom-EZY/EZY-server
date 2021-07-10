@@ -4,6 +4,8 @@ plugins {
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
 	id 'jacoco'
+	// *** Q-Type error 때문에 추가 *** //
+	id "io.franzbecker.gradle-lombok" version "3.0.0"
 }
 
 group = 'com.server'
