@@ -1,5 +1,7 @@
 package com.server.EZY.model.plan.headOfPlan.service;
 
+import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
+import com.server.EZY.model.plan.headOfPlan.repository.HeadOfPlanRepository;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.UserEntity;
@@ -9,6 +11,7 @@ import com.server.EZY.model.user.repository.UserRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,16 +23,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
 class HeadOfPlanServiceTest {
+
+    UserEntity teamLeader;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HeadOfPlanRepository headOfPlanRepository;
 
     @BeforeEach
     @DisplayName("원활한 테스트를 위해서 임시적으로 토큰을 발급해주는 메서드")
@@ -45,7 +55,7 @@ class HeadOfPlanServiceTest {
                 .build();
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        teamLeader = userRepository.save(userDto.toEntity());
         System.out.println("======== saved =========");
 
         /**
@@ -81,5 +91,20 @@ class HeadOfPlanServiceTest {
                 .when(Calendar.getInstance())
                 .where(RandomString.make(20))
                 .build();
+    }
+
+    @Test @DisplayName("일정을 모두 가져와 주나요?")
+    public void HOD_일정_모두_가져오기(){
+        PersonalPlanEntity personalPlanEntitySaved = personalPlanEntityInit();
+        TeamPlanEntity teamPlanEntitySaved = teamPlanEntityInit(teamLeader);
+
+        List<HeadOfPlanEntity> personalPlanEntitySaving = Stream.generate(
+                () -> new HeadOfPlanEntity(
+                        teamLeader,
+                        personalPlanEntitySaved
+                )
+        ).limit(20).collect(Collectors.toList());
+
+        List<HeadOfPlanEntity> successSavedPersonal = headOfPlanRepository.saveAll(personalPlanEntitySaving);
     }
 }
