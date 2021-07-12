@@ -26,8 +26,14 @@ public class CertifiedUserController {
      */
     @PostMapping("/phoneNumber")
     @ResponseStatus( HttpStatus.OK )
-    public Boolean validPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
-        return userService.validPhoneNumber(phoneNumberDto);
+    public String sendAuthKey(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
+        return userService.sendAuthKey(phoneNumberDto);
+    }
+
+    @PostMapping("/check/phoneNumber")
+    @ResponseStatus( HttpStatus.OK )
+    public String validAuthKey(String key) {
+        return userService.validAuthKey(key);
     }
 
     /**

@@ -6,8 +6,13 @@ import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
+import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +30,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
+    private final KeyUtil keyUtil;
+
+    @Value("${sms.api.apikey}")
+    private String apiKey;
+
+    @Value("${sms.api.apiSecret}")
+    private String apiSecret;
 
     @Override
     public String signup(UserDto userDto) {
@@ -83,10 +95,40 @@ public class UserServiceImpl implements UserService {
      * @author 배태현
      */
     @Override
-    public Boolean validPhoneNumber(PhoneNumberDto phoneNumberDto) {
+    public String sendAuthKey(PhoneNumberDto phoneNumberDto) {
         UserEntity findByPhoneNumber = userRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber());
         if (findByPhoneNumber == null) throw new UserNotFoundException();
-        else return true;
+
+        String authKey = keyUtil.getKey(4);
+        redisUtil.setDataExpire(authKey, findByPhoneNumber.getNickname(), 60 * 30L);
+
+        Message coolsms = new Message(apiKey, apiSecret);
+        HashMap<String, String> params = new HashMap<String, String>();
+
+        params.put("to", phoneNumberDto.getPhoneNumber());
+        params.put("from", "01049977055");
+        params.put("type", "SMS");
+        params.put("text", "[EZY] 인증번호 "+authKey+" 를 입력하세요.");
+        params.put("app_version", "test app 1.2");
+
+        try {
+            JSONObject obj = (JSONObject) coolsms.send(params);
+            System.out.println(obj.toString());
+            return phoneNumberDto.getPhoneNumber() + "로 인증번호 전송 완료";
+        } catch (CoolsmsException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCode());
+        }
+        return phoneNumberDto.getPhoneNumber() + "로 인증번호 전송 완료";
+    }
+
+    @Override
+    public String validAuthKey(String key) {
+        String username = redisUtil.getData(key);
+        UserEntity findUser = userRepository.findByNickname(username);
+        if (findUser == null) throw new UserNotFoundException();
+        redisUtil.deleteData(key);
+        return username + "님 휴대전화 인증 완료";
     }
 
     /**
