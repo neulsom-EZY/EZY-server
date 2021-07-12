@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
 
     private long KEY_EXPIRATION_TIME = 60 * 30L;
 
+    private long REDIS_EXPIRATION_TIME = 360000 * 1000l* 24 * 180;
+
     @Override
     public String signup(UserDto userDto) {
         if(!userRepository.existsByNickname(userDto.getNickname())){
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
         redisUtil.deleteData(loginDto.getNickname()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
-        redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, 360000 * 1000l* 24 * 180);
+        redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, REDIS_EXPIRATION_TIME);
         Map<String ,String> map = new HashMap<>();
         map.put("nickname", loginDto.getNickname());
         map.put("accessToken", "Bearer " + accessToken); // accessToken 반환
