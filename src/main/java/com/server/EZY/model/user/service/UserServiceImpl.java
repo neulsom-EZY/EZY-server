@@ -38,6 +38,8 @@ public class UserServiceImpl implements UserService {
     @Value("${sms.api.apiSecret}")
     private String apiSecret;
 
+    private long KEY_EXPIRATION_TIME = 60 * 30L;
+
     @Override
     public String signup(UserDto userDto) {
         if(!userRepository.existsByNickname(userDto.getNickname())){
@@ -100,7 +102,7 @@ public class UserServiceImpl implements UserService {
         if (findByPhoneNumber == null) throw new UserNotFoundException();
 
         String authKey = keyUtil.getKey(4);
-        redisUtil.setDataExpire(authKey, findByPhoneNumber.getNickname(), 60 * 30L);
+        redisUtil.setDataExpire(authKey, findByPhoneNumber.getNickname(), KEY_EXPIRATION_TIME);
 
         Message coolsms = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();
