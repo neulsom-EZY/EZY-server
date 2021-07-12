@@ -134,7 +134,7 @@ jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			// 룰을 키고 끌 수 있다.
-			enabled = false
+			enabled = true
 
 			// 룰을 체크할 단위
 			element = 'BUNDLE'
