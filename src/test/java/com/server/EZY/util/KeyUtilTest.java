@@ -17,6 +17,6 @@ class KeyUtilTest {
     public void KeyTest() {
         String randomKey = keyUtil.getKey(4);
         System.out.println("randomKey = " + randomKey);
-        assertTrue(randomKey!=null, "true");
+        assertTrue(randomKey!=null);
     }
 }
