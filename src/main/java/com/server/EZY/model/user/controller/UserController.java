@@ -1,9 +1,13 @@
 package com.server.EZY.model.user.controller;
 
 import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.NicknameDto;
 import com.server.EZY.model.user.dto.PasswordChangeDto;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.service.UserService;
+import com.server.EZY.response.ResponseService;
+import com.server.EZY.response.result.CommonResult;
+import com.server.EZY.response.result.SingleResult;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +20,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/member")
 public class UserController {
+
     private final UserService userService;
+    private final ResponseService responseService;
 
     /**
      * 회원가입 controller
@@ -27,8 +33,9 @@ public class UserController {
      */
     @PostMapping("/signup")
     @ResponseStatus( HttpStatus.CREATED )
-    public String signup(@ApiParam("Signup User") @RequestBody UserDto userDto) throws Exception {
-        return userService.signup(userDto);
+    public CommonResult signup(@Valid @ApiParam("Signup User") @RequestBody UserDto userDto) throws Exception {
+        String signupData = userService.signup(userDto);
+        return responseService.getSingleResult(signupData);
     }
 
     /**
@@ -40,14 +47,21 @@ public class UserController {
      */
     @PostMapping("/signin")
     @ResponseStatus( HttpStatus.OK )
-    public Map<String, String> signin(@Valid @RequestBody LoginDto loginDto) throws Exception {
-        return userService.signin(loginDto);
+    public SingleResult<Map<String, String>> signin(@Valid @RequestBody LoginDto loginDto) throws Exception {
+        Map<String, String> signinData = userService.signin(loginDto);
+        return responseService.getSingleResult(signinData);
     }
 
-    @PostMapping("/change/username")
+    /**
+     * nickname 변경 controller
+     * @param nicknameDto nickname, newNickname
+     * @return
+     */
+    @PutMapping("/change/nickname")
     @ResponseStatus( HttpStatus.OK )
-    public String changeUsername() {
-        return null;
+    public CommonResult changeUsername(@Valid @RequestBody NicknameDto nicknameDto) {
+        userService.changeNickname(nicknameDto);
+        return responseService.getSuccessResult();
     }
 
     /**
@@ -58,8 +72,9 @@ public class UserController {
      */
     @PostMapping("/auth")
     @ResponseStatus( HttpStatus.OK )
-    public String sendAuthKey(String phoneNumber) {
-        return userService.sendAuthKey(phoneNumber);
+    public CommonResult sendAuthKey(String phoneNumber) {
+        userService.sendAuthKey(phoneNumber);
+        return responseService.getSuccessResult();
     }
 
     /**
@@ -70,8 +85,9 @@ public class UserController {
      */
     @PostMapping("/auth/check")
     @ResponseStatus( HttpStatus.OK )
-    public String validAuthKey(String key) {
-        return userService.validAuthKey(key);
+    public CommonResult validAuthKey(String key) {
+        userService.validAuthKey(key);
+        return responseService.getSuccessResult();
     }
 
     /**
@@ -83,7 +99,8 @@ public class UserController {
      */
     @PutMapping ("/change/password")
     @ResponseStatus( HttpStatus.OK )
-    public String passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
-        return userService.changePassword(passwordChangeDto);
+    public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+        userService.changePassword(passwordChangeDto);
+        return responseService.getSuccessResult();
     }
 }

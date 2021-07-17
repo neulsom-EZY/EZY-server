@@ -2,6 +2,8 @@ package com.server.EZY.model.user.controller;
 
 import com.server.EZY.model.user.dto.DeleteUserDto;
 import com.server.EZY.model.user.service.UserService;
+import com.server.EZY.response.ResponseService;
+import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,12 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import static org.springframework.web.bind.annotation.RequestMethod.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/member")
 public class CertifiedUserController {
 
     private final UserService userService;
+    private final ResponseService responseService;
+
+    //return이 아무값도 return되지않음 공백이 뜸 (POSTMAN에서 확인)
 
     /**
      * "/v1/member/logout"로 요청이 들어오고 (로그인이 되어있는 상태)를 확인했기 때문에 logout한다...
@@ -24,8 +31,9 @@ public class CertifiedUserController {
      */
     @DeleteMapping("/logout")
     @ResponseStatus( HttpStatus.OK )
-    public String logout(HttpServletRequest request) {
-        return userService.logout(request);
+    public CommonResult logout(HttpServletRequest request) {
+        userService.logout(request);
+        return responseService.getSuccessResult();
     }
 
     /**
@@ -34,9 +42,10 @@ public class CertifiedUserController {
      * @return "(회원이름)회원 회원탈퇴완료"
      * @author 배태현
      */
-    @GetMapping ("/delete")
+    @PostMapping ("/delete")
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    public String deleteUser(@Valid @RequestBody DeleteUserDto deleteUserDto) {
-        return userService.deleteUser(deleteUserDto);
+    public CommonResult deleteUser(@Valid @RequestBody DeleteUserDto deleteUserDto) {
+        userService.deleteUser(deleteUserDto);
+        return responseService.getSuccessResult();
     }
 }

@@ -36,6 +36,8 @@ public interface UserService {
 
     String validAuthKey(String key);
 
+    String changeNickname(NicknameDto nicknameDto);
+
     String changePassword(PasswordChangeDto passwordChangeDto);
 
     String deleteUser(DeleteUserDto deleteUserDto);

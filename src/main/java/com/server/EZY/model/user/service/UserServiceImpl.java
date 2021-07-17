@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
     @Value("${sms.api.apiSecret}")
     private String apiSecret;
 
-    private long KEY_EXPIRATION_TIME = 1000L * 60 * 30; //3분
+    private final long KEY_EXPIRATION_TIME = 1000L * 60 * 30; //3분
 
-    private long REDIS_EXPIRATION_TIME = 1000L * 60 * 60 * 24 * 180; //6개월
+    private final long REDIS_EXPIRATION_TIME = 1000L * 60 * 60 * 24 * 180; //6개월
 
     @Override
     public String signup(UserDto userDto) {
@@ -92,10 +92,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 전화번호를 인증하는 서비스 로직
-     * @param phoneNumber phoneNumber
+     * 전화번호로 인증번호를 보내는 로직
+     * @param phoneNumber
      * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
-     * @return true (findByPhoneNumber로 User를 찾았을 때) / false는 뜨지 않습니다.. 무조건 true
+     * @return 문자로 인증번호 전송
      * @author 배태현
      */
     @Override
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
         params.put("app_version", "test app 1.2");
 
         try {
-            JSONObject obj = (JSONObject) coolsms.send(params);
+            JSONObject obj = coolsms.send(params);
             System.out.println(obj.toString());
             return phoneNumber + "로 인증번호 전송 완료";
         } catch (CoolsmsException e) {
@@ -126,6 +126,12 @@ public class UserServiceImpl implements UserService {
         return phoneNumber + "로 인증번호 전송 완료";
     }
 
+    /**
+     * 문자로 받은 인증번호로 인증하는 로직
+     * @param key
+     * @return SuccessResult
+     * @author 배태현
+     */
     @Override
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
@@ -136,8 +142,22 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * nickname을 변경하는 서비스 로직
+     * @param nicknameDto nickname, newNickname
+     * @return
+     */
+    @Override
+    @Transactional
+    public String changeNickname(NicknameDto nicknameDto) {
+        UserEntity findUser = userRepository.findByNickname(nicknameDto.getNickname());
+        if (findUser == null) throw new UserNotFoundException();
+        findUser.updateNickname(nicknameDto.getNewNickname());
+        return nicknameDto.getNickname() + "유저 " + nicknameDto.getNewNickname() + "로 닉네임 업데이트 완료";
+    }
+
+    /**
      * 비밀번호를 변경하는 서비스 로직
-     * @param passwordChangeDto nickname, currentPassword, newPassword
+     * @param passwordChangeDto nickname, newPassword
      * @return (회원닉네임)회원 비밀번호 변경완료
      * @author 배태현
      */
