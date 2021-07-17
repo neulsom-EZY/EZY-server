@@ -32,12 +32,12 @@ public interface UserService {
 
     String logout(HttpServletRequest request);
 
-    String sendAuthKey(PhoneNumberDto phoneNumberDto);
+    String sendAuthKey(String phoneNumber);
 
     String validAuthKey(String key);
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 
-    String withdrawal(WithdrawalDto withdrawalDto);
+    String deleteUser(DeleteUserDto deleteUserDto);
 
 }

@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
     @Value("${sms.api.apiSecret}")
     private String apiSecret;
 
-    private long KEY_EXPIRATION_TIME = 60 * 30L;
+    private long KEY_EXPIRATION_TIME = 1000L * 60 * 30; //3분
 
-    private long REDIS_EXPIRATION_TIME = 360000 * 1000l* 24 * 180;
+    private long REDIS_EXPIRATION_TIME = 1000L * 60 * 60 * 24 * 180; //6개월
 
     @Override
     public String signup(UserDto userDto) {
@@ -93,14 +93,14 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 전화번호를 인증하는 서비스 로직
-     * @param phoneNumberDto phoneNumber
+     * @param phoneNumber phoneNumber
      * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
      * @return true (findByPhoneNumber로 User를 찾았을 때) / false는 뜨지 않습니다.. 무조건 true
      * @author 배태현
      */
     @Override
-    public String sendAuthKey(PhoneNumberDto phoneNumberDto) {
-        UserEntity findByPhoneNumber = userRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber());
+    public String sendAuthKey(String phoneNumber) {
+        UserEntity findByPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
         if (findByPhoneNumber == null) throw new UserNotFoundException();
 
         String authKey = keyUtil.getKey(4);
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         Message coolsms = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();
 
-        params.put("to", phoneNumberDto.getPhoneNumber());
+        params.put("to", phoneNumber);
         params.put("from", "01049977055");
         params.put("type", "SMS");
         params.put("text", "[EZY] 인증번호 "+authKey+" 를 입력하세요.");
@@ -118,12 +118,12 @@ public class UserServiceImpl implements UserService {
         try {
             JSONObject obj = (JSONObject) coolsms.send(params);
             System.out.println(obj.toString());
-            return phoneNumberDto.getPhoneNumber() + "로 인증번호 전송 완료";
+            return phoneNumber + "로 인증번호 전송 완료";
         } catch (CoolsmsException e) {
             System.out.println(e.getMessage());
             System.out.println(e.getCode());
         }
-        return phoneNumberDto.getPhoneNumber() + "로 인증번호 전송 완료";
+        return phoneNumber + "로 인증번호 전송 완료";
     }
 
     @Override
@@ -146,26 +146,25 @@ public class UserServiceImpl implements UserService {
     public String changePassword(PasswordChangeDto passwordChangeDto) {
         UserEntity findUser = userRepository.findByNickname(passwordChangeDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
-        if (passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), findUser.getPassword())) {
-            findUser.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
-        }
+        findUser.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+
         return passwordChangeDto.getNickname() + "회원 비밀번호 변경완료";
     }
 
     /**
      * 회원탈퇴 서비스 로직
-     * @param withdrawalDto withdrawalDto
+     * @param deleteUserDto
      * @return (회원이름)회원 회원탈퇴완료
      * @author 배태현
      */
     @Override
     @Transactional
-    public String withdrawal(WithdrawalDto withdrawalDto) {
-        UserEntity findUser = userRepository.findByNickname(withdrawalDto.getNickname());
+    public String deleteUser(DeleteUserDto deleteUserDto) {
+        UserEntity findUser = userRepository.findByNickname(deleteUserDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
-        if (passwordEncoder.matches(withdrawalDto.getPassword(), findUser.getPassword())) {
+        if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
             userRepository.deleteById(findUser.getUserIdx());
         }
-        return withdrawalDto.getNickname() + "회원 회원탈퇴완료";
+        return deleteUserDto.getNickname() + "회원 회원탈퇴완료";
     }
 }

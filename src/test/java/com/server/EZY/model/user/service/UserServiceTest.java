@@ -152,14 +152,14 @@ public class UserServiceTest {
         //given
         UserEntity currentUser = currentUser();
 
-        WithdrawalDto withdrawalDto = WithdrawalDto.builder()
+        DeleteUserDto deleteUserDto = DeleteUserDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .build();
 
         //when
         if (currentUser != null) {
-            String withdrawal = userService.withdrawal(withdrawalDto);
+            String withdrawal = userService.deleteUser(deleteUserDto);
             assertEquals("배태현회원 회원탈퇴완료", withdrawal);
         } else {
             log.info("회원탈퇴 테스트 실패");

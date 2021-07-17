@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class WithdrawalDto {
+public class DeleteUserDto {
 
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)

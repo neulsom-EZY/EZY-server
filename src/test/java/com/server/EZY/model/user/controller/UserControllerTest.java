@@ -102,7 +102,7 @@ public class UserControllerTest {
 
         String content = objectMapper.writeValueAsString(passwordChangeDto);
 
-        final ResultActions actions = mvc.perform(put("/v1/pwd-change")
+        final ResultActions actions = mvc.perform(put("/v1/member/pwd-change")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 

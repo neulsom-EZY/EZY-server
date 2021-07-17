@@ -35,13 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Entry points
         http.authorizeRequests()//
-                .antMatchers("/v1/signin").permitAll()//
-                .antMatchers("/v1/signup").permitAll()//
-                .antMatchers("/v1/refreshtoken").permitAll()//
-                .antMatchers("/v1/pwd-change").permitAll()//
-                .antMatchers("/v1/phoneNumber").permitAll()//
-                .antMatchers("/v1/check/phoneNumber").permitAll()//
-                .antMatchers("/v1/user/**").hasRole("CLIENT")//
+                .antMatchers("/v1/member/signin").permitAll()//
+                .antMatchers("/v1/member/signup").permitAll()//
+                .antMatchers("/v1/member/refreshtoken").permitAll()//
+                .antMatchers("/v1/member/change/password").permitAll()//
+                .antMatchers("/v1/member/auth").permitAll()//
+                .antMatchers("/v1/member/auth/check").permitAll()//
+                .antMatchers("/v1/member/logout").authenticated() // 로그인 된 유저는 모두 접근을 허용함
+                .antMatchers("/v1/member/delete").authenticated() // 로그인 된 유저는 모두 접근을 허용함
                 .antMatchers("/exception/**").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
                 // Disallow everything else..

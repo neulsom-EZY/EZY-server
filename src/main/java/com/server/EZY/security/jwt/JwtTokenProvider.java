@@ -27,7 +27,7 @@ public class JwtTokenProvider {
      * accessToken의 만료기간 (1시간 - 1hour)
      * @author 배태현
      */
-    private long TOKEN_VALIDATION_SECOND = 360000;
+    private long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60;
 
     /**
      * refreshToken의 만료기간 (6달 - 6month)

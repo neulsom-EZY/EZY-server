@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1")
+@RequestMapping("/v1/member")
 public class RefreshTokenController {
 
     private final RefreshTokenService refreshTokenService;
