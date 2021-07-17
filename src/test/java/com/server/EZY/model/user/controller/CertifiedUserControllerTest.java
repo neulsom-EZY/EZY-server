@@ -61,7 +61,7 @@ public class CertifiedUserControllerTest {
 
         String content = objectMapper.writeValueAsString(deleteUserDto);
 
-        final ResultActions actions = mvc.perform(get("/v1/member/delete")
+        final ResultActions actions = mvc.perform(post("/v1/member/delete")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 

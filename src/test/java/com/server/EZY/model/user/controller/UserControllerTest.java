@@ -60,7 +60,7 @@ public class UserControllerTest {
 
         String content = objectMapper.writeValueAsString(userDto);
 
-        final ResultActions actions = mvc.perform(post("/v1/signup")
+        final ResultActions actions = mvc.perform(post("/v1/member/signup")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -80,7 +80,7 @@ public class UserControllerTest {
 
         String content = objectMapper.writeValueAsString(loginDto);
 
-        final ResultActions actions = mvc.perform(post("/v1/signin")
+        final ResultActions actions = mvc.perform(post("/v1/member/signin")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -96,13 +96,12 @@ public class UserControllerTest {
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .nickname("배태현")
-                .currentPassword("1234")
                 .newPassword("string")
                 .build();
 
         String content = objectMapper.writeValueAsString(passwordChangeDto);
 
-        final ResultActions actions = mvc.perform(put("/v1/member/pwd-change")
+        final ResultActions actions = mvc.perform(put("/v1/member/change/password")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 

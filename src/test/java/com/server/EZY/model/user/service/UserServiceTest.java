@@ -134,7 +134,6 @@ public class UserServiceTest {
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .nickname("배태현")
-                .currentPassword("1234")
                 .newPassword("20040809")
                 .build();
         //when
