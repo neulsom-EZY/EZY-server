@@ -20,4 +20,9 @@ public class Period {
     @Column(name = "end_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date endTime;
+
+    public void updatePeriod(Period updatedPeriod){
+        this.startTime = updatedPeriod.startTime != null ? updatedPeriod.startTime : this.startTime;
+        this.endTime = updatedPeriod.endTime != null ? updatedPeriod.endTime : this.endTime;
+    }
 }
