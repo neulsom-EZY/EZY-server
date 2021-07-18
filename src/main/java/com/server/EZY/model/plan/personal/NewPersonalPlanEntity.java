@@ -35,4 +35,18 @@ public class NewPersonalPlanEntity {
     @Column(name = "d_type", nullable = true)
     @Enumerated(EnumType.STRING)
     private PlanDType dType;
+
+    /**
+     * personalPlan를 업데이트 하는 매서드
+     * @param updatedPersonalPlanEntity 업데이트 할 PersonalPlan타입의 인자
+     * @author 정시원
+     */
+    public void updatePersonalPlanEntity(NewPersonalPlanEntity updatedPersonalPlanEntity){
+        repetition = updatedPersonalPlanEntity.repetition != null ? updatedPersonalPlanEntity.repetition : this.repetition;
+
+        if(updatedPersonalPlanEntity.planInfo != null)
+            this.planInfo.updatePlanInfo(updatedPersonalPlanEntity.planInfo);
+        if(updatedPersonalPlanEntity.period != null)
+            this.period.updatePeriod(updatedPersonalPlanEntity.period);
+    }
 }
