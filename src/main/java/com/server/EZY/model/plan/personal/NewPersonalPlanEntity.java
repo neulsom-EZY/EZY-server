@@ -32,6 +32,7 @@ public class NewPersonalPlanEntity {
     @Column(name = "repetition")
     private Boolean repetition;
 
-    @Column(name = "d_type") @Enumerated(EnumType.STRING)
-    private PlanDType DType;
+    @Column(name = "d_type", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private PlanDType dType;
 }
