@@ -23,7 +23,7 @@ import static javax.persistence.EnumType.*;
 public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserId")
+    @Column(name = "user_id")
     private Long userIdx;
 
     @Column(name = "NickName", nullable = false, unique = true)

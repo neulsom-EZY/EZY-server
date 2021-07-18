@@ -9,13 +9,13 @@ import java.util.Calendar;
 
 import static javax.persistence.FetchType.*;
 
-@Entity @Table(name = "NewPersonalPlan")
+@Entity @Table(name = "new_personal_plan")
 @Builder @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class NewPersonalPlanEntity {
 
-    @Id @Column(name = "personal_plan_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "personal_plan_id")
     private Long personalPlanIdx;
 
     @ManyToOne(fetch = LAZY)
@@ -39,7 +39,6 @@ public class NewPersonalPlanEntity {
     @Column(name = "repetition")
     private Boolean repetition;
 
-    @Column(name = "d_type")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "d_type") @Enumerated(EnumType.STRING)
     private PlanDType DType;
 }
