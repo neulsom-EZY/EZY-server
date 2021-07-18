@@ -20,4 +20,10 @@ public class PlanInfo {
     @Embedded
     private Period period;
 
+    public void updatePlanInfo(PlanInfo updatedPlanInfo){
+        this.title = updatedPlanInfo.title != null ? updatedPlanInfo.title : this.title;
+        this.explanation = updatedPlanInfo.explanation != null ? updatedPlanInfo.explanation : this.explanation;
+        if(updatedPlanInfo.period !=null)
+            period.updatePeriod(updatedPlanInfo.period);
+    }
 }
