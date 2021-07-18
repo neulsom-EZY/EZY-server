@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 일정(Plan)의 기간을 임베디드 타입으로 분리한 클래스
@@ -19,11 +19,11 @@ public class Period {
 
     @Column(name = "start_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      * Period객체를 업데이트 한다.
