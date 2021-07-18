@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.personal;
 
+import com.server.EZY.model.plan.Period;
 import com.server.EZY.model.plan.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandStatus;
 import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
@@ -24,6 +25,9 @@ public class NewPersonalPlanEntity {
 
     @Embedded
     private PlanInfo planInfo;
+
+    @Embedded
+    private Period period;
 
     @Column(name = "repetition")
     private Boolean repetition;
