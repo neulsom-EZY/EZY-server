@@ -1,11 +1,11 @@
 package com.server.EZY.model.plan.personal;
 
+import com.server.EZY.model.plan.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandStatus;
 import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Calendar;
 
 import static javax.persistence.FetchType.*;
 
@@ -22,19 +22,8 @@ public class NewPersonalPlanEntity {
     @JoinColumn(name = "errand_status_id")
     private ErrandStatus errandStatus;
 
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "start_time", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar startTime;
-
-    @Column(name = "end_time", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Calendar endTime;
-
-    @Column(name = "explanation", nullable = true)
-    private String explanation;
+    @Embedded
+    private PlanInfo planInfo;
 
     @Column(name = "repetition")
     private Boolean repetition;
