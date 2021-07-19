@@ -104,7 +104,7 @@ public class UserEntity implements UserDetails {
         if (this == o) return true;
         if (!(o instanceof UserEntity)) return false;
         UserEntity that = (UserEntity) o;
-        return getUserIdx().equals(that.getUserIdx()) && getNickname().equals(that.getNickname()) && getPassword().equals(that.getPassword()) && getPhoneNumber().equals(that.getPhoneNumber()) && getPermission() == that.getPermission() && getRoles().equals(that.getRoles());
+        return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getNickname(), that.getNickname()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && getPermission() == that.getPermission() && Objects.equals(getRoles(), that.getRoles());
     }
 
     @Override

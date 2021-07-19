@@ -39,7 +39,7 @@ public class Period {
         if (this == o) return true;
         if (!(o instanceof Period)) return false;
         Period period = (Period) o;
-        return getStartTime().equals(period.getStartTime()) && getEndTime().equals(period.getEndTime());
+        return Objects.equals(getStartTime(), period.getStartTime()) && Objects.equals(getEndTime(), period.getEndTime());
     }
 
     @Override

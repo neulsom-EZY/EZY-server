@@ -116,7 +116,7 @@ public class NewPersonalPlanEntity {
         if (this == o) return true;
         if (!(o instanceof NewPersonalPlanEntity)) return false;
         NewPersonalPlanEntity that = (NewPersonalPlanEntity) o;
-        return getPersonalPlanIdx().equals(that.getPersonalPlanIdx()) && getUserEntity().equals(that.getUserEntity()) && Objects.equals(getErrandStatus(), that.getErrandStatus()) && getPlanInfo().equals(that.getPlanInfo()) && getPeriod().equals(that.getPeriod()) && Objects.equals(getRepetition(), that.getRepetition()) && dType == that.dType;
+        return Objects.equals(getPersonalPlanIdx(), that.getPersonalPlanIdx()) && Objects.equals(getUserEntity(), that.getUserEntity()) && Objects.equals(getErrandStatus(), that.getErrandStatus()) && Objects.equals(getPlanInfo(), that.getPlanInfo()) && Objects.equals(getPeriod(), that.getPeriod()) && Objects.equals(getRepetition(), that.getRepetition()) && dType == that.dType;
     }
 
     @Override
