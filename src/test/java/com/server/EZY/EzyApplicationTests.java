@@ -3,6 +3,7 @@ package com.server.EZY;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.annotation.PostConstruct;
 import java.util.Base64;
@@ -10,6 +11,7 @@ import java.util.Base64;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@EnableJpaAuditing
 class EzyApplicationTests {
 
 	@Value("${security.jwt.token.secret-key}")
