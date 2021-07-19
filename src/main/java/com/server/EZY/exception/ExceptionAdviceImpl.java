@@ -45,8 +45,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     @Override
     public CommonResult defaultException(Exception ex){
         log.error("=== 알 수 없는 애러 발생 ===", ex);
-        CommonResult exceptionResponseObj = getExceptionResponseObj(DEFAULT_EXCEPTION);
-        return exceptionResponseObj;
+        return getExceptionResponseObj(DEFAULT_EXCEPTION);
     }
 
 
