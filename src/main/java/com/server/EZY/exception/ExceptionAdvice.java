@@ -30,7 +30,7 @@ public interface ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     CommonResult defaultException(Exception ex);
 
-    /*** Custom Server Exception ***/
+    /*** Custom Server Exception 시작***/
     @ExceptionHandler(CustomUnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult unauthorized(CustomUnauthorizedException ex);
@@ -44,7 +44,7 @@ public interface ExceptionAdvice {
     CommonResult notFoundException(CustomNotFoundException ex);
 
 
-    /*** User Exceptions ***/
+    /*** User Exceptions 시작***/
     // 유저를 찾을 수 없습니다.
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -55,7 +55,7 @@ public interface ExceptionAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult invalidAccessException(InvalidAccessException ex);
 
-    /*** Token Exceptions ***/
+    /*** Token Exceptions 시작***/
     // 액세스 토큰이 만료되었습니다.
     @ExceptionHandler(AccessTokenExpiredException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)

@@ -53,19 +53,19 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     /*** Custom Server Exception 시작 ***/
     @Override
     public CommonResult unauthorized(CustomUnauthorizedException ex) {
-        log.debug("=== Unauthorized Exception 발생 ===");
+        log.debug("=== 401 Unauthorized Exception 발생 ===");
         return getExceptionResponseObj(CUSTOM_401_UNAUTHORIZED);
     }
 
     @Override
     public CommonResult forbiddenException(CustomForbiddenException ex) {
-        log.debug("=== Forbidden Exception 발생 ===");
+        log.debug("=== 403 Forbidden Exception 발생 ===");
         return getExceptionResponseObj(CUSTOM_403_FORBIDDEN);
     }
 
     @Override
     public CommonResult notFoundException(CustomNotFoundException ex) {
-        log.debug("=== NotFound Exception 발생 ===");
+        log.debug("=== 404 NotFound Exception 발생 ===");
         return getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
     }
 
