@@ -13,6 +13,7 @@ import java.util.Collection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static javax.persistence.EnumType.*;
@@ -96,5 +97,18 @@ public class UserEntity implements UserDetails {
 
     public void updatePassword(String password) {
         this.password = password != null ? password : this.password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserEntity)) return false;
+        UserEntity that = (UserEntity) o;
+        return getUserIdx().equals(that.getUserIdx()) && getNickname().equals(that.getNickname()) && getPassword().equals(that.getPassword()) && getPhoneNumber().equals(that.getPhoneNumber()) && getPermission() == that.getPermission() && getRoles().equals(that.getRoles());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserIdx(), getNickname(), getPassword(), getPhoneNumber(), getPermission(), getRoles());
     }
 }
