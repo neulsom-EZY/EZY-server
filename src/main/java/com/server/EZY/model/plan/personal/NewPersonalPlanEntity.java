@@ -94,16 +94,21 @@ public class NewPersonalPlanEntity {
 
     /**
      * personalPlan를 업데이트 하는 매서드
+     * 현재 겍체에 저장되어있는 userEntity와 업데이트를 하려는 currentUser를 동등성 비교를 해서 이 일정의 소유자일 경우에 이 객체를 변경할 수 있다.
      * @param updatedPersonalPlanEntity 업데이트 할 PersonalPlan타입의 인자
      * @author 정시원
      */
-    public void updatePersonalPlanEntity(NewPersonalPlanEntity updatedPersonalPlanEntity){
-        repetition = updatedPersonalPlanEntity.repetition != null ? updatedPersonalPlanEntity.repetition : this.repetition;
+    public void updatePersonalPlanEntity(UserEntity currentUser, NewPersonalPlanEntity updatedPersonalPlanEntity) throws Exception {
+        if(this.userEntity.equals(currentUser)) {
+            repetition = updatedPersonalPlanEntity.repetition != null ? updatedPersonalPlanEntity.repetition : this.repetition;
 
-        if(updatedPersonalPlanEntity.planInfo != null)
-            this.planInfo.updatePlanInfo(updatedPersonalPlanEntity.planInfo);
-        if(updatedPersonalPlanEntity.period != null)
-            this.period.updatePeriod(updatedPersonalPlanEntity.period);
+            if (updatedPersonalPlanEntity.planInfo != null)
+                this.planInfo.updatePlanInfo(updatedPersonalPlanEntity.planInfo);
+            if (updatedPersonalPlanEntity.period != null)
+                this.period.updatePeriod(updatedPersonalPlanEntity.period);
+        }else{
+            throw new Exception("해당 일정에 대한 접근권한이 없습니다."); // Exception 추가 예정
+        }
     }
 
     @Override
