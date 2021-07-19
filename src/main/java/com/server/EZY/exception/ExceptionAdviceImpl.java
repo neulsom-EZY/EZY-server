@@ -38,7 +38,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
      * @return CommonResult - 실패 객체
      */
     private CommonResult getExceptionResponseObj(String code){
-        return responseService.getFailResult(Integer.valueOf(getMessage(code + ".code")), getMessage(code + ".msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage(code + ".code")), getMessage(code + ".msg"));
     }
 
     // 알수없는 에러
