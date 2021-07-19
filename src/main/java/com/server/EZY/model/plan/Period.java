@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * 일정(Plan)의 기간을 임베디드 타입으로 분리한 클래스
@@ -18,11 +19,9 @@ import java.time.LocalDateTime;
 public class Period {
 
     @Column(name = "start_time", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime endTime;
 
     /**
@@ -33,5 +32,18 @@ public class Period {
     public void updatePeriod(Period updatedPeriod){
         this.startTime = updatedPeriod.startTime != null ? updatedPeriod.startTime : this.startTime;
         this.endTime = updatedPeriod.endTime != null ? updatedPeriod.endTime : this.endTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Period)) return false;
+        Period period = (Period) o;
+        return getStartTime().equals(period.getStartTime()) && getEndTime().equals(period.getEndTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStartTime(), getEndTime());
     }
 }

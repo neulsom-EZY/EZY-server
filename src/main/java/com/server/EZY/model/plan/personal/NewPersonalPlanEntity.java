@@ -6,13 +6,13 @@ import com.server.EZY.model.plan.errand.ErrandStatus;
 import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
 import com.server.EZY.model.user.UserEntity;
 import lombok.*;
-
 import javax.persistence.*;
+import java.util.Objects;
 
 import static javax.persistence.FetchType.*;
 
 @Entity @Table(name = "new_personal_plan")
-@Builder @Getter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NewPersonalPlanEntity {
 
@@ -104,5 +104,18 @@ public class NewPersonalPlanEntity {
             this.planInfo.updatePlanInfo(updatedPersonalPlanEntity.planInfo);
         if(updatedPersonalPlanEntity.period != null)
             this.period.updatePeriod(updatedPersonalPlanEntity.period);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NewPersonalPlanEntity)) return false;
+        NewPersonalPlanEntity that = (NewPersonalPlanEntity) o;
+        return getPersonalPlanIdx().equals(that.getPersonalPlanIdx()) && getUserEntity().equals(that.getUserEntity()) && Objects.equals(getErrandStatus(), that.getErrandStatus()) && getPlanInfo().equals(that.getPlanInfo()) && getPeriod().equals(that.getPeriod()) && Objects.equals(getRepetition(), that.getRepetition()) && dType == that.dType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPersonalPlanIdx(), getUserEntity(), getErrandStatus(), getPlanInfo(), getPeriod(), getRepetition(), dType);
     }
 }

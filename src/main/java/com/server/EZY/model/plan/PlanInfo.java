@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 /**
  * 일정(Plan)의 정보를 임베디드 타입으로 분리한 클래스
@@ -28,5 +29,18 @@ public class PlanInfo {
     public void updatePlanInfo(PlanInfo updatedPlanInfo){
         this.title = updatedPlanInfo.title != null ? updatedPlanInfo.title : this.title;
         this.explanation = updatedPlanInfo.explanation != null ? updatedPlanInfo.explanation : this.explanation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlanInfo)) return false;
+        PlanInfo planInfo = (PlanInfo) o;
+        return getTitle().equals(planInfo.getTitle()) && getExplanation().equals(planInfo.getExplanation());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), getExplanation());
     }
 }
