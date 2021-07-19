@@ -5,6 +5,7 @@ import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -49,7 +50,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     }
 
 
-    /*** Custom Server Exception ***/
+    /*** Custom Server Exception 시작 ***/
     @Override
     public CommonResult unauthorized(CustomUnauthorizedException ex) {
         log.debug("=== Unauthorized Exception 발생 ===");
@@ -68,15 +69,20 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
         return getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
     }
 
-
-    /*** UserException ***/
+    /*** UserException 시작 ***/
     @Override
     public CommonResult userNotFoundException(UserNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj(USER_NOT_FOUND);
     }
 
-    /*** Token Exceptions ***/
+    @Override
+    public CommonResult invalidAccessException(InvalidAccessException ex) {
+        log.debug("=== InvalidAccessException 발생 ===");
+        return getExceptionResponseObj(INVALID_ACCESS_EXCEPTION);
+    }
+
+    /*** Token Exceptions 시작 ***/
     @Override
     public CommonResult accessTokenExpiredException(AccessTokenExpiredException ex) {
         log.debug("=== Access Token Expired Exception 발생 ===");

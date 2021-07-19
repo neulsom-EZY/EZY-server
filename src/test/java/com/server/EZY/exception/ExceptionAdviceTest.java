@@ -8,6 +8,7 @@ import com.server.EZY.exception.customError.exception.CustomUnauthorizedExceptio
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.UserExceptionController;
+import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
@@ -180,6 +181,32 @@ class ExceptionAdviceTest {
         CommonResult commonResult_KO = exceptionAdvice.userNotFoundException(new UserNotFoundException());
         setLocal(Locale.ENGLISH);
         CommonResult commonResult_EN = exceptionAdvice.userNotFoundException(new UserNotFoundException());
+
+        // Then
+        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);
+
+        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("InvalidAccessException 검증")
+    void InvalidAccessException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int USER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
+        final int USER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
+        final String USER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
+        final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.invalidAccessException(new InvalidAccessException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.invalidAccessException(new InvalidAccessException());
 
         // Then
         assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);

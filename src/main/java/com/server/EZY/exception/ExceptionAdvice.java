@@ -5,6 +5,7 @@ import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public interface ExceptionAdvice {
     String CUSTOM_404_NOT_FOUND = "not-found";
 
     String USER_NOT_FOUND = "user-not-found";
+    String INVALID_ACCESS_EXCEPTION = "invalid-access";
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
@@ -43,10 +45,15 @@ public interface ExceptionAdvice {
 
 
     /*** User Exceptions ***/
+    // 유저를 찾을 수 없습니다.
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult userNotFoundException(UserNotFoundException ex);
 
+    // 잘못된 접근입니다.
+    @ExceptionHandler(InvalidAccessException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    CommonResult invalidAccessException(InvalidAccessException ex);
 
     /*** Token Exceptions ***/
     // 액세스 토큰이 만료되었습니다.
