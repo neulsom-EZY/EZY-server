@@ -1,6 +1,6 @@
 package com.server.EZY.model.user.controller;
 
-import com.server.EZY.model.user.dto.DeleteUserDto;
+import com.server.EZY.model.user.dto.AuthDto;
 import com.server.EZY.model.user.service.UserService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +42,7 @@ public class CertifiedUserController {
      */
     @PostMapping ("/delete")
     @ResponseStatus( HttpStatus.NO_CONTENT )
-    public CommonResult deleteUser(@Valid @RequestBody DeleteUserDto deleteUserDto) {
+    public CommonResult deleteUser(@Valid @RequestBody AuthDto deleteUserDto) {
         userService.deleteUser(deleteUserDto);
         return responseService.getSuccessResult();
     }

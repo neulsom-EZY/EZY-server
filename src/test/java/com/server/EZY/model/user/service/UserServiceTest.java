@@ -103,7 +103,7 @@ public class UserServiceTest {
     @DisplayName("로그인 테스트")
     public void signinTest() {
         //given
-        LoginDto loginDto = LoginDto.builder()
+        AuthDto loginDto = AuthDto.builder()
                 .nickname("바따햔")
                 .password("0809")
                 .build();
@@ -151,7 +151,7 @@ public class UserServiceTest {
         //given
         UserEntity currentUser = currentUser();
 
-        DeleteUserDto deleteUserDto = DeleteUserDto.builder()
+        AuthDto deleteUserDto = AuthDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .build();

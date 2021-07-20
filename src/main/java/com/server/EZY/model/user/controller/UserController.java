@@ -1,6 +1,6 @@
 package com.server.EZY.model.user.controller;
 
-import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.AuthDto;
 import com.server.EZY.model.user.dto.NicknameDto;
 import com.server.EZY.model.user.dto.PasswordChangeDto;
 import com.server.EZY.model.user.dto.UserDto;
@@ -47,7 +47,7 @@ public class UserController {
      */
     @PostMapping("/signin")
     @ResponseStatus( HttpStatus.OK )
-    public SingleResult<Map<String, String>> signin(@Valid @RequestBody LoginDto loginDto) throws Exception {
+    public SingleResult<Map<String, String>> signin(@Valid @RequestBody AuthDto loginDto) throws Exception {
         Map<String, String> signinData = userService.signin(loginDto);
         return responseService.getSingleResult(signinData);
     }
