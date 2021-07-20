@@ -18,6 +18,10 @@ user-not-found:
   code: "-900"
   msg: "User could not be found."
 
+invalid-access:
+  code: "-910"
+  msg: "Invalid access"
+
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."
