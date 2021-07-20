@@ -28,7 +28,7 @@ public interface UserService {
      * @return 서두에 있는 모든 조건을 만족할 시에  Map<String ,String> 을 반환 합니다.
      * @author 전지환
      */
-    Map<String, String> signin(LoginDto loginDto);
+    Map<String, String> signin(AuthDto loginDto);
 
     String logout(HttpServletRequest request);
 
@@ -40,6 +40,6 @@ public interface UserService {
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 
-    String deleteUser(DeleteUserDto deleteUserDto);
+    String deleteUser(AuthDto deleteUserDto);
 
 }

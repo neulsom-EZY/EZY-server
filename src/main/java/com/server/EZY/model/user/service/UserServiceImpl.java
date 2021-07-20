@@ -40,7 +40,9 @@ public class UserServiceImpl implements UserService {
 
     private final long KEY_EXPIRATION_TIME = 1000L * 60 * 30; //3분
 
-    private final long REDIS_EXPIRATION_TIME = 1000L * 60 * 60 * 24 * 180; //6개월
+    private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
+
+
 
     @Override
     public String signup(UserDto userDto) {
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, String> signin(LoginDto loginDto) {
+    public Map<String, String> signin(AuthDto loginDto) {
         UserEntity findUser = userRepository.findByNickname(loginDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         // 비밀번호 검증
@@ -68,6 +70,7 @@ public class UserServiceImpl implements UserService {
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
         redisUtil.deleteData(loginDto.getNickname()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
+
         redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, REDIS_EXPIRATION_TIME);
         Map<String ,String> map = new HashMap<>();
         map.put("nickname", loginDto.getNickname());
@@ -178,8 +181,7 @@ public class UserServiceImpl implements UserService {
      * @author 배태현
      */
     @Override
-    @Transactional
-    public String deleteUser(DeleteUserDto deleteUserDto) {
+    public String deleteUser(AuthDto deleteUserDto) {
         UserEntity findUser = userRepository.findByNickname(deleteUserDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {

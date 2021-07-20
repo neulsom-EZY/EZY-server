@@ -19,7 +19,7 @@ public class CertifiedUserController {
     private final UserService userService;
     private final ResponseService responseService;
 
-    //return이 아무값도 return되지않음 공백이 뜸 (POSTMAN에서 확인)
+    //이 Controller가 return이 아무값도 return되지않음 공백이 뜸 (POSTMAN에서 확인)
 
     /**
      * "/v1/member/logout"로 요청이 들어오고 (로그인이 되어있는 상태)를 확인했기 때문에 logout한다...
