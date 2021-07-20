@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
         UserEntity findUser = userRepository.findByNickname(username);
-        if (findUser == null) throw new UserNotFoundException();
+        if (findUser == null) throw new UserNotFoundException(); //인증번호가 올바르지 않습니다
         redisUtil.deleteData(key);
         return username + "님 휴대전화 인증 완료";
     }
