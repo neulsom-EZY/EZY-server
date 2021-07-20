@@ -56,8 +56,14 @@ public class UserController {
      */
     @PostMapping("/phoneNumber")
     @ResponseStatus( HttpStatus.OK )
-    public Boolean validPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
-        return userService.validPhoneNumber(phoneNumberDto);
+    public String  validPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
+        return userService.sendAuthKey(phoneNumberDto);
+    }
+
+    @PostMapping("/check/phoneNumber")
+    @ResponseStatus( HttpStatus.OK )
+    public String validAuthKey(String key) {
+        return userService.validAuthKey(key);
     }
 
     /**

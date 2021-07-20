@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/signup").permitAll()//
                 .antMatchers("/v1/refreshtoken").permitAll()//
                 .antMatchers("/v1/pwd-change").permitAll()//
+                .antMatchers("/v1/phoneNumber").permitAll()//
+                .antMatchers("/v1/check/phoneNumber").permitAll()//
                 .antMatchers("/v1/user/**").hasRole("CLIENT")//
                 .antMatchers("/exception/**").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()

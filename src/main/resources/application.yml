@@ -47,7 +47,8 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql : trace
-    com.server.EZY: debug
+    com.server.EZY.model: debug
+    com.server.EZY.exception: debug
 
 ### Security ###
 security:
@@ -55,3 +56,8 @@ security:
     token:
       secretKey: afsdasfdASAWRSasgdvFTUJARGtasdfSRTJSRTEQR14asdfVA
       expireLength: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+
+sms:
+  api:
+    apikey: NCSU49MID5ZV88LS
+    apiSecret: 0NAAGMKADY7ASFEXFQUOHB5RMOHIXXHA

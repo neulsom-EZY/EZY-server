@@ -32,7 +32,9 @@ public interface UserService {
 
     String logout(HttpServletRequest request);
 
-    Boolean validPhoneNumber(PhoneNumberDto phoneNumberDto);
+    String sendAuthKey(PhoneNumberDto phoneNumberDto);
+
+    String validAuthKey(String key);
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 
