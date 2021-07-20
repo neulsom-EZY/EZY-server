@@ -5,11 +5,8 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Getter @Setter @Builder
+@AllArgsConstructor @NoArgsConstructor
 public class NicknameDto {
 
     @NotBlank(message = "nickname should be valid")

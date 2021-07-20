@@ -5,8 +5,7 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter @Setter
-@Builder
+@Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class PasswordChangeDto {
 
