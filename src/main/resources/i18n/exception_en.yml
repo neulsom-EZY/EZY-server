@@ -22,6 +22,10 @@ invalid-access:
   code: "-910"
   msg: "Invalid access"
 
+invalid-authentication-number:
+  code: "-920"
+  msg: "Invalid authentication number."
+
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."

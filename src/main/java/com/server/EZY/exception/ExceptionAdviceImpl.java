@@ -6,6 +6,7 @@ import com.server.EZY.exception.customError.exception.CustomUnauthorizedExceptio
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
+import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -80,6 +81,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     public CommonResult invalidAccessException(InvalidAccessException ex) {
         log.debug("=== InvalidAccessException 발생 ===");
         return getExceptionResponseObj(INVALID_ACCESS_EXCEPTION);
+    }
+
+    @Override
+    public CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex) {
+        log.debug("=== InvalidAuthenticationNumberException 발생 ===");
+        return getExceptionResponseObj(INVALID_AUTHENTICATION_NUMBER);
     }
 
     /*** Token Exceptions 시작 ***/

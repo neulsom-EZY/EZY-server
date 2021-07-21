@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/user/**").hasRole("CLIENT")//
                 .antMatchers("/exception/**").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
+                .antMatchers("/exception/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
@@ -68,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/public")
 
                 // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
+                .antMatchers("/exception/**")
                 .and()
                 .ignoring()
                 .antMatchers("/h2-console/**/**");;

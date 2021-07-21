@@ -22,6 +22,10 @@ invalid-access:
   code: "-910"
   msg: "잘못된 접근입니다."
 
+invalid-authentication-number:
+  code: "-920"
+  msg: "인증번호가 올바르지 않습니다."
+
 access-token-expired:
   code: "-800"
   msg: "액세스 토큰이 만료되었습니다."
