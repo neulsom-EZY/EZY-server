@@ -7,6 +7,7 @@ import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.UserExceptionController;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
@@ -287,6 +288,32 @@ class ExceptionAdviceTest {
 
         assertEquals(INVALID_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
         assertEquals(INVALID_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("TokenLoggedOutException 검증")
+    void TokenLoggedOutException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.KOREA);
+        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.ENGLISH);
+        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.KOREA);
+        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.tokenLoggedOutException(new TokenLoggedOutException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.tokenLoggedOutException(new TokenLoggedOutException());
+
+        // Then
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO, TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN);
+
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }
