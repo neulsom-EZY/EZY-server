@@ -35,9 +35,6 @@ class ExceptionAdviceTest {
     @Autowired ExceptionAdvice exceptionAdvice;
     @Autowired UserExceptionController userExceptionController;
 
-    String objectToJson(Object object) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(object);
-    }
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
         LocaleContextHolder.setLocale(locale);

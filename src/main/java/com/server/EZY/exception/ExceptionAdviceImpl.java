@@ -24,14 +24,9 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     private final ResponseService responseService;
     private final MessageSource messageSource;
 
-    // code 정보에 해당하는 메시지를 조회한다.
-    private String getMessage(String code){
-        return getMessage(code, null);
-    }
-
     // code 정보, 추가 argument로 현재 locale에 맞는 메시지를 조회합니다.
-    private String getMessage(String code, Object[] args){
-        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+    private String getMessage(String code){
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 
     /**
