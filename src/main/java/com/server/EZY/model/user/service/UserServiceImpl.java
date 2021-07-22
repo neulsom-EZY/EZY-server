@@ -101,9 +101,9 @@ public class UserServiceImpl implements UserService {
      * @author 배태현
      */
     @Override
-    public String sendAuthKey(String phoneNumber) {
+    public void sendAuthKey(String phoneNumber) {
         UserEntity findByPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
-        if (findByPhoneNumber == null) throw new UserNotFoundException();
+        if (findByPhoneNumber == null) throw new UserNotFoundException(); //인증번호 발송 실패
 
         String authKey = keyUtil.getKey(4);
         redisUtil.setDataExpire(authKey, findByPhoneNumber.getNickname(), KEY_EXPIRATION_TIME);
@@ -120,12 +120,11 @@ public class UserServiceImpl implements UserService {
         try {
             JSONObject obj = coolsms.send(params);
             System.out.println(obj.toString());
-            return phoneNumber + "로 인증번호 전송 완료";
         } catch (CoolsmsException e) {
             System.out.println(e.getMessage());
             System.out.println(e.getCode());
+            //인증번호 발송 실패
         }
-        return phoneNumber + "로 인증번호 전송 완료";
     }
 
     /**
