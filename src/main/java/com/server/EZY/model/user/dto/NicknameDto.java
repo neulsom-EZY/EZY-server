@@ -6,14 +6,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
-public class WithdrawalDto {
+@AllArgsConstructor @NoArgsConstructor
+public class NicknameDto {
 
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)
     private String nickname;
 
-    @NotBlank(message = "password should be valid")
-    @Size(min = 4, max = 10)
-    private String password;
+    @NotBlank(message = "NewNickname should be valid")
+    @Size(min = 1, max = 10)
+    private String NewNickname;
 }

@@ -1,7 +1,9 @@
 package com.server.EZY.model.user.service.jwt;
 
+import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
+import com.server.EZY.model.user.repository.UserRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +18,12 @@ import java.util.Map;
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
+    private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
 
     @Override
     public Map<String, String> getRefreshToken(HttpServletRequest request) {
-        UserDto userDto = new UserDto();
-        List<Role> roles = userDto.toEntity().getRoles();
 
         //나중에 세부적으로 customException을 만들어 클라이언트에게 에러메세지 반환하도록 변경 (예를 들어 Token값들이 null일 때)
         String accessToken = jwtTokenProvider.resolveToken(request);
@@ -33,6 +34,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         String newRefreshToken = null;
 
         String nickname = jwtTokenProvider.getUsername(accessToken);
+
+        UserEntity findUser = userRepository.findByNickname(nickname);
+        List<Role> roles = findUser.getRoles();
 
         if (redisUtil.getData(nickname) == null) {
             map.put("message", "로그아웃된 토큰입니다.");

@@ -14,7 +14,7 @@ import java.util.Collections;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoginDto {
+public class AuthDto {
 
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)
@@ -27,7 +27,7 @@ public class LoginDto {
     @JsonIgnore
     private Permission permission;
 
-    public LoginDto(String nickname, String password) {
+    public AuthDto(String nickname, String password) {
         this.nickname = nickname;
         this.password = password;
     }
