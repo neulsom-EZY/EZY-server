@@ -2,7 +2,7 @@ package com.server.EZY.model.plan.personal;
 
 import com.server.EZY.model.plan.Period;
 import com.server.EZY.model.plan.PlanInfo;
-import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
+import com.server.EZY.model.plan.personal.enumType.PlanDType;
 import com.server.EZY.model.plan.personal.dto.NewPersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.NewPersonalPlanRepository;
 import com.server.EZY.model.user.UserEntity;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
