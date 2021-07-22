@@ -7,8 +7,10 @@ import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.UserExceptionController;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
+import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
@@ -20,15 +22,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-
-
 import java.util.Locale;
 
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 @Slf4j
 @SpringBootTest @DisplayName("ExceptionAdvice test")
@@ -40,9 +36,6 @@ class ExceptionAdviceTest {
     @Autowired ExceptionAdvice exceptionAdvice;
     @Autowired UserExceptionController userExceptionController;
 
-    String objectToJson(Object object) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(object);
-    }
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
         LocaleContextHolder.setLocale(locale);
@@ -198,10 +191,10 @@ class ExceptionAdviceTest {
     void InvalidAccessException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int USER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
-        final int USER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
-        final String USER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
-        final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
+        final int INVALID_ACCESS_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
+        final int INVALID_ACCESS_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
+        final String INVALID_ACCESS_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
+        final String INVALID_ACCESS_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.invalidAccessException(new InvalidAccessException());
@@ -209,16 +202,43 @@ class ExceptionAdviceTest {
         CommonResult commonResult_EN = exceptionAdvice.invalidAccessException(new InvalidAccessException());
 
         // Then
-        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);
+        assertEquals(INVALID_ACCESS_EXCEPTION_CODE_KO, INVALID_ACCESS_EXCEPTION_CODE_EN);
 
-        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
-        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+        assertEquals(INVALID_ACCESS_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(INVALID_ACCESS_EXCEPTION_CODE_EN, commonResult_EN.getCode());
 
-        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
-        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+        assertEquals(INVALID_ACCESS_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(INVALID_ACCESS_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }
+
+    @Test @DisplayName("InvalidAuthenticationNumberException 검증")
+    void InvalidAuthenticationNumberException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int INVALID_AUTHENTICATION_NUMBER_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.KOREA);
+        final int INVALID_AUTHENTICATION_NUMBER_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.ENGLISH);
+        final String INVALID_AUTHENTICATION_NUMBER_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.KOREA);
+        final String INVALID_AUTHENTICATION_NUMBER_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.invalidAuthenticationNumberException(new InvalidAuthenticationNumberException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.invalidAuthenticationNumberException(new InvalidAuthenticationNumberException());
+
+        // Then
+        assertEquals(INVALID_AUTHENTICATION_NUMBER_CODE_KO, INVALID_AUTHENTICATION_NUMBER_CODE_EN);
+
+        assertEquals(INVALID_AUTHENTICATION_NUMBER_CODE_KO, commonResult_KO.getCode());
+        assertEquals(INVALID_AUTHENTICATION_NUMBER_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(INVALID_AUTHENTICATION_NUMBER_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(INVALID_AUTHENTICATION_NUMBER_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
 
     @Test @DisplayName("AccessTokenException 검증")
     void AccessTokenException_검증() throws Exception {
@@ -268,6 +288,32 @@ class ExceptionAdviceTest {
 
         assertEquals(INVALID_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
         assertEquals(INVALID_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("TokenLoggedOutException 검증")
+    void TokenLoggedOutException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.KOREA);
+        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.ENGLISH);
+        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.KOREA);
+        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.TOKEN_LOGGED_OUT, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.tokenLoggedOutException(new TokenLoggedOutException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.tokenLoggedOutException(new TokenLoggedOutException());
+
+        // Then
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO, TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN);
+
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }

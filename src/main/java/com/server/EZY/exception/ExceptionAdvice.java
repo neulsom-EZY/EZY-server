@@ -5,7 +5,9 @@ import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
+import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
@@ -22,9 +24,11 @@ public interface ExceptionAdvice {
 
     String USER_NOT_FOUND = "user-not-found";
     String INVALID_ACCESS_EXCEPTION = "invalid-access";
+    String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
+    String TOKEN_LOGGED_OUT = "token-logged-out";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -55,7 +59,12 @@ public interface ExceptionAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult invalidAccessException(InvalidAccessException ex);
 
-    /*** Token Exceptions 시작***/
+    // 인증번호가 옳바르지 않습니다
+    @ExceptionHandler(InvalidAuthenticationNumberException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex);
+
+    /*** Token Exceptions 시작 ***/
     // 액세스 토큰이 만료되었습니다.
     @ExceptionHandler(AccessTokenExpiredException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -65,4 +74,9 @@ public interface ExceptionAdvice {
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult invalidTokenException(InvalidTokenException ex);
+
+    // 로그아웃된 토큰
+    @ExceptionHandler(TokenLoggedOutException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    CommonResult tokenLoggedOutException(TokenLoggedOutException ex);
 }
