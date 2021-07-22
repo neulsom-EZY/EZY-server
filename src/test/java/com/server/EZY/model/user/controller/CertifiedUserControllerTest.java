@@ -54,7 +54,7 @@ public class CertifiedUserControllerTest {
     @DisplayName("회원탈퇴 테스트")
     public void withdrawalTest() throws Exception {
 
-        DeleteUserDto deleteUserDto = DeleteUserDto.builder()
+        AuthDto deleteUserDto = AuthDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .build();

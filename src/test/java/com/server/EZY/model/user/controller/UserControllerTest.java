@@ -3,7 +3,7 @@ package com.server.EZY.model.user.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.user.controller.UserController;
-import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.AuthDto;
 import com.server.EZY.model.user.dto.PasswordChangeDto;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.service.UserService;
@@ -73,7 +73,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("로그인 테스트")
     public void signInTest() throws Exception {
-        LoginDto loginDto = LoginDto.builder()
+        AuthDto loginDto = AuthDto.builder()
                 .nickname("JsonWebTok")
                 .password("1234")
                 .build();
