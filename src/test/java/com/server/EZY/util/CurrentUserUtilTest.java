@@ -1,10 +1,9 @@
 package com.server.EZY.util;
 
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.dto.UserDto;
+import com.server.EZY.model.user.dto.MemberDto;
 import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.util.CurrentUserUtil;
+import com.server.EZY.model.user.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +26,7 @@ class CurrentUserUtilTest {
     @Autowired
     private CurrentUserUtil currentUserUtil;
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -39,19 +38,19 @@ class CurrentUserUtilTest {
     @Test
     public void currentUserNickname() {
         //given
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDto.getNickname(),
-                userDto.getPassword(),
+                memberDto.getNickname(),
+                memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -70,19 +69,19 @@ class CurrentUserUtilTest {
     @Test
     public void currentUser() {
         //given
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDto.getNickname(),
-                userDto.getPassword(),
+                memberDto.getNickname(),
+                memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -92,7 +91,7 @@ class CurrentUserUtilTest {
         //then
         UserEntity currentUser = currentUserUtil.getCurrentUser();
         assertTrue(currentUser != null, "true");
-        assertEquals(userDto.toEntity().getNickname(), currentUser.getNickname());
-        assertEquals(userDto.toEntity().getPhoneNumber(), currentUser.getPhoneNumber());
+        assertEquals(memberDto.toEntity().getNickname(), currentUser.getNickname());
+        assertEquals(memberDto.toEntity().getPhoneNumber(), currentUser.getPhoneNumber());
     }
 }

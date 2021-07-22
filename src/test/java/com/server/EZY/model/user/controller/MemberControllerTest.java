@@ -1,12 +1,10 @@
 package com.server.EZY.model.user.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.model.user.controller.UserController;
 import com.server.EZY.model.user.dto.AuthDto;
 import com.server.EZY.model.user.dto.PasswordChangeDto;
-import com.server.EZY.model.user.dto.UserDto;
-import com.server.EZY.model.user.service.UserService;
+import com.server.EZY.model.user.dto.MemberDto;
+import com.server.EZY.model.user.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @Slf4j
-public class UserControllerTest {
+public class MemberControllerTest {
 
     @MockBean
-    private UserService userService;
+    private MemberService memberService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -38,27 +36,27 @@ public class UserControllerTest {
 
     //signinTest를 위해 만들어진 before
     @BeforeEach
-    public void before(@Autowired UserController userController) {
-        mvc = MockMvcBuilders.standaloneSetup(userController).build();
+    public void before(@Autowired MemberController memberController) {
+        mvc = MockMvcBuilders.standaloneSetup(memberController).build();
 
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("JsonWebTok")
                 .password("1234")
                 .phoneNumber("01012345678")
                 .build();
-        userService.signup(userDto);
+        memberService.signup(memberDto);
     }
 
     @Test
     @DisplayName("회원가입 테스트")
     public void signupTest() throws Exception {
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("JsonWebTok")
                 .password("1234")
                 .phoneNumber("01012345678")
                 .build();
 
-        String content = objectMapper.writeValueAsString(userDto);
+        String content = objectMapper.writeValueAsString(memberDto);
 
         final ResultActions actions = mvc.perform(post("/v1/member/signup")
                 .content(content)

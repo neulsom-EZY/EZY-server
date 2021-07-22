@@ -1,10 +1,10 @@
 package com.server.EZY.model.user.controller;
 
 import com.server.EZY.model.user.dto.AuthDto;
-import com.server.EZY.model.user.dto.NicknameDto;
+import com.server.EZY.model.user.dto.NicknameChangeDto;
 import com.server.EZY.model.user.dto.PasswordChangeDto;
-import com.server.EZY.model.user.dto.UserDto;
-import com.server.EZY.model.user.service.UserService;
+import com.server.EZY.model.user.dto.MemberDto;
+import com.server.EZY.model.user.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.response.result.SingleResult;
@@ -19,22 +19,22 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/member")
-public class UserController {
+public class MemberController {
 
-    private final UserService userService;
+    private final MemberService memberService;
     private final ResponseService responseService;
 
     /**
      * 회원가입 controller
-     * @param userDto userDto
+     * @param memberDto userDto
      * @return accessToken
      * @throws Exception Exception
      * @author 배태현
      */
     @PostMapping("/signup")
     @ResponseStatus( HttpStatus.CREATED )
-    public CommonResult signup(@Valid @ApiParam("Signup User") @RequestBody UserDto userDto) throws Exception {
-        String signupData = userService.signup(userDto);
+    public CommonResult signup(@Valid @ApiParam("Signup User") @RequestBody MemberDto memberDto) throws Exception {
+        String signupData = memberService.signup(memberDto);
         return responseService.getSingleResult(signupData);
     }
 
@@ -48,19 +48,19 @@ public class UserController {
     @PostMapping("/signin")
     @ResponseStatus( HttpStatus.OK )
     public SingleResult<Map<String, String>> signin(@Valid @RequestBody AuthDto loginDto) throws Exception {
-        Map<String, String> signinData = userService.signin(loginDto);
+        Map<String, String> signinData = memberService.signin(loginDto);
         return responseService.getSingleResult(signinData);
     }
 
     /**
      * nickname 변경 controller
-     * @param nicknameDto nickname, newNickname
+     * @param nicknameChangeDto nickname, newNickname
      * @return
      */
     @PutMapping("/change/nickname")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult changeUsername(@Valid @RequestBody NicknameDto nicknameDto) {
-        userService.changeNickname(nicknameDto);
+    public CommonResult changeUsername(@Valid @RequestBody NicknameChangeDto nicknameChangeDto) {
+        memberService.changeNickname(nicknameChangeDto);
         return responseService.getSuccessResult();
     }
 
@@ -73,7 +73,7 @@ public class UserController {
     @PostMapping("/auth")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult sendAuthKey(String phoneNumber) {
-        userService.sendAuthKey(phoneNumber);
+        memberService.sendAuthKey(phoneNumber);
         return responseService.getSuccessResult();
     }
 
@@ -86,7 +86,7 @@ public class UserController {
     @PostMapping("/auth/check")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult validAuthKey(String key) {
-        userService.validAuthKey(key);
+        memberService.validAuthKey(key);
         return responseService.getSuccessResult();
     }
 
@@ -100,7 +100,7 @@ public class UserController {
     @PutMapping ("/change/password")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
-        userService.changePassword(passwordChangeDto);
+        memberService.changePassword(passwordChangeDto);
         return responseService.getSuccessResult();
     }
 }

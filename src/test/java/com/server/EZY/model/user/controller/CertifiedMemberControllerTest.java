@@ -1,9 +1,8 @@
 package com.server.EZY.model.user.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.user.dto.*;
-import com.server.EZY.model.user.service.UserService;
+import com.server.EZY.model.user.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,26 +14,23 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class CertifiedUserControllerTest {
+public class CertifiedMemberControllerTest {
 
     @MockBean
-    private UserService userService;
+    private MemberService memberService;
     @Autowired
     private ObjectMapper objectMapper;
 
     private MockMvc mvc;
 
     @BeforeEach
-    public void before(@Autowired CertifiedUserController certifiedUserController) {
-        mvc = MockMvcBuilders.standaloneSetup(certifiedUserController).build();
+    public void before(@Autowired CertifiedMemberController certifiedMemberController) {
+        mvc = MockMvcBuilders.standaloneSetup(certifiedMemberController).build();
     }
 
     @Test

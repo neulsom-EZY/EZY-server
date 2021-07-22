@@ -1,10 +1,10 @@
 package com.server.EZY.model.user.service;
 
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.controller.UserController;
+import com.server.EZY.model.user.controller.MemberController;
 import com.server.EZY.model.user.dto.*;
 import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.repository.MemberRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
@@ -30,37 +30,37 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @Transactional
 @Slf4j
-public class UserServiceTest {
+public class MemberServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
-    private UserService userService;
+    private MemberService memberService;
 
     @Test
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void GetUserEntity(){
         //Given
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
 
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDto.getNickname(),
-                userDto.getPassword(),
+                memberDto.getNickname(),
+                memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -76,27 +76,27 @@ public class UserServiceTest {
     @DisplayName("회원가입 테스트")
     public void signupTest() {
         //given
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("나야나 배따횬~~")
                 .password("0809")
                 .phoneNumber("01008090809")
                 .build();
         //when
-        String signup = userService.signup(userDto);
+        String signup = memberService.signup(memberDto);
 
         //then
         assertTrue(true, String.valueOf(signup != null));
     }
 
     @BeforeEach
-    public void before(@Autowired UserController userController) {
+    public void before(@Autowired MemberController memberController) {
 
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("바따햔")
                 .password("0809")
                 .phoneNumber("01012345678")
                 .build();
-        userService.signup(userDto);
+        memberService.signup(memberDto);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class UserServiceTest {
                 .password("0809")
                 .build();
         //when
-        Map<String, String> signin = userService.signin(loginDto);
+        Map<String, String> signin = memberService.signin(loginDto);
         //then
         assertTrue(true, String.valueOf(signin != null));
     }
@@ -119,13 +119,13 @@ public class UserServiceTest {
         //given
         UserEntity currentUser = currentUser();
 
-        NicknameDto nicknameDto = NicknameDto.builder()
+        NicknameChangeDto nicknameChangeDto = NicknameChangeDto.builder()
                 .nickname("바따햔")
                 .NewNickname("배태현")
                 .build();
         //when //then
         if (currentUser != null) {
-            String changeNickname = userService.changeNickname(nicknameDto);
+            String changeNickname = memberService.changeNickname(nicknameChangeDto);
             assertEquals("바따햔유저 배태현(으)로 닉네임 업데이트 완료", changeNickname);
         } else {
             log.info("닉네임 변경테스트 실패");
@@ -144,7 +144,7 @@ public class UserServiceTest {
                 .build();
         //when //then
         if (currentUser != null) {
-            String changePassword = userService.changePassword(passwordChangeDto);
+            String changePassword = memberService.changePassword(passwordChangeDto);
             assertEquals("배태현회원 비밀번호 변경완료", changePassword);
         } else {
             log.info("비밀번호 변경 테스트 실패");
@@ -153,7 +153,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("회원탈퇴 테스트")
-    public void withdrawalTest() {
+    public void DeleteMemberTest() {
         //given
         UserEntity currentUser = currentUser();
 
@@ -164,7 +164,7 @@ public class UserServiceTest {
 
         //when
         if (currentUser != null) {
-            String withdrawal = userService.deleteUser(deleteUserDto);
+            String withdrawal = memberService.deleteUser(deleteUserDto);
             assertEquals("배태현회원 회원탈퇴완료", withdrawal);
         } else {
             log.info("회원탈퇴 테스트 실패");
@@ -177,20 +177,20 @@ public class UserServiceTest {
      * @author 배태현
      */
     public UserEntity currentUser() {
-        UserDto userDto = UserDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
 
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDto.getNickname(),
-                userDto.getPassword(),
+                memberDto.getNickname(),
+                memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -200,7 +200,7 @@ public class UserServiceTest {
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUserNickname();
         assertEquals("배태현", currentUserNickname);
-        UserEntity loginUser = userRepository.findByNickname(currentUserNickname);
+        UserEntity loginUser = memberRepository.findByNickname(currentUserNickname);
         return loginUser;
     }
 }

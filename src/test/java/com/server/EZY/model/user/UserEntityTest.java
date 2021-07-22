@@ -2,7 +2,7 @@ package com.server.EZY.model.user;
 
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -12,8 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.ConstraintViolationException;
 
@@ -27,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(QueryDslTestConfig.class)
 class UserEntityTest {
 
-    @Autowired private UserRepository userRepo;
+    @Autowired private MemberRepository userRepo;
 
     @Test
     @DisplayName("UserEntity DB값 정상적으로 insert 하는지 검증")

@@ -8,7 +8,7 @@ import com.server.EZY.model.plan.personal.repository.NewPersonalPlanRepository;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonalPlanEntityTest {
 
     @Autowired NewPersonalPlanRepository personalPlanRepo;
-    @Autowired UserRepository userRepo;
+    @Autowired
+    MemberRepository userRepo;
 
     UserEntity userEntityInit(){
         UserEntity user = UserEntity.builder()

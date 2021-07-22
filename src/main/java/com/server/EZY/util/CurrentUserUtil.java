@@ -1,9 +1,8 @@
 package com.server.EZY.util;
 
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CurrentUserUtil {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 현재 로그인 되어있는(인증되어있는) User의 nickname을 반환하는 메서드
@@ -38,6 +37,6 @@ public class CurrentUserUtil {
         } else{
             nickname = principal.toString();
         }
-        return userRepository.findByNickname(nickname);
+        return memberRepository.findByNickname(nickname);
     }
 }

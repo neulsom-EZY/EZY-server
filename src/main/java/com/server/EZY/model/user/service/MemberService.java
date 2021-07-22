@@ -1,24 +1,21 @@
 package com.server.EZY.model.user.service;
 
-import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.*;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
-public interface UserService {
+public interface MemberService {
 
     /**
      * 회원가입을 하는 서비스 로직 입니다.
-     * @param userDto
+     * @param memberDto
      * @return - if, save 완료 시 token return.
      * @exception - else, 이미 존재하면 userAlreadyExist 터트리기.
      * @author 전지환
      */
-    String signup(UserDto userDto);
+    String signup(MemberDto memberDto);
 
     /**
      * 로그인을 하는 서비스 로직 입니다.
@@ -36,7 +33,7 @@ public interface UserService {
 
     String validAuthKey(String key);
 
-    String changeNickname(NicknameDto nicknameDto);
+    String changeNickname(NicknameChangeDto nicknameChangeDto);
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 
