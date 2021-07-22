@@ -1,6 +1,7 @@
 package com.server.EZY.model.user.service;
 
 import com.server.EZY.exception.response.CustomException;
+import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.*;
@@ -41,8 +42,6 @@ public class UserServiceImpl implements UserService {
     private final long KEY_EXPIRATION_TIME = 1000L * 60 * 30; //3분
 
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
-
-
 
     @Override
     public String signup(UserDto userDto) {
@@ -139,7 +138,7 @@ public class UserServiceImpl implements UserService {
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
         UserEntity findUser = userRepository.findByNickname(username);
-        if (findUser == null) throw new UserNotFoundException(); //인증번호가 올바르지 않습니다
+        if (findUser == null) throw new InvalidAuthenticationNumberException();
         redisUtil.deleteData(key);
         return username + "님 휴대전화 인증 완료";
     }
