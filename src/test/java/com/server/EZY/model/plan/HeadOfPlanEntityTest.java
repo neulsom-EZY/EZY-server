@@ -2,7 +2,7 @@ package com.server.EZY.model.plan;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
-import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
+import com.server.EZY.model.plan.personal.enumType.PlanDType;
 import com.server.EZY.model.plan.team.TeamPlanEntity;
 import com.server.EZY.model.user.enumType.Permission;
 import com.server.EZY.model.user.enumType.Role;

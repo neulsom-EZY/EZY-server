@@ -2,7 +2,7 @@ package com.server.EZY.model.plan.personal.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.plan.headOfPlan.HeadOfPlanEntity;
-import com.server.EZY.model.plan.headOfPlan.enumType.PlanDType;
+import com.server.EZY.model.plan.personal.enumType.PlanDType;
 import com.server.EZY.model.user.UserEntity;
 import lombok.RequiredArgsConstructor;
 import static com.server.EZY.model.plan.headOfPlan.QHeadOfPlanEntity.headOfPlanEntity;
