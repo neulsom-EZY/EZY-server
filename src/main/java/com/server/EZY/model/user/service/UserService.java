@@ -28,14 +28,18 @@ public interface UserService {
      * @return 서두에 있는 모든 조건을 만족할 시에  Map<String ,String> 을 반환 합니다.
      * @author 전지환
      */
-    Map<String, String> signin(LoginDto loginDto);
+    Map<String, String> signin(AuthDto loginDto);
 
     String logout(HttpServletRequest request);
 
-    Boolean validPhoneNumber(PhoneNumberDto phoneNumberDto);
+    String sendAuthKey(String phoneNumber);
+
+    String validAuthKey(String key);
+
+    String changeNickname(NicknameDto nicknameDto);
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 
-    String withdrawal(WithdrawalDto withdrawalDto);
+    String deleteUser(AuthDto deleteUserDto);
 
 }

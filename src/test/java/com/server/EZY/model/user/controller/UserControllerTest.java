@@ -3,7 +3,7 @@ package com.server.EZY.model.user.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.user.controller.UserController;
-import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.AuthDto;
 import com.server.EZY.model.user.dto.PasswordChangeDto;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.service.UserService;
@@ -60,7 +60,7 @@ public class UserControllerTest {
 
         String content = objectMapper.writeValueAsString(userDto);
 
-        final ResultActions actions = mvc.perform(post("/v1/signup")
+        final ResultActions actions = mvc.perform(post("/v1/member/signup")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -73,14 +73,14 @@ public class UserControllerTest {
     @Test
     @DisplayName("로그인 테스트")
     public void signInTest() throws Exception {
-        LoginDto loginDto = LoginDto.builder()
+        AuthDto loginDto = AuthDto.builder()
                 .nickname("JsonWebTok")
                 .password("1234")
                 .build();
 
         String content = objectMapper.writeValueAsString(loginDto);
 
-        final ResultActions actions = mvc.perform(post("/v1/signin")
+        final ResultActions actions = mvc.perform(post("/v1/member/signin")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -96,13 +96,12 @@ public class UserControllerTest {
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .nickname("배태현")
-                .currentPassword("1234")
                 .newPassword("string")
                 .build();
 
         String content = objectMapper.writeValueAsString(passwordChangeDto);
 
-        final ResultActions actions = mvc.perform(put("/v1/pwd-change")
+        final ResultActions actions = mvc.perform(put("/v1/member/change/password")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 

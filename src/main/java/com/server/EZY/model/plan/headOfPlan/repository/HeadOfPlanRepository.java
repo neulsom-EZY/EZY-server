@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface HeadOfPlanRepository extends JpaRepository<HeadOfPlanEntity, Long>, PersonalPlanRepositoryCustom, TeamPlanRepositoryCustom {
+public interface HeadOfPlanRepository extends JpaRepository<HeadOfPlanEntity, Long>, PersonalPlanRepositoryCustom, TeamPlanRepositoryCustom, HOPRepositoryCustom {
     List<HeadOfPlanEntity> findAllPersonalPlanByUserEntityAndPersonalPlanEntityNotNull(UserEntity userEntity);
     List<HeadOfPlanEntity> findAllTeamPlanByUserEntityAndTeamPlanEntityNotNull(UserEntity userEntity);
 }

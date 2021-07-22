@@ -13,6 +13,7 @@ import java.util.Collection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static javax.persistence.EnumType.*;
@@ -23,7 +24,7 @@ import static javax.persistence.EnumType.*;
 public class UserEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserId")
+    @Column(name = "user_id")
     private Long userIdx;
 
     @Column(name = "NickName", nullable = false, unique = true)
@@ -96,5 +97,18 @@ public class UserEntity implements UserDetails {
 
     public void updatePassword(String password) {
         this.password = password != null ? password : this.password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserEntity)) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getNickname(), that.getNickname()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && getPermission() == that.getPermission() && Objects.equals(getRoles(), that.getRoles());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserIdx(), getNickname(), getPassword(), getPhoneNumber(), getPermission(), getRoles());
     }
 }

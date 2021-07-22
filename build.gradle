@@ -4,6 +4,8 @@ plugins {
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
 	id 'jacoco'
+	// *** Q-Type error 때문에 추가 *** //
+	id "io.franzbecker.gradle-lombok" version "3.0.0"
 }
 
 group = 'com.server'
@@ -58,6 +60,13 @@ dependencies {
 
 	// *** 다국어 처리를 위한 yaml-resource-bundle *** //
 	implementation 'net.rakugakibox.util:yaml-resource-bundle:1.2'
+
+	// *** sms를 이용하기 위한 javaSDK *** //
+	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+	compileOnly group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+	annotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+	testAnnotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+	testCompileOnly group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 }
 
 test {

@@ -5,6 +5,9 @@ import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.token.exception.TokenLoggedOutException;
+import com.server.EZY.exception.user.exception.InvalidAccessException;
+import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -22,14 +25,9 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     private final ResponseService responseService;
     private final MessageSource messageSource;
 
-    // code 정보에 해당하는 메시지를 조회한다.
-    private String getMessage(String code){
-        return getMessage(code, null);
-    }
-
     // code 정보, 추가 argument로 현재 locale에 맞는 메시지를 조회합니다.
-    private String getMessage(String code, Object[] args){
-        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+    private String getMessage(String code){
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
     }
 
     /**
@@ -38,46 +36,56 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
      * @return CommonResult - 실패 객체
      */
     private CommonResult getExceptionResponseObj(String code){
-        return responseService.getFailResult(Integer.valueOf(getMessage(code + ".code")), getMessage(code + ".msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage(code + ".code")), getMessage(code + ".msg"));
     }
 
     // 알수없는 에러
     @Override
     public CommonResult defaultException(Exception ex){
         log.error("=== 알 수 없는 애러 발생 ===", ex);
-        CommonResult exceptionResponseObj = getExceptionResponseObj(DEFAULT_EXCEPTION);
-        return exceptionResponseObj;
+        return getExceptionResponseObj(DEFAULT_EXCEPTION);
     }
 
 
-    /*** Custom Server Exception ***/
+    /*** Custom Server Exception 시작 ***/
     @Override
     public CommonResult unauthorized(CustomUnauthorizedException ex) {
-        log.debug("=== Unauthorized Exception 발생 ===");
+        log.debug("=== 401 Unauthorized Exception 발생 ===");
         return getExceptionResponseObj(CUSTOM_401_UNAUTHORIZED);
     }
 
     @Override
     public CommonResult forbiddenException(CustomForbiddenException ex) {
-        log.debug("=== Forbidden Exception 발생 ===");
+        log.debug("=== 403 Forbidden Exception 발생 ===");
         return getExceptionResponseObj(CUSTOM_403_FORBIDDEN);
     }
 
     @Override
     public CommonResult notFoundException(CustomNotFoundException ex) {
-        log.debug("=== NotFound Exception 발생 ===");
+        log.debug("=== 404 NotFound Exception 발생 ===");
         return getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
     }
 
-
-    /*** UserException ***/
+    /*** UserException 시작 ***/
     @Override
     public CommonResult userNotFoundException(UserNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj(USER_NOT_FOUND);
     }
 
-    /*** Token Exceptions ***/
+    @Override
+    public CommonResult invalidAccessException(InvalidAccessException ex) {
+        log.debug("=== InvalidAccessException 발생 ===");
+        return getExceptionResponseObj(INVALID_ACCESS_EXCEPTION);
+    }
+
+    @Override
+    public CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex) {
+        log.debug("=== InvalidAuthenticationNumberException 발생 ===");
+        return getExceptionResponseObj(INVALID_AUTHENTICATION_NUMBER);
+    }
+
+    /*** Token Exceptions 시작 ***/
     @Override
     public CommonResult accessTokenExpiredException(AccessTokenExpiredException ex) {
         log.debug("=== Access Token Expired Exception 발생 ===");
@@ -88,6 +96,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     public CommonResult invalidTokenException(InvalidTokenException ex) {
         log.debug("=== Invalid Token Exception 발생 ===");
         return getExceptionResponseObj(INVALID_TOKEN);
+    }
+
+    @Override
+    public CommonResult tokenLoggedOutException(TokenLoggedOutException ex) {
+        log.debug("=== Logged Out Exception 발생 ===");
+        return getExceptionResponseObj(TOKEN_LOGGED_OUT);
     }
 
 

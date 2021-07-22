@@ -27,13 +27,13 @@ public class ResponseService {
 
     /**
      * CommonResult setting method
-     * @param result
-     * @param commonResponse
+     * @param result Client에게 반환할 CommonResult객체
+     * @param commonResponse 요청의 성공/실패 여부 알려주는 CommonResponse
      * @return CommonResult - 성공/실패 응답 객체 반환
      * @author 정시원
      */
     private CommonResult setResponseResult(CommonResult result, CommonResponse commonResponse){
-        result.setSuccess(commonResponse == CommonResponse.SUCCESS ? true : false);
+        result.setSuccess(commonResponse == CommonResponse.SUCCESS);
         result.setCode(commonResponse.getCode());
         result.setMassage(commonResponse.getMassage());
         return result;

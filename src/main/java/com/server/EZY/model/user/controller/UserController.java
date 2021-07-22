@@ -1,13 +1,13 @@
 package com.server.EZY.model.user.controller;
 
-import com.server.EZY.model.user.dto.LoginDto;
+import com.server.EZY.model.user.dto.AuthDto;
+import com.server.EZY.model.user.dto.NicknameDto;
 import com.server.EZY.model.user.dto.PasswordChangeDto;
-import com.server.EZY.model.user.dto.PhoneNumberDto;
 import com.server.EZY.model.user.dto.UserDto;
-import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.model.user.service.UserService;
-import com.server.EZY.util.RedisUtil;
+import com.server.EZY.response.ResponseService;
+import com.server.EZY.response.result.CommonResult;
+import com.server.EZY.response.result.SingleResult;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,11 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/member")
 public class UserController {
+
     private final UserService userService;
+    private final ResponseService responseService;
 
     /**
      * 회원가입 controller
@@ -31,8 +33,9 @@ public class UserController {
      */
     @PostMapping("/signup")
     @ResponseStatus( HttpStatus.CREATED )
-    public String signup(@ApiParam("Signup User") @RequestBody UserDto userDto) throws Exception {
-        return userService.signup(userDto);
+    public CommonResult signup(@Valid @ApiParam("Signup User") @RequestBody UserDto userDto) throws Exception {
+        String signupData = userService.signup(userDto);
+        return responseService.getSingleResult(signupData);
     }
 
     /**
@@ -44,33 +47,60 @@ public class UserController {
      */
     @PostMapping("/signin")
     @ResponseStatus( HttpStatus.OK )
-    public Map<String, String> signin(@Valid @RequestBody LoginDto loginDto) throws Exception {
-        return userService.signin(loginDto);
+    public SingleResult<Map<String, String>> signin(@Valid @RequestBody AuthDto loginDto) throws Exception {
+        Map<String, String> signinData = userService.signin(loginDto);
+        return responseService.getSingleResult(signinData);
     }
 
     /**
-     * 로그인을 하지 않았을 때 전화번호 인증
-     * @param phoneNumberDto phoneNumberDto
+     * nickname 변경 controller
+     * @param nicknameDto nickname, newNickname
+     * @return
+     */
+    @PutMapping("/change/nickname")
+    @ResponseStatus( HttpStatus.OK )
+    public CommonResult changeUsername(@Valid @RequestBody NicknameDto nicknameDto) {
+        userService.changeNickname(nicknameDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 전화번호로 인증번호 보내기
+     * @param phoneNumber
      * @return true or false
      * @author 배태현
      */
-    @PostMapping("/phoneNumber")
+    @PostMapping("/auth")
     @ResponseStatus( HttpStatus.OK )
-    public Boolean validPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
-        return userService.validPhoneNumber(phoneNumberDto);
+    public CommonResult sendAuthKey(String phoneNumber) {
+        userService.sendAuthKey(phoneNumber);
+        return responseService.getSuccessResult();
     }
 
     /**
-     * 로그인을 하지 않았을 때 <br>
-     * "/v1/phoneNumber"에서 전화번호 인증 후 <br>
+     * 받은 인증번호가 맞는지 인증하기
+     * @param key
+     * @return (username) + 님 휴대전화 인증 완료
+     * @author 배태현
+     */
+    @PostMapping("/auth/check")
+    @ResponseStatus( HttpStatus.OK )
+    public CommonResult validAuthKey(String key) {
+        userService.validAuthKey(key);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 인증번호 인증을 한 뒤 <br>
      * 비밀번호를 변경하게하는 controller <br>
      * @param passwordChangeDto passwordChangeDto
      * @return (회원이름)회원 비밀번호 변경완료
      * @author 배태현
      */
-    @PutMapping ("/pwd-change")
+    @PutMapping ("/change/password")
     @ResponseStatus( HttpStatus.OK )
-    public String passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
-        return userService.changePassword(passwordChangeDto);
+    public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+        userService.changePassword(passwordChangeDto);
+        return responseService.getSuccessResult();
     }
 }

@@ -35,59 +35,13 @@ public class CertifiedUserControllerTest {
     @BeforeEach
     public void before(@Autowired CertifiedUserController certifiedUserController) {
         mvc = MockMvcBuilders.standaloneSetup(certifiedUserController).build();
-
-        UserDto userDto = UserDto.builder()
-                .nickname("JsonWebTok")
-                .password("1234")
-                .phoneNumber("01012345678")
-                .build();
-        userService.signup(userDto);
-    }
-
-    @Test
-    @DisplayName("전화번호 인증 테스트")
-    public void validPhoneNumber() throws Exception {
-        PhoneNumberDto phoneNumberDto = PhoneNumberDto.builder()
-                .phoneNumber("01012341234")
-                .build();
-
-        String content = objectMapper.writeValueAsString(phoneNumberDto);
-
-        final ResultActions actions = mvc.perform(post("/v1/user/phoneNumber")
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON));
-
-
-        actions
-                .andDo(print())
-                .andExpect(status().isOk()); //http status 200
-    }
-
-    @Test
-    @DisplayName("비밀번호 변경 테스트")
-    public void passwordChange() throws Exception {
-        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .nickname("배태현")
-                .currentPassword("1234")
-                .newPassword("string")
-                .build();
-
-        String content = objectMapper.writeValueAsString(passwordChangeDto);
-
-        final ResultActions actions = mvc.perform(put("/v1/user/pwd-change")
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        actions
-                .andDo(print())
-                .andExpect(status().isOk()); //http status 200
     }
 
     @Test
     @DisplayName("로그아웃 테스트")
     public void logoutTest() throws Exception {
 
-        final ResultActions actions = mvc.perform(delete("/v1/user/logout")
+        final ResultActions actions = mvc.perform(delete("/v1/member/logout")
                 .content("content")
                 .contentType(MediaType.APPLICATION_JSON));
 
@@ -100,14 +54,14 @@ public class CertifiedUserControllerTest {
     @DisplayName("회원탈퇴 테스트")
     public void withdrawalTest() throws Exception {
 
-        WithdrawalDto withdrawalDto = WithdrawalDto.builder()
+        AuthDto deleteUserDto = AuthDto.builder()
                 .nickname("배태현")
                 .password("1234")
                 .build();
 
-        String content = objectMapper.writeValueAsString(withdrawalDto);
+        String content = objectMapper.writeValueAsString(deleteUserDto);
 
-        final ResultActions actions = mvc.perform(get("/v1/user/withdrawal")
+        final ResultActions actions = mvc.perform(post("/v1/member/delete")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
