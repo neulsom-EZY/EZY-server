@@ -5,7 +5,7 @@ import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberExcept
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.*;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.repository.MemberRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
@@ -25,9 +25,9 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class MemberServiceImpl implements MemberService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
@@ -44,12 +44,12 @@ public class UserServiceImpl implements UserService {
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
 
     @Override
-    public String signup(UserDto userDto) {
-        if(!userRepository.existsByNickname(userDto.getNickname())){
-            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            userRepository.save(userDto.toEntity());
+    public String signup(MemberDto memberDto) {
+        if(!memberRepository.existsByNickname(memberDto.getNickname())){
+            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+            memberRepository.save(memberDto.toEntity());
 
-            String token = jwtTokenProvider.createToken(userDto.getNickname(), userDto.toEntity().getRoles());
+            String token = jwtTokenProvider.createToken(memberDto.getNickname(), memberDto.toEntity().getRoles());
 
             return "Bearer " + token;
         } else {
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
-        UserEntity findUser = userRepository.findByNickname(loginDto.getNickname());
+        UserEntity findUser = memberRepository.findByNickname(loginDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void sendAuthKey(String phoneNumber) {
-        UserEntity findByPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
+        UserEntity findByPhoneNumber = memberRepository.findByPhoneNumber(phoneNumber);
         if (findByPhoneNumber == null) throw new UserNotFoundException(); //인증번호 발송 실패
 
         String authKey = keyUtil.getKey(4);
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
-        UserEntity findUser = userRepository.findByNickname(username);
+        UserEntity findUser = memberRepository.findByNickname(username);
         if (findUser == null) throw new InvalidAuthenticationNumberException();
         redisUtil.deleteData(key);
         return username + "님 휴대전화 인증 완료";
@@ -144,16 +144,16 @@ public class UserServiceImpl implements UserService {
 
     /**
      * nickname을 변경하는 서비스 로직
-     * @param nicknameDto nickname, newNickname
+     * @param nicknameChangeDto nickname, newNickname
      * @return
      */
     @Override
     @Transactional
-    public String changeNickname(NicknameDto nicknameDto) {
-        UserEntity findUser = userRepository.findByNickname(nicknameDto.getNickname());
+    public String changeNickname(NicknameChangeDto nicknameChangeDto) {
+        UserEntity findUser = memberRepository.findByNickname(nicknameChangeDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
-        findUser.updateNickname(nicknameDto.getNewNickname());
-        return nicknameDto.getNickname() + "유저 " + nicknameDto.getNewNickname() + "(으)로 닉네임 업데이트 완료";
+        findUser.updateNickname(nicknameChangeDto.getNewNickname());
+        return nicknameChangeDto.getNickname() + "유저 " + nicknameChangeDto.getNewNickname() + "(으)로 닉네임 업데이트 완료";
     }
 
     /**
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String changePassword(PasswordChangeDto passwordChangeDto) {
-        UserEntity findUser = userRepository.findByNickname(passwordChangeDto.getNickname());
+        UserEntity findUser = memberRepository.findByNickname(passwordChangeDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         findUser.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
 
@@ -180,10 +180,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String deleteUser(AuthDto deleteUserDto) {
-        UserEntity findUser = userRepository.findByNickname(deleteUserDto.getNickname());
+        UserEntity findUser = memberRepository.findByNickname(deleteUserDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
-            userRepository.deleteById(findUser.getUserIdx());
+            memberRepository.deleteById(findUser.getUserIdx());
         }
         return deleteUserDto.getNickname() + "회원 회원탈퇴완료";
     }

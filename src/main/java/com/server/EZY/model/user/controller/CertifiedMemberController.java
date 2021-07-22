@@ -1,7 +1,7 @@
 package com.server.EZY.model.user.controller;
 
 import com.server.EZY.model.user.dto.AuthDto;
-import com.server.EZY.model.user.service.UserService;
+import com.server.EZY.model.user.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +14,9 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/member")
-public class CertifiedUserController {
+public class CertifiedMemberController {
 
-    private final UserService userService;
+    private final MemberService memberService;
     private final ResponseService responseService;
 
     //이 Controller가 return이 아무값도 return되지않음 공백이 뜸 (POSTMAN에서 확인)
@@ -30,7 +30,7 @@ public class CertifiedUserController {
     @DeleteMapping("/logout")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult logout(HttpServletRequest request) {
-        userService.logout(request);
+        memberService.logout(request);
         return responseService.getSuccessResult();
     }
 
@@ -43,7 +43,7 @@ public class CertifiedUserController {
     @PostMapping ("/delete")
     @ResponseStatus( HttpStatus.NO_CONTENT )
     public CommonResult deleteUser(@Valid @RequestBody AuthDto deleteUserDto) {
-        userService.deleteUser(deleteUserDto);
+        memberService.deleteUser(deleteUserDto);
         return responseService.getSuccessResult();
     }
 }

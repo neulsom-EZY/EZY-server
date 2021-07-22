@@ -2,9 +2,8 @@ package com.server.EZY.model.user.service.jwt;
 
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.user.repository.MemberRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ import java.util.Map;
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
 
@@ -36,7 +35,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         String nickname = jwtTokenProvider.getUsername(accessToken);
 
-        UserEntity findUser = userRepository.findByNickname(nickname);
+        UserEntity findUser = memberRepository.findByNickname(nickname);
         List<Role> roles = findUser.getRoles();
 
         if (redisUtil.getData(nickname) == null) throw new TokenLoggedOutException();

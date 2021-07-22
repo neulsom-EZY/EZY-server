@@ -12,7 +12,7 @@ import java.util.Collections;
 
 @Getter @Setter @Builder
 @AllArgsConstructor @NoArgsConstructor
-public class UserDto {
+public class MemberDto {
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)
     private String nickname;
@@ -28,7 +28,7 @@ public class UserDto {
     @JsonIgnore
     private Permission permission;
 
-    public UserDto(String nickname, String password, String phoneNumber) {
+    public MemberDto(String nickname, String password, String phoneNumber) {
         this.nickname = nickname;
         this.password = password;
         this.phoneNumber = phoneNumber;
