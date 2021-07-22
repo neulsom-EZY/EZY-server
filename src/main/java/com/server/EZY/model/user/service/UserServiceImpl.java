@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         UserEntity findUser = userRepository.findByNickname(nicknameDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         findUser.updateNickname(nicknameDto.getNewNickname());
-        return nicknameDto.getNickname() + "유저 " + nicknameDto.getNewNickname() + "로 닉네임 업데이트 완료";
+        return nicknameDto.getNickname() + "유저 " + nicknameDto.getNewNickname() + "(으)로 닉네임 업데이트 완료";
     }
 
     /**

@@ -114,6 +114,25 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("닉네임 변경 테스트")
+    public void changeNickname() {
+        //given
+        UserEntity currentUser = currentUser();
+
+        NicknameDto nicknameDto = NicknameDto.builder()
+                .nickname("바따햔")
+                .NewNickname("배태현")
+                .build();
+        //when //then
+        if (currentUser != null) {
+            String changeNickname = userService.changeNickname(nicknameDto);
+            assertEquals("바따햔유저 배태현(으)로 닉네임 업데이트 완료", changeNickname);
+        } else {
+            log.info("닉네임 변경테스트 실패");
+        }
+    }
+
+    @Test
     @DisplayName("비밀번호 변경 테스트")
     public void changePasswordTest() {
         //given
@@ -123,7 +142,7 @@ public class UserServiceTest {
                 .nickname("배태현")
                 .newPassword("20040809")
                 .build();
-        //when
+        //when //then
         if (currentUser != null) {
             String changePassword = userService.changePassword(passwordChangeDto);
             assertEquals("배태현회원 비밀번호 변경완료", changePassword);
