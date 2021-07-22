@@ -1,5 +1,6 @@
 package com.server.EZY.model.user.service.jwt;
 
+import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.model.user.UserEntity;
 import com.server.EZY.model.user.dto.UserDto;
 import com.server.EZY.model.user.enumType.Role;
@@ -38,10 +39,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         UserEntity findUser = userRepository.findByNickname(nickname);
         List<Role> roles = findUser.getRoles();
 
-        if (redisUtil.getData(nickname) == null) {
-            map.put("message", "로그아웃된 토큰입니다.");
-            return map;
-        }
+        if (redisUtil.getData(nickname) == null) throw new TokenLoggedOutException();
 
         if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
             redisUtil.deleteData(nickname);//refreshToken이 저장되어있는 레디스 초기화 후
