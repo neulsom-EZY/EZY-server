@@ -40,7 +40,7 @@ public class MemberControllerTest {
         mvc = MockMvcBuilders.standaloneSetup(memberController).build();
 
         MemberDto memberDto = MemberDto.builder()
-                .nickname("JsonWebTok")
+                .username("JsonWebTok")
                 .password("1234")
                 .phoneNumber("01012345678")
                 .build();
@@ -51,7 +51,7 @@ public class MemberControllerTest {
     @DisplayName("회원가입 테스트")
     public void signupTest() throws Exception {
         MemberDto memberDto = MemberDto.builder()
-                .nickname("JsonWebTok")
+                .username("JsonWebTok")
                 .password("1234")
                 .phoneNumber("01012345678")
                 .build();
@@ -72,7 +72,7 @@ public class MemberControllerTest {
     @DisplayName("로그인 테스트")
     public void signInTest() throws Exception {
         AuthDto loginDto = AuthDto.builder()
-                .nickname("JsonWebTok")
+                .username("JsonWebTok")
                 .password("1234")
                 .build();
 
@@ -93,7 +93,7 @@ public class MemberControllerTest {
     public void pwdChangeTest() throws Exception {
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .nickname("배태현")
+                .username("배태현")
                 .newPassword("string")
                 .build();
 

@@ -18,7 +18,7 @@ public class CurrentUserUtil {
      * @return nickname
      * @author 배태현
      */
-    public static String getCurrentUserNickname() {
+    public static String getCurrentUsername() {
         String nickname = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
@@ -30,13 +30,13 @@ public class CurrentUserUtil {
     }
 
     public MemberEntity getCurrentUser() {
-        String nickname = null;
+        String username = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else{
-            nickname = principal.toString();
+            username = principal.toString();
         }
-        return memberRepository.findByNickname(nickname);
+        return memberRepository.findByUsername(username);
     }
 }

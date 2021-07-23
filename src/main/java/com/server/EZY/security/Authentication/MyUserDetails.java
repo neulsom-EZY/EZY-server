@@ -16,7 +16,7 @@ public class MyUserDetails implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-        MemberEntity memberEntity = memberRepository.findByNickname(nickname);
+        MemberEntity memberEntity = memberRepository.findByUsername(nickname);
 
         if(nickname == null){
             throw new UsernameNotFoundException("nickName '" + nickname + "' not found");

@@ -1,6 +1,6 @@
 package com.server.EZY.model.member;
 
-import com.server.EZY.model.member.enumType.Permission;
+import com.server.EZY.model.baseTime.BaseTimeEntity;
 import com.server.EZY.model.member.enumType.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,24 +21,20 @@ import static javax.persistence.EnumType.*;
 @Entity @Table(name = "member")
 @Builder @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
-public class MemberEntity implements UserDetails {
+public class MemberEntity extends BaseTimeEntity implements UserDetails{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long userIdx;
 
-    @Column(name = "nickname", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phonenumber", nullable = false, unique = true)
+    @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
-
-    @Column(name = "Permission", nullable = false)
-    @Enumerated(value = STRING)
-    private Permission permission;
 
     @Enumerated(STRING) @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -88,7 +84,7 @@ public class MemberEntity implements UserDetails {
         return true;
     }
 
-    public void updateNickname(String nickname) {
+    public void updateUsername(String nickname) {
         this.username = nickname != null ? nickname : this.username;
     }
 
@@ -101,11 +97,11 @@ public class MemberEntity implements UserDetails {
         if (this == o) return true;
         if (!(o instanceof MemberEntity)) return false;
         MemberEntity that = (MemberEntity) o;
-        return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && getPermission() == that.getPermission() && Objects.equals(getRoles(), that.getRoles());
+        return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && Objects.equals(getRoles(), that.getRoles());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserIdx(), getUsername(), getPassword(), getPhoneNumber(), getPermission(), getRoles());
+        return Objects.hash(getUserIdx(), getUsername(), getPassword(), getPhoneNumber(), getRoles());
     }
 }

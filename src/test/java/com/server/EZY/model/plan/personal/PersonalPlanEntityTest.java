@@ -31,10 +31,9 @@ class PersonalPlanEntityTest {
 
     MemberEntity userEntityInit(){
         MemberEntity user = MemberEntity.builder()
-                .nickname(RandomString.make(10))
+                .username(RandomString.make(10))
                 .password(RandomString.make(10))
                 .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
-                .permission(Permission.PERMISSION)
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();
         return userRepo.save(user);

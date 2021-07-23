@@ -33,19 +33,19 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         String newAccessToken = null;
         String newRefreshToken = null;
 
-        String nickname = jwtTokenProvider.getUsername(accessToken);
+        String username = jwtTokenProvider.getUsername(accessToken);
 
-        MemberEntity findUser = memberRepository.findByNickname(nickname);
+        MemberEntity findUser = memberRepository.findByUsername(username);
         List<Role> roles = findUser.getRoles();
 
-        if (redisUtil.getData(nickname) == null) throw new TokenLoggedOutException();
+        if (redisUtil.getData(username) == null) throw new TokenLoggedOutException();
 
-        if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
-            redisUtil.deleteData(nickname);//refreshToken이 저장되어있는 레디스 초기화 후
-            newAccessToken = jwtTokenProvider.createToken(nickname, roles);
+        if (redisUtil.getData(username).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
+            redisUtil.deleteData(username);//refreshToken이 저장되어있는 레디스 초기화 후
+            newAccessToken = jwtTokenProvider.createToken(username, roles);
             newRefreshToken = jwtTokenProvider.createRefreshToken();
-            redisUtil.setDataExpire(nickname, newRefreshToken, 360000 * 1000l* 24 * 180); //새 refreshToken을 다시 저장
-            map.put("nickname", nickname);
+            redisUtil.setDataExpire(username, newRefreshToken, 360000 * 1000l* 24 * 180); //새 refreshToken을 다시 저장
+            map.put("username", username);
             map.put("NewAccessToken", "Bearer " + newAccessToken); // NewAccessToken 반환
             map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
             return map;

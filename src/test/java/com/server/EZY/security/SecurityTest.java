@@ -27,11 +27,11 @@ public class SecurityTest {
     public void tokenTest() {
 
         MemberDto memberDto = new MemberDto();
-        memberDto.setNickname("배태현");
+        memberDto.setUsername("배태현");
         memberDto.setPhoneNumber("010-1234-1234");
         memberDto.setPassword("1234");
 
-        String accessToken = jwtTokenProvider.createToken(memberDto.getNickname(), memberDto.toEntity().getRoles());
+        String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
         // 유효한 토큰인지 확인
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
             String nickname = jwtTokenProvider.getUsername(accessToken);

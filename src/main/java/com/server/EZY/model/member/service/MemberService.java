@@ -33,7 +33,7 @@ public interface MemberService {
 
     String validAuthKey(String key);
 
-    String changeNickname(NicknameChangeDto nicknameChangeDto);
+    String changeUsername(UsernameChangeDto usernameChangeDto);
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 

@@ -11,7 +11,7 @@ public class PasswordChangeDto {
 
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)
-    private String nickname;
+    private String username;
 
     @NotBlank(message = "newPassword should be valid")
     @Size(min = 4, max = 10)

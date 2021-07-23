@@ -1,6 +1,5 @@
 package com.server.EZY.model.member;
 
-import com.server.EZY.model.member.enumType.Permission;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
@@ -30,10 +29,9 @@ class MemberEntityTest {
 
         // Given
         MemberEntity memberEntity = MemberEntity.builder()
-                .nickname("JsonWebTok")
+                .username("JsonWebTok")
                 .password("JsonWebTok")
                 .phoneNumber("01012345678")
-                .permission(Permission.PERMISSION)
                 .roles(Collections.singletonList(Role.ROLE_ADMIN))
                 .build();
 
@@ -54,8 +52,7 @@ class MemberEntityTest {
         userRole.add(Role.ROLE_CLIENT);
         userRole.add(Role.ROLE_ADMIN);
         MemberEntity memberEntity = MemberEntity.builder()
-                .nickname("siwony")
-                .permission(Permission.PERMISSION)
+                .username("siwony")
                 .password("siwony1234")
                 .phoneNumber("01037283839")
                 .roles(userRole)
