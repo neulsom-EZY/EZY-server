@@ -1,8 +1,8 @@
 package com.server.EZY.model.plan.personal.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.server.EZY.model.plan.Period;
-import com.server.EZY.model.plan.PlanInfo;
+import com.server.EZY.model.plan.embeddedTypes.Period;
+import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
 import com.server.EZY.model.plan.personal.NewPersonalPlanEntity;
 import com.server.EZY.model.member.MemberEntity;
 import lombok.*;
