@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(QueryDslTestConfig.class)
 class MemberEntityTest {
 
-    @Autowired private MemberRepository userRepo;
+    @Autowired private MemberRepository memberRepo;
 
     @Test
     @DisplayName("UserEntity DB값 정상적으로 insert 하는지 검증")
@@ -42,41 +42,10 @@ class MemberEntityTest {
 
         // When
         // UserEntity save 후 flush(DB에 쿼리를 날린다.)
-        MemberEntity savedMemberEntity = userRepo.saveAndFlush(memberEntity);
+        MemberEntity savedMemberEntity = memberRepo.saveAndFlush(memberEntity);
 
         // Then
         assertEquals(memberEntity, savedMemberEntity);
-    }
-
-    @Test @Disabled
-    @DisplayName("UserEntity 최대길이_초과시_Exception 검증 (Exception 발생시 Test 성공)")
-    void userEntity_최대길이_초과_Exception_검증() throws Exception {
-        MemberEntity user = MemberEntity.builder()
-                .nickname("JsonWebTok1")
-                .password("JsonWebTok2")
-                .phoneNumber("010123456783")
-                .permission(Permission.PERMISSION)
-                .build();
-
-        assertThrows(ConstraintViolationException.class,  () ->{
-            userRepo.save(user);
-        });
-    }
-
-    @Test @Disabled
-    @DisplayName("UserEntity 최대길이_미만시_Exception 검증 (Exception 발생시 Test 성공)")
-    void userEntity_최소길이_미만_Exception_검증() throws Exception {
-        MemberEntity user = MemberEntity.builder()
-                .nickname("")
-                .password("123")
-                .phoneNumber("0103629383")
-                .permission(Permission.PERMISSION)
-                .build();
-
-        assertThrows(ConstraintViolationException.class, () ->{
-            userRepo.save(user);
-        });
-
     }
 
     @Test
