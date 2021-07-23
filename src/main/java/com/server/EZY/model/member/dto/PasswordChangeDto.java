@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor @AllArgsConstructor
 public class PasswordChangeDto {
 
-    @NotBlank(message = "nickname should be valid")
+    @NotBlank(message = "username should be valid")
     @Size(min = 1, max = 10)
     private String username;
 

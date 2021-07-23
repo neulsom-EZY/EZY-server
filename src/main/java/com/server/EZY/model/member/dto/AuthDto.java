@@ -13,7 +13,7 @@ import java.util.Collections;
 @Builder
 public class AuthDto {
 
-    @NotBlank(message = "nickname should be valid")
+    @NotBlank(message = "username should be valid")
     @Size(min = 1, max = 10)
     private String username;
 

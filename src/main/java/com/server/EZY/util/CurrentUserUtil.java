@@ -14,19 +14,19 @@ public class CurrentUserUtil {
     private final MemberRepository memberRepository;
 
     /**
-     * 현재 로그인 되어있는(인증되어있는) User의 nickname을 반환하는 메서드
-     * @return nickname
+     * 현재 로그인 되어있는(인증되어있는) User의 username을 반환하는 메서드
+     * @return username
      * @author 배태현
      */
     public static String getCurrentUsername() {
-        String nickname = null;
+        String username = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else{
-            nickname = principal.toString();
+            username = principal.toString();
         }
-        return nickname;
+        return username;
     }
 
     public MemberEntity getCurrentUser() {

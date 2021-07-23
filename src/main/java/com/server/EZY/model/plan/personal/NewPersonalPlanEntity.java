@@ -21,7 +21,7 @@ public class NewPersonalPlanEntity {
     private Long personalPlanIdx;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = LAZY)

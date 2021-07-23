@@ -11,7 +11,7 @@ import java.util.Collections;
 @Getter @Setter @Builder
 @NoArgsConstructor
 public class MemberDto {
-    @NotBlank(message = "nickname should be valid")
+    @NotBlank(message = "username should be valid")
     @Size(min = 1, max = 10)
     private String username;
 

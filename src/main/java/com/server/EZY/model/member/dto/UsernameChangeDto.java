@@ -9,11 +9,11 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor @NoArgsConstructor
 public class UsernameChangeDto {
 
-    @NotBlank(message = "nickname should be valid")
+    @NotBlank(message = "username should be valid")
     @Size(min = 1, max = 10)
     private String username;
 
-    @NotBlank(message = "NewNickname should be valid")
+    @NotBlank(message = "NewUsername should be valid")
     @Size(min = 1, max = 10)
     private String newUsername;
 }

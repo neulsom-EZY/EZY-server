@@ -41,7 +41,7 @@ public class MemberController {
     /**
      * 로그인 controller
      * @param loginDto loginDto
-     * @return nickname ,accessToken, refreshToken
+     * @return username ,accessToken, refreshToken
      * @throws Exception Exception
      * @author 배태현
      */
@@ -53,7 +53,7 @@ public class MemberController {
     }
 
     /**
-     * nickname 변경 controller
+     * username 변경 controller
      * @param usernameChangeDto username, newUsername
      * @return
      */

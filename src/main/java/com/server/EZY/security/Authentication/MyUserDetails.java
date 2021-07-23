@@ -15,11 +15,11 @@ public class MyUserDetails implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-        MemberEntity memberEntity = memberRepository.findByUsername(nickname);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        MemberEntity memberEntity = memberRepository.findByUsername(username);
 
-        if(nickname == null){
-            throw new UsernameNotFoundException("nickName '" + nickname + "' not found");
+        if(username == null){
+            throw new UsernameNotFoundException("username '" + username + "' not found");
         }
 
         return memberEntity;

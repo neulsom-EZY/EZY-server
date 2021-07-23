@@ -84,8 +84,8 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
         return true;
     }
 
-    public void updateUsername(String nickname) {
-        this.username = nickname != null ? nickname : this.username;
+    public void updateUsername(String username) {
+        this.username = username != null ? username : this.username;
     }
 
     public void updatePassword(String password) {
