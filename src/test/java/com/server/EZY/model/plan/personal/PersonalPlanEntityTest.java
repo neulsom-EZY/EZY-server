@@ -6,7 +6,6 @@ import com.server.EZY.model.plan.PlanInfo;
 import com.server.EZY.model.plan.personal.enumType.PlanDType;
 import com.server.EZY.model.plan.personal.dto.NewPersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.NewPersonalPlanRepository;
-import com.server.EZY.model.member.enumType.Permission;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
