@@ -11,9 +11,9 @@ public class NicknameChangeDto {
 
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)
-    private String nickname;
+    private String username;
 
     @NotBlank(message = "NewNickname should be valid")
     @Size(min = 1, max = 10)
-    private String NewNickname;
+    private String NewUsername;
 }
