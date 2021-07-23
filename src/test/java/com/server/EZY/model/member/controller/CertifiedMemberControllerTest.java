@@ -1,8 +1,8 @@
-package com.server.EZY.model.user.controller;
+package com.server.EZY.model.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.model.user.dto.*;
-import com.server.EZY.model.user.service.MemberService;
+import com.server.EZY.model.member.dto.*;
+import com.server.EZY.model.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

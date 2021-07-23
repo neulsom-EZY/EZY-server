@@ -1,4 +1,4 @@
-package com.server.EZY.model.user.service.jwt;
+package com.server.EZY.model.member.service.jwt;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

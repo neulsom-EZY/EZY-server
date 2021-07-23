@@ -1,10 +1,10 @@
-package com.server.EZY.model.user.controller;
+package com.server.EZY.model.member.controller;
 
-import com.server.EZY.model.user.dto.AuthDto;
-import com.server.EZY.model.user.dto.NicknameChangeDto;
-import com.server.EZY.model.user.dto.PasswordChangeDto;
-import com.server.EZY.model.user.dto.MemberDto;
-import com.server.EZY.model.user.service.MemberService;
+import com.server.EZY.model.member.dto.AuthDto;
+import com.server.EZY.model.member.dto.NicknameChangeDto;
+import com.server.EZY.model.member.dto.PasswordChangeDto;
+import com.server.EZY.model.member.dto.MemberDto;
+import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.response.result.SingleResult;

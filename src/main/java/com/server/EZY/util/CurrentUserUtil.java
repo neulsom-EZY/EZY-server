@@ -1,7 +1,7 @@
 package com.server.EZY.util;
 
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.repository.MemberRepository;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +29,7 @@ public class CurrentUserUtil {
         return nickname;
     }
 
-    public UserEntity getCurrentUser() {
+    public MemberEntity getCurrentUser() {
         String nickname = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {

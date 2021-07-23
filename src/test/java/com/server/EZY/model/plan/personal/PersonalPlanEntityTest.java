@@ -1,14 +1,14 @@
 package com.server.EZY.model.plan.personal;
 
+import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.Period;
 import com.server.EZY.model.plan.PlanInfo;
 import com.server.EZY.model.plan.personal.enumType.PlanDType;
 import com.server.EZY.model.plan.personal.dto.NewPersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.NewPersonalPlanRepository;
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.enumType.Permission;
-import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.MemberRepository;
+import com.server.EZY.model.member.enumType.Permission;
+import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
@@ -29,8 +29,8 @@ class PersonalPlanEntityTest {
     @Autowired
     MemberRepository userRepo;
 
-    UserEntity userEntityInit(){
-        UserEntity user = UserEntity.builder()
+    MemberEntity userEntityInit(){
+        MemberEntity user = MemberEntity.builder()
                 .nickname(RandomString.make(10))
                 .password(RandomString.make(10))
                 .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
@@ -40,7 +40,7 @@ class PersonalPlanEntityTest {
         return userRepo.save(user);
     }
 
-    NewPersonalPlanEntity personalPlanEntityInit(UserEntity user){
+    NewPersonalPlanEntity personalPlanEntityInit(MemberEntity user){
         Period period = Period.builder()
                 .startTime(LocalDateTime.of(2021, 7, 20, 12, 0))
                 .endTime(LocalDateTime.of(2021, 7, 20, 14, 0))
@@ -54,12 +54,12 @@ class PersonalPlanEntityTest {
 
     @Test() @DisplayName("PersonalPlan equals, hashCode test")
     void equals_hashCode_test() throws Exception {
-        UserEntity userEntity = userEntityInit();
+        MemberEntity memberEntity = userEntityInit();
 
-        NewPersonalPlanEntity personalPlanEntity = personalPlanEntityInit(userEntity);
-        NewPersonalPlanEntity clonePersonalPlanEntity = personalPlanEntityInit(userEntity);
+        NewPersonalPlanEntity personalPlanEntity = personalPlanEntityInit(memberEntity);
+        NewPersonalPlanEntity clonePersonalPlanEntity = personalPlanEntityInit(memberEntity);
 
-        assertFalse(personalPlanEntity.equals(userEntity));
+        assertFalse(personalPlanEntity.equals(memberEntity));
         assertTrue(personalPlanEntity.equals(clonePersonalPlanEntity));
         assertEquals(personalPlanEntity.hashCode(), clonePersonalPlanEntity.hashCode());
 
@@ -68,14 +68,14 @@ class PersonalPlanEntityTest {
         LocalDateTime updateEndTime = LocalDateTime.of(2023, 7, 20, 12, 0);
         Period updatePeriod = new Period(updateStartTime, updateEndTime);
         NewPersonalPlanEntity updatePersonalPlanEntity = NewPersonalPlanUpdateDto.builder()
-                .userEntity(userEntity)
+                .memberEntity(memberEntity)
                 .planInfo(updatePlanInfo)
                 .period(updatePeriod)
                 .repetition(true)
                 .build()
                 .toEntity();
 
-        clonePersonalPlanEntity.updatePersonalPlanEntity(userEntity, updatePersonalPlanEntity);
+        clonePersonalPlanEntity.updatePersonalPlanEntity(memberEntity, updatePersonalPlanEntity);
         assertFalse(personalPlanEntity.equals(clonePersonalPlanEntity));
 
     }
@@ -83,7 +83,7 @@ class PersonalPlanEntityTest {
     @Test @DisplayName("PersonalPlan(개인일정) 저장, 조회 테스트")
     void PersonalPlan_저장_조회_테스트(){
         // Given
-        UserEntity user = userEntityInit();
+        MemberEntity user = userEntityInit();
 
         Period period = Period.builder()
                 .startTime(LocalDateTime.of(2021, 7, 20, 12, 0))
@@ -112,7 +112,7 @@ class PersonalPlanEntityTest {
     @Test @DisplayName("PersonalPlan(개인일정) 모든필드 수정 테스트")
     void PersonalPlan_수정테스트() throws Exception {
         // Given
-        UserEntity user = userEntityInit();
+        MemberEntity user = userEntityInit();
         NewPersonalPlanEntity oldPersonalPlanEntity = personalPlanEntityInit(user);
         NewPersonalPlanEntity saveOldPersonalPlanEntity = personalPlanRepo.save(oldPersonalPlanEntity);
 
@@ -122,7 +122,7 @@ class PersonalPlanEntityTest {
         LocalDateTime updateEndTime = LocalDateTime.of(2022, 7, 20, 12, 0);
         Period updatePeriod = new Period(updateStartTime, updateEndTime);
         NewPersonalPlanEntity updateBeforePersonalPlanEntity = NewPersonalPlanUpdateDto.builder()
-                .userEntity(user)
+                .memberEntity(user)
                 .planInfo(updatePlanInfo)
                 .period(updatePeriod)
                 .repetition(true)
@@ -142,8 +142,8 @@ class PersonalPlanEntityTest {
     @Test @DisplayName("PersonalPlan(개인일정) 업데이트시 소유자가 다른 유저가 업데이트를 하게 된다면?")
     void PersonalPlan_다른소유자가_업데이트시_exception_테스트() throws Exception {
         // Given
-        UserEntity userA = userEntityInit();
-        UserEntity userB = userEntityInit();
+        MemberEntity userA = userEntityInit();
+        MemberEntity userB = userEntityInit();
         NewPersonalPlanEntity oldPersonalPlanEntity = personalPlanEntityInit(userA);
         NewPersonalPlanEntity saveOldPersonalPlanEntity = personalPlanRepo.save(oldPersonalPlanEntity);
 
@@ -153,7 +153,7 @@ class PersonalPlanEntityTest {
         LocalDateTime updateEndTime = LocalDateTime.of(2022, 7, 20, 12, 0);
         Period updatePeriod = new Period(updateStartTime, updateEndTime);
         NewPersonalPlanEntity updateBeforePersonalPlanEntity = NewPersonalPlanUpdateDto.builder()
-                .userEntity(userA)
+                .memberEntity(userA)
                 .planInfo(updatePlanInfo)
                 .period(updatePeriod)
                 .repetition(true)

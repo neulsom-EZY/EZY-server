@@ -1,4 +1,4 @@
-package com.server.EZY.model.user.enumType;
+package com.server.EZY.model.member.enumType;
 
 public enum Permission {
     NONE, PERMISSION

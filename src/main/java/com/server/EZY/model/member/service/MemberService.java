@@ -1,6 +1,6 @@
-package com.server.EZY.model.user.service;
+package com.server.EZY.model.member.service;
 
-import com.server.EZY.model.user.dto.*;
+import com.server.EZY.model.member.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

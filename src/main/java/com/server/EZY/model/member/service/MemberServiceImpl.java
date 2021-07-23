@@ -1,11 +1,11 @@
-package com.server.EZY.model.user.service;
+package com.server.EZY.model.member.service;
 
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.dto.*;
-import com.server.EZY.model.user.repository.MemberRepository;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.dto.*;
+import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
@@ -59,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
-        UserEntity findUser = memberRepository.findByNickname(loginDto.getNickname());
+        MemberEntity findUser = memberRepository.findByNickname(loginDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
@@ -102,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void sendAuthKey(String phoneNumber) {
-        UserEntity findByPhoneNumber = memberRepository.findByPhoneNumber(phoneNumber);
+        MemberEntity findByPhoneNumber = memberRepository.findByPhoneNumber(phoneNumber);
         if (findByPhoneNumber == null) throw new UserNotFoundException(); //인증번호 발송 실패
 
         String authKey = keyUtil.getKey(4);
@@ -136,7 +136,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
-        UserEntity findUser = memberRepository.findByNickname(username);
+        MemberEntity findUser = memberRepository.findByNickname(username);
         if (findUser == null) throw new InvalidAuthenticationNumberException();
         redisUtil.deleteData(key);
         return username + "님 휴대전화 인증 완료";
@@ -150,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String changeNickname(NicknameChangeDto nicknameChangeDto) {
-        UserEntity findUser = memberRepository.findByNickname(nicknameChangeDto.getNickname());
+        MemberEntity findUser = memberRepository.findByNickname(nicknameChangeDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         findUser.updateNickname(nicknameChangeDto.getNewNickname());
         return nicknameChangeDto.getNickname() + "유저 " + nicknameChangeDto.getNewNickname() + "(으)로 닉네임 업데이트 완료";
@@ -165,7 +165,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String changePassword(PasswordChangeDto passwordChangeDto) {
-        UserEntity findUser = memberRepository.findByNickname(passwordChangeDto.getNickname());
+        MemberEntity findUser = memberRepository.findByNickname(passwordChangeDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         findUser.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
 
@@ -180,7 +180,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public String deleteUser(AuthDto deleteUserDto) {
-        UserEntity findUser = memberRepository.findByNickname(deleteUserDto.getNickname());
+        MemberEntity findUser = memberRepository.findByNickname(deleteUserDto.getNickname());
         if (findUser == null) throw new UserNotFoundException();
         if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
             memberRepository.deleteById(findUser.getUserIdx());

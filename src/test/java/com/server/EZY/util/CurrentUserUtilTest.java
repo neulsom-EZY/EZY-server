@@ -1,9 +1,9 @@
 package com.server.EZY.util;
 
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.dto.MemberDto;
-import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.MemberRepository;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.dto.MemberDto;
+import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -89,7 +89,7 @@ class CurrentUserUtilTest {
         System.out.println(context);
 
         //then
-        UserEntity currentUser = currentUserUtil.getCurrentUser();
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
         assertTrue(currentUser != null, "true");
         assertEquals(memberDto.toEntity().getNickname(), currentUser.getNickname());
         assertEquals(memberDto.toEntity().getPhoneNumber(), currentUser.getPhoneNumber());

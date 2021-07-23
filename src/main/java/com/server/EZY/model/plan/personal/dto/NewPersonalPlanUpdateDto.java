@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.server.EZY.model.plan.Period;
 import com.server.EZY.model.plan.PlanInfo;
 import com.server.EZY.model.plan.personal.NewPersonalPlanEntity;
-import com.server.EZY.model.user.UserEntity;
+import com.server.EZY.model.member.MemberEntity;
 import lombok.*;
 
 @Getter @Builder
@@ -12,17 +12,17 @@ import lombok.*;
 public class NewPersonalPlanUpdateDto {
 
     @JsonIgnore
-    private UserEntity userEntity;
+    private MemberEntity memberEntity;
 
     private PlanInfo planInfo;
     private Period period;
     private boolean repetition;
 
     public NewPersonalPlanEntity toEntity(){
-        return new NewPersonalPlanEntity(userEntity, planInfo, period, repetition);
+        return new NewPersonalPlanEntity(memberEntity, planInfo, period, repetition);
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setMemberEntity(MemberEntity memberEntity) {
+        this.memberEntity = memberEntity;
     }
 }
