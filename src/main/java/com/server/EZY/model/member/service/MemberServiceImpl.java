@@ -106,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
         if (findByPhoneNumber == null) throw new UserNotFoundException(); //인증번호 발송 실패
 
         String authKey = keyUtil.getKey(4);
-        redisUtil.setDataExpire(authKey, findByPhoneNumber.getNickname(), KEY_EXPIRATION_TIME);
+        redisUtil.setDataExpire(authKey, findByPhoneNumber.getUsername(), KEY_EXPIRATION_TIME);
 
         Message coolsms = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();

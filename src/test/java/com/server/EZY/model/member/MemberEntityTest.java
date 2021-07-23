@@ -4,7 +4,6 @@ import com.server.EZY.model.member.enumType.Permission;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import javax.validation.ConstraintViolationException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -76,7 +73,7 @@ class MemberEntityTest {
         boolean getEnabled = memberEntity.isEnabled();
 
         // Then
-        assertEquals(getUsername, memberEntity.getNickname());
+        assertEquals(getUsername, memberEntity.getUsername());
         assertEquals(getAuthorities, getRoleConvertSimpleGrantedAuthority);
         assertEquals(getAccountNonExpired, true);
         assertEquals(getAccountNonLocked, true);

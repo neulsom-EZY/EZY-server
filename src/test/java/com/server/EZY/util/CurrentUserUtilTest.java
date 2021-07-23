@@ -91,7 +91,7 @@ class CurrentUserUtilTest {
         //then
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
         assertTrue(currentUser != null, "true");
-        assertEquals(memberDto.toEntity().getNickname(), currentUser.getNickname());
+        assertEquals(memberDto.toEntity().getUsername(), currentUser.getUsername());
         assertEquals(memberDto.toEntity().getPhoneNumber(), currentUser.getPhoneNumber());
     }
 }

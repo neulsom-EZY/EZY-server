@@ -18,34 +18,31 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.EnumType.*;
 
-@Entity @Table(name = "User")
+@Entity @Table(name = "member")
 @Builder @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class MemberEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long userIdx;
 
-    @Column(name = "NickName", nullable = false, unique = true)
-//    @Size(min = 1, max = 10)
-    private String nickname;
+    @Column(name = "nickname", nullable = false, unique = true)
+    private String username;
 
-    @Column(name = "Password", nullable = false)
-//    @Size(min = 4, max = 10)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "PhoneNumber", nullable = false, unique = true)
-//    @Size(min = 11, max = 11)
+    @Column(name = "phonenumber", nullable = false, unique = true)
     private String phoneNumber;
 
     @Column(name = "Permission", nullable = false)
     @Enumerated(value = STRING)
     private Permission permission;
 
-    @Enumerated(STRING) @Column(name = "Role")
+    @Enumerated(STRING) @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "Role", joinColumns = @JoinColumn(name = "UserIdx"))
+    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "user_id"))
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
@@ -64,7 +61,7 @@ public class MemberEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
-        return this.nickname;
+        return this.username;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -92,7 +89,7 @@ public class MemberEntity implements UserDetails {
     }
 
     public void updateNickname(String nickname) {
-        this.nickname = nickname != null ? nickname : this.nickname;
+        this.username = nickname != null ? nickname : this.username;
     }
 
     public void updatePassword(String password) {
@@ -104,11 +101,11 @@ public class MemberEntity implements UserDetails {
         if (this == o) return true;
         if (!(o instanceof MemberEntity)) return false;
         MemberEntity that = (MemberEntity) o;
-        return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getNickname(), that.getNickname()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && getPermission() == that.getPermission() && Objects.equals(getRoles(), that.getRoles());
+        return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && getPermission() == that.getPermission() && Objects.equals(getRoles(), that.getRoles());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserIdx(), getNickname(), getPassword(), getPhoneNumber(), getPermission(), getRoles());
+        return Objects.hash(getUserIdx(), getUsername(), getPassword(), getPhoneNumber(), getPermission(), getRoles());
     }
 }
