@@ -1,10 +1,10 @@
-package com.server.EZY.model.user.controller;
+package com.server.EZY.model.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.model.user.dto.AuthDto;
-import com.server.EZY.model.user.dto.PasswordChangeDto;
-import com.server.EZY.model.user.dto.MemberDto;
-import com.server.EZY.model.user.service.MemberService;
+import com.server.EZY.model.member.dto.AuthDto;
+import com.server.EZY.model.member.dto.PasswordChangeDto;
+import com.server.EZY.model.member.dto.MemberDto;
+import com.server.EZY.model.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

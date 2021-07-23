@@ -1,8 +1,8 @@
-package com.server.EZY.model.user;
+package com.server.EZY.model.member;
 
-import com.server.EZY.model.user.enumType.Permission;
-import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.MemberRepository;
+import com.server.EZY.model.member.enumType.Permission;
+import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -23,16 +23,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest // DataJpa만 Test 할것이다.
 @Import(QueryDslTestConfig.class)
-class UserEntityTest {
+class MemberEntityTest {
 
-    @Autowired private MemberRepository userRepo;
+    @Autowired private MemberRepository memberRepo;
 
     @Test
     @DisplayName("UserEntity DB값 정상적으로 insert 하는지 검증")
     void userEntity_최대길이검증(){
 
         // Given
-        UserEntity userEntity = UserEntity.builder()
+        MemberEntity memberEntity = MemberEntity.builder()
                 .nickname("JsonWebTok")
                 .password("JsonWebTok")
                 .phoneNumber("01012345678")
@@ -42,41 +42,10 @@ class UserEntityTest {
 
         // When
         // UserEntity save 후 flush(DB에 쿼리를 날린다.)
-        UserEntity savedUserEntity = userRepo.saveAndFlush(userEntity);
+        MemberEntity savedMemberEntity = memberRepo.saveAndFlush(memberEntity);
 
         // Then
-        assertEquals(userEntity, savedUserEntity);
-    }
-
-    @Test @Disabled
-    @DisplayName("UserEntity 최대길이_초과시_Exception 검증 (Exception 발생시 Test 성공)")
-    void userEntity_최대길이_초과_Exception_검증() throws Exception {
-        UserEntity user = UserEntity.builder()
-                .nickname("JsonWebTok1")
-                .password("JsonWebTok2")
-                .phoneNumber("010123456783")
-                .permission(Permission.PERMISSION)
-                .build();
-
-        assertThrows(ConstraintViolationException.class,  () ->{
-            userRepo.save(user);
-        });
-    }
-
-    @Test @Disabled
-    @DisplayName("UserEntity 최대길이_미만시_Exception 검증 (Exception 발생시 Test 성공)")
-    void userEntity_최소길이_미만_Exception_검증() throws Exception {
-        UserEntity user = UserEntity.builder()
-                .nickname("")
-                .password("123")
-                .phoneNumber("0103629383")
-                .permission(Permission.PERMISSION)
-                .build();
-
-        assertThrows(ConstraintViolationException.class, () ->{
-            userRepo.save(user);
-        });
-
+        assertEquals(memberEntity, savedMemberEntity);
     }
 
     @Test
@@ -87,7 +56,7 @@ class UserEntityTest {
         List<Role> userRole = new ArrayList<>();
         userRole.add(Role.ROLE_CLIENT);
         userRole.add(Role.ROLE_ADMIN);
-        UserEntity userEntity = UserEntity.builder()
+        MemberEntity memberEntity = MemberEntity.builder()
                 .nickname("siwony")
                 .permission(Permission.PERMISSION)
                 .password("siwony1234")
@@ -95,19 +64,19 @@ class UserEntityTest {
                 .roles(userRole)
                 .build();
 
-        List<String> userRoles = userEntity.getRoles().stream().map(Enum::name).collect(Collectors.toList());
+        List<String> userRoles = memberEntity.getRoles().stream().map(Enum::name).collect(Collectors.toList());
         Collection<? extends GrantedAuthority> getRoleConvertSimpleGrantedAuthority = userRoles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         // When
-        String getUsername = userEntity.getUsername();
-        Collection<? extends GrantedAuthority> getAuthorities = userEntity.getAuthorities();
-        boolean getAccountNonExpired = userEntity.isAccountNonExpired();
-        boolean getAccountNonLocked = userEntity.isAccountNonLocked();
-        boolean getCredentialsNonExpired = userEntity.isCredentialsNonExpired();
-        boolean getEnabled = userEntity.isEnabled();
+        String getUsername = memberEntity.getUsername();
+        Collection<? extends GrantedAuthority> getAuthorities = memberEntity.getAuthorities();
+        boolean getAccountNonExpired = memberEntity.isAccountNonExpired();
+        boolean getAccountNonLocked = memberEntity.isAccountNonLocked();
+        boolean getCredentialsNonExpired = memberEntity.isCredentialsNonExpired();
+        boolean getEnabled = memberEntity.isEnabled();
 
         // Then
-        assertEquals(getUsername, userEntity.getNickname());
+        assertEquals(getUsername, memberEntity.getNickname());
         assertEquals(getAuthorities, getRoleConvertSimpleGrantedAuthority);
         assertEquals(getAccountNonExpired, true);
         assertEquals(getAccountNonLocked, true);

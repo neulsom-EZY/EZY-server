@@ -1,6 +1,6 @@
-package com.server.EZY.model.user.controller.jwt;
+package com.server.EZY.model.member.controller.jwt;
 
-import com.server.EZY.model.user.service.jwt.RefreshTokenService;
+import com.server.EZY.model.member.service.jwt.RefreshTokenService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.SingleResult;
 import lombok.RequiredArgsConstructor;

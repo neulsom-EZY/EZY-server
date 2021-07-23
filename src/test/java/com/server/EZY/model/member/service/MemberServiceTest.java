@@ -1,10 +1,10 @@
-package com.server.EZY.model.user.service;
+package com.server.EZY.model.member.service;
 
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.controller.MemberController;
-import com.server.EZY.model.user.dto.*;
-import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.MemberRepository;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.controller.MemberController;
+import com.server.EZY.model.member.dto.*;
+import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
@@ -117,7 +117,7 @@ public class MemberServiceTest {
     @DisplayName("닉네임 변경 테스트")
     public void changeNickname() {
         //given
-        UserEntity currentUser = currentUser();
+        MemberEntity currentUser = currentUser();
 
         NicknameChangeDto nicknameChangeDto = NicknameChangeDto.builder()
                 .nickname("바따햔")
@@ -136,7 +136,7 @@ public class MemberServiceTest {
     @DisplayName("비밀번호 변경 테스트")
     public void changePasswordTest() {
         //given
-        UserEntity currentUser = currentUser();
+        MemberEntity currentUser = currentUser();
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .nickname("배태현")
@@ -155,7 +155,7 @@ public class MemberServiceTest {
     @DisplayName("회원탈퇴 테스트")
     public void DeleteMemberTest() {
         //given
-        UserEntity currentUser = currentUser();
+        MemberEntity currentUser = currentUser();
 
         AuthDto deleteUserDto = AuthDto.builder()
                 .nickname("배태현")
@@ -176,7 +176,7 @@ public class MemberServiceTest {
      * @return loginUser(현재 로그인되어있는 유저)
      * @author 배태현
      */
-    public UserEntity currentUser() {
+    public MemberEntity currentUser() {
         MemberDto memberDto = MemberDto.builder()
                 .nickname("배태현")
                 .password("1234")
@@ -200,7 +200,7 @@ public class MemberServiceTest {
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUserNickname();
         assertEquals("배태현", currentUserNickname);
-        UserEntity loginUser = memberRepository.findByNickname(currentUserNickname);
+        MemberEntity loginUser = memberRepository.findByNickname(currentUserNickname);
         return loginUser;
     }
 }

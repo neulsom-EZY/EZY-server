@@ -1,21 +1,18 @@
-package com.server.EZY.model.user.dto;
+package com.server.EZY.model.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.server.EZY.model.user.enumType.Permission;
-import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.UserEntity;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.enumType.Permission;
+import com.server.EZY.model.member.enumType.Role;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
-@Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class AuthDto {
-
+@Getter @Setter @Builder
+@AllArgsConstructor @NoArgsConstructor
+public class MemberDto {
     @NotBlank(message = "nickname should be valid")
     @Size(min = 1, max = 10)
     private String nickname;
@@ -24,18 +21,24 @@ public class AuthDto {
     @Size(min = 4, max = 10)
     private String password;
 
+    @NotBlank(message = "phoneNumber should be valid")
+    @Size(min = 11, max = 11)
+    private String phoneNumber;
+
     @JsonIgnore
     private Permission permission;
 
-    public AuthDto(String nickname, String password) {
+    public MemberDto(String nickname, String password, String phoneNumber) {
         this.nickname = nickname;
         this.password = password;
+        this.phoneNumber = phoneNumber;
     }
 
-    public UserEntity toEntity(){
-        return UserEntity.builder()
+    public MemberEntity toEntity(){
+        return MemberEntity.builder()
                 .nickname(this.getNickname())
                 .password(this.getPassword())
+                .phoneNumber(this.getPhoneNumber())
                 .permission(Permission.PERMISSION)
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();

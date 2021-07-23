@@ -1,6 +1,6 @@
 package com.server.EZY.model.plan.tag;
 
-import com.server.EZY.model.user.UserEntity;
+import com.server.EZY.model.member.MemberEntity;
 
 import javax.persistence.*;
 
@@ -13,7 +13,7 @@ public class TagEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserEntity userEntity;
+    private MemberEntity memberEntity;
 
     private String tag;
 }

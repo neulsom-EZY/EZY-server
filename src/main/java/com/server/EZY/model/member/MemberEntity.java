@@ -1,7 +1,7 @@
-package com.server.EZY.model.user;
+package com.server.EZY.model.member;
 
-import com.server.EZY.model.user.enumType.Permission;
-import com.server.EZY.model.user.enumType.Role;
+import com.server.EZY.model.member.enumType.Permission;
+import com.server.EZY.model.member.enumType.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +21,7 @@ import static javax.persistence.EnumType.*;
 @Entity @Table(name = "User")
 @Builder @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
-public class UserEntity implements UserDetails {
+public class MemberEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -102,8 +102,8 @@ public class UserEntity implements UserDetails {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserEntity)) return false;
-        UserEntity that = (UserEntity) o;
+        if (!(o instanceof MemberEntity)) return false;
+        MemberEntity that = (MemberEntity) o;
         return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getNickname(), that.getNickname()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && getPermission() == that.getPermission() && Objects.equals(getRoles(), that.getRoles());
     }
 

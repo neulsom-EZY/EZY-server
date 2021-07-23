@@ -1,7 +1,7 @@
-package com.server.EZY.model.user.controller;
+package com.server.EZY.model.member.controller;
 
-import com.server.EZY.model.user.dto.AuthDto;
-import com.server.EZY.model.user.service.MemberService;
+import com.server.EZY.model.member.dto.AuthDto;
+import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
