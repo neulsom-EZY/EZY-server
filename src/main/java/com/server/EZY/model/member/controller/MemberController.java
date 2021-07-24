@@ -53,18 +53,6 @@ public class MemberController {
     }
 
     /**
-     * username 변경 controller
-     * @param usernameChangeDto username, newUsername
-     * @return
-     */
-    @PutMapping("/change/username")
-    @ResponseStatus( HttpStatus.OK )
-    public CommonResult changeUsername(@Valid @RequestBody UsernameChangeDto usernameChangeDto) {
-        memberService.changeUsername(usernameChangeDto);
-        return responseService.getSuccessResult();
-    }
-
-    /**
      * 전화번호로 인증번호 보내기
      * @param phoneNumber
      * @return true or false
@@ -87,6 +75,30 @@ public class MemberController {
     @ResponseStatus( HttpStatus.OK )
     public CommonResult validAuthKey(String key) {
         memberService.validAuthKey(key);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * username을 찾는 controller
+     * @param phoneNumber
+     * @return 전화번호로 찾은 회원이름
+     */
+    @PostMapping("/find/username")
+    @ResponseStatus( HttpStatus.OK )
+    public CommonResult findUsername(String phoneNumber) {
+        String username = memberService.findUsername(phoneNumber);
+        return responseService.getSingleResult(username);
+    }
+
+    /**
+     * username 변경 controller
+     * @param usernameChangeDto username, newUsername
+     * @return
+     */
+    @PutMapping("/change/username")
+    @ResponseStatus( HttpStatus.OK )
+    public CommonResult changeUsername(@Valid @RequestBody UsernameChangeDto usernameChangeDto) {
+        memberService.changeUsername(usernameChangeDto);
         return responseService.getSuccessResult();
     }
 

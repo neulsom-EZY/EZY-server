@@ -144,6 +144,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 전화번호 인증을 완료한 뒤
+     * 전화번호를 한번 더 전송해 그 전화번호로
+     * 회원을 찾고 회원의 이름을 알려주는 로직
+     * @param phoneNumber
+     * @return Username
+     */
+    @Override
+    public String findUsername(String phoneNumber) {
+        MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
+        return findUser.getUsername();
+    }
+
+    /**
      * username을 변경하는 서비스 로직
      * @param usernameChangeDto username, newUsername
      * @return
