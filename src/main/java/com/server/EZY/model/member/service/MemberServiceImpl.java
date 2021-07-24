@@ -183,7 +183,7 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity findUser = memberRepository.findByUsername(deleteUserDto.getUsername());
         if (findUser == null) throw new UserNotFoundException();
         if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
-            memberRepository.deleteById(findUser.getUserIdx());
+            memberRepository.deleteById(findUser.getMemberIdx());
         }
         return deleteUserDto.getUsername() + "회원 회원탈퇴완료";
     }

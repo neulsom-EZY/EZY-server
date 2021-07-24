@@ -32,7 +32,7 @@ public class Period {
         this.endTime = updatedPeriod.endTime != null ? updatedPeriod.endTime : this.endTime;
     }
 
-    @Override
+    @Override @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Period)) return false;
@@ -40,7 +40,7 @@ public class Period {
         return Objects.equals(getStartTime(), period.getStartTime()) && Objects.equals(getEndTime(), period.getEndTime());
     }
 
-    @Override
+    @Override @Generated
     public int hashCode() {
         return Objects.hash(getStartTime(), getEndTime());
     }

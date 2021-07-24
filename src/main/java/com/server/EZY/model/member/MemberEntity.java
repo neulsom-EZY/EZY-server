@@ -25,7 +25,7 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long userIdx;
+    private Long memberIdx;
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -92,16 +92,16 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
         this.password = password != null ? password : this.password;
     }
 
-    @Override
+    @Override @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof MemberEntity)) return false;
         MemberEntity that = (MemberEntity) o;
-        return Objects.equals(getUserIdx(), that.getUserIdx()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && Objects.equals(getRoles(), that.getRoles());
+        return Objects.equals(getMemberIdx(), that.getMemberIdx()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && Objects.equals(getRoles(), that.getRoles());
     }
 
-    @Override
+    @Override @Generated
     public int hashCode() {
-        return Objects.hash(getUserIdx(), getUsername(), getPassword(), getPhoneNumber(), getRoles());
+        return Objects.hash(getMemberIdx(), getUsername(), getPassword(), getPhoneNumber(), getRoles());
     }
 }
