@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
@@ -72,6 +73,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     public CommonResult userNotFoundException(UserNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj(USER_NOT_FOUND);
+    }
+
+    @Override
+    public CommonResult usernameNotFoundException(UsernameNotFoundException ex) {
+        log.debug("=== Username Not Found Exception 발생 ===");
+        return null;
     }
 
     @Override

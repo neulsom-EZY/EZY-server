@@ -12,6 +12,7 @@ import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthentica
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -27,6 +28,7 @@ public interface ExceptionAdvice {
     String INVALID_ACCESS = "invalid-access";
 
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
+    String USERNAME_NOT_FOUND = "username-not-found";
     String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
@@ -56,6 +58,10 @@ public interface ExceptionAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult userNotFoundException(UserNotFoundException ex);
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    CommonResult usernameNotFoundException(UsernameNotFoundException ex);
 
     // 잘못된 접근입니다.
     @ExceptionHandler(InvalidAccessException.class)
