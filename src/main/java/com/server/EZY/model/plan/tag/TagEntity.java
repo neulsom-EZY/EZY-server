@@ -12,7 +12,7 @@ public class TagEntity {
     private Long tagIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
     private String tag;

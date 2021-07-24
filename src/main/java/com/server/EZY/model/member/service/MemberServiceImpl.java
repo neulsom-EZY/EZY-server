@@ -45,11 +45,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String signup(MemberDto memberDto) {
-        if(!memberRepository.existsByNickname(memberDto.getNickname())){
+        if(!memberRepository.existsByUsername(memberDto.getUsername())){
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
             memberRepository.save(memberDto.toEntity());
 
-            String token = jwtTokenProvider.createToken(memberDto.getNickname(), memberDto.toEntity().getRoles());
+            String token = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
 
             return "Bearer " + token;
         } else {
@@ -59,20 +59,20 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
-        MemberEntity findUser = memberRepository.findByNickname(loginDto.getNickname());
+        MemberEntity findUser = memberRepository.findByUsername(loginDto.getUsername());
         if (findUser == null) throw new UserNotFoundException();
         // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
         if (!passwordCheck) throw new UserNotFoundException();
 
-        String accessToken = jwtTokenProvider.createToken(loginDto.getNickname(), loginDto.toEntity().getRoles());
+        String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        redisUtil.deleteData(loginDto.getNickname()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
+        redisUtil.deleteData(loginDto.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
 
-        redisUtil.setDataExpire(loginDto.getNickname(), refreshToken, REDIS_EXPIRATION_TIME);
+        redisUtil.setDataExpire(loginDto.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
         Map<String ,String> map = new HashMap<>();
-        map.put("nickname", loginDto.getNickname());
+        map.put("username", loginDto.getUsername());
         map.put("accessToken", "Bearer " + accessToken); // accessToken 반환
         map.put("refreshToken", "Bearer " + refreshToken); // refreshToken 반환
 
@@ -106,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
         if (findByPhoneNumber == null) throw new UserNotFoundException(); //인증번호 발송 실패
 
         String authKey = keyUtil.getKey(4);
-        redisUtil.setDataExpire(authKey, findByPhoneNumber.getNickname(), KEY_EXPIRATION_TIME);
+        redisUtil.setDataExpire(authKey, findByPhoneNumber.getUsername(), KEY_EXPIRATION_TIME);
 
         Message coolsms = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();
@@ -136,40 +136,40 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
-        MemberEntity findUser = memberRepository.findByNickname(username);
+        MemberEntity findUser = memberRepository.findByUsername(username);
         if (findUser == null) throw new InvalidAuthenticationNumberException();
         redisUtil.deleteData(key);
         return username + "님 휴대전화 인증 완료";
     }
 
     /**
-     * nickname을 변경하는 서비스 로직
-     * @param nicknameChangeDto nickname, newNickname
+     * username을 변경하는 서비스 로직
+     * @param usernameChangeDto username, newUsername
      * @return
      */
     @Override
     @Transactional
-    public String changeNickname(NicknameChangeDto nicknameChangeDto) {
-        MemberEntity findUser = memberRepository.findByNickname(nicknameChangeDto.getNickname());
+    public String changeUsername(UsernameChangeDto usernameChangeDto) {
+        MemberEntity findUser = memberRepository.findByUsername(usernameChangeDto.getUsername());
         if (findUser == null) throw new UserNotFoundException();
-        findUser.updateNickname(nicknameChangeDto.getNewNickname());
-        return nicknameChangeDto.getNickname() + "유저 " + nicknameChangeDto.getNewNickname() + "(으)로 닉네임 업데이트 완료";
+        findUser.updateUsername(usernameChangeDto.getNewUsername());
+        return usernameChangeDto.getUsername() + "유저 " + usernameChangeDto.getNewUsername() + "(으)로 닉네임 업데이트 완료";
     }
 
     /**
      * 비밀번호를 변경하는 서비스 로직
-     * @param passwordChangeDto nickname, newPassword
+     * @param passwordChangeDto username, newPassword
      * @return (회원닉네임)회원 비밀번호 변경완료
      * @author 배태현
      */
     @Override
     @Transactional
     public String changePassword(PasswordChangeDto passwordChangeDto) {
-        MemberEntity findUser = memberRepository.findByNickname(passwordChangeDto.getNickname());
+        MemberEntity findUser = memberRepository.findByUsername(passwordChangeDto.getUsername());
         if (findUser == null) throw new UserNotFoundException();
         findUser.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
 
-        return passwordChangeDto.getNickname() + "회원 비밀번호 변경완료";
+        return passwordChangeDto.getUsername() + "회원 비밀번호 변경완료";
     }
 
     /**
@@ -180,11 +180,11 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public String deleteUser(AuthDto deleteUserDto) {
-        MemberEntity findUser = memberRepository.findByNickname(deleteUserDto.getNickname());
+        MemberEntity findUser = memberRepository.findByUsername(deleteUserDto.getUsername());
         if (findUser == null) throw new UserNotFoundException();
         if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
             memberRepository.deleteById(findUser.getUserIdx());
         }
-        return deleteUserDto.getNickname() + "회원 회원탈퇴완료";
+        return deleteUserDto.getUsername() + "회원 회원탈퇴완료";
     }
 }

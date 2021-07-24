@@ -7,8 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     // MyUserDetails 에서 사용.
-    MemberEntity findByNickname(String nickName);
+    MemberEntity findByUsername(String username);
     // UserService 에서 사용.
-    boolean existsByNickname(String nickname);
+    boolean existsByUsername(String username);
     MemberEntity findByPhoneNumber(String phoneNumber);
 }
+

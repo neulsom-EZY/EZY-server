@@ -7,13 +7,13 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter @Builder
 @AllArgsConstructor @NoArgsConstructor
-public class NicknameChangeDto {
+public class UsernameChangeDto {
 
-    @NotBlank(message = "nickname should be valid")
+    @NotBlank(message = "username should be valid")
     @Size(min = 1, max = 10)
-    private String nickname;
+    private String username;
 
-    @NotBlank(message = "NewNickname should be valid")
+    @NotBlank(message = "NewUsername should be valid")
     @Size(min = 1, max = 10)
-    private String NewNickname;
+    private String newUsername;
 }

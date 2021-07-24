@@ -1,7 +1,7 @@
 package com.server.EZY.model.member.controller;
 
 import com.server.EZY.model.member.dto.AuthDto;
-import com.server.EZY.model.member.dto.NicknameChangeDto;
+import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.dto.PasswordChangeDto;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.service.MemberService;
@@ -41,7 +41,7 @@ public class MemberController {
     /**
      * 로그인 controller
      * @param loginDto loginDto
-     * @return nickname ,accessToken, refreshToken
+     * @return username ,accessToken, refreshToken
      * @throws Exception Exception
      * @author 배태현
      */
@@ -53,14 +53,14 @@ public class MemberController {
     }
 
     /**
-     * nickname 변경 controller
-     * @param nicknameChangeDto nickname, newNickname
+     * username 변경 controller
+     * @param usernameChangeDto username, newUsername
      * @return
      */
-    @PutMapping("/change/nickname")
+    @PutMapping("/change/username")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult changeUsername(@Valid @RequestBody NicknameChangeDto nicknameChangeDto) {
-        memberService.changeNickname(nicknameChangeDto);
+    public CommonResult changeUsername(@Valid @RequestBody UsernameChangeDto usernameChangeDto) {
+        memberService.changeUsername(usernameChangeDto);
         return responseService.getSuccessResult();
     }
 

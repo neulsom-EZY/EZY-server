@@ -32,14 +32,14 @@ class CurrentUserUtilTest {
 
 
     /**
-     * currentUserUtil에 만든 getCurrentUserNickname 메서드가 잘 동작하는지 확인하는 메서드
+     * currentUserUtil에 만든 getCurrentUsername 메서드가 잘 동작하는지 확인하는 메서드
      * @author 배태현
      */
     @Test
-    public void currentUserNickname() {
+    public void currentUsername() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .nickname("배태현")
+                .username("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -49,7 +49,7 @@ class CurrentUserUtilTest {
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getNickname(),
+                memberDto.getUsername(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -58,8 +58,8 @@ class CurrentUserUtilTest {
         System.out.println(context);
 
         //then
-        String currentUserNickname = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUserNickname);
+        String currentUsername = CurrentUserUtil.getCurrentUsername();
+        assertEquals("배태현", currentUsername);
     }
 
     /**
@@ -70,7 +70,7 @@ class CurrentUserUtilTest {
     public void currentUser() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .nickname("배태현")
+                .username("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -80,7 +80,7 @@ class CurrentUserUtilTest {
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getNickname(),
+                memberDto.getUsername(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -91,7 +91,7 @@ class CurrentUserUtilTest {
         //then
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
         assertTrue(currentUser != null, "true");
-        assertEquals(memberDto.toEntity().getNickname(), currentUser.getNickname());
+        assertEquals(memberDto.toEntity().getUsername(), currentUser.getUsername());
         assertEquals(memberDto.toEntity().getPhoneNumber(), currentUser.getPhoneNumber());
     }
 }

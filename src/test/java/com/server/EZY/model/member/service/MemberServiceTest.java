@@ -48,7 +48,7 @@ public class MemberServiceTest {
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .nickname("배태현")
+                .username("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -59,7 +59,7 @@ public class MemberServiceTest {
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getNickname(),
+                memberDto.getUsername(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -68,7 +68,7 @@ public class MemberServiceTest {
         System.out.println(context);
 
         //then
-        String currentUserNickname = CurrentUserUtil.getCurrentUserNickname();
+        String currentUserNickname = CurrentUserUtil.getCurrentUsername();
         assertEquals("배태현", currentUserNickname);
     }
 
@@ -77,7 +77,7 @@ public class MemberServiceTest {
     public void signupTest() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .nickname("나야나 배따횬~~")
+                .username("나야나 배따횬~~")
                 .password("0809")
                 .phoneNumber("01008090809")
                 .build();
@@ -92,7 +92,7 @@ public class MemberServiceTest {
     public void before(@Autowired MemberController memberController) {
 
         MemberDto memberDto = MemberDto.builder()
-                .nickname("바따햔")
+                .username("바따햔")
                 .password("0809")
                 .phoneNumber("01012345678")
                 .build();
@@ -104,7 +104,7 @@ public class MemberServiceTest {
     public void signinTest() {
         //given
         AuthDto loginDto = AuthDto.builder()
-                .nickname("바따햔")
+                .username("바따햔")
                 .password("0809")
                 .build();
         //when
@@ -114,18 +114,18 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("닉네임 변경 테스트")
-    public void changeNickname() {
+    @DisplayName("Username 변경 테스트")
+    public void changeUsername() {
         //given
         MemberEntity currentUser = currentUser();
 
-        NicknameChangeDto nicknameChangeDto = NicknameChangeDto.builder()
-                .nickname("바따햔")
-                .NewNickname("배태현")
+        UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
+                .username("바따햔")
+                .newUsername("배태현")
                 .build();
         //when //then
         if (currentUser != null) {
-            String changeNickname = memberService.changeNickname(nicknameChangeDto);
+            String changeNickname = memberService.changeUsername(usernameChangeDto);
             assertEquals("바따햔유저 배태현(으)로 닉네임 업데이트 완료", changeNickname);
         } else {
             log.info("닉네임 변경테스트 실패");
@@ -139,7 +139,7 @@ public class MemberServiceTest {
         MemberEntity currentUser = currentUser();
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .nickname("배태현")
+                .username("배태현")
                 .newPassword("20040809")
                 .build();
         //when //then
@@ -158,7 +158,7 @@ public class MemberServiceTest {
         MemberEntity currentUser = currentUser();
 
         AuthDto deleteUserDto = AuthDto.builder()
-                .nickname("배태현")
+                .username("배태현")
                 .password("1234")
                 .build();
 
@@ -178,7 +178,7 @@ public class MemberServiceTest {
      */
     public MemberEntity currentUser() {
         MemberDto memberDto = MemberDto.builder()
-                .nickname("배태현")
+                .username("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -189,7 +189,7 @@ public class MemberServiceTest {
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getNickname(),
+                memberDto.getUsername(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -198,9 +198,9 @@ public class MemberServiceTest {
         System.out.println(context);
 
         //then
-        String currentUserNickname = CurrentUserUtil.getCurrentUserNickname();
+        String currentUserNickname = CurrentUserUtil.getCurrentUsername();
         assertEquals("배태현", currentUserNickname);
-        MemberEntity loginUser = memberRepository.findByNickname(currentUserNickname);
+        MemberEntity loginUser = memberRepository.findByUsername(currentUserNickname);
         return loginUser;
     }
 }

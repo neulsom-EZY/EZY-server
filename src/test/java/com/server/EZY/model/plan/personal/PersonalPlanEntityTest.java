@@ -6,7 +6,6 @@ import com.server.EZY.model.plan.PlanInfo;
 import com.server.EZY.model.plan.personal.enumType.PlanDType;
 import com.server.EZY.model.plan.personal.dto.NewPersonalPlanUpdateDto;
 import com.server.EZY.model.plan.personal.repository.NewPersonalPlanRepository;
-import com.server.EZY.model.member.enumType.Permission;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
@@ -31,10 +30,9 @@ class PersonalPlanEntityTest {
 
     MemberEntity userEntityInit(){
         MemberEntity user = MemberEntity.builder()
-                .nickname(RandomString.make(10))
+                .username(RandomString.make(10))
                 .password(RandomString.make(10))
                 .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
-                .permission(Permission.PERMISSION)
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();
         return userRepo.save(user);
