@@ -1,5 +1,6 @@
 package com.server.EZY.exception;
 
+import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
@@ -7,7 +8,7 @@ import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
-import com.server.EZY.exception.certification.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -83,6 +84,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     public CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex) {
         log.debug("=== InvalidAuthenticationNumberException 발생 ===");
         return getExceptionResponseObj(INVALID_AUTHENTICATION_NUMBER);
+    }
+
+    @Override
+    public CommonResult authenticationNumberTransferFailedException(AuthenticationNumberTransferFailedException ex) {
+        log.debug("=== AuthenticationNumberTransferFailedException 발생");
+        return getExceptionResponseObj(AUTHENTICATION_NUMBER_TRANSFER_FAILED);
     }
 
     /*** Token Exceptions 시작 ***/
