@@ -35,7 +35,7 @@ class PersonalPlanEntityTest {
                 .phoneNumber("01012345678")
                 .roles(Collections.singletonList(Role.ROLE_ADMIN))
                 .build();
-        MemberEntity savedMemberEntity = memberRepository.getById(memberRepository.save(memberEntity).getUserIdx());
+        MemberEntity savedMemberEntity = memberRepository.getById(memberRepository.save(memberEntity).getMemberIdx());
 
         TagEntity tagEntity = TagEntity.builder()
                 .memberEntity(savedMemberEntity)
@@ -68,7 +68,7 @@ class PersonalPlanEntityTest {
                 .phoneNumber("01012345678")
                 .roles(Collections.singletonList(Role.ROLE_ADMIN))
                 .build();
-        MemberEntity savedMemberEntity = memberRepository.getById(memberRepository.save(memberEntity).getUserIdx());
+        MemberEntity savedMemberEntity = memberRepository.getById(memberRepository.save(memberEntity).getMemberIdx());
 
         TagEntity tagEntity = TagEntity.builder()
                 .memberEntity(savedMemberEntity)
@@ -139,7 +139,6 @@ class PersonalPlanEntityTest {
         // 개인일정에서 수정할 반복
         boolean repetition = false;
 
-
         // When
         savedPersonalPlanEntity.updatePersonalPlanEntity(savedPersonalPlanEntity.getMemberEntity(), tagEntity, planInfo, period, repetition);
 
@@ -148,6 +147,55 @@ class PersonalPlanEntityTest {
         assertEquals(planInfo, savedPersonalPlanEntity.getPlanInfo(), "title = " + savedPersonalPlanEntity.getPlanInfo().getTitle() + ", explanation = " + savedPersonalPlanEntity.getPlanInfo().getExplanation());
         assertEquals(period, savedPersonalPlanEntity.getPeriod(), "startTime = " + savedPersonalPlanEntity.getPeriod().getStartTime().toString() + ", endTime = " + savedPersonalPlanEntity.getPeriod().getEndTime().toString());
         assertEquals(repetition, savedPersonalPlanEntity.getRepetition());
+    }
+
+    @Test @DisplayName("만약 해당 PersonalPlan을 소유자가 아닌 다른 사람이 일정을 수정하게 된다면?")
+    void PersonalPlan소유자가_아닌_다른유저가_수정한다면(){
+        // Given
+        PersonalPlanEntity savedPersonalPlanEntity = personalPlanInit();
+
+        // 개인일정에서 수정할 TagEntity
+        TagEntity tagEntity = TagEntity.builder()
+                .memberEntity(savedPersonalPlanEntity.getMemberEntity())
+                .tag("놀기")
+                .build();
+        TagEntity savedTagEntity = tagRepository.getById(tagRepository.save(tagEntity).getTagIdx());
+
+        MemberEntity otherMember = MemberEntity.builder()
+                .username("otherMember")
+                .password("otherMember")
+                .phoneNumber("01011111111")
+                .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                .build();
+        MemberEntity savedOtherMember = memberRepository.getById(memberRepository.save(otherMember).getMemberIdx());
+
+        // 개인일정에서 수정할 planInfo
+        PlanInfo planInfo = PlanInfo.builder()
+                .title("PC방가서 배그하기")
+                .explanation("오늘은 치킨이닭")
+                .build();
+
+        // 개인일정에서 수정할 기간
+        Period period = Period.builder()
+                .startTime(LocalDateTime.of(2021, 7, 25, 1, 30))
+                .endTime(LocalDateTime.of(2021, 7, 25, 6, 30))
+                .build();
+
+        boolean repetition = false;
+
+        // When Then
+        assertThrows(
+                Exception.class,
+                () -> savedPersonalPlanEntity.updatePersonalPlanEntity(
+                        savedOtherMember,
+                        tagEntity,
+                        planInfo,
+                        period,
+                        repetition
+                )
+        );
+
+
     }
 
 }
