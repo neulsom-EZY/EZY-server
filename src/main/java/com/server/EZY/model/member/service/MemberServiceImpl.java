@@ -1,5 +1,6 @@
 package com.server.EZY.model.member.service;
 
+import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
@@ -103,7 +104,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void sendAuthKey(String phoneNumber) {
         MemberEntity findByPhoneNumber = memberRepository.findByPhoneNumber(phoneNumber);
-        if (findByPhoneNumber == null) throw new UserNotFoundException(); //인증번호 발송 실패
+        if (findByPhoneNumber == null) throw new AuthenticationNumberTransferFailedException();
 
         String authKey = keyUtil.getKey(4);
         redisUtil.setDataExpire(authKey, findByPhoneNumber.getUsername(), KEY_EXPIRATION_TIME);
