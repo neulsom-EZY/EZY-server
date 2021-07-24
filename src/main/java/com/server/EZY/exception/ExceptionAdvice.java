@@ -9,7 +9,7 @@ import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
-import com.server.EZY.exception.user.exception.UserNotFoundException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +24,7 @@ public interface ExceptionAdvice {
     String CUSTOM_403_FORBIDDEN = "forbidden";
     String CUSTOM_404_NOT_FOUND = "not-found";
 
-    String USER_NOT_FOUND = "user-not-found";
+    String USER_NOT_FOUND = "member-not-found";
     String INVALID_ACCESS = "invalid-access";
 
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
@@ -53,12 +53,13 @@ public interface ExceptionAdvice {
     CommonResult notFoundException(CustomNotFoundException ex);
 
 
-    /*** User Exceptions 시작***/
-    // 유저를 찾을 수 없습니다.
-    @ExceptionHandler(UserNotFoundException.class)
+    /*** Member Exceptions 시작***/
+    // 맴버를 찾을 수 없습니다.
+    @ExceptionHandler(MemberNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult userNotFoundException(UserNotFoundException ex);
+    CommonResult memberNotFoundException(MemberNotFoundException ex);
 
+    // 해당 유저이름으로 맴버를 찾을 수 없습니다.
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult usernameNotFoundException(UsernameNotFoundException ex);

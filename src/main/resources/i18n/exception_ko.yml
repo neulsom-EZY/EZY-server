@@ -14,7 +14,7 @@ not-found:
   code: "-3"
   msg: "API가 존재하지 않습니다."
 
-user-not-found:
+member-not-found:
   code: "-900"
   msg: "해당 회원를 찾을 수 없습니다."
 

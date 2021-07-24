@@ -14,7 +14,7 @@ not-found:
   code: "-3"
   msg: "API not exist."
 
-user-not-found:
+member-not-found:
   code: "-900"
   msg: "Member could not be found."
 

@@ -11,7 +11,7 @@ import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
-import com.server.EZY.exception.user.exception.UserNotFoundException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
@@ -171,9 +171,9 @@ class ExceptionAdviceTest {
         final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.USER_NOT_FOUND, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = exceptionAdvice.userNotFoundException(new UserNotFoundException());
+        CommonResult commonResult_KO = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = exceptionAdvice.userNotFoundException(new UserNotFoundException());
+        CommonResult commonResult_EN = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
 
         // Then
         assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);

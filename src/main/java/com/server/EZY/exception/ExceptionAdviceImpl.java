@@ -9,7 +9,7 @@ import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
-import com.server.EZY.exception.user.exception.UserNotFoundException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +70,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
 
     /*** UserException 시작 ***/
     @Override
-    public CommonResult userNotFoundException(UserNotFoundException ex){
+    public CommonResult memberNotFoundException(MemberNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj(USER_NOT_FOUND);
     }
