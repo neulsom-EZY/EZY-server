@@ -124,7 +124,7 @@ public class MemberServiceImpl implements MemberService {
         } catch (CoolsmsException e) {
             System.out.println(e.getMessage());
             System.out.println(e.getCode());
-            //인증번호 발송 실패
+            throw new AuthenticationNumberTransferFailedException();
         }
     }
 
