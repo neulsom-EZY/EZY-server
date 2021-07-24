@@ -4,6 +4,7 @@ import com.server.EZY.model.plan.PlanEntity;
 import com.server.EZY.model.plan.embeddedTypes.Period;
 import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
 import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.plan.tag.TagEntity;
 import lombok.*;
 import javax.persistence.*;
 
@@ -23,13 +24,13 @@ public class PersonalPlanEntity extends PlanEntity {
      * @param repetition 반복여부
      * @author 정시원
      */
-    public PersonalPlanEntity(MemberEntity memberEntity, PlanInfo planInfo, Period period, Boolean repetition){
-        this(memberEntity, planInfo, period);
-        if(repetition != null){
+    public PersonalPlanEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, Boolean repetition){
+        super(memberEntity, tagEntity, planInfo, period);
+        if(repetition != null)
             this.repetition = repetition;
-        }else{
-            throw new IllegalArgumentException("null값이 들어갈 수 없습니다.");
-        }
+        else
+            throw new NullPointerException("repetition에 null값이 들어갈 수 없습니다.");
+
     }
 
     /**
