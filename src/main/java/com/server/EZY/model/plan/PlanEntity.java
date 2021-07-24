@@ -38,14 +38,14 @@ public class PlanEntity extends BaseTimeEntity {
 
     /**
      * 일정들의 기본적인 정보들을 생성하는 PlanEntity객체의 생성자
-     * @param memberEntity 유저와 연관관계를 맻을 MemberEntity타입의 객체
-     * @param tagEntity 태그를 지정하는 TagEntity타입의 객체
-     * @param planInfo 일정의 기본적인 정보(title, explanation)을 가지고 있는 PlanInfo타입의 객체
-     * @param period 일정의 시작/종료(startTime, endTime) 시간을 가지고 있는 Period타입의 객체
+     * @param memberEntity 유저와 연관관계를 맻을 MemberEntity타입의 객체 (null 비허용)
+     * @param tagEntity 태그를 지정하는 TagEntity타입의 객체 (null 허용)
+     * @param planInfo 일정의 기본적인 정보(title, explanation)을 가지고 있는 PlanInfo타입의 객체 (null 비허용)
+     * @param period 일정의 시작/종료(startTime, endTime) 시간을 가지고 있는 Period타입의 객체 (null 비허용)
      * @author 정시원
      */
     protected PlanEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period){
-        if(memberEntity != null && tagEntity != null && planInfo != null && period != null){
+        if(memberEntity != null && planInfo != null && period != null){
             this.memberEntity = memberEntity;
             this.tagEntity = tagEntity;
             this.planInfo = planInfo;
