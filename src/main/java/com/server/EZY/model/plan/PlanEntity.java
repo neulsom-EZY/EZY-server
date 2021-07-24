@@ -15,19 +15,19 @@ public class PlanEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "plan_id")
-    private Long planIdx;
+    protected Long planIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false, updatable = false)
-    private MemberEntity memberEntity;
+    protected MemberEntity memberEntity;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
-    private TagEntity tagEntity;
+    protected TagEntity tagEntity;
 
     @Embedded
-    private PlanInfo planInfo;
+    protected PlanInfo planInfo;
 
     @Embedded
-    private Period period;
+    protected Period period;
 }
