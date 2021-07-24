@@ -2,7 +2,6 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.EzyApplication;
 import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomNotFoundException;
@@ -10,25 +9,19 @@ import com.server.EZY.exception.customError.exception.CustomUnauthorizedExceptio
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
-import com.server.EZY.exception.user.UserExceptionController;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 
-import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.TestPropertySources;
 
 import java.util.Locale;
 
@@ -198,10 +191,10 @@ class ExceptionAdviceTest {
     void InvalidAccessException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int INVALID_ACCESS_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
-        final int INVALID_ACCESS_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
-        final String INVALID_ACCESS_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.KOREA);
-        final String INVALID_ACCESS_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS_EXCEPTION, Locale.ENGLISH);
+        final int INVALID_ACCESS_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
+        final int INVALID_ACCESS_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
+        final String INVALID_ACCESS_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
+        final String INVALID_ACCESS_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.invalidAccessException(new InvalidAccessException());

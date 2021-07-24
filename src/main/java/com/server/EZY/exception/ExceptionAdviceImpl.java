@@ -77,7 +77,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     @Override
     public CommonResult invalidAccessException(InvalidAccessException ex) {
         log.debug("=== InvalidAccessException 발생 ===");
-        return getExceptionResponseObj(INVALID_ACCESS_EXCEPTION);
+        return getExceptionResponseObj(INVALID_ACCESS);
     }
 
     @Override

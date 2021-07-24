@@ -24,7 +24,7 @@ public interface ExceptionAdvice {
     String CUSTOM_404_NOT_FOUND = "not-found";
 
     String USER_NOT_FOUND = "user-not-found";
-    String INVALID_ACCESS_EXCEPTION = "invalid-access";
+    String INVALID_ACCESS = "invalid-access";
 
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
     String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
