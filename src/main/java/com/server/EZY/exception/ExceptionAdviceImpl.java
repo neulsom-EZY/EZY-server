@@ -72,7 +72,7 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     @Override
     public CommonResult memberNotFoundException(MemberNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
-        return getExceptionResponseObj(USER_NOT_FOUND);
+        return getExceptionResponseObj(MEMBER_NOT_FOUND);
     }
 
     @Override

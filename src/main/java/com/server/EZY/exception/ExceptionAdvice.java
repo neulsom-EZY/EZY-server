@@ -24,7 +24,7 @@ public interface ExceptionAdvice {
     String CUSTOM_403_FORBIDDEN = "forbidden";
     String CUSTOM_404_NOT_FOUND = "not-found";
 
-    String USER_NOT_FOUND = "member-not-found";
+    String MEMBER_NOT_FOUND = "member-not-found";
     String INVALID_ACCESS = "invalid-access";
 
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";

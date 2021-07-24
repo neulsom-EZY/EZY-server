@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Locale;
 
@@ -161,14 +162,14 @@ class ExceptionAdviceTest {
         printResult(commonResult_KO, commonResult_EN);
     }
 
-    @Test @DisplayName("UserNotFoundException 검증")
-    void UserNotFoundException_검증() throws Exception {
+    @Test @DisplayName("memberNotFoundException 검증")
+    void MemberNotFoundException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int USER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.USER_NOT_FOUND, Locale.KOREA);
-        final int USER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.USER_NOT_FOUND, Locale.ENGLISH);
-        final String USER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.USER_NOT_FOUND, Locale.KOREA);
-        final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.USER_NOT_FOUND, Locale.ENGLISH);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
@@ -176,13 +177,40 @@ class ExceptionAdviceTest {
         CommonResult commonResult_EN = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
 
         // Then
-        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, MEMBER_NOT_FOUND_EXCEPTION_CODE_EN);
 
-        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
-        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
 
-        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
-        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("UsernameNotFoundException 검증")
+    void UsernameNotFoundException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
+        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
+        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
+        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
+
+        final String username = "siwony_";
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.usernameNotFoundException(new UsernameNotFoundException(username));
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.usernameNotFoundException(new UsernameNotFoundException(username));
+
+        // Then
+        assertEquals(USERNAME_NOT_FOUND_EXCEPTION_CODE_KO, USERNAME_NOT_FOUND_EXCEPTION_CODE_EN);
+
+        assertEquals(USERNAME_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(USERNAME_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(USERNAME_NOT_FOUND_EXCEPTION_MSG_KO.replaceAll(":username","'" + username + "'"), commonResult_KO.getMassage());
+        assertEquals(USERNAME_NOT_FOUND_EXCEPTION_MSG_EN.replaceAll(":username","'" + username + "'"), commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }
