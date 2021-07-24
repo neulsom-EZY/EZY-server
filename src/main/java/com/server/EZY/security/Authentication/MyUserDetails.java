@@ -19,7 +19,7 @@ public class MyUserDetails implements UserDetailsService {
         MemberEntity memberEntity = memberRepository.findByUsername(username);
 
         if(memberEntity == null){
-            throw new UsernameNotFoundException("username '" + username + "' not found");
+            throw new UsernameNotFoundException(username);
         }
 
         return memberEntity;
