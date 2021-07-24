@@ -9,8 +9,8 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity @Table(name = "personal_plan")
-@Getter @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PersonalPlanEntity extends PlanEntity {
 
     @Column(name = "repetition")
@@ -39,15 +39,17 @@ public class PersonalPlanEntity extends PlanEntity {
      * @param updatedPersonalPlanEntity 업데이트 할 PersonalPlan타입의 인자
      * @author 정시원
      */
-    public void updatePersonalPlanEntity(MemberEntity currentMember, PersonalPlanEntity updatedPersonalPlanEntity) throws Exception {
-        if(this.memberEntity.equals(currentMember)) {
-            repetition = updatedPersonalPlanEntity.repetition != null ? updatedPersonalPlanEntity.repetition : this.repetition;
+    public void updatePersonalPlanEntity(MemberEntity currentMember, TagEntity tagEntity, PlanInfo planInfo, Period period, boolean repetition) throws Exception {
+        if (this.memberEntity.equals(currentMember)) {
+            this.repetition = repetition;
 
-            if (updatedPersonalPlanEntity.planInfo != null)
-                this.planInfo.updatePlanInfo(updatedPersonalPlanEntity.planInfo);
-            if (updatedPersonalPlanEntity.period != null)
-                this.period.updatePeriod(updatedPersonalPlanEntity.period);
-        }else{
+            if(tagEntity != null)
+                this.tagEntity = tagEntity;
+            if (planInfo != null)
+                this.planInfo.updatePlanInfo(planInfo);
+            if (period != null)
+                this.period.updatePeriod(period);
+        } else {
             throw new Exception("해당 일정에 대한 접근권한이 없습니다."); // Exception 추가 예정
         }
     }
