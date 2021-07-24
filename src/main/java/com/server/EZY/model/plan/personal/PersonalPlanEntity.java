@@ -28,12 +28,9 @@ public class PersonalPlanEntity extends PlanEntity {
      * @param repetition 반복여부
      * @author 정시원
      */
-    public PersonalPlanEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, Boolean repetition){
+    public PersonalPlanEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, boolean repetition){
         super(memberEntity, tagEntity, planInfo, period);
-        if(repetition != null)
-            this.repetition = repetition;
-        else
-            throw new NullPointerException("repetition에 null값이 들어갈 수 없습니다. (ture/false 만 허용)");
+        this.repetition = repetition;
     }
 
     /**
@@ -51,10 +48,10 @@ public class PersonalPlanEntity extends PlanEntity {
 
             this.tagEntity = tagEntity != null ? tagEntity : this.tagEntity;
             this.planInfo = planInfo != null ? planInfo : this.planInfo;
-            this.period = period != null ? period : this.period
+            this.period = period != null ? period : this.period;
             this.repetition =  repetition != null ? repetition : this.repetition;
         } else {
-            log.debug("해당 개인일정을 다른 소유자가 변경하려 했다.");
+            log.debug("해당 개인일정을 다른 소유자가 변경할 수 없습니다..");
             throw new Exception("해당 일정에 대한 접근권한이 없습니다."); // Exception 추가 예정
         }
     }
