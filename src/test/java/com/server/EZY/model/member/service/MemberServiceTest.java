@@ -38,10 +38,6 @@ public class MemberServiceTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-    @Autowired
     private MemberService memberService;
 
     @Test
