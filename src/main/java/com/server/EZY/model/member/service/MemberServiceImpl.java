@@ -153,6 +153,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String findUsername(String phoneNumber) {
         MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
+        if (findUser == null) throw new UserNotFoundException();
         return findUser.getUsername();
     }
 

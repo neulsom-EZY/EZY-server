@@ -9,6 +9,7 @@ import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -77,7 +78,7 @@ public class MemberServiceTest {
     public void signupTest() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("나야나 배따횬~~")
+                .username("배따횬")
                 .password("0809")
                 .phoneNumber("01008090809")
                 .build();
@@ -111,6 +112,21 @@ public class MemberServiceTest {
         Map<String, String> signin = memberService.signin(loginDto);
         //then
         assertTrue(true, String.valueOf(signin != null));
+    }
+
+    @Test
+    @DisplayName("username을 찾는 테스트")
+    public void findUsername() {
+        //given
+        String phoneNumber = "01012345678";
+
+        MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
+
+        //when
+        String username = memberService.findUsername(phoneNumber);
+
+        //then
+        assertEquals(findUser.getUsername(), username);
     }
 
     @Test
