@@ -1,4 +1,4 @@
-package com.server.EZY.model.plan;
+package com.server.EZY.model.plan.embeddedTypes;
 
 import lombok.*;
 
@@ -31,7 +31,7 @@ public class PlanInfo {
         this.explanation = updatedPlanInfo.explanation != null ? updatedPlanInfo.explanation : this.explanation;
     }
 
-    @Override
+    @Override @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PlanInfo)) return false;
@@ -39,7 +39,7 @@ public class PlanInfo {
         return getTitle().equals(planInfo.getTitle()) && getExplanation().equals(planInfo.getExplanation());
     }
 
-    @Override
+    @Override @Generated
     public int hashCode() {
         return Objects.hash(getTitle(), getExplanation());
     }

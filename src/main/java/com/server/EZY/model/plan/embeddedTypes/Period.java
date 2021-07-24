@@ -1,11 +1,9 @@
-package com.server.EZY.model.plan;
+package com.server.EZY.model.plan.embeddedTypes;
 
 import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -34,7 +32,7 @@ public class Period {
         this.endTime = updatedPeriod.endTime != null ? updatedPeriod.endTime : this.endTime;
     }
 
-    @Override
+    @Override @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Period)) return false;
@@ -42,7 +40,7 @@ public class Period {
         return Objects.equals(getStartTime(), period.getStartTime()) && Objects.equals(getEndTime(), period.getEndTime());
     }
 
-    @Override
+    @Override @Generated
     public int hashCode() {
         return Objects.hash(getStartTime(), getEndTime());
     }
