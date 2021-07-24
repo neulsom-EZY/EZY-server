@@ -78,7 +78,13 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     @Override
     public CommonResult usernameNotFoundException(UsernameNotFoundException ex) {
         log.debug("=== Username Not Found Exception 발생 ===");
-        return null;
+        CommonResult usernameNotFoundExceptionResponseObj = getExceptionResponseObj(USERNAME_NOT_FOUND);
+        // UsernameNotFoundExceptiond에서 해당 username으로 회원을 찾지 못했을 경우 해당 username를 Exception message에 포함하는 로직
+        String insertUsernameInExceptionMassage =
+                usernameNotFoundExceptionResponseObj.getMassage().replaceAll(":username", "'" + ex.getMessage() + "'");
+        usernameNotFoundExceptionResponseObj.setMassage(insertUsernameInExceptionMassage);
+
+        return usernameNotFoundExceptionResponseObj;
     }
 
     @Override

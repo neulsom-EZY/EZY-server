@@ -20,7 +20,7 @@ user-not-found:
 
 username-not-found:
   code: "-910"
-  msg: "Member with username ':username' not found."
+  msg: "Member with username :username not found."
 
 invalid-access:
   code: "-920"
