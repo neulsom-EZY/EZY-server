@@ -7,7 +7,7 @@ import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
-import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.certification.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;

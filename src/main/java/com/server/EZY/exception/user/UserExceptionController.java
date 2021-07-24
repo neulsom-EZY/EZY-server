@@ -1,7 +1,7 @@
 package com.server.EZY.exception.user;
 
 import com.server.EZY.exception.user.exception.InvalidAccessException;
-import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.certification.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -7,7 +7,7 @@ import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
-import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.certification.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
@@ -59,7 +59,7 @@ public interface ExceptionAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult invalidAccessException(InvalidAccessException ex);
 
-    // 인증번호가 옳바르지 않습니다
+    // 인증번호가 올바르지 않습니다
     @ExceptionHandler(InvalidAuthenticationNumberException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex);

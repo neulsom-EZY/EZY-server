@@ -1,4 +1,4 @@
-package com.server.EZY.exception.user.exception;
+package com.server.EZY.exception.certification;
 
 public class InvalidAuthenticationNumberException extends RuntimeException{
     public InvalidAuthenticationNumberException(String msg, Throwable t){
