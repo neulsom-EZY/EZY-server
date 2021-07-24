@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.dto.PasswordChangeDto;
 import com.server.EZY.model.member.dto.MemberDto;
+import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,6 +83,72 @@ public class MemberControllerTest {
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
+
+        actions
+                .andDo(print())
+                .andExpect(status().isOk()); //http status 200
+    }
+
+    @Test
+    @DisplayName("인증번호 보내기 테스트")
+    public void sendAuthKey() throws Exception {
+
+        String content = objectMapper.writeValueAsString("01049977055");
+
+        final ResultActions actions = mvc.perform(post("/v1/member/auth")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        actions
+                .andDo(print())
+                .andExpect(status().isOk()); //http status 200
+    }
+
+    @Test
+    @DisplayName("인증번호 인증 테스트")
+    public void validAuthKey() throws Exception{
+
+        String content = objectMapper.writeValueAsString("0000");
+
+        final ResultActions actions = mvc.perform(post("/v1/member/auth/check")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        actions
+                .andDo(print())
+                .andExpect(status().isOk()); //http status 200
+    }
+
+    @Test
+    @DisplayName("username 찾기 테스트")
+    public void findUsername() throws Exception {
+
+        String content = objectMapper.writeValueAsString("01049977055");
+
+        final ResultActions actions = mvc.perform(post("/v1/member/find/username")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        actions
+                .andDo(print())
+                .andExpect(status().isOk()); //http status 200
+
+    }
+
+    @Test
+    @DisplayName("username 변경 테스트")
+    public void usernameChangeTest() throws Exception {
+
+        UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
+                .username("JsonWebTok")
+                .newUsername("배태현")
+                .build();
+
+        String content = objectMapper.writeValueAsString(usernameChangeDto);
+
+        final ResultActions actions = mvc.perform(put("/v1/member/change/username")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
 
         actions
                 .andDo(print())

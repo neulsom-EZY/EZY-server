@@ -1,5 +1,6 @@
 package com.server.EZY.model.member.service;
 
+import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
@@ -10,6 +11,7 @@ import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
@@ -103,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void sendAuthKey(String phoneNumber) {
         MemberEntity findByPhoneNumber = memberRepository.findByPhoneNumber(phoneNumber);
-        if (findByPhoneNumber == null) throw new UserNotFoundException(); //인증번호 발송 실패
+        if (findByPhoneNumber == null) throw new AuthenticationNumberTransferFailedException();
 
         String authKey = keyUtil.getKey(4);
         redisUtil.setDataExpire(authKey, findByPhoneNumber.getUsername(), KEY_EXPIRATION_TIME);
@@ -119,11 +122,11 @@ public class MemberServiceImpl implements MemberService {
 
         try {
             JSONObject obj = coolsms.send(params);
-            System.out.println(obj.toString());
+            log.debug(obj.toString());
         } catch (CoolsmsException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getCode());
-            //인증번호 발송 실패
+            log.debug(e.getMessage());
+            log.debug(String.valueOf(e.getCode()));
+            throw new AuthenticationNumberTransferFailedException();
         }
     }
 
@@ -140,6 +143,20 @@ public class MemberServiceImpl implements MemberService {
         if (findUser == null) throw new InvalidAuthenticationNumberException();
         redisUtil.deleteData(key);
         return username + "님 휴대전화 인증 완료";
+    }
+
+    /**
+     * 전화번호 인증을 완료한 뒤
+     * 전화번호를 한번 더 전송해 그 전화번호로
+     * 회원을 찾고 회원의 이름을 알려주는 로직
+     * @param phoneNumber
+     * @return Username
+     */
+    @Override
+    public String findUsername(String phoneNumber) {
+        MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
+        if (findUser == null) throw new UserNotFoundException();
+        return findUser.getUsername();
     }
 
     /**
