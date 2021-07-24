@@ -11,6 +11,7 @@ import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
@@ -120,10 +122,10 @@ public class MemberServiceImpl implements MemberService {
 
         try {
             JSONObject obj = coolsms.send(params);
-            System.out.println(obj.toString());
+            log.debug(obj.toString());
         } catch (CoolsmsException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getCode());
+            log.debug(e.getMessage());
+            log.debug(String.valueOf(e.getCode()));
             throw new AuthenticationNumberTransferFailedException();
         }
     }
