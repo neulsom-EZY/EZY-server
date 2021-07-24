@@ -1,7 +1,7 @@
 package com.server.EZY.model.member.service;
 
 import com.server.EZY.exception.response.CustomException;
-import com.server.EZY.exception.user.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.UserNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
