@@ -37,8 +37,8 @@ public class PersonalPlanEntity extends PlanEntity {
 
     /**
      * personalPlan를 업데이트 하는 매서드
-     * 현재 겍체에 저장되어있는 memberEntity와 업데이트를 하려는 currentMember를 동등성 비교를 해서 이 일정의 소유자일 경우에 이 객체를 변경할 수 있다.
-     * @param currentMember 현제 로그인 한 유저
+     * 현재 변경하려는 personalPlan에 연관관계를 맻고있는 회원과 이 일정을 변경하려는 회원를 동등성 비교를 통해 현재 일정의 소유자여부를 판별한 후 객체를 업데이트 한다.
+     * @param currentMember 현재 로그인 한 유저
      * @param personalPlanEntity 변경할 필드를 가지고 있는 PersonalPlanEntity 주로 DTO에서 toEntity 매서드로 생성된 PersonalPlanEntity를 인수로 넘겨받는다.
      * @author 정시원
      */
