@@ -1,9 +1,8 @@
 package com.server.EZY.util;
 
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -12,32 +11,32 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CurrentUserUtil {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     /**
-     * 현재 로그인 되어있는(인증되어있는) User의 nickname을 반환하는 메서드
-     * @return nickname
+     * 현재 로그인 되어있는(인증되어있는) User의 username을 반환하는 메서드
+     * @return username
      * @author 배태현
      */
-    public static String getCurrentUserNickname() {
-        String nickname = null;
+    public static String getCurrentUsername() {
+        String username = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else{
-            nickname = principal.toString();
+            username = principal.toString();
         }
-        return nickname;
+        return username;
     }
 
-    public UserEntity getCurrentUser() {
-        String nickname = null;
+    public MemberEntity getCurrentUser() {
+        String username = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            nickname = ((UserDetails) principal).getUsername();
+            username = ((UserDetails) principal).getUsername();
         } else{
-            nickname = principal.toString();
+            username = principal.toString();
         }
-        return userRepository.findByNickname(nickname);
+        return memberRepository.findByUsername(username);
     }
 }

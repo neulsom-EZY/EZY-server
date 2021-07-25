@@ -1,10 +1,9 @@
 package com.server.EZY.util;
 
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.dto.UserDto;
-import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.UserRepository;
-import com.server.EZY.util.CurrentUserUtil;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.dto.MemberDto;
+import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,31 +26,31 @@ class CurrentUserUtilTest {
     @Autowired
     private CurrentUserUtil currentUserUtil;
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
 
     /**
-     * currentUserUtil에 만든 getCurrentUserNickname 메서드가 잘 동작하는지 확인하는 메서드
+     * currentUserUtil에 만든 getCurrentUsername 메서드가 잘 동작하는지 확인하는 메서드
      * @author 배태현
      */
     @Test
-    public void currentUserNickname() {
+    public void currentUsername() {
         //given
-        UserDto userDto = UserDto.builder()
-                .nickname("배태현")
+        MemberDto memberDto = MemberDto.builder()
+                .username("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDto.getNickname(),
-                userDto.getPassword(),
+                memberDto.getUsername(),
+                memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -59,8 +58,8 @@ class CurrentUserUtilTest {
         System.out.println(context);
 
         //then
-        String currentUserNickname = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUserNickname);
+        String currentUsername = CurrentUserUtil.getCurrentUsername();
+        assertEquals("배태현", currentUsername);
     }
 
     /**
@@ -70,19 +69,19 @@ class CurrentUserUtilTest {
     @Test
     public void currentUser() {
         //given
-        UserDto userDto = UserDto.builder()
-                .nickname("배태현")
+        MemberDto memberDto = MemberDto.builder()
+                .username("배태현")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(userDto.toEntity());
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDto.getNickname(),
-                userDto.getPassword(),
+                memberDto.getUsername(),
+                memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -90,9 +89,9 @@ class CurrentUserUtilTest {
         System.out.println(context);
 
         //then
-        UserEntity currentUser = currentUserUtil.getCurrentUser();
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
         assertTrue(currentUser != null, "true");
-        assertEquals(userDto.toEntity().getNickname(), currentUser.getNickname());
-        assertEquals(userDto.toEntity().getPhoneNumber(), currentUser.getPhoneNumber());
+        assertEquals(memberDto.toEntity().getUsername(), currentUser.getUsername());
+        assertEquals(memberDto.toEntity().getPhoneNumber(), currentUser.getPhoneNumber());
     }
 }

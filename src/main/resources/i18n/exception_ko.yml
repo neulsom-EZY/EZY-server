@@ -22,10 +22,6 @@ invalid-access:
   code: "-910"
   msg: "잘못된 접근입니다."
 
-invalid-authentication-number:
-  code: "-920"
-  msg: "인증번호가 올바르지 않습니다."
-
 access-token-expired:
   code: "-800"
   msg: "액세스 토큰이 만료되었습니다."
@@ -37,3 +33,11 @@ invalid-token:
 token-logged-out:
   code: "-820"
   msg: "로그아웃 된 토근입니다."
+
+invalid-authentication-number:
+  code: "-700"
+  msg: "인증번호가 올바르지 않습니다."
+
+authentication-number-transfer-failed:
+  code: "-710"
+  msg: "인증 번호 전송을 실패했습니다."

@@ -1,7 +1,7 @@
 package com.server.EZY.security;
 
 
-import com.server.EZY.model.user.dto.UserDto;
+import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.security.Authentication.MyUserDetails;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
@@ -26,12 +26,12 @@ public class SecurityTest {
     @Test
     public void tokenTest() {
 
-        UserDto userDto = new UserDto();
-        userDto.setNickname("배태현");
-        userDto.setPhoneNumber("010-1234-1234");
-        userDto.setPassword("1234");
+        MemberDto memberDto = new MemberDto();
+        memberDto.setUsername("배태현");
+        memberDto.setPhoneNumber("010-1234-1234");
+        memberDto.setPassword("1234");
 
-        String accessToken = jwtTokenProvider.createToken(userDto.getNickname(), userDto.toEntity().getRoles());
+        String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
         // 유효한 토큰인지 확인
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
             String nickname = jwtTokenProvider.getUsername(accessToken);

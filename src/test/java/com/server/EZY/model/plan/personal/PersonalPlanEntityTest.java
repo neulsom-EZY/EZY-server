@@ -1,21 +1,20 @@
 package com.server.EZY.model.plan.personal;
 
-import com.server.EZY.model.plan.Period;
-import com.server.EZY.model.plan.PlanInfo;
-import com.server.EZY.model.plan.personal.enumType.PlanDType;
-import com.server.EZY.model.plan.personal.dto.NewPersonalPlanUpdateDto;
-import com.server.EZY.model.plan.personal.repository.NewPersonalPlanRepository;
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.enumType.Permission;
-import com.server.EZY.model.user.enumType.Role;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.repository.MemberRepository;
+import com.server.EZY.model.plan.embeddedTypes.Period;
+import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
+import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
+import com.server.EZY.model.plan.tag.TagEntity;
+import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
-import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -25,143 +24,178 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest @Import(QueryDslTestConfig.class)
 class PersonalPlanEntityTest {
 
-    @Autowired NewPersonalPlanRepository personalPlanRepo;
-    @Autowired UserRepository userRepo;
+    @Autowired PersonalPlanRepository personalPlanRepository;
+    @Autowired MemberRepository memberRepository;
+    @Autowired TagRepository tagRepository;
 
-    UserEntity userEntityInit(){
-        UserEntity user = UserEntity.builder()
-                .nickname(RandomString.make(10))
-                .password(RandomString.make(10))
-                .phoneNumber("010"+ (int)(Math.random()* Math.pow(10, 8)))
-                .permission(Permission.PERMISSION)
-                .roles(Collections.singletonList(Role.ROLE_CLIENT))
+    PersonalPlanEntity personalPlanInit(){
+        MemberEntity memberEntity = MemberEntity.builder()
+                .username("JsonWebTok")
+                .password("JsonWebTok")
+                .phoneNumber("01012345678")
+                .roles(Collections.singletonList(Role.ROLE_ADMIN))
                 .build();
-        return userRepo.save(user);
-    }
+        MemberEntity savedMemberEntity = memberRepository.getById(memberRepository.save(memberEntity).getMemberIdx());
 
-    NewPersonalPlanEntity personalPlanEntityInit(UserEntity user){
-        Period period = Period.builder()
-                .startTime(LocalDateTime.of(2021, 7, 20, 12, 0))
-                .endTime(LocalDateTime.of(2021, 7, 20, 14, 0))
+        TagEntity tagEntity = TagEntity.builder()
+                .memberEntity(savedMemberEntity)
+                .tag("공부")
                 .build();
+        TagEntity savedTagEntity = tagRepository.getById(tagRepository.save(tagEntity).getTagIdx());
+
         PlanInfo planInfo = PlanInfo.builder()
-                .title("기능반 출근후 코딩")
-                .explanation("간단한 코딩, 2시까지 할꺼임")
+                .title("카페가서 공부하기")
+                .explanation("카페가서 모던 자바 책 스터디!")
                 .build();
-        return new NewPersonalPlanEntity(user, planInfo, period, false);
-    }
-
-    @Test() @DisplayName("PersonalPlan equals, hashCode test")
-    void equals_hashCode_test() throws Exception {
-        UserEntity userEntity = userEntityInit();
-
-        NewPersonalPlanEntity personalPlanEntity = personalPlanEntityInit(userEntity);
-        NewPersonalPlanEntity clonePersonalPlanEntity = personalPlanEntityInit(userEntity);
-
-        assertFalse(personalPlanEntity.equals(userEntity));
-        assertTrue(personalPlanEntity.equals(clonePersonalPlanEntity));
-        assertEquals(personalPlanEntity.hashCode(), clonePersonalPlanEntity.hashCode());
-
-        PlanInfo updatePlanInfo = new PlanInfo("변경할 일정제목", "그냥 변경할 일정 설명");
-        LocalDateTime updateStartTime = LocalDateTime.of(2022, 7, 20, 9, 0);
-        LocalDateTime updateEndTime = LocalDateTime.of(2023, 7, 20, 12, 0);
-        Period updatePeriod = new Period(updateStartTime, updateEndTime);
-        NewPersonalPlanEntity updatePersonalPlanEntity = NewPersonalPlanUpdateDto.builder()
-                .userEntity(userEntity)
-                .planInfo(updatePlanInfo)
-                .period(updatePeriod)
-                .repetition(true)
-                .build()
-                .toEntity();
-
-        clonePersonalPlanEntity.updatePersonalPlanEntity(userEntity, updatePersonalPlanEntity);
-        assertFalse(personalPlanEntity.equals(clonePersonalPlanEntity));
-
-    }
-
-    @Test @DisplayName("PersonalPlan(개인일정) 저장, 조회 테스트")
-    void PersonalPlan_저장_조회_테스트(){
-        // Given
-        UserEntity user = userEntityInit();
 
         Period period = Period.builder()
-                .startTime(LocalDateTime.of(2021, 7, 20, 12, 0))
-                .endTime(LocalDateTime.of(2021, 7, 20, 14, 0))
+                .startTime(LocalDateTime.of(2021, 7, 24, 1, 30))
+                .endTime(LocalDateTime.of(2021, 7, 24, 6, 30))
                 .build();
+
+        Boolean repetition = true;
+
+        PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity(savedMemberEntity, tagEntity, planInfo, period, repetition);
+        return personalPlanRepository.save(personalPlanEntity);
+    }
+
+    @Test @DisplayName("PersonalPlanEntity 생성, 조회, 삭제 테스트")
+    void PersonalPlanEntity_생성_조회_삭제_테스트(){
+        // Given
+        MemberEntity memberEntity = MemberEntity.builder()
+                .username("JsonWebTok")
+                .password("JsonWebTok")
+                .phoneNumber("01012345678")
+                .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                .build();
+        MemberEntity savedMemberEntity = memberRepository.getById(memberRepository.save(memberEntity).getMemberIdx());
+
+        TagEntity tagEntity = TagEntity.builder()
+                .memberEntity(savedMemberEntity)
+                .tag("공부")
+                .build();
+        TagEntity savedTagEntity = tagRepository.getById(tagRepository.save(tagEntity).getTagIdx());
+
         PlanInfo planInfo = PlanInfo.builder()
-                .title("기능반 출근후 코딩")
-                .explanation("간단한 코딩, 2시까지 할꺼임")
+                .title("카페가서 공부하기")
+                .explanation("카페가서 모던 자바 책 스터디!")
                 .build();
 
-        // When
-        NewPersonalPlanEntity personalPlanEntity = new NewPersonalPlanEntity(user, planInfo, period, false);
-        NewPersonalPlanEntity savedPersonalPlanEntity = personalPlanRepo.saveAndFlush(personalPlanEntity);
+        Period period = Period.builder()
+                .startTime(LocalDateTime.of(2021, 7, 24, 1, 30))
+                .endTime(LocalDateTime.of(2021, 7, 24, 6, 30))
+                .build();
 
-        NewPersonalPlanEntity selectPersonalPlanEntity = personalPlanRepo.getById(savedPersonalPlanEntity.getPersonalPlanIdx());
+        Boolean repetition = true;
 
-        // Then
-        assertEquals(period, selectPersonalPlanEntity.getPeriod()); //equals로 동등성 비교
-        assertEquals(planInfo, selectPersonalPlanEntity.getPlanInfo()); //equals로 동등성 비교
-        assertEquals(PlanDType.PERSONAL_PLAN, selectPersonalPlanEntity.getDType());
-        assertEquals(savedPersonalPlanEntity, selectPersonalPlanEntity);
-        assertFalse(selectPersonalPlanEntity.getRepetition()); //repetition 필드를 false초기화 했으므로
-    }
-
-
-    @Test @DisplayName("PersonalPlan(개인일정) 모든필드 수정 테스트")
-    void PersonalPlan_수정테스트() throws Exception {
-        // Given
-        UserEntity user = userEntityInit();
-        NewPersonalPlanEntity oldPersonalPlanEntity = personalPlanEntityInit(user);
-        NewPersonalPlanEntity saveOldPersonalPlanEntity = personalPlanRepo.save(oldPersonalPlanEntity);
-
-        // 업데이트 정보
-        PlanInfo updatePlanInfo = new PlanInfo("변경할 일정제목", "그냥 변경할 일정 설명");
-        LocalDateTime updateStartTime = LocalDateTime.of(2022, 7, 20, 9, 0);
-        LocalDateTime updateEndTime = LocalDateTime.of(2022, 7, 20, 12, 0);
-        Period updatePeriod = new Period(updateStartTime, updateEndTime);
-        NewPersonalPlanEntity updateBeforePersonalPlanEntity = NewPersonalPlanUpdateDto.builder()
-                .userEntity(user)
-                .planInfo(updatePlanInfo)
-                .period(updatePeriod)
-                .repetition(true)
-                .build()
-                .toEntity();
+        PersonalPlanEntity personalPlanEntity = new PersonalPlanEntity(savedMemberEntity, tagEntity, planInfo, period, repetition);
 
         // When
-        saveOldPersonalPlanEntity.updatePersonalPlanEntity(user, updateBeforePersonalPlanEntity);
+        //개인일정 저장
+        PersonalPlanEntity savedPersonalPlanEntity = personalPlanRepository.getById(personalPlanRepository.save(personalPlanEntity).getPlanIdx());
+
+        //저장한 개인일정 삭제
+        personalPlanRepository.delete(savedPersonalPlanEntity);
 
         // Then
-        NewPersonalPlanEntity updatedPersonalPlanEntity = personalPlanRepo.getById(saveOldPersonalPlanEntity.getPersonalPlanIdx());
-        assertEquals(updatedPersonalPlanEntity.getPlanInfo(), saveOldPersonalPlanEntity.getPlanInfo());
-        assertEquals(updatedPersonalPlanEntity.getPeriod(), saveOldPersonalPlanEntity.getPeriod());
-        assertEquals(updatedPersonalPlanEntity.getRepetition(), saveOldPersonalPlanEntity.getRepetition());
+        assertEquals(savedMemberEntity, savedPersonalPlanEntity.getMemberEntity());
+        assertEquals(savedTagEntity, savedPersonalPlanEntity.getTagEntity());
+        assertEquals(planInfo, savedPersonalPlanEntity.getPlanInfo());
+        assertEquals(period, savedPersonalPlanEntity.getPeriod());
+        assertEquals(repetition, savedPersonalPlanEntity.getRepetition());
+
+        assertThrows
+            (
+                JpaObjectRetrievalFailureException.class,
+                () -> personalPlanRepository.getById(savedPersonalPlanEntity.getPlanIdx()),
+                    "생성한 개인일정이 삭제되었습니다."
+            );
     }
 
-    @Test @DisplayName("PersonalPlan(개인일정) 업데이트시 소유자가 다른 유저가 업데이트를 하게 된다면?")
-    void PersonalPlan_다른소유자가_업데이트시_exception_테스트() throws Exception {
+    @Test @DisplayName("PersonalPlanEntity 업데이트 테스트")
+    void PersonalPlanEntity_업데이트_테스트() throws Exception {
         // Given
-        UserEntity userA = userEntityInit();
-        UserEntity userB = userEntityInit();
-        NewPersonalPlanEntity oldPersonalPlanEntity = personalPlanEntityInit(userA);
-        NewPersonalPlanEntity saveOldPersonalPlanEntity = personalPlanRepo.save(oldPersonalPlanEntity);
+        PersonalPlanEntity savedPersonalPlanEntity = personalPlanInit();
 
-        // 업데이트 정보
-        PlanInfo updatePlanInfo = new PlanInfo("변경할 일정제목", "그냥 변경할 일정 설명");
-        LocalDateTime updateStartTime = LocalDateTime.of(2022, 7, 20, 9, 0);
-        LocalDateTime updateEndTime = LocalDateTime.of(2022, 7, 20, 12, 0);
-        Period updatePeriod = new Period(updateStartTime, updateEndTime);
-        NewPersonalPlanEntity updateBeforePersonalPlanEntity = NewPersonalPlanUpdateDto.builder()
-                .userEntity(userA)
-                .planInfo(updatePlanInfo)
-                .period(updatePeriod)
-                .repetition(true)
-                .build()
-                .toEntity();
+        // 개인일정에서 수정할 TagEntity
+        TagEntity tagEntity = TagEntity.builder()
+                .memberEntity(savedPersonalPlanEntity.getMemberEntity())
+                .tag("놀기")
+                .build();
+        TagEntity savedTagEntity = tagRepository.getById(tagRepository.save(tagEntity).getTagIdx());
+
+        // 개인일정에서 수정할 planInfo
+        PlanInfo planInfo = PlanInfo.builder()
+                .title("PC방가서 배그하기")
+                .explanation("오늘은 치킨이닭")
+                .build();
+
+        // 개인일정에서 수정할 기간
+        Period period = Period.builder()
+                .startTime(LocalDateTime.of(2021, 7, 25, 1, 30))
+                .endTime(LocalDateTime.of(2021, 7, 25, 6, 30))
+                .build();
+
+        // 개인일정에서 수정할 반복
+        boolean repetition = false;
+
+        // When
+        savedPersonalPlanEntity.updatePersonalPlanEntity(savedPersonalPlanEntity.getMemberEntity(), tagEntity, planInfo, period, repetition);
+
+        // Then
+        assertEquals(savedTagEntity, savedPersonalPlanEntity.getTagEntity(), savedPersonalPlanEntity.getTagEntity().getTag());
+        assertEquals(planInfo, savedPersonalPlanEntity.getPlanInfo(), "title = " + savedPersonalPlanEntity.getPlanInfo().getTitle() + ", explanation = " + savedPersonalPlanEntity.getPlanInfo().getExplanation());
+        assertEquals(period, savedPersonalPlanEntity.getPeriod(), "startTime = " + savedPersonalPlanEntity.getPeriod().getStartTime().toString() + ", endTime = " + savedPersonalPlanEntity.getPeriod().getEndTime().toString());
+        assertEquals(repetition, savedPersonalPlanEntity.getRepetition());
+    }
+
+    @Test @DisplayName("만약 해당 PersonalPlan을 소유자가 아닌 다른 사람이 일정을 수정하게 된다면?")
+    void PersonalPlan소유자가_아닌_다른유저가_수정한다면(){
+        // Given
+        PersonalPlanEntity savedPersonalPlanEntity = personalPlanInit();
+
+        // 개인일정에서 수정할 TagEntity
+        TagEntity tagEntity = TagEntity.builder()
+                .memberEntity(savedPersonalPlanEntity.getMemberEntity())
+                .tag("놀기")
+                .build();
+        TagEntity savedTagEntity = tagRepository.getById(tagRepository.save(tagEntity).getTagIdx());
+
+        MemberEntity otherMember = MemberEntity.builder()
+                .username("otherMember")
+                .password("otherMember")
+                .phoneNumber("01011111111")
+                .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                .build();
+        MemberEntity savedOtherMember = memberRepository.getById(memberRepository.save(otherMember).getMemberIdx());
+
+        // 개인일정에서 수정할 planInfo
+        PlanInfo planInfo = PlanInfo.builder()
+                .title("PC방가서 배그하기")
+                .explanation("오늘은 치킨이닭")
+                .build();
+
+        // 개인일정에서 수정할 기간
+        Period period = Period.builder()
+                .startTime(LocalDateTime.of(2021, 7, 25, 1, 30))
+                .endTime(LocalDateTime.of(2021, 7, 25, 6, 30))
+                .build();
+
+        boolean repetition = false;
 
         // When Then
-        Throwable throwable = assertThrows(Throwable.class,
-                () -> saveOldPersonalPlanEntity.updatePersonalPlanEntity(userB, updateBeforePersonalPlanEntity)
+        assertThrows(
+                Exception.class,
+                () -> savedPersonalPlanEntity.updatePersonalPlanEntity(
+                        savedOtherMember,
+                        tagEntity,
+                        planInfo,
+                        period,
+                        repetition
+                )
         );
+
+
     }
+
 }

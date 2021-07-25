@@ -22,10 +22,6 @@ invalid-access:
   code: "-910"
   msg: "Invalid access"
 
-invalid-authentication-number:
-  code: "-920"
-  msg: "Invalid authentication number."
-
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."
@@ -37,3 +33,11 @@ invalid-token:
 token-logged-out:
   code: "-820"
   msg: "Token logged out."
+
+invalid-authentication-number:
+  code: "-700"
+  msg: "Invalid authentication number."
+
+authentication-number-transfer-failed:
+  code: "-710"
+  msg: "Authentication number transfer failed"

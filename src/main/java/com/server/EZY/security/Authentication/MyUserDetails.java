@@ -1,7 +1,7 @@
 package com.server.EZY.security.Authentication;
 
-import com.server.EZY.model.user.UserEntity;
-import com.server.EZY.model.user.repository.UserRepository;
+import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MyUserDetails implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByNickname(nickname);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        MemberEntity memberEntity = memberRepository.findByUsername(username);
 
-        if(nickname == null){
-            throw new UsernameNotFoundException("nickName '" + nickname + "' not found");
+        if(memberEntity == null){
+            throw new UsernameNotFoundException(username);
         }
 
-        return userEntity;
+        return memberEntity;
     }
 }
