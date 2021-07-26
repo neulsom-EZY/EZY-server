@@ -1,9 +1,11 @@
 package com.server.EZY.security.jwt;
 
+import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.security.Authentication.MyUserDetails;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtTokenProvider {
     @Value("${security.jwt.token.secretKey}")
@@ -122,7 +125,7 @@ public class JwtTokenProvider {
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
             return  bearerToken.substring(7);
         } else {
-            return null;
+            return null; ////헤더의 accessToken은 Null입니다 Exception 또는 헤더에서 accessToken 가져오기 실패 Exception
         }
     }
 
@@ -137,7 +140,7 @@ public class JwtTokenProvider {
         if(refreshToken != null){
             return  refreshToken.substring(7);
         } else {
-            return null;
+            return null; //헤더의 refreshToken은 Null입니다 Exception또는 헤더에서 refreshToken 가져오기 실패 Exception
         }
     }
 
@@ -151,7 +154,8 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date()); //유효기간 만료 시 false 반환
-        } catch (Exception e) {
+        } catch (Exception e) { // 나중에 유효하지 않은 토큰입니다 Exception으로 변경?
+            log.debug(e.getMessage()); //나중에 어떤 Exception이 터지는지 확인하기 위해 logging
             SecurityContextHolder.clearContext();
             return false;
         }

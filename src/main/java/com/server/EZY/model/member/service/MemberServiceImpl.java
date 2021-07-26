@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
 
             return "Bearer " + token;
         } else {
-            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY); // MemberAlreadyExist Exception
         }
     }
 
@@ -72,8 +72,8 @@ public class MemberServiceImpl implements MemberService {
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
         redisUtil.deleteData(loginDto.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
-
         redisUtil.setDataExpire(loginDto.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
+
         Map<String ,String> map = new HashMap<>();
         map.put("username", loginDto.getUsername());
         map.put("accessToken", "Bearer " + accessToken); // accessToken 반환
@@ -139,9 +139,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
+
         MemberEntity findUser = memberRepository.findByUsername(username);
         if (findUser == null) throw new InvalidAuthenticationNumberException();
+
         redisUtil.deleteData(key);
+
         return username + "님 휴대전화 인증 완료";
     }
 
@@ -156,6 +159,7 @@ public class MemberServiceImpl implements MemberService {
     public String findUsername(String phoneNumber) {
         MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
         if (findUser == null) throw new MemberNotFoundException();
+
         return findUser.getUsername();
     }
 
@@ -169,7 +173,9 @@ public class MemberServiceImpl implements MemberService {
     public String changeUsername(UsernameChangeDto usernameChangeDto) {
         MemberEntity findUser = memberRepository.findByUsername(usernameChangeDto.getUsername());
         if (findUser == null) throw new MemberNotFoundException();
+
         findUser.updateUsername(usernameChangeDto.getNewUsername());
+
         return usernameChangeDto.getUsername() + "유저 " + usernameChangeDto.getNewUsername() + "(으)로 닉네임 업데이트 완료";
     }
 
@@ -199,9 +205,11 @@ public class MemberServiceImpl implements MemberService {
     public String deleteUser(AuthDto deleteUserDto) {
         MemberEntity findUser = memberRepository.findByUsername(deleteUserDto.getUsername());
         if (findUser == null) throw new MemberNotFoundException();
+
         if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
             memberRepository.deleteById(findUser.getMemberIdx());
         }
+
         return deleteUserDto.getUsername() + "회원 회원탈퇴완료";
     }
 }

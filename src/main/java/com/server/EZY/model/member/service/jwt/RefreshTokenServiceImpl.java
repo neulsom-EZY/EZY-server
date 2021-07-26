@@ -1,12 +1,14 @@
 package com.server.EZY.model.member.service.jwt;
 
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,15 +44,19 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         if (redisUtil.getData(username).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
             redisUtil.deleteData(username);//refreshToken이 저장되어있는 레디스 초기화 후
+
             newAccessToken = jwtTokenProvider.createToken(username, roles);
             newRefreshToken = jwtTokenProvider.createRefreshToken();
+
             redisUtil.setDataExpire(username, newRefreshToken, 360000 * 1000l* 24 * 180); //새 refreshToken을 다시 저장
+
             map.put("username", username);
             map.put("NewAccessToken", "Bearer " + newAccessToken); // NewAccessToken 반환
             map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
-            return map;
-        }
 
-        return map;
+            return map;
+        } else {
+            throw new MemberNotFoundException(); // token 재발급 실패 Exception
+        }
     }
 }

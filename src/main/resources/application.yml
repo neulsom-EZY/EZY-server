@@ -55,9 +55,10 @@ security:
   jwt:
     token:
       secretKey: afsdasfdASAWRSasgdvFTUJARGtasdfSRTJSRTEQR14asdfVA
-      expireLength: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
 
+### Sms ###
 sms:
   api:
     apikey: NCSU49MID5ZV88LS
     apiSecret: 0NAAGMKADY7ASFEXFQUOHB5RMOHIXXHA
+
