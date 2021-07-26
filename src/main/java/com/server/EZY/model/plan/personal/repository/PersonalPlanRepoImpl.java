@@ -1,11 +1,16 @@
 package com.server.EZY.model.plan.personal.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-public class PersonalPlanRepoCustomImpl implements PersonalPlanRepoCustom{
+@RequiredArgsConstructor
+public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
+
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public List<PersonalPlanEntity> findAllPersonalPlan(MemberEntity memberEntity) {
