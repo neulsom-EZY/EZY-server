@@ -16,14 +16,14 @@ public class PersonalPlanSetDto {
     private PlanInfo planInfo;
     @NotNull
     private Period period;
-    private TagEntity tag;
+    private Long tagIdx;
     @NotNull
     private Boolean repetition;
 
-    public PersonalPlanEntity saveToEntity(MemberEntity memberEntity){
+    public PersonalPlanEntity saveToEntity(MemberEntity memberEntity, TagEntity tagEntity){
         return PersonalPlanEntity.builder()
                 .memberEntity(memberEntity)
-                .tagEntity(this.tag)
+                .tagEntity(tagEntity)
                 .planInfo(this.planInfo)
                 .period(this.period)
                 .repetition(this.repetition)
