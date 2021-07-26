@@ -6,5 +6,5 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import java.util.List;
 
 public interface PersonalPlanRepoCustom {
-    List<PersonalPlanEntity> findAllPersonalPlan(MemberEntity memberEntity);
+    List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity);
 }

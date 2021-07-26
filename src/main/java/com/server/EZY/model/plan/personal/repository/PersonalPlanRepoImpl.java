@@ -15,7 +15,7 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<PersonalPlanEntity> findAllPersonalPlan(MemberEntity memberEntity) {
+    public List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity) {
         return jpaQueryFactory.selectFrom(personalPlanEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity)
