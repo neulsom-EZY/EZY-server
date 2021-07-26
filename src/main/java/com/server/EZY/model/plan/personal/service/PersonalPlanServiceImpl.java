@@ -10,6 +10,8 @@ import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PersonalPlanServiceImpl implements PersonalPlanService{
@@ -30,5 +32,10 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
         // 저장요청
         return personalPlanRepository.save(personalPlan.saveToEntity(currentUser, tagEntity));
+    }
+
+    @Override
+    public List<PersonalPlanEntity> getAllPersonalPlan() {
+        return null;
     }
 }
