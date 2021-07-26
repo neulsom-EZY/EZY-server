@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.personal.service;
 
+import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
@@ -19,10 +20,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +42,8 @@ class PersonalPlanServiceImplTest {
     @Autowired
     private PersonalPlanRepository personalPlanRepository;
 
+
+    MemberEntity savedMemberEntity;
     @BeforeEach @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void GetUserEntity(){
         //Given
@@ -48,7 +54,7 @@ class PersonalPlanServiceImplTest {
                 .build();
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        savedMemberEntity = memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
@@ -85,5 +91,28 @@ class PersonalPlanServiceImplTest {
         // Then
         assertTrue(savedPersonalPlan.getPlanIdx() != null);
 
+    }
+
+    @Test @DisplayName("personalPlan 전체 조회 가능한가요?")
+    void getAllMyPersonalPlan(){
+        // Given
+        List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                .memberEntity(savedMemberEntity)
+                .repetition(false)
+                .period( new Period(
+                            LocalDateTime.of(2021, 7, 24, 1, 30),
+                            LocalDateTime.of(2021, 7, 24, 1, 30)
+                        )
+                ).planInfo(new PlanInfo("하이요", "오하이오")).build()
+
+        ).limit(30).collect(Collectors.toList());
+
+        // When
+        personalPlanRepository.saveAll(personalPlanEntities);
+        List<PersonalPlanEntity> allPersonalPlan = personalPlanService.getAllPersonalPlan();
+
+        // then
+        assertTrue(allPersonalPlan.size() == 30);
     }
 }
