@@ -11,6 +11,7 @@ import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
@@ -175,6 +176,32 @@ class ExceptionAdviceTest {
         CommonResult commonResult_KO = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
         setLocal(Locale.ENGLISH);
         CommonResult commonResult_EN = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
+
+        // Then
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, MEMBER_NOT_FOUND_EXCEPTION_CODE_EN);
+
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("memberAlreadyExistException 검증")
+    void MemberAlreadyExistException() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.memberAlreadyExistException(new MemberAlreadyExistException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.memberAlreadyExistException(new MemberAlreadyExistException());
 
         // Then
         assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, MEMBER_NOT_FOUND_EXCEPTION_CODE_EN);
