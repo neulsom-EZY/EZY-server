@@ -3,6 +3,8 @@ package com.server.EZY.model.plan.personal.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPlanEntity;
+
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -14,6 +16,9 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
 
     @Override
     public List<PersonalPlanEntity> findAllPersonalPlan(MemberEntity memberEntity) {
-        return null;
+        return jpaQueryFactory.selectFrom(personalPlanEntity)
+                .where(
+                        personalPlanEntity.memberEntity.eq(memberEntity)
+                ).fetch();
     }
 }
