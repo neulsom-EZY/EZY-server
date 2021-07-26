@@ -25,7 +25,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
          * tagEntity: 등록할 tag Entity
          */
         MemberEntity currentUser = userUtil.getCurrentUser();
-        TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTag());
+        TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
         // 저장요청
         return personalPlanRepository.save(personalPlan.saveToEntity(currentUser, tagEntity));
     }
