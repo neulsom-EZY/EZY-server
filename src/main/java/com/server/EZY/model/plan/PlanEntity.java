@@ -14,8 +14,8 @@ import javax.persistence.*;
 @Entity @Table(name = "plan")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "d_type") //d_type 자동 생성
-@Builder @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlanEntity extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,20 +45,9 @@ public class PlanEntity extends BaseTimeEntity {
      * @author 정시원
      */
     protected PlanEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period){
-        if(memberEntity != null && planInfo != null && period != null){
             this.memberEntity = memberEntity;
             this.tagEntity = tagEntity;
             this.planInfo = planInfo;
             this.period = period;
-        }else{
-            log.error("PlanEntity의 생성자에 null값이 인수로 주입되었습니다.\n" +
-                    "MemberEntity = {} \n" +
-                    "TagEntity = {}\n" +
-                    "PlanInfo = {}\n" +
-                    "Period = {}\n",
-                    memberEntity, tagEntity, planInfo, period
-            );
-            throw new NullPointerException("PlanEntity의 생성자에 null값이 인수로 주입되었습니다.");
-        }
     }
 }

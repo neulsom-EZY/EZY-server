@@ -9,9 +9,10 @@ import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
-import com.server.EZY.exception.user.exception.UserNotFoundException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -23,10 +24,11 @@ public interface ExceptionAdvice {
     String CUSTOM_403_FORBIDDEN = "forbidden";
     String CUSTOM_404_NOT_FOUND = "not-found";
 
-    String USER_NOT_FOUND = "user-not-found";
-    String INVALID_ACCESS_EXCEPTION = "invalid-access";
+    String MEMBER_NOT_FOUND = "member-not-found";
+    String INVALID_ACCESS = "invalid-access";
 
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
+    String USERNAME_NOT_FOUND = "username-not-found";
     String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
@@ -51,11 +53,16 @@ public interface ExceptionAdvice {
     CommonResult notFoundException(CustomNotFoundException ex);
 
 
-    /*** User Exceptions 시작***/
-    // 유저를 찾을 수 없습니다.
-    @ExceptionHandler(UserNotFoundException.class)
+    /*** Member Exceptions 시작***/
+    // 맴버를 찾을 수 없습니다.
+    @ExceptionHandler(MemberNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult userNotFoundException(UserNotFoundException ex);
+    CommonResult memberNotFoundException(MemberNotFoundException ex);
+
+    // 해당 유저이름으로 맴버를 찾을 수 없습니다.
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    CommonResult usernameNotFoundException(UsernameNotFoundException ex);
 
     // 잘못된 접근입니다.
     @ExceptionHandler(InvalidAccessException.class)
