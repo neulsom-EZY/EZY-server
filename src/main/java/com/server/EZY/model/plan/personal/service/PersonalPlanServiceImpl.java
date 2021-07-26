@@ -18,12 +18,14 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     private final TagRepository tagRepository;
     private final PersonalPlanRepository personalPlanRepository;
 
+    /**
+     * personalPlan을 "생성"하기 위해 사용되는 비즈니스 로직입니다.
+     * @param personalPlan
+     * @return PersonalPlanEntity
+     * @author 전지환
+     */
     @Override
     public PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlan) {
-        /**
-         * currentUser: 로그인된 memberEntity
-         * tagEntity: 등록할 tag Entity
-         */
         MemberEntity currentUser = userUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
         // 저장요청

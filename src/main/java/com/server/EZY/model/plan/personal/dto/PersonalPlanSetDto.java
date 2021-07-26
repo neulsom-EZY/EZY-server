@@ -20,6 +20,13 @@ public class PersonalPlanSetDto {
     @NotNull
     private Boolean repetition;
 
+    /**
+     * 서비스 로직에서 personalPlanSave 시에 Entity set 를 위한 toEntity 메서드
+     * @param memberEntity
+     * @param tagEntity
+     * @return
+     * @author 전지환
+     */
     public PersonalPlanEntity saveToEntity(MemberEntity memberEntity, TagEntity tagEntity){
         return PersonalPlanEntity.builder()
                 .memberEntity(memberEntity)
