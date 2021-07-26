@@ -22,8 +22,12 @@ member-already-exist:
   code: "-910"
   msg: "The member already exist"
 
-invalid-access:
+username-not-found:
   code: "-920"
+  msg: "Member with username :username not found."
+
+invalid-access:
+  code: "-930"
   msg: "Invalid access"
 
 access-token-expired:

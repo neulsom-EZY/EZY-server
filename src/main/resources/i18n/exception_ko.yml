@@ -27,7 +27,7 @@ username-not-found:
   msg: "회원 이름이 :username인 유저를 찾을 수 없습니다."
 
 invalid-access:
-  code: "-920"
+  code: "-930"
   msg: "잘못된 접근입니다."
 
 access-token-expired:
