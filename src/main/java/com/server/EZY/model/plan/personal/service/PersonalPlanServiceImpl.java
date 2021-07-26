@@ -36,6 +36,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
 
     @Override
     public List<PersonalPlanEntity> getAllPersonalPlan() {
-        return null;
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        return personalPlanRepository.findAllPersonalPlan(currentUser);
     }
 }
