@@ -1,23 +1,32 @@
 package com.server.EZY.model.plan.personal.dto;
 
 import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.plan.embeddedTypes.Period;
+import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
+import com.server.EZY.model.plan.tag.TagEntity;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class PersonalPlanSetDto {
     @NotNull
-    private String title;
-    private String explanation;
+    private PlanInfo planInfo;
     @NotNull
-    private LocalDateTime startTime;
-    @NotNull
-    private LocalDateTime endTime;
-    private String tag;
+    private Period period;
+    private TagEntity tag;
     @NotNull
     private Boolean repetition;
+
+    public PersonalPlanEntity saveToEntity(MemberEntity memberEntity){
+        return PersonalPlanEntity.builder()
+                .memberEntity(memberEntity)
+                .tagEntity(this.tag)
+                .planInfo(this.planInfo)
+                .period(this.period)
+                .repetition(this.repetition)
+                .build();
+    }
 }
