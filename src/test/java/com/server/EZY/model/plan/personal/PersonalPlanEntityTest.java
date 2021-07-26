@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.personal;
 
+import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
@@ -140,7 +141,15 @@ class PersonalPlanEntityTest {
         boolean repetition = false;
 
         // When
-        savedPersonalPlanEntity.updatePersonalPlanEntity(savedPersonalPlanEntity.getMemberEntity(), tagEntity, planInfo, period, repetition);
+        savedPersonalPlanEntity.updatePersonalPlanEntity(
+                savedPersonalPlanEntity.getMemberEntity(),
+                PersonalPlanEntity.builder()
+                        .tagEntity(tagEntity)
+                        .planInfo(planInfo)
+                        .period(period)
+                        .repetition(repetition)
+                        .build()
+                );
 
         // Then
         assertEquals(savedTagEntity, savedPersonalPlanEntity.getTagEntity(), savedPersonalPlanEntity.getTagEntity().getTag());
@@ -183,15 +192,17 @@ class PersonalPlanEntityTest {
 
         boolean repetition = false;
 
+
+
         // When Then
         assertThrows(
-                Exception.class,
+                InvalidAccessException.class,
                 () -> savedPersonalPlanEntity.updatePersonalPlanEntity(
                         savedOtherMember,
-                        tagEntity,
-                        planInfo,
-                        period,
-                        repetition
+                        PersonalPlanEntity.builder()
+                                .planInfo(planInfo)
+                                .period(period)
+                        .build()
                 )
         );
 
