@@ -9,13 +9,14 @@ import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
-import com.server.EZY.exception.user.exception.UserNotFoundException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
@@ -69,15 +70,27 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
 
     /*** UserException 시작 ***/
     @Override
-    public CommonResult userNotFoundException(UserNotFoundException ex){
+    public CommonResult memberNotFoundException(MemberNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
-        return getExceptionResponseObj(USER_NOT_FOUND);
+        return getExceptionResponseObj(MEMBER_NOT_FOUND);
+    }
+
+    @Override
+    public CommonResult usernameNotFoundException(UsernameNotFoundException ex) {
+        log.debug("=== Username Not Found Exception 발생 ===");
+        CommonResult usernameNotFoundExceptionResponseObj = getExceptionResponseObj(USERNAME_NOT_FOUND);
+        // UsernameNotFoundExceptiond에서 해당 username으로 회원을 찾지 못했을 경우 해당 username를 Exception message에 포함하는 로직
+        String insertUsernameInExceptionMassage =
+                usernameNotFoundExceptionResponseObj.getMassage().replaceAll(":username", "'" + ex.getMessage() + "'");
+        usernameNotFoundExceptionResponseObj.setMassage(insertUsernameInExceptionMassage);
+
+        return usernameNotFoundExceptionResponseObj;
     }
 
     @Override
     public CommonResult invalidAccessException(InvalidAccessException ex) {
         log.debug("=== InvalidAccessException 발생 ===");
-        return getExceptionResponseObj(INVALID_ACCESS_EXCEPTION);
+        return getExceptionResponseObj(INVALID_ACCESS);
     }
 
     @Override

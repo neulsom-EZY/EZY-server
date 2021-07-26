@@ -3,7 +3,7 @@ package com.server.EZY.model.member.service;
 import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
-import com.server.EZY.exception.user.exception.UserNotFoundException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.repository.MemberRepository;
@@ -63,10 +63,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
         MemberEntity findUser = memberRepository.findByUsername(loginDto.getUsername());
-        if (findUser == null) throw new UserNotFoundException();
+        if (findUser == null) throw new MemberNotFoundException();
         // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
-        if (!passwordCheck) throw new UserNotFoundException();
+        if (!passwordCheck) throw new MemberNotFoundException();
 
         String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -155,7 +155,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String findUsername(String phoneNumber) {
         MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
-        if (findUser == null) throw new UserNotFoundException();
+        if (findUser == null) throw new MemberNotFoundException();
         return findUser.getUsername();
     }
 
@@ -168,7 +168,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public String changeUsername(UsernameChangeDto usernameChangeDto) {
         MemberEntity findUser = memberRepository.findByUsername(usernameChangeDto.getUsername());
-        if (findUser == null) throw new UserNotFoundException();
+        if (findUser == null) throw new MemberNotFoundException();
         findUser.updateUsername(usernameChangeDto.getNewUsername());
         return usernameChangeDto.getUsername() + "유저 " + usernameChangeDto.getNewUsername() + "(으)로 닉네임 업데이트 완료";
     }
@@ -183,7 +183,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public String changePassword(PasswordChangeDto passwordChangeDto) {
         MemberEntity findUser = memberRepository.findByUsername(passwordChangeDto.getUsername());
-        if (findUser == null) throw new UserNotFoundException();
+        if (findUser == null) throw new MemberNotFoundException();
         findUser.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
 
         return passwordChangeDto.getUsername() + "회원 비밀번호 변경완료";
@@ -198,7 +198,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String deleteUser(AuthDto deleteUserDto) {
         MemberEntity findUser = memberRepository.findByUsername(deleteUserDto.getUsername());
-        if (findUser == null) throw new UserNotFoundException();
+        if (findUser == null) throw new MemberNotFoundException();
         if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
             memberRepository.deleteById(findUser.getMemberIdx());
         }
