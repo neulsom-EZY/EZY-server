@@ -1,8 +1,6 @@
 package com.server.EZY.exception.token;
 
-import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
-import com.server.EZY.exception.token.exception.InvalidTokenException;
-import com.server.EZY.exception.token.exception.TokenLoggedOutException;
+import com.server.EZY.exception.token.exception.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,4 +18,9 @@ public class TokenExceptionController {
     @GetMapping("/token-logged-out")
     public void tokenLoggedOutException(){ throw new TokenLoggedOutException(); }
 
+    @GetMapping("/authorization-header-is-empty")
+    public void authorizationHeaderIsEmpty(){ throw new AuthorizationHeaderIsEmpty(); }
+
+    @GetMapping("/refresh-token-header-is-empty")
+    public void refreshTokenHeaderIsEmpty(){ throw new RefreshTokenHeaderIsEmpty(); }
 }

@@ -45,3 +45,11 @@ invalid-authentication-number:
 authentication-number-transfer-failed:
   code: "-710"
   msg: "Authentication number transfer failed"
+
+authorization-header-is-empty:
+   code: "-720"
+   msg: "Authorization Header is empty"
+
+refresh-token-header-is-empty:
+  code: "-730"
+  msg: "RefreshToken Header is empty"

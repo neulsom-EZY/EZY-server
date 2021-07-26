@@ -4,9 +4,7 @@ import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNum
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
-import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
-import com.server.EZY.exception.token.exception.InvalidTokenException;
-import com.server.EZY.exception.token.exception.TokenLoggedOutException;
+import com.server.EZY.exception.token.exception.*;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
@@ -131,5 +129,15 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
         return getExceptionResponseObj(TOKEN_LOGGED_OUT);
     }
 
+    @Override
+    public CommonResult authorizationHeaderIsEmpty(AuthorizationHeaderIsEmpty ex) {
+        log.debug("=== Authorization Header Is Empty Exception 발생 ===");
+        return getExceptionResponseObj(AUTHORIZATION_HEADER_IS_EMPTY);
+    }
 
+    @Override
+    public CommonResult refreshTokenIsEmpty(RefreshTokenHeaderIsEmpty ex) {
+        log.debug("=== Refresh Token Header Is Empty Exception 발생 ===");
+        return getExceptionResponseObj(REFRESH_TOKEN_HEADER_IS_EMPTY);
+    }
 }

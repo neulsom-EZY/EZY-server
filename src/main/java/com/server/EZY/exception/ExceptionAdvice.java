@@ -4,9 +4,7 @@ import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNum
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
-import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
-import com.server.EZY.exception.token.exception.InvalidTokenException;
-import com.server.EZY.exception.token.exception.TokenLoggedOutException;
+import com.server.EZY.exception.token.exception.*;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
@@ -32,6 +30,8 @@ public interface ExceptionAdvice {
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
     String USERNAME_NOT_FOUND = "username-not-found";
     String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
+    String AUTHORIZATION_HEADER_IS_EMPTY = "authorization-header-is-empty";
+    String REFRESH_TOKEN_HEADER_IS_EMPTY = "refresh-token-header-is-empty";
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
@@ -103,4 +103,14 @@ public interface ExceptionAdvice {
     @ExceptionHandler(TokenLoggedOutException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult tokenLoggedOutException(TokenLoggedOutException ex);
+
+    // Authorization 헤더가 비었습니다.
+    @ExceptionHandler(AuthorizationHeaderIsEmpty.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    CommonResult authorizationHeaderIsEmpty(AuthorizationHeaderIsEmpty ex);
+
+    // RefreshToken 헤더가 비었습니다.
+    @ExceptionHandler(RefreshTokenHeaderIsEmpty.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    CommonResult refreshTokenIsEmpty(RefreshTokenHeaderIsEmpty ex);
 }
