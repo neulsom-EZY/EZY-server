@@ -1,6 +1,7 @@
 package com.server.EZY.exception.user;
 
 import com.server.EZY.exception.user.exception.InvalidAccessException;
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +16,9 @@ public class MemberExceptionController {
 
     @GetMapping("/member-not-found")
     public CommonResult userNotFoundException(){ throw new MemberNotFoundException(); }
+
+    @GetMapping("/member-already-exist")
+    public CommonResult memberAlreadyExistException(){ throw new MemberAlreadyExistException(); }
 
     @GetMapping("/invalid-access")
     public CommonResult invalidAccessException(){ throw new InvalidAccessException(); }

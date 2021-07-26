@@ -16,11 +16,11 @@ not-found:
 
 member-not-found:
   code: "-900"
-  msg: "Member could not be found."
+  msg: "The member could not be found."
 
-username-not-found:
+member-already-exist:
   code: "-910"
-  msg: "Member with username :username not found."
+  msg: "The member already exist"
 
 invalid-access:
   code: "-920"

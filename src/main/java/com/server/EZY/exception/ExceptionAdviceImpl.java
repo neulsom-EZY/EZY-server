@@ -9,6 +9,7 @@ import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -73,6 +74,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
     public CommonResult memberNotFoundException(MemberNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj(MEMBER_NOT_FOUND);
+    }
+
+    @Override
+    public CommonResult memberAlreadyExistException(MemberAlreadyExistException ex) {
+        log.debug("=== Member Already Exist Exception 발생 ===");
+        return getExceptionResponseObj(MEMBER_ALREADY_EXIST);
     }
 
     @Override
