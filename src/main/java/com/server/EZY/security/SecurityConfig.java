@@ -50,6 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/member/test").hasRole("CLIENT")
                 .antMatchers("/v1/admin/test").hasRole("ADMIN")
                 */
+
+                .antMatchers("/v1/errand/**").permitAll() //개발 편의상 permitAll 처리 해 두었음
+
                 .antMatchers("/exception/**").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/exception/**").permitAll()
