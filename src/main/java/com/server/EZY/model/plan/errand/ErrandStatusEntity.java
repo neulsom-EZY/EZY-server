@@ -33,9 +33,6 @@ public class ErrandStatusEntity {
     @Enumerated(EnumType.STRING)
     private ResponseStatus responseStatus;
 
-    @OneToMany(mappedBy = "errandStatusEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<ErrandEntity> errandEntities = new ArrayList<>();
-
     /**
      * 심부름의 상태를 추가하는 생성자
      * @param senderIdx 발신자의 MemberIdx

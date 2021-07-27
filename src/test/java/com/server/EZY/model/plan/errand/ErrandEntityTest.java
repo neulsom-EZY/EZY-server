@@ -8,14 +8,15 @@ import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
 import com.server.EZY.model.plan.errand.enumType.ResponseStatus;
 import com.server.EZY.model.plan.errand.repository.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.ErrandStatusRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
@@ -29,13 +30,14 @@ class ErrandEntityTest {
     @Autowired ErrandRepository errandRepository;
     @Autowired ErrandStatusRepository errandStatusRepository;
 
-    @Test @DisplayName("심부름 라이프 사이클 테스트(저장, 조회, 삭제))")
-    void ErrandEntity_저장_조회_테스트(){
-        /** given
-         * 시원과 지환의 member를 만들고 저장한다.
-         * 심부름의 발신자는 시원, 수신자는 지환
-         */
-        MemberEntity memberSiwon = MemberEntity.builder()
+    @PersistenceContext EntityManager em;
+
+    MemberEntity memberSiwon;
+    MemberEntity memberJihwan;
+
+    @BeforeEach
+    void init(){
+        memberSiwon = MemberEntity.builder()
                 .password("1234")
                 .username("시원")
                 .phoneNumber("01011111111")
@@ -43,13 +45,21 @@ class ErrandEntityTest {
                 .build();
         memberSiwon = memberRepository.save(memberSiwon);
 
-        MemberEntity memberJihwan = MemberEntity.builder()
+        memberJihwan = MemberEntity.builder()
                 .password("1234")
                 .username("지환")
                 .phoneNumber("01012341234")
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();
         memberJihwan = memberRepository.save(memberJihwan);
+    }
+
+    @Test @DisplayName("심부름 생성, 조회 테스트")
+    void ErrandEntity_저장_조회_테스트(){
+        /** given
+         * 시원과 지환의 member를 만들고 저장한다. -> init() 매서드 참고
+         * 심부름의 발신자는 시원, 수신자는 지환
+         */
 
         /** When
          * errandStatus를 만들어 시원과 지환의 각각생성된 Errand테이블과 연관관계를 맻고 저장한다.
@@ -104,22 +114,20 @@ class ErrandEntityTest {
         // period == 시원의 period == 지환의 period
         assertEquals(period, savedSiwonErrandEntity.getPeriod());
         assertEquals(savedSiwonErrandEntity.getPeriod(), jihwanErrand.getPeriod());
+    }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Test @DisplayName("심부름 삭제 테스트")
+    void 심부름_삭제_테스트(){
+        ErrandEntity_저장_조회_테스트();
 
+        errandRepository.deleteById(1L);
+        errandRepository.deleteById(2L);
 
-        /** When
-         * ErrandStatus를 모두 삭제하면 연관관계를 맻은 Errand도 삭제되어야 한다.
-         */
-        errandStatusRepository.deleteById(errandStatusEntityIdx);
+        errandStatusRepository.deleteById(1L);
 
-        /**
-         * ErrandStatus를 삭제했으므로 결과값이 나오지 않아야 한다.
-         */
-        assertThrows(
-                JpaObjectRetrievalFailureException.class,
-                () -> errandStatusRepository.getById(errandStatusEntityIdx)
-        );
+        assertFalse(errandStatusRepository.existsById(1L));
+        assertFalse(errandRepository.existsById(1L));
+        assertFalse(errandRepository.existsById(2L));
     }
 
 }
