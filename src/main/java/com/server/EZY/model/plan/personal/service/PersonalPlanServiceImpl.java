@@ -55,4 +55,10 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         MemberEntity currentUser = userUtil.getCurrentUser();
         return personalPlanRepository.findThisPersonalPlanByMemberEntityAndPlanIdx(currentUser, planIdx);
     }
+
+    @Override
+    public void deleteThisPersonalPlan(Long planIdx) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        return null;
+    }
 }
