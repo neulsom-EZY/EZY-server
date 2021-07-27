@@ -1,6 +1,8 @@
 package com.server.EZY.security.jwt;
 
+import com.server.EZY.exception.token.exception.AuthorizationHeaderIsEmpty;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
+import com.server.EZY.exception.token.exception.RefreshTokenHeaderIsEmpty;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.security.Authentication.MyUserDetails;
 import io.jsonwebtoken.*;
@@ -125,7 +127,7 @@ public class JwtTokenProvider {
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
             return  bearerToken.substring(7);
         } else {
-            return null; ////헤더의 accessToken은 Null입니다 Exception 또는 헤더에서 accessToken 가져오기 실패 Exception
+            return null;
         }
     }
 
@@ -140,7 +142,7 @@ public class JwtTokenProvider {
         if(refreshToken != null){
             return  refreshToken.substring(7);
         } else {
-            return null; //헤더의 refreshToken은 Null입니다 Exception또는 헤더에서 refreshToken 가져오기 실패 Exception
+            return null;
         }
     }
 

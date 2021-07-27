@@ -10,6 +10,7 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.util.CurrentUserUtil;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -114,5 +115,51 @@ class PersonalPlanServiceImplTest {
 
         // then
         assertTrue(allPersonalPlan.size() == 30);
+    }
+
+    @Test @DisplayName("하나의 개인일정 단건조회가 가능한가요?")
+    void getThisMyPersonalPlan(){
+        // Given
+        List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period( new Period(
+                                        LocalDateTime.of(2021, 7, 24, 1, 30),
+                                        LocalDateTime.of(2021, 7, 24, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(20).collect(Collectors.toList());
+
+        // When
+        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
+        PersonalPlanEntity thisPersonalPlan = personalPlanService.getThisPersonalPlan(planEntities.get(3).getPlanIdx());
+
+        // Then
+        assertTrue(thisPersonalPlan.getPlanInfo().getExplanation() == "오하이오");
+    }
+
+    @Test @DisplayName("단건 개인일정 삭제가 가능한가요?")
+    void deleteThisPersonalPlan(){
+        //Given
+        List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period( new Period(
+                                        LocalDateTime.of(2021, 7, 24, 1, 30),
+                                        LocalDateTime.of(2021, 7, 24, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(20).collect(Collectors.toList());
+
+        //When
+        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
+        personalPlanService.deleteThisPersonalPlan(3L);
+
+        //Then
+        assertTrue(personalPlanRepository.findAll().size() == 19);
     }
 }

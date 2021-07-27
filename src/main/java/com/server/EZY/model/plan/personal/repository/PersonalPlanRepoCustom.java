@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PersonalPlanRepoCustom {
     List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity);
+    PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx);
 }

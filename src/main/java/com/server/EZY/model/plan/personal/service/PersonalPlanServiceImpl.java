@@ -4,6 +4,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
+import com.server.EZY.model.plan.personal.service.strategy.PersonalPlanStrategy;
 import com.server.EZY.model.plan.tag.TagEntity;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
@@ -19,6 +20,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     private final CurrentUserUtil userUtil;
     private final TagRepository tagRepository;
     private final PersonalPlanRepository personalPlanRepository;
+    private final PersonalPlanStrategy personalPlanStrategy;
 
     /**
      * personalPlan을 "생성"하기 위해 사용되는 비즈니스 로직입니다.
@@ -34,9 +36,31 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         return personalPlanRepository.save(personalPlan.saveToEntity(currentUser, tagEntity));
     }
 
+    /**
+     * 내 전체 personalPlan을 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @return List<PersonalPlanEntity>
+     * @author 전지환
+     */
     @Override
     public List<PersonalPlanEntity> getAllPersonalPlan() {
         MemberEntity currentUser = userUtil.getCurrentUser();
         return personalPlanRepository.findAllPersonalPlanByMemberEntity(currentUser);
+    }
+
+    /**
+     * 하나의 personalPlan을 "단건 조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @param planIdx
+     * @return PersonalPlanEntity
+     */
+    @Override
+    public PersonalPlanEntity getThisPersonalPlan(Long planIdx) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        return personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
+    }
+
+    @Override
+    public void deleteThisPersonalPlan(Long planIdx) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        personalPlanRepository.delete(personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx));
     }
 }
