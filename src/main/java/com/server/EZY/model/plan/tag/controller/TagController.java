@@ -30,7 +30,7 @@ public class TagController {
      * @author 배태현
      */
     @GetMapping("/{tagIdx}")
-    public CommonResult selectTag(@PathVariable("tagIdx") Long tagIdx) {
+    public CommonResult getTag(@PathVariable("tagIdx") Long tagIdx) {
         return responseService.getSuccessResult();
     }
 
