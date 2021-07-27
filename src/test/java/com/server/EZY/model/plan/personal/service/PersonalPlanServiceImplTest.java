@@ -133,11 +133,10 @@ class PersonalPlanServiceImplTest {
         ).limit(20).collect(Collectors.toList());
 
         // When
-        personalPlanRepository.saveAll(personalPlanEntities);
-        PersonalPlanEntity thisPersonalPlan = personalPlanService.getThisPersonalPlan(3L);
+        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
+        PersonalPlanEntity thisPersonalPlan = personalPlanService.getThisPersonalPlan(planEntities.get(3).getPlanIdx());
 
         // Then
-        assertTrue(thisPersonalPlan.getPlanIdx() == 3);
         assertTrue(thisPersonalPlan.getPlanInfo().getExplanation() == "오하이오");
     }
 }
