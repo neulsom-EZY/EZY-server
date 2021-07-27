@@ -12,16 +12,34 @@ public class TagController {
 
     private final ResponseService responseService;
 
+    /**
+     * 태그를 추가하는 Controller
+     * @param tag
+     * @return
+     * @author 배태현
+     */
     @PostMapping("")
     public CommonResult addTag(String tag) {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 태그를 조회하는 Controller
+     * @param tagIdx
+     * @return
+     * @author 배태현
+     */
     @GetMapping("/{tagIdx}")
     public CommonResult selectTag(@PathVariable("tagIdx") Long tagIdx) {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 태그를 삭제하는 Controller
+     * @param tagIdx
+     * @return
+     * @author 배태현
+     */
     @DeleteMapping("/{tagIdx}")
     public CommonResult deleteTag(@PathVariable("tagIdx") Long tagIdx) {
         return responseService.getSuccessResult();
