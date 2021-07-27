@@ -139,4 +139,27 @@ class PersonalPlanServiceImplTest {
         // Then
         assertTrue(thisPersonalPlan.getPlanInfo().getExplanation() == "오하이오");
     }
+
+    @Test @DisplayName("단건 개인일정 삭제가 가능한가요?")
+    void deleteThisPersonalPlan(){
+        //Given
+        List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period( new Period(
+                                        LocalDateTime.of(2021, 7, 24, 1, 30),
+                                        LocalDateTime.of(2021, 7, 24, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(20).collect(Collectors.toList());
+
+        //When
+        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
+        personalPlanService.deleteThisPersonalPlan(3L);
+
+        //Then
+        assertTrue(personalPlanRepository.findAll().size() == 19);
+    }
 }
