@@ -127,7 +127,7 @@ public class JwtTokenProvider {
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
             return  bearerToken.substring(7);
         } else {
-            throw new AuthorizationHeaderIsEmpty();
+            return null;
         }
     }
 
@@ -142,7 +142,7 @@ public class JwtTokenProvider {
         if(refreshToken != null){
             return  refreshToken.substring(7);
         } else {
-            throw new RefreshTokenHeaderIsEmpty();
+            return null;
         }
     }
 
