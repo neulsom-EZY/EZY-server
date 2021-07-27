@@ -54,13 +54,12 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     @Override
     public PersonalPlanEntity getThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        return personalPlanRepository.findThisPersonalPlanByMemberEntityAndPlanIdx(currentUser, planIdx);
+        return personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
     }
 
     @Override
     public void deleteThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        PersonalPlanEntity personalPlanEntity = personalPlanRepository.findThisPersonalPlanByMemberEntityAndPlanIdx(currentUser, planIdx);
-        personalPlanRepository.delete(personalPlanEntity);
+        personalPlanRepository.delete(personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx));
     }
 }
