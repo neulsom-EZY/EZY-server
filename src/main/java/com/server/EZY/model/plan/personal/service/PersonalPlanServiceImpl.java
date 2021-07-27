@@ -19,6 +19,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     private final CurrentUserUtil userUtil;
     private final TagRepository tagRepository;
     private final PersonalPlanRepository personalPlanRepository;
+    private final PersonalPlanStrategy personalPlanStrategy;
 
     /**
      * personalPlan을 "생성"하기 위해 사용되는 비즈니스 로직입니다.
@@ -59,5 +60,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     @Override
     public void deleteThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
+        PersonalPlanEntity personalPlanEntity = personalPlanRepository.findThisPersonalPlanByMemberEntityAndPlanIdx(currentUser, planIdx);
+        personalPlanRepository.delete(personalPlanEntity);
     }
 }
