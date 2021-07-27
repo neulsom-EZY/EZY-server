@@ -8,29 +8,27 @@ import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
 import com.server.EZY.model.plan.errand.enumType.ResponseStatus;
 import com.server.EZY.model.plan.errand.repository.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.ErrandStatusRepository;
+import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@Transactional
+@DataJpaTest @Import(QueryDslTestConfig.class)
 class ErrandTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired ErrandRepository errandRepository;
     @Autowired ErrandStatusRepository errandStatusRepository;
-
-    @PersistenceContext EntityManager em;
 
     MemberEntity memberSiwon;
     MemberEntity memberJihwan;
@@ -55,7 +53,7 @@ class ErrandTest {
     }
 
     @Test @DisplayName("심부름 생성, 조회 테스트")
-    void ErrandEntity_저장_조회_테스트(){
+    void 심부름_저장_조회_테스트(){
         /** given
          * 시원과 지환의 member를 만들고 저장한다. -> init() 매서드 참고
          * 심부름의 발신자는 시원, 수신자는 지환
@@ -89,8 +87,6 @@ class ErrandTest {
                 .period(period)
                 .build();
         ErrandEntity savedSiwonErrandEntity = errandRepository.save(siwonErrand);
-        Long savedSiwonErrandEntityIdx = savedSiwonErrandEntity.getPlanIdx();
-        System.out.println("savedSiwonErrandEntityIdx = " + savedSiwonErrandEntityIdx);
 
         ErrandEntity jihwanErrand = ErrandEntity.builder()
                 .memberEntity(memberJihwan)
@@ -100,8 +96,6 @@ class ErrandTest {
                 .period(period)
                 .build();
         ErrandEntity savedJihwanErrandEntity = errandRepository.save(jihwanErrand);
-        Long savedJihwanErrandEntityIdx = savedJihwanErrandEntity.getPlanIdx();
-        System.out.println("savedJihwanErrandEntityIdx = " + savedJihwanErrandEntityIdx);
         // Then
         // errandStatusEntity == 시원의 errandStatusEntity == 지환의 errandStatusEntity
         assertEquals(errandStatusEntity, savedSiwonErrandEntity.getErrandStatusEntity()); // errandStatusEntity와 시원의 errandStatusEntity가 같으면
@@ -118,13 +112,47 @@ class ErrandTest {
 
     @Test @DisplayName("심부름 삭제 테스트")
     void 심부름_삭제_테스트(){
-        ErrandEntity_저장_조회_테스트();
+        // Then
+        ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
+                .responseStatus(ResponseStatus.NOT_READ)
+                .senderIdx(memberSiwon.getMemberIdx())
+                .recipientIdx(memberJihwan.getMemberIdx())
+                .build();
+        errandStatusEntity = errandStatusRepository.save(errandStatusEntity);
 
-        errandRepository.deleteById(1L);
-        errandRepository.deleteById(2L);
+        PlanInfo planInfo = PlanInfo.builder()
+                .title("PersonalPlanService CRUD 끝내기")
+                .explanation("PersonalPlanService 끝내버려")
+                .build();
+        Period period = Period.builder()
+                .startTime(LocalDateTime.of(20201, 7, 27, 17, 30))
+                .endTime(LocalDateTime.of(20201, 7, 27, 20, 30))
+                .build();
 
-        errandStatusRepository.deleteById(1L);
+        ErrandEntity siwonErrand = ErrandEntity.builder()
+                .memberEntity(memberSiwon)
+                .tagEntity(null)
+                .errandStatusEntity(errandStatusEntity)
+                .planInfo(planInfo)
+                .period(period)
+                .build();
+        ErrandEntity savedSiwonErrandEntity = errandRepository.save(siwonErrand);
 
+        ErrandEntity jihwanErrand = ErrandEntity.builder()
+                .memberEntity(memberJihwan)
+                .tagEntity(null)
+                .errandStatusEntity(errandStatusEntity)
+                .planInfo(planInfo)
+                .period(period)
+                .build();
+        ErrandEntity savedJihwanErrandEntity = errandRepository.save(jihwanErrand);
+
+        // When
+        errandRepository.deleteById(siwonErrand.getPlanIdx());
+        errandRepository.deleteById(jihwanErrand.getPlanIdx());
+        errandStatusRepository.deleteById(errandStatusEntity.getErrandStatusIdx());
+
+        // Then
         assertFalse(errandStatusRepository.existsById(1L));
         assertFalse(errandRepository.existsById(1L));
         assertFalse(errandRepository.existsById(2L));
