@@ -59,6 +59,5 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     @Override
     public void deleteThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        return null;
     }
 }
