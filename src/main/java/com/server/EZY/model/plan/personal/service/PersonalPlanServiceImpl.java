@@ -34,15 +34,25 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         return personalPlanRepository.save(personalPlan.saveToEntity(currentUser, tagEntity));
     }
 
+    /**
+     * 내 전체 personalPlan을 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @return List<PersonalPlanEntity>
+     * @author 전지환
+     */
     @Override
     public List<PersonalPlanEntity> getAllPersonalPlan() {
         MemberEntity currentUser = userUtil.getCurrentUser();
         return personalPlanRepository.findAllPersonalPlanByMemberEntity(currentUser);
     }
 
+    /**
+     * 하나의 personalPlan을 "단건 조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @param planIdx
+     * @return PersonalPlanEntity
+     */
     @Override
-    public PersonalPlanEntity getThisPersonalPlan() {
+    public PersonalPlanEntity getThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        return null;
+        return personalPlanRepository.findThisPersonalPlanByMemberEntityAndPlanIdx(currentUser, planIdx);
     }
 }
