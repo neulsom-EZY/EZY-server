@@ -4,6 +4,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
+import com.server.EZY.model.plan.personal.service.strategy.PersonalPlanStrategy;
 import com.server.EZY.model.plan.tag.TagEntity;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
