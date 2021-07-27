@@ -18,12 +18,16 @@ member-not-found:
   code: "-900"
   msg: "해당 회원를 찾을 수 없습니다."
 
-username-not-found:
+member-already-exist:
   code: "-910"
+  msg: "해당 회원은 이미 존재합니다."
+
+username-not-found:
+  code: "-920"
   msg: "회원 이름이 :username인 유저를 찾을 수 없습니다."
 
 invalid-access:
-  code: "-920"
+  code: "-930"
   msg: "잘못된 접근입니다."
 
 access-token-expired:
@@ -45,3 +49,11 @@ invalid-authentication-number:
 authentication-number-transfer-failed:
   code: "-710"
   msg: "인증 번호 전송을 실패했습니다."
+
+authorization-header-is-empty:
+  code: "-720"
+  msg: "Authorization Header가 비었습니다."
+
+refresh-token-header-is-empty:
+  code: "-730"
+  msg: "RefreshToken Header가 비었습니다."

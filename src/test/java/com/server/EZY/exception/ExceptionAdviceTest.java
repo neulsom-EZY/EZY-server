@@ -6,11 +6,10 @@ import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNum
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
-import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
-import com.server.EZY.exception.token.exception.InvalidTokenException;
-import com.server.EZY.exception.token.exception.TokenLoggedOutException;
+import com.server.EZY.exception.token.exception.*;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
@@ -175,6 +174,32 @@ class ExceptionAdviceTest {
         CommonResult commonResult_KO = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
         setLocal(Locale.ENGLISH);
         CommonResult commonResult_EN = exceptionAdvice.memberNotFoundException(new MemberNotFoundException());
+
+        // Then
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, MEMBER_NOT_FOUND_EXCEPTION_CODE_EN);
+
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(MEMBER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("memberAlreadyExistException 검증")
+    void MemberAlreadyExistException() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.memberAlreadyExistException(new MemberAlreadyExistException());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.memberAlreadyExistException(new MemberAlreadyExistException());
 
         // Then
         assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, MEMBER_NOT_FOUND_EXCEPTION_CODE_EN);
@@ -368,6 +393,58 @@ class ExceptionAdviceTest {
 
         assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
         assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("AuthorizationHeaderIsEmptyException 검증")
+    void AuthorizationHeaderIsEmptyException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.KOREA);
+        final int AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.ENGLISH);
+        final String AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.KOREA);
+        final String AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.authorizationHeaderIsEmpty(new AuthorizationHeaderIsEmpty());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.authorizationHeaderIsEmpty(new AuthorizationHeaderIsEmpty());
+
+        // Then
+        assertEquals(AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_KO, AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_EN);
+
+        assertEquals(AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("RefreshTokenHeaderIsEmptyException 검증")
+    void RefreshTokenHeaderIsEmptyException_검증() throws Exception {
+        // Given
+        setLocal(Locale.KOREA);
+        final int REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.KOREA);
+        final int REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.ENGLISH);
+        final String REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.KOREA);
+        final String REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.ENGLISH);
+
+        // When
+        CommonResult commonResult_KO = exceptionAdvice.refreshTokenIsEmpty(new RefreshTokenHeaderIsEmpty());
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = exceptionAdvice.refreshTokenIsEmpty(new RefreshTokenHeaderIsEmpty());
+
+        // Then
+        assertEquals(REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_KO, REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_EN);
+
+        assertEquals(REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }

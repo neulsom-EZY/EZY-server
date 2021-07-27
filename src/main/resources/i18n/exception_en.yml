@@ -16,14 +16,18 @@ not-found:
 
 member-not-found:
   code: "-900"
-  msg: "Member could not be found."
+  msg: "The member could not be found."
+
+member-already-exist:
+  code: "-910"
+  msg: "The member already exist"
 
 username-not-found:
-  code: "-910"
+  code: "-920"
   msg: "Member with username :username not found."
 
 invalid-access:
-  code: "-920"
+  code: "-930"
   msg: "Invalid access"
 
 access-token-expired:
@@ -45,3 +49,11 @@ invalid-authentication-number:
 authentication-number-transfer-failed:
   code: "-710"
   msg: "Authentication number transfer failed"
+
+authorization-header-is-empty:
+   code: "-720"
+   msg: "Authorization Header is empty"
+
+refresh-token-header-is-empty:
+  code: "-730"
+  msg: "RefreshToken Header is empty"
