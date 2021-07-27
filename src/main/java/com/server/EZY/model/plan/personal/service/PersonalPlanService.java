@@ -6,7 +6,7 @@ import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import java.util.List;
 
 public interface PersonalPlanService {
-    public PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlanSetDto);
-    public List<PersonalPlanEntity> getAllPersonalPlan();
-    public PersonalPlanEntity getThisPersonalPlan();
+    PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlanSetDto);
+    List<PersonalPlanEntity> getAllPersonalPlan();
+    PersonalPlanEntity getThisPersonalPlan(Long planIdx);
 }
