@@ -3,6 +3,7 @@ package com.server.EZY.model.member.service;
 import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
@@ -56,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
 
             return "Bearer " + token;
         } else {
-            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY); // MemberAlreadyExist Exception
+            throw new MemberAlreadyExistException();
         }
     }
 
