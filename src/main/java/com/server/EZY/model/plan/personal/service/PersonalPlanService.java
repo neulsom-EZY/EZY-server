@@ -9,4 +9,5 @@ public interface PersonalPlanService {
     PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlanSetDto);
     List<PersonalPlanEntity> getAllPersonalPlan();
     PersonalPlanEntity getThisPersonalPlan(Long planIdx);
+    void deleteThisPersonalPlan(Long planIdx);
 }
