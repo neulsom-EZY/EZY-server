@@ -18,7 +18,7 @@ public class ErrandController {
     }
 
     @GetMapping("/errandIdx")
-    public CommonResult thisErrandDetailSelect(@PathVariable("errandIdx") Long id) {
+    public CommonResult thisErrandDetailSelect(@PathVariable("errandIdx") Long errandIdx) {
         return responseService.getSuccessResult();
     }
 
@@ -28,7 +28,7 @@ public class ErrandController {
     }
 
     @DeleteMapping("/recipient/{errandIdx}")
-    public CommonResult deleteByReceiver(@PathVariable("errandIdx") Long id) {
+    public CommonResult deleteByReceiver(@PathVariable("errandIdx") Long errandIdx) {
         return responseService.getSuccessResult();
     }
 }
