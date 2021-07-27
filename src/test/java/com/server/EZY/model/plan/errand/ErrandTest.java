@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class ErrandEntityTest {
+class ErrandTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired ErrandRepository errandRepository;
