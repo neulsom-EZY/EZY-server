@@ -23,6 +23,11 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
 
     @Override
     public PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx) {
-        return null;
+        return jpaQueryFactory
+                .selectFrom(personalPlanEntity)
+                .where(
+                        personalPlanEntity.memberEntity.eq(memberEntity),
+                        personalPlanEntity.planIdx.eq(planIdx)
+                ).fetchOne();
     }
 }
