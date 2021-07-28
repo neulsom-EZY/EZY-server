@@ -65,12 +65,11 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * @param planIdx
      * @param personalPlan
      * @return PersonalPlanEntity
-     * @throws Exception
      * @author 전지환
      */
     @Transactional
     @Override
-    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) throws Exception {
+    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
 
