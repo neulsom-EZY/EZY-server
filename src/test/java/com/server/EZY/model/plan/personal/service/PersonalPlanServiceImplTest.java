@@ -176,7 +176,7 @@ class PersonalPlanServiceImplTest {
                                 )
                         ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
 
-        ).limit(20).collect(Collectors.toList());
+        ).limit(5).collect(Collectors.toList());
 
         //When
         List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
