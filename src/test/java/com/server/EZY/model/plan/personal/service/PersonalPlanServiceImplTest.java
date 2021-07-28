@@ -11,9 +11,7 @@ import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +20,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -33,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PersonalPlanServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -107,14 +107,14 @@ class PersonalPlanServiceImplTest {
                         )
                 ).planInfo(new PlanInfo("하이요", "오하이오")).build()
 
-        ).limit(30).collect(Collectors.toList());
+        ).limit(5).collect(Collectors.toList());
 
         // When
         personalPlanRepository.saveAll(personalPlanEntities);
         List<PersonalPlanEntity> allPersonalPlan = personalPlanService.getAllPersonalPlan();
 
         // then
-        assertTrue(allPersonalPlan.size() == 30);
+        assertTrue(allPersonalPlan.size() == 5);
     }
 
     @Test @DisplayName("하나의 개인일정 단건조회가 가능한가요?")
@@ -130,7 +130,7 @@ class PersonalPlanServiceImplTest {
                                 )
                         ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
 
-        ).limit(20).collect(Collectors.toList());
+        ).limit(5).collect(Collectors.toList());
 
         // When
         List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
@@ -140,6 +140,7 @@ class PersonalPlanServiceImplTest {
         assertTrue(thisPersonalPlan.getPlanInfo().getExplanation() == "오하이오");
     }
 
+    @Order(2)
     @Test @DisplayName("단건 개인일정 삭제가 가능한가요?")
     void deleteThisPersonalPlan(){
         //Given
@@ -153,16 +154,17 @@ class PersonalPlanServiceImplTest {
                                 )
                         ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
 
-        ).limit(20).collect(Collectors.toList());
+        ).limit(5).collect(Collectors.toList());
 
         //When
         List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
-        personalPlanService.deleteThisPersonalPlan(3L);
+        personalPlanService.deleteThisPersonalPlan(personalPlanEntities.get(3).getPlanIdx());
 
         //Then
-        assertTrue(personalPlanRepository.findAll().size() == 19);
+        assertTrue(personalPlanRepository.findAll().size() == 4);
     }
 
+    @Order(1)
     @Test @DisplayName("단건 개일일정 변경이 가능한가요?")
     void updateThisPersonalPlan() throws Exception {
         //Given
