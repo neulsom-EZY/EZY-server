@@ -42,7 +42,7 @@ public class PersonalPlanEntity extends PlanEntity {
      * @param personalPlanEntity 변경할 필드를 가지고 있는 PersonalPlanEntity 주로 DTO에서 toEntity 매서드로 생성된 PersonalPlanEntity를 인수로 넘겨받는다.
      * @author 정시원
      */
-    public void updatePersonalPlanEntity(MemberEntity currentMember, PersonalPlanEntity personalPlanEntity) throws Exception {
+    public PersonalPlanEntity updatePersonalPlanEntity(MemberEntity currentMember, PersonalPlanEntity personalPlanEntity) throws Exception {
         if (this.memberEntity.equals(currentMember)) {
             this.tagEntity = personalPlanEntity.tagEntity != null ? personalPlanEntity.tagEntity : this.tagEntity;
             this.planInfo = personalPlanEntity.planInfo != null ? personalPlanEntity.planInfo : this.planInfo;
