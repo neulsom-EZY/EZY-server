@@ -20,6 +20,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     private final CurrentUserUtil userUtil;
     private final TagRepository tagRepository;
     private final PersonalPlanRepository personalPlanRepository;
+    private final PersonalPlanEntity personalPlanEntity;
     private final PersonalPlanStrategy personalPlanStrategy;
 
     /**
@@ -62,5 +63,17 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     public void deleteThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         personalPlanRepository.delete(personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx));
+    }
+
+    @Override
+    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) throws Exception {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
+
+        personalPlanEntity.updatePersonalPlanEntity(
+                currentUser,
+                personalPlan.saveToEntity(currentUser, tagEntity)
+        );
+        return this.personalPlanEntity;
     }
 }
