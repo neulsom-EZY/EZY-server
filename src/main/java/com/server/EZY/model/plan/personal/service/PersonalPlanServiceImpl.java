@@ -10,6 +10,7 @@ import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,7 +21,6 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     private final CurrentUserUtil userUtil;
     private final TagRepository tagRepository;
     private final PersonalPlanRepository personalPlanRepository;
-    private final PersonalPlanEntity personalPlanEntity;
     private final PersonalPlanStrategy personalPlanStrategy;
 
     /**
@@ -29,6 +29,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * @return PersonalPlanEntity
      * @author 전지환
      */
+    @Transactional
     @Override
     public PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlan) {
         MemberEntity currentUser = userUtil.getCurrentUser();
@@ -67,16 +68,18 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * @throws Exception
      * @author 전지환
      */
+    @Transactional
     @Override
     public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) throws Exception {
         MemberEntity currentUser = userUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
 
-        personalPlanEntity.updatePersonalPlanEntity(
-                currentUser,
+        PersonalPlanEntity targetPersonalPlan = personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
+        targetPersonalPlan.updatePersonalPlanEntity(
                 personalPlan.saveToEntity(currentUser, tagEntity)
         );
-        return this.personalPlanEntity;
+
+        return targetPersonalPlan;
     }
 
     /**
@@ -84,6 +87,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * @param planIdx
      * @author 전지환
      */
+    @Transactional
     @Override
     public void deleteThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
