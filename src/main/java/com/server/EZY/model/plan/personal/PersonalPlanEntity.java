@@ -38,20 +38,14 @@ public class PersonalPlanEntity extends PlanEntity {
     /**
      * personalPlan를 업데이트 하는 매서드
      * 현재 변경하려는 personalPlan에 연관관계를 맻고있는 회원과 이 일정을 변경하려는 회원를 동등성 비교를 통해 현재 일정의 소유자여부를 판별한 후 객체를 업데이트 한다.
-     * @param currentMember 현재 로그인 한 유저
      * @param personalPlanEntity 변경할 필드를 가지고 있는 PersonalPlanEntity 주로 DTO에서 toEntity 매서드로 생성된 PersonalPlanEntity를 인수로 넘겨받는다.
      * @author 정시원
      */
-    public void updatePersonalPlanEntity(MemberEntity currentMember, PersonalPlanEntity personalPlanEntity) throws Exception {
-        if (this.memberEntity.equals(currentMember)) {
-            this.tagEntity = personalPlanEntity.tagEntity != null ? personalPlanEntity.tagEntity : this.tagEntity;
-            this.planInfo = personalPlanEntity.planInfo != null ? personalPlanEntity.planInfo : this.planInfo;
-            this.period = personalPlanEntity.period != null ? personalPlanEntity.period : this.period;
-            this.repetition =  personalPlanEntity.repetition != null ? personalPlanEntity.repetition : this.repetition;
-        } else {
-            log.debug("해당 개인일정을 다른 소유자가 변경할 수 없습니다..");
-            throw new InvalidAccessException();
-        }
+    public void updatePersonalPlanEntity(PersonalPlanEntity personalPlanEntity) {
+        this.tagEntity = personalPlanEntity.tagEntity != null ? personalPlanEntity.tagEntity : this.tagEntity;
+        this.planInfo.updatePlanInfo(personalPlanEntity.planInfo);
+        this.period.updatePeriod(personalPlanEntity.period);
+        this.repetition =  personalPlanEntity.repetition != null ? personalPlanEntity.repetition : this.repetition;
     }
 
 }

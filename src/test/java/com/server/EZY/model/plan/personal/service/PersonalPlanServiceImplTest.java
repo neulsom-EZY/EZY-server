@@ -11,9 +11,7 @@ import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import org.apache.commons.lang.RandomStringUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PersonalPlanServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -107,14 +106,14 @@ class PersonalPlanServiceImplTest {
                         )
                 ).planInfo(new PlanInfo("하이요", "오하이오")).build()
 
-        ).limit(30).collect(Collectors.toList());
+        ).limit(5).collect(Collectors.toList());
 
         // When
         personalPlanRepository.saveAll(personalPlanEntities);
         List<PersonalPlanEntity> allPersonalPlan = personalPlanService.getAllPersonalPlan();
 
         // then
-        assertTrue(allPersonalPlan.size() == 30);
+        assertTrue(allPersonalPlan.size() == 5);
     }
 
     @Test @DisplayName("하나의 개인일정 단건조회가 가능한가요?")
@@ -130,7 +129,7 @@ class PersonalPlanServiceImplTest {
                                 )
                         ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
 
-        ).limit(20).collect(Collectors.toList());
+        ).limit(5).collect(Collectors.toList());
 
         // When
         List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
@@ -140,6 +139,7 @@ class PersonalPlanServiceImplTest {
         assertTrue(thisPersonalPlan.getPlanInfo().getExplanation() == "오하이오");
     }
 
+    @Order(2)
     @Test @DisplayName("단건 개인일정 삭제가 가능한가요?")
     void deleteThisPersonalPlan(){
         //Given
@@ -153,13 +153,47 @@ class PersonalPlanServiceImplTest {
                                 )
                         ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
 
-        ).limit(20).collect(Collectors.toList());
+        ).limit(5).collect(Collectors.toList());
 
         //When
         List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
-        personalPlanService.deleteThisPersonalPlan(3L);
+        personalPlanService.deleteThisPersonalPlan(personalPlanEntities.get(3).getPlanIdx());
 
         //Then
-        assertTrue(personalPlanRepository.findAll().size() == 19);
+        assertTrue(personalPlanRepository.findAll().size() == 4);
+    }
+
+    @Order(1)
+    @Test @DisplayName("단건 개일일정 변경이 가능한가요?")
+    void updateThisPersonalPlan() throws Exception {
+        //Given
+        List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period( new Period(
+                                        LocalDateTime.of(2021, 7, 24, 1, 30),
+                                        LocalDateTime.of(2021, 7, 24, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(5).collect(Collectors.toList());
+
+        //When
+        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
+        PersonalPlanEntity updatedPersonalPlan = personalPlanService.updateThisPersonalPlan(
+                3L,
+                PersonalPlanSetDto.builder()
+                        .repetition(true)
+                        .period(new Period(
+                                LocalDateTime.of(2021, 2, 12, 1, 30),
+                                LocalDateTime.of(2021, 1, 25, 1, 30)
+                        ))
+                        .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ"))
+                        .build()
+        );
+
+        //Then
+        assertTrue(updatedPersonalPlan.getPlanInfo().getTitle().equals("hello world"));
     }
 }
