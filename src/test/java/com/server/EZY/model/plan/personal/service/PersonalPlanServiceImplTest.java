@@ -162,4 +162,37 @@ class PersonalPlanServiceImplTest {
         //Then
         assertTrue(personalPlanRepository.findAll().size() == 19);
     }
+
+    @Test @DisplayName("단건 개일일정 변경이 가능한가요?")
+    void updateThisPersonalPlan() throws Exception {
+        //Given
+        List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period( new Period(
+                                        LocalDateTime.of(2021, 7, 24, 1, 30),
+                                        LocalDateTime.of(2021, 7, 24, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(20).collect(Collectors.toList());
+
+        //When
+        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
+        PersonalPlanEntity updatedPersonalPlan = personalPlanService.updateThisPersonalPlan(
+                3L,
+                PersonalPlanSetDto.builder()
+                        .repetition(true)
+                        .period(new Period(
+                                LocalDateTime.of(2021, 2, 12, 1, 30),
+                                LocalDateTime.of(2021, 1, 25, 1, 30)
+                        ))
+                        .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ"))
+                        .build()
+        );
+
+        //Then
+        assertTrue(updatedPersonalPlan.getPlanInfo().getTitle().equals("hello world"));
+    }
 }
