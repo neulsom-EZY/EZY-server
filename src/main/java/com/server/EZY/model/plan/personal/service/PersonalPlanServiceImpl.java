@@ -59,12 +59,14 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         return personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
     }
 
-    @Override
-    public void deleteThisPersonalPlan(Long planIdx) {
-        MemberEntity currentUser = userUtil.getCurrentUser();
-        personalPlanRepository.delete(personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx));
-    }
-
+    /**
+     * 내가 지정한 personalPlan을 업데이트 하는 비즈니스 로직입니다.
+     * @param planIdx
+     * @param personalPlan
+     * @return PersonalPlanEntity
+     * @throws Exception
+     * @author 전지환
+     */
     @Override
     public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) throws Exception {
         MemberEntity currentUser = userUtil.getCurrentUser();
@@ -75,5 +77,16 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
                 personalPlan.saveToEntity(currentUser, tagEntity)
         );
         return this.personalPlanEntity;
+    }
+
+    /**
+     * 내가 지정한 personalPlan을 삭제하는 비즈니스 로직입니다.
+     * @param planIdx
+     * @author 전지환
+     */
+    @Override
+    public void deleteThisPersonalPlan(Long planIdx) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        personalPlanRepository.delete(personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx));
     }
 }
