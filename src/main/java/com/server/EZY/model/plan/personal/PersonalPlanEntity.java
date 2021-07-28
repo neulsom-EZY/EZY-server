@@ -43,8 +43,8 @@ public class PersonalPlanEntity extends PlanEntity {
      */
     public void updatePersonalPlanEntity(PersonalPlanEntity personalPlanEntity) {
         this.tagEntity = personalPlanEntity.tagEntity != null ? personalPlanEntity.tagEntity : this.tagEntity;
-        this.planInfo = personalPlanEntity.planInfo != null ? personalPlanEntity.planInfo : this.planInfo;
-        this.period = personalPlanEntity.period != null ? personalPlanEntity.period : this.period;
+        this.planInfo.updatePlanInfo(personalPlanEntity.planInfo);
+        this.period.updatePeriod(personalPlanEntity.period);
         this.repetition =  personalPlanEntity.repetition != null ? personalPlanEntity.repetition : this.repetition;
     }
 
