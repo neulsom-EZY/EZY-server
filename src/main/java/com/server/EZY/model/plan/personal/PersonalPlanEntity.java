@@ -15,6 +15,7 @@ import javax.persistence.*;
 @Entity @Table(name = "personal_plan")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorValue("personal_plan")
 public class PersonalPlanEntity extends PlanEntity {
 
     @Column(name = "repetition")
