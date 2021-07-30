@@ -10,18 +10,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Slf4j
 @Entity @Table(name = "errand")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorValue(value = "errand")
 public class ErrandEntity extends PlanEntity {
 
     @ManyToOne @JoinColumn(name = "errand_status_id", nullable = false, updatable = false)
