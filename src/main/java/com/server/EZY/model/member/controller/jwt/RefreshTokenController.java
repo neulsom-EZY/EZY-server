@@ -3,6 +3,8 @@ package com.server.EZY.model.member.controller.jwt;
 import com.server.EZY.model.member.service.jwt.RefreshTokenService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.SingleResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,10 @@ public class RefreshTokenController {
 
     @GetMapping("/refreshtoken")
     @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
     public SingleResult<Map<String, String>> refresh(HttpServletRequest request) {
         Map<String, String> map = refreshTokenService.getRefreshToken(request);
         return responseService.getSingleResult(map);
