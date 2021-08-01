@@ -51,11 +51,10 @@ public class MemberServiceImpl implements MemberService {
     public String signup(MemberDto memberDto) {
         if(!memberRepository.existsByUsername(memberDto.getUsername())){
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-            memberRepository.save(memberDto.toEntity());
 
-            String token = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
+            MemberEntity memberEntity = memberRepository.save(memberDto.toEntity());
 
-            return "Bearer " + token;
+            return memberEntity.getUsername();
         } else {
             throw new MemberAlreadyExistException();
         }
