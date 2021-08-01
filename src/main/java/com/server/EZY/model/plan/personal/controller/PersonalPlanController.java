@@ -44,6 +44,17 @@ public class PersonalPlanController {
         return responseService.getSingleResult(personalPlanService.getThisPersonalPlan(planIdx));
     }
 
+    @PutMapping("/personal/{planIdx}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult updateThisPersonalPlan(@PathVariable Long planIdx, @RequestBody PersonalPlanSetDto personalPlanSetDto) throws Exception {
+        personalPlanService.updateThisPersonalPlan(planIdx, personalPlanSetDto);
+        return responseService.getSuccessResult();
+    }
+
+
     @DeleteMapping("/personal/{planIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
