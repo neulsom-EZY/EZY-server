@@ -30,9 +30,9 @@ public interface ExceptionAdvice {
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
     String USERNAME_NOT_FOUND = "username-not-found";
     String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
+
     String AUTHORIZATION_HEADER_IS_EMPTY = "authorization-header-is-empty";
     String REFRESH_TOKEN_HEADER_IS_EMPTY = "refresh-token-header-is-empty";
-
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
     String TOKEN_LOGGED_OUT = "token-logged-out";
@@ -87,30 +87,4 @@ public interface ExceptionAdvice {
     @ExceptionHandler(AuthenticationNumberTransferFailedException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult authenticationNumberTransferFailedException(AuthenticationNumberTransferFailedException ex);
-
-    /*** Token Exceptions 시작 ***/
-    // 액세스 토큰이 만료되었습니다.
-    @ExceptionHandler(AccessTokenExpiredException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    CommonResult accessTokenExpiredException(AccessTokenExpiredException ex);
-
-    // 올바르지 않는 토큰
-    @ExceptionHandler(InvalidTokenException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    CommonResult invalidTokenException(InvalidTokenException ex);
-
-    // 로그아웃된 토큰
-    @ExceptionHandler(TokenLoggedOutException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    CommonResult tokenLoggedOutException(TokenLoggedOutException ex);
-
-    // Authorization 헤더가 비었습니다.
-    @ExceptionHandler(AuthorizationHeaderIsEmpty.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    CommonResult authorizationHeaderIsEmpty(AuthorizationHeaderIsEmpty ex);
-
-    // RefreshToken 헤더가 비었습니다.
-    @ExceptionHandler(RefreshTokenHeaderIsEmpty.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    CommonResult refreshTokenIsEmpty(RefreshTokenHeaderIsEmpty ex);
 }
