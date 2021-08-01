@@ -28,8 +28,7 @@ class CustomErrorAdviceTest {
 
     @Autowired ObjectMapper objMapper;
     @Autowired MessageSource messageSource;
-    @Autowired
-    CustomErrorAdvice exceptionAdvice;
+    @Autowired CustomErrorAdvice exceptionAdvice;
 
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
@@ -50,33 +49,6 @@ class CustomErrorAdviceTest {
     String getExceptionMsg(String code, Locale locale){
         return messageSource.getMessage(code + ".msg", null, locale);
     }
-
-//    @Test @DisplayName("DefaultException 검증")
-//    void DefaultException_검증() throws Exception {
-//        // Given
-//        setLocal(Locale.KOREA);
-//        final int DEFAULT_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.DEFAULT_EXCEPTION, Locale.KOREA);
-//        final int USER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.DEFAULT_EXCEPTION, Locale.ENGLISH);
-//
-//        final String USER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.DEFAULT_EXCEPTION, Locale.KOREA);
-//        final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.DEFAULT_EXCEPTION, Locale.ENGLISH);
-//
-//        // When
-//        CommonResult commonResult_KO = exceptionAdvice.defaultException(new Exception());
-//        setLocal(Locale.ENGLISH);
-//        CommonResult commonResult_EN = exceptionAdvice.defaultException(new Exception());
-//
-//        // Then
-//        assertEquals(DEFAULT_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);
-//
-//        assertEquals(DEFAULT_EXCEPTION_CODE_KO, commonResult_KO.getCode());
-//        assertEquals(USER_NOT_FOUND_EXCEPTION_CODE_EN, commonResult_EN.getCode());
-//
-//        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
-//        assertEquals(USER_NOT_FOUND_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
-//
-//        printResult(commonResult_KO, commonResult_EN);
-//    }
 
     @Test @DisplayName("CustomUnauthorizedExceptio 검증")
     void CustomUnauthorizedException_검증() throws Exception {

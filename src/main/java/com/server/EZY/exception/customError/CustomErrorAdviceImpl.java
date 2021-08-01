@@ -16,13 +16,6 @@ public class CustomErrorAdviceImpl implements CustomErrorAdvice {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
-    // 알수없는 에러
-    @Override
-    public CommonResult defaultException(Exception ex){
-        log.error("=== 알 수 없는 애러 발생 ===", ex);
-        return exceptionResponseObjectUtil.getExceptionResponseObj(DEFAULT_EXCEPTION);
-    }
-
     @Override
     public CommonResult unauthorized(CustomUnauthorizedException ex) {
         log.debug("=== 401 Unauthorized Exception 발생 ===");

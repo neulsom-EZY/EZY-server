@@ -9,18 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface CustomErrorAdvice {
-    
-    String DEFAULT_EXCEPTION = "unknown";
 
     String CUSTOM_401_UNAUTHORIZED = "unauthorized";
     String CUSTOM_403_FORBIDDEN = "forbidden";
     String CUSTOM_404_NOT_FOUND = "not-found";
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    CommonResult defaultException(Exception ex);
-
-    /*** Custom Server Exception 시작***/
     @ExceptionHandler(CustomUnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult unauthorized(CustomUnauthorizedException ex);
