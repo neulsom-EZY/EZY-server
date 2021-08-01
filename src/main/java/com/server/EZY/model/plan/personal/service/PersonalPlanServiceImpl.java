@@ -10,6 +10,7 @@ import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * @return PersonalPlanEntity
      * @author 전지환
      */
+    @Transactional
     @Override
     public PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlan) {
         MemberEntity currentUser = userUtil.getCurrentUser();
@@ -58,6 +60,33 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         return personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
     }
 
+    /**
+     * 내가 지정한 personalPlan을 업데이트 하는 비즈니스 로직입니다.
+     * @param planIdx
+     * @param personalPlan
+     * @return PersonalPlanEntity
+     * @author 전지환
+     */
+    @Transactional
+    @Override
+    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
+
+        PersonalPlanEntity targetPersonalPlan = personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
+        targetPersonalPlan.updatePersonalPlanEntity(
+                personalPlan.saveToEntity(currentUser, tagEntity)
+        );
+
+        return targetPersonalPlan;
+    }
+
+    /**
+     * 내가 지정한 personalPlan을 삭제하는 비즈니스 로직입니다.
+     * @param planIdx
+     * @author 전지환
+     */
+    @Transactional
     @Override
     public void deleteThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();

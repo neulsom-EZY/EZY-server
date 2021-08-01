@@ -10,4 +10,5 @@ public interface PersonalPlanService {
     List<PersonalPlanEntity> getAllPersonalPlan();
     PersonalPlanEntity getThisPersonalPlan(Long planIdx);
     void deleteThisPersonalPlan(Long planIdx);
+    PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlanSetDto) throws Exception;
 }

@@ -42,6 +42,14 @@ token-logged-out:
   code: "-820"
   msg: "로그아웃 된 토근입니다."
 
+authorization-header-is-empty:
+  code: "-830"
+  msg: "Authorization Header가 비었습니다."
+
+refresh-token-header-is-empty:
+  code: "-840"
+  msg: "RefreshToken Header가 비었습니다."
+
 invalid-authentication-number:
   code: "-700"
   msg: "인증번호가 올바르지 않습니다."
@@ -49,11 +57,3 @@ invalid-authentication-number:
 authentication-number-transfer-failed:
   code: "-710"
   msg: "인증 번호 전송을 실패했습니다."
-
-authorization-header-is-empty:
-  code: "-720"
-  msg: "Authorization Header가 비었습니다."
-
-refresh-token-header-is-empty:
-  code: "-730"
-  msg: "RefreshToken Header가 비었습니다."
