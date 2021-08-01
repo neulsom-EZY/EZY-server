@@ -25,7 +25,7 @@ public class BasicErrorController implements ErrorController {
         Object status = req.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if (status != null){
-            int statusCode = Integer.parsㅎeInt(status.toString());
+            int statusCode = Integer.parseInt(status.toString());
 
             if(statusCode == NOT_FOUND.value()) throw new CustomNotFoundException();
             else if(statusCode == FORBIDDEN.value()) throw new CustomForbiddenException();
