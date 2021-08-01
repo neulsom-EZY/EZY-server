@@ -1,4 +1,4 @@
-package com.server.EZY.exception.authenticationNumber;
+package com.server.EZY.exception.authenticationNumber.controller;
 
 import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
