@@ -17,20 +17,20 @@ public class PersonalPlanController {
     private final ResponseService responseService;
 
     @PostMapping("/personal")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+//            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+//    })
     public CommonResult savePersonalPlan(@RequestBody PersonalPlanSetDto personalPlanSetDto) {
         personalPlanService.createPersonalPlan(personalPlanSetDto);
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/personal")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+//            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+//    })
     public CommonResult getAllPersonalPlan(){
         return responseService.getListResult(personalPlanService.getAllPersonalPlan());
     }
