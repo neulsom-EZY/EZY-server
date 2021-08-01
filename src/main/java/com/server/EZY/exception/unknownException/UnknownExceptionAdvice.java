@@ -9,7 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice @Order(Ordered.LOWEST_PRECEDENCE)
+@RestControllerAdvice @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 public class UnknownExceptionAdvice {
 
