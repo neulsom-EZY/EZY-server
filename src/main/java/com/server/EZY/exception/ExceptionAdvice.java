@@ -37,9 +37,9 @@ public interface ExceptionAdvice {
     String INVALID_TOKEN = "invalid-token";
     String TOKEN_LOGGED_OUT = "token-logged-out";
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    CommonResult defaultException(Exception ex);
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    CommonResult defaultException(Exception ex);
 
     /*** Custom Server Exception 시작***/
     @ExceptionHandler(CustomUnauthorizedException.class)

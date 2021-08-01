@@ -12,6 +12,8 @@ import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -22,12 +24,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
-    // 알수없는 에러
-    @Override
-    public CommonResult defaultException(Exception ex){
-        log.error("=== 알 수 없는 애러 발생 ===", ex);
-        return exceptionResponseObjectUtil.getExceptionResponseObj(DEFAULT_EXCEPTION);
-    }
+//    // 알수없는 에러
+//    @Override
+//    public CommonResult defaultException(Exception ex){
+//        log.error("=== 알 수 없는 애러 발생 ===", ex);
+//        return exceptionResponseObjectUtil.getExceptionResponseObj(DEFAULT_EXCEPTION);
+//    }
 
     /*** Custom Server Exception 시작 ***/
     @Override
