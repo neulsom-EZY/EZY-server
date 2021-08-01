@@ -10,13 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/plan")
+@RequestMapping("/v1/plan/personal")
 @RequiredArgsConstructor
 public class PersonalPlanController {
     private final PersonalPlanService personalPlanService;
     private final ResponseService responseService;
 
-    @PostMapping("/personal")
+    @PostMapping
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
@@ -26,7 +26,7 @@ public class PersonalPlanController {
         return responseService.getSuccessResult();
     }
 
-    @GetMapping("/personal")
+    @GetMapping
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
@@ -35,7 +35,7 @@ public class PersonalPlanController {
         return responseService.getListResult(personalPlanService.getAllPersonalPlan());
     }
 
-    @GetMapping("/personal/{planIdx}")
+    @GetMapping("/{planIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
@@ -44,7 +44,7 @@ public class PersonalPlanController {
         return responseService.getSingleResult(personalPlanService.getThisPersonalPlan(planIdx));
     }
 
-    @PutMapping("/personal/{planIdx}")
+    @PutMapping("/{planIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
@@ -55,7 +55,7 @@ public class PersonalPlanController {
     }
 
 
-    @DeleteMapping("/personal/{planIdx}")
+    @DeleteMapping("/{planIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
