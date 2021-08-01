@@ -49,16 +49,4 @@ public class ExceptionAdviceImpl implements ExceptionAdvice{
         log.debug("=== 404 NotFound Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObj(CUSTOM_404_NOT_FOUND);
     }
-
-    @Override
-    public CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex) {
-        log.debug("=== InvalidAuthenticationNumberException 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObj(INVALID_AUTHENTICATION_NUMBER);
-    }
-
-    @Override
-    public CommonResult authenticationNumberTransferFailedException(AuthenticationNumberTransferFailedException ex) {
-        log.debug("=== AuthenticationNumberTransferFailedException 발생");
-        return exceptionResponseObjectUtil.getExceptionResponseObj(AUTHENTICATION_NUMBER_TRANSFER_FAILED);
-    }
 }

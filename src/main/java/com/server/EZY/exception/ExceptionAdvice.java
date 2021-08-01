@@ -23,9 +23,6 @@ public interface ExceptionAdvice {
     String CUSTOM_403_FORBIDDEN = "forbidden";
     String CUSTOM_404_NOT_FOUND = "not-found";
 
-    String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
-    String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
-
 //    @ExceptionHandler(Exception.class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    CommonResult defaultException(Exception ex);
@@ -42,15 +39,4 @@ public interface ExceptionAdvice {
     @ExceptionHandler(CustomNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult notFoundException(CustomNotFoundException ex);
-
-    /*** Authentication Number Exception 시작 ***/
-    // 인증번호가 올바르지 않습니다
-    @ExceptionHandler(InvalidAuthenticationNumberException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex);
-
-    // 인증번호 전송을 실패 했습니다.
-    @ExceptionHandler(AuthenticationNumberTransferFailedException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult authenticationNumberTransferFailedException(AuthenticationNumberTransferFailedException ex);
 }
