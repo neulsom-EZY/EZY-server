@@ -1,4 +1,4 @@
-package com.server.EZY.exception.token;
+package com.server.EZY.exception.token.controller;
 
 import com.server.EZY.exception.token.exception.*;
 import org.springframework.web.bind.annotation.GetMapping;

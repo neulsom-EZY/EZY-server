@@ -1,4 +1,4 @@
-package com.server.EZY.exception.user;
+package com.server.EZY.exception.user.controller;
 
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;

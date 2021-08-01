@@ -1,4 +1,4 @@
-package com.server.EZY.exception.customError;
+package com.server.EZY.exception.customError.controller;
 
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomNotFoundException;
