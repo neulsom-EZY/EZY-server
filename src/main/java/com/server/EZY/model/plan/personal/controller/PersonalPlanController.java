@@ -4,6 +4,7 @@ import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
+import io.lettuce.core.dynamic.CommandMethod;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,14 @@ public class PersonalPlanController {
     })
     public CommonResult getAllPersonalPlan(){
         return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+    }
+
+    @GetMapping("/personal/{planIdx}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult getThisPersonalPlan(@PathVariable Long planIdx){
+        return responseService.getSingleResult(personalPlanService.getThisPersonalPlan(planIdx));
     }
 }
