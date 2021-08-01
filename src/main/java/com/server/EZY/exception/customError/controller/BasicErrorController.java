@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.HttpStatus.*;
 
+/**
+ * SpringBoot에서 white label error를 custom한 결과로 반환하는 Controller
+ * @author 정시원
+ */
 @RestController
 public class BasicErrorController implements ErrorController {
 
@@ -21,7 +25,7 @@ public class BasicErrorController implements ErrorController {
         Object status = req.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if (status != null){
-            Integer statusCode = Integer.valueOf(status.toString());
+            int statusCode = Integer.parsㅎeInt(status.toString());
 
             if(statusCode == NOT_FOUND.value()) throw new CustomNotFoundException();
             else if(statusCode == FORBIDDEN.value()) throw new CustomForbiddenException();

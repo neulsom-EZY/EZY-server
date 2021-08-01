@@ -2,15 +2,10 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.customError.CustomErrorAdvice;
 import com.server.EZY.exception.customError.exception.CustomForbiddenException;
 import com.server.EZY.exception.customError.exception.CustomNotFoundException;
 import com.server.EZY.exception.customError.exception.CustomUnauthorizedException;
-import com.server.EZY.exception.token.exception.*;
-import com.server.EZY.exception.user.exception.InvalidAccessException;
-import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
-import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
-import com.server.EZY.exception.user.exception.MemberNotFoundException;
 
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Locale;
 
@@ -30,11 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @SpringBootTest @DisplayName("ExceptionAdvice test")
 @AutoConfigureMockMvc
-class ExceptionAdviceTest {
+class CustomErrorAdviceTest {
 
     @Autowired ObjectMapper objMapper;
     @Autowired MessageSource messageSource;
-    @Autowired ExceptionAdvice exceptionAdvice;
+    @Autowired
+    CustomErrorAdvice exceptionAdvice;
 
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
@@ -87,10 +82,10 @@ class ExceptionAdviceTest {
     void CustomUnauthorizedException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.KOREA);
-        final int CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.ENGLISH);
-        final String CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.KOREA);
-        final String CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_401_UNAUTHORIZED, Locale.ENGLISH);
+        final int CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_KO = getExceptionCode(CustomErrorAdvice.CUSTOM_401_UNAUTHORIZED, Locale.KOREA);
+        final int CUSTOM_UNAUTHORIZED_EXCEPTION_CODE_EN = getExceptionCode(CustomErrorAdvice.CUSTOM_401_UNAUTHORIZED, Locale.ENGLISH);
+        final String CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_KO = getExceptionMsg(CustomErrorAdvice.CUSTOM_401_UNAUTHORIZED, Locale.KOREA);
+        final String CUSTOM_UNAUTHORIZED_EXCEPTION_MSG_EN = getExceptionMsg(CustomErrorAdvice.CUSTOM_401_UNAUTHORIZED, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.unauthorized(new CustomUnauthorizedException());
@@ -113,10 +108,10 @@ class ExceptionAdviceTest {
     void CustomForbiddenException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
-        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
-        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
-        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
+        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_KO = getExceptionCode(CustomErrorAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
+        final int CUSTOM_FORBIDDEN_EXCEPTION_CODE_EN = getExceptionCode(CustomErrorAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
+        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_KO = getExceptionMsg(CustomErrorAdvice.CUSTOM_403_FORBIDDEN, Locale.KOREA);
+        final String CUSTOM_FORBIDDEN_EXCEPTION_MSG_EN = getExceptionMsg(CustomErrorAdvice.CUSTOM_403_FORBIDDEN, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.forbiddenException(new CustomForbiddenException());
@@ -139,10 +134,10 @@ class ExceptionAdviceTest {
     void CustomNotFoundException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
-        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
-        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
-        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
+        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(CustomErrorAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
+        final int CUSTOM_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(CustomErrorAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
+        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(CustomErrorAdvice.CUSTOM_404_NOT_FOUND, Locale.KOREA);
+        final String CUSTOM_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(CustomErrorAdvice.CUSTOM_404_NOT_FOUND, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = exceptionAdvice.notFoundException(new CustomNotFoundException());
