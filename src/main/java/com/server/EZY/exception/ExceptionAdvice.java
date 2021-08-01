@@ -23,19 +23,8 @@ public interface ExceptionAdvice {
     String CUSTOM_403_FORBIDDEN = "forbidden";
     String CUSTOM_404_NOT_FOUND = "not-found";
 
-    String MEMBER_NOT_FOUND = "member-not-found";
-    String MEMBER_ALREADY_EXIST = "member-already-exist";
-    String INVALID_ACCESS = "invalid-access";
-
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
-    String USERNAME_NOT_FOUND = "username-not-found";
     String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
-
-    String AUTHORIZATION_HEADER_IS_EMPTY = "authorization-header-is-empty";
-    String REFRESH_TOKEN_HEADER_IS_EMPTY = "refresh-token-header-is-empty";
-    String ACCESS_TOKEN_EXPIRED = "access-token-expired";
-    String INVALID_TOKEN = "invalid-token";
-    String TOKEN_LOGGED_OUT = "token-logged-out";
 
 //    @ExceptionHandler(Exception.class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -53,29 +42,6 @@ public interface ExceptionAdvice {
     @ExceptionHandler(CustomNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult notFoundException(CustomNotFoundException ex);
-
-
-    /*** Member Exceptions 시작***/
-    // 회원를 찾을 수 없습니다.
-    @ExceptionHandler(MemberNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult memberNotFoundException(MemberNotFoundException ex);
-
-    // 해당 회원은 이미 존재합니다.
-    @ExceptionHandler(MemberAlreadyExistException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult memberAlreadyExistException(MemberAlreadyExistException ex);
-
-    // 해당 유저이름으로 맴버를 찾을 수 없습니다.
-    @ExceptionHandler(UsernameNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult usernameNotFoundException(UsernameNotFoundException ex);
-
-    // 잘못된 접근입니다.
-    @ExceptionHandler(InvalidAccessException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    CommonResult invalidAccessException(InvalidAccessException ex);
-
 
     /*** Authentication Number Exception 시작 ***/
     // 인증번호가 올바르지 않습니다
