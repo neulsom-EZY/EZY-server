@@ -82,7 +82,7 @@ public class MemberServiceTest {
         String signup = memberService.signup(memberDto);
 
         //then
-        assertTrue(true, String.valueOf(signup != null));
+        assertTrue(signup == "배따횬");
     }
 
     @BeforeEach

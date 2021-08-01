@@ -34,8 +34,8 @@ public class MemberController {
     @PostMapping("/signup")
     @ResponseStatus( HttpStatus.CREATED )
     public CommonResult signup(@Valid @ApiParam("Signup User") @RequestBody MemberDto memberDto) throws Exception {
-        String signupData = memberService.signup(memberDto);
-        return responseService.getSingleResult(signupData);
+        memberService.signup(memberDto);
+        return responseService.getSuccessResult();
     }
 
     /**

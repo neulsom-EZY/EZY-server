@@ -4,6 +4,8 @@ import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,10 @@ public class CertifiedMemberController {
      */
     @DeleteMapping("/logout")
     @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
     public CommonResult logout(HttpServletRequest request) {
         memberService.logout(request);
         return responseService.getSuccessResult();
@@ -42,6 +48,10 @@ public class CertifiedMemberController {
      */
     @PostMapping ("/delete")
     @ResponseStatus( HttpStatus.NO_CONTENT )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
     public CommonResult deleteUser(@Valid @RequestBody AuthDto deleteUserDto) {
         memberService.deleteUser(deleteUserDto);
         return responseService.getSuccessResult();
