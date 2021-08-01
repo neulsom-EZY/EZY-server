@@ -59,10 +59,10 @@ public class MemberExceptionAdviceTest {
     void MemberNotFoundException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = memberExceptionAdvice.memberNotFoundException(new MemberNotFoundException());
@@ -85,10 +85,10 @@ public class MemberExceptionAdviceTest {
     void MemberAlreadyExistException() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = memberExceptionAdvice.memberAlreadyExistException(new MemberAlreadyExistException());
@@ -111,10 +111,10 @@ public class MemberExceptionAdviceTest {
     void UsernameNotFoundException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
-        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
-        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
-        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
+        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
+        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
+        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
+        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
 
         final String username = "siwony_";
         // When
@@ -138,10 +138,10 @@ public class MemberExceptionAdviceTest {
     void InvalidAccessException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int INVALID_ACCESS_EXCEPTION_CODE_KO = getExceptionCode(ExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
-        final int INVALID_ACCESS_EXCEPTION_CODE_EN = getExceptionCode(ExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
-        final String INVALID_ACCESS_EXCEPTION_MSG_KO = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
-        final String INVALID_ACCESS_EXCEPTION_MSG_EN = getExceptionMsg(ExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
+        final int INVALID_ACCESS_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
+        final int INVALID_ACCESS_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
+        final String INVALID_ACCESS_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
+        final String INVALID_ACCESS_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
 
         // When
         CommonResult commonResult_KO = memberExceptionAdvice.invalidAccessException(new InvalidAccessException());
