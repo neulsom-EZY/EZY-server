@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public interface MemberExceptionAdvice {
+public interface MemberExceptionHandler {
 
     String MEMBER_NOT_FOUND = "member-not-found";
     String MEMBER_ALREADY_EXIST = "member-already-exist";
