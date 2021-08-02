@@ -18,6 +18,12 @@ public class ErrandServiceImpl implements ErrandService{
     private final MemberRepository memberRepository;
     private final ErrandRepository errandRepository;
 
+    /**
+     * 이 메서드는 심부름을 전송(저장) 할 때 사용하는 비즈니스 로직입니다.
+     * @param errandSetDto
+     * @return ErrandEntity
+     * @author 전지환
+     */
     @Override
     public ErrandEntity sendErrand(ErrandSetDto errandSetDto) {
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
