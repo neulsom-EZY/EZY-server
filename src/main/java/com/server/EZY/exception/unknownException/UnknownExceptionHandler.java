@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
-public class UnknownExceptionAdvice {
+public class UnknownExceptionHandler {
 
     public static String DEFAULT_EXCEPTION = "unknown";
 

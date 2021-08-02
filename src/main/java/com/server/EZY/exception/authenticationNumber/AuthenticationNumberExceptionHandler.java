@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public interface AuthenticationNumberExceptionAdvice {
+public interface AuthenticationNumberExceptionHandler {
 
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
     String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";

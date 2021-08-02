@@ -2,8 +2,7 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
-import com.server.EZY.exception.token.TokenExceptionAdvice;
+import com.server.EZY.exception.token.TokenExceptionHandler;
 import com.server.EZY.exception.token.exception.*;
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DisplayName("TokenExceptionAdvice test")
 @AutoConfigureMockMvc
-public class TokenExceptionAdviceTest {
+public class TokenExceptionHandlerTest {
 
     @Autowired ObjectMapper objMapper;
     @Autowired MessageSource messageSource;
-    @Autowired TokenExceptionAdvice tokenExceptionAdvice;
+    @Autowired
+    TokenExceptionHandler tokenExceptionHandler;
 
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
@@ -55,15 +55,15 @@ public class TokenExceptionAdviceTest {
     void AccessTokenException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int ACCESS_TOKEN_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
-        final int ACCESS_TOKEN_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
-        final String ACCESS_TOKEN_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
-        final String ACCESS_TOKEN_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionAdvice.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionHandler.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
+        final int ACCESS_TOKEN_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionHandler.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionHandler.ACCESS_TOKEN_EXPIRED, Locale.KOREA);
+        final String ACCESS_TOKEN_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionHandler.ACCESS_TOKEN_EXPIRED, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = tokenExceptionAdvice.accessTokenExpiredException(new AccessTokenExpiredException());
+        CommonResult commonResult_KO = tokenExceptionHandler.accessTokenExpiredException(new AccessTokenExpiredException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = tokenExceptionAdvice.accessTokenExpiredException(new AccessTokenExpiredException());
+        CommonResult commonResult_EN = tokenExceptionHandler.accessTokenExpiredException(new AccessTokenExpiredException());
 
         // Then
         assertEquals(ACCESS_TOKEN_EXCEPTION_CODE_KO, ACCESS_TOKEN_EXCEPTION_CODE_EN);
@@ -81,15 +81,15 @@ public class TokenExceptionAdviceTest {
     void InvalidException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int INVALID_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionAdvice.INVALID_TOKEN, Locale.KOREA);
-        final int INVALID_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionAdvice.INVALID_TOKEN, Locale.ENGLISH);
-        final String INVALID_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionAdvice.INVALID_TOKEN, Locale.KOREA);
-        final String INVALID_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionAdvice.INVALID_TOKEN, Locale.ENGLISH);
+        final int INVALID_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionHandler.INVALID_TOKEN, Locale.KOREA);
+        final int INVALID_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionHandler.INVALID_TOKEN, Locale.ENGLISH);
+        final String INVALID_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionHandler.INVALID_TOKEN, Locale.KOREA);
+        final String INVALID_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionHandler.INVALID_TOKEN, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = tokenExceptionAdvice.invalidTokenException(new InvalidTokenException());
+        CommonResult commonResult_KO = tokenExceptionHandler.invalidTokenException(new InvalidTokenException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = tokenExceptionAdvice.invalidTokenException(new InvalidTokenException());
+        CommonResult commonResult_EN = tokenExceptionHandler.invalidTokenException(new InvalidTokenException());
 
         // Then
         assertEquals(INVALID_EXCEPTION_CODE_KO, INVALID_EXCEPTION_CODE_EN);
@@ -107,15 +107,15 @@ public class TokenExceptionAdviceTest {
     void TokenLoggedOutException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionAdvice.TOKEN_LOGGED_OUT, Locale.KOREA);
-        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionAdvice.TOKEN_LOGGED_OUT, Locale.ENGLISH);
-        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionAdvice.TOKEN_LOGGED_OUT, Locale.KOREA);
-        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionAdvice.TOKEN_LOGGED_OUT, Locale.ENGLISH);
+        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionHandler.TOKEN_LOGGED_OUT, Locale.KOREA);
+        final int TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionHandler.TOKEN_LOGGED_OUT, Locale.ENGLISH);
+        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionHandler.TOKEN_LOGGED_OUT, Locale.KOREA);
+        final String TOKEN_LOGGED_OUT_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionHandler.TOKEN_LOGGED_OUT, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = tokenExceptionAdvice.tokenLoggedOutException(new TokenLoggedOutException());
+        CommonResult commonResult_KO = tokenExceptionHandler.tokenLoggedOutException(new TokenLoggedOutException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = tokenExceptionAdvice.tokenLoggedOutException(new TokenLoggedOutException());
+        CommonResult commonResult_EN = tokenExceptionHandler.tokenLoggedOutException(new TokenLoggedOutException());
 
         // Then
         assertEquals(TOKEN_LOGGED_OUT_EXCEPTION_CODE_KO, TOKEN_LOGGED_OUT_EXCEPTION_CODE_EN);
@@ -133,15 +133,15 @@ public class TokenExceptionAdviceTest {
     void AuthorizationHeaderIsEmptyException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.KOREA);
-        final int AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.ENGLISH);
-        final String AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.KOREA);
-        final String AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionAdvice.AUTHORIZATION_HEADER_IS_EMPTY, Locale.ENGLISH);
+        final int AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionHandler.AUTHORIZATION_HEADER_IS_EMPTY, Locale.KOREA);
+        final int AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionHandler.AUTHORIZATION_HEADER_IS_EMPTY, Locale.ENGLISH);
+        final String AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionHandler.AUTHORIZATION_HEADER_IS_EMPTY, Locale.KOREA);
+        final String AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionHandler.AUTHORIZATION_HEADER_IS_EMPTY, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = tokenExceptionAdvice.authorizationHeaderIsEmpty(new AuthorizationHeaderIsEmpty());
+        CommonResult commonResult_KO = tokenExceptionHandler.authorizationHeaderIsEmpty(new AuthorizationHeaderIsEmpty());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = tokenExceptionAdvice.authorizationHeaderIsEmpty(new AuthorizationHeaderIsEmpty());
+        CommonResult commonResult_EN = tokenExceptionHandler.authorizationHeaderIsEmpty(new AuthorizationHeaderIsEmpty());
 
         // Then
         assertEquals(AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_KO, AUTHORIZATION_HEADER_IS_EMPTY_EXCEPTION_CODE_EN);
@@ -159,15 +159,15 @@ public class TokenExceptionAdviceTest {
     void RefreshTokenHeaderIsEmptyException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.KOREA);
-        final int REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.ENGLISH);
-        final String REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.KOREA);
-        final String REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionAdvice.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.ENGLISH);
+        final int REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionHandler.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.KOREA);
+        final int REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionHandler.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.ENGLISH);
+        final String REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionHandler.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.KOREA);
+        final String REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionHandler.REFRESH_TOKEN_HEADER_IS_EMPTY, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = tokenExceptionAdvice.refreshTokenIsEmpty(new RefreshTokenHeaderIsEmpty());
+        CommonResult commonResult_KO = tokenExceptionHandler.refreshTokenIsEmpty(new RefreshTokenHeaderIsEmpty());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = tokenExceptionAdvice.refreshTokenIsEmpty(new RefreshTokenHeaderIsEmpty());
+        CommonResult commonResult_EN = tokenExceptionHandler.refreshTokenIsEmpty(new RefreshTokenHeaderIsEmpty());
 
         // Then
         assertEquals(REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_KO, REFRESH_TOKEN_HEADER_IS_EMPTY_EXCEPTION_CODE_EN);
