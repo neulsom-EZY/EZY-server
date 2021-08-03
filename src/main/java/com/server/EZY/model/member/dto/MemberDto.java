@@ -5,6 +5,7 @@ import com.server.EZY.model.member.enumType.Role;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
@@ -20,6 +21,7 @@ public class MemberDto {
     private String password;
 
     @NotBlank(message = "phoneNumber should be valid")
+    @Pattern(regexp = "^[0-9]{11}$", message = "유효하지 않은 전화번호 형식입니다.")
     @Size(min = 11, max = 11)
     private String phoneNumber;
 
