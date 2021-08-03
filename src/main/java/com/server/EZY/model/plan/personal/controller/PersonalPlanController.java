@@ -7,6 +7,7 @@ import com.server.EZY.response.result.CommonResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,8 +35,8 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult getAllPersonalPlan(
-            @RequestParam(value = "startDateTime", required = false)LocalDateTime startDateTimeOrNull,
-            @RequestParam(value = "endDateTime", required = false)LocalDateTime endDateTimeOrNull
+            @RequestParam(value = "startDateTime", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTimeOrNull,
+            @RequestParam(value = "endDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime localDateTimeOrNull
     ){
         return responseService.getListResult(personalPlanService.getAllPersonalPlan());
     }
