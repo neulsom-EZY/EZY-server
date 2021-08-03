@@ -28,7 +28,7 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
                 .selectFrom(personalPlanEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity),
-                        personalPlanEntity.period.startTime.eq(startDateTime)
+                        personalPlanEntity.period.startDateTime.eq(startDateTime)
                 ).fetch();
     }
 
