@@ -67,10 +67,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
         MemberEntity findUser = memberRepository.findByUsername(loginDto.getUsername());
-        if (findUser == null) throw new MemberNotFoundException();
-        // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
-        if (!passwordCheck) throw new MemberNotFoundException();
+        if (findUser == null || !passwordCheck) throw new MemberNotFoundException();
 
         String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
