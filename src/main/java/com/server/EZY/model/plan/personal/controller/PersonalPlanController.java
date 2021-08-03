@@ -36,9 +36,15 @@ public class PersonalPlanController {
     })
     public CommonResult getAllPersonalPlan(
             @RequestParam(value = "startDateTime", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTimeOrNull,
-            @RequestParam(value = "endDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime localDateTimeOrNull
+            @RequestParam(value = "endDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeOrNull
     ){
-        return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        if (startDateTimeOrNull != null){
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        } else if(endDateTimeOrNull != null){
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        } else{
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        }
     }
 
     @GetMapping("/{planIdx}")
