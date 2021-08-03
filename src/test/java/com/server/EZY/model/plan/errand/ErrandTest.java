@@ -10,6 +10,7 @@ import com.server.EZY.model.plan.errand.repository.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.ErrandStatusRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +112,7 @@ class ErrandTest {
         assertEquals(savedSiwonErrandEntity.getLocation(), savedJihwanErrandEntity.getLocation());
     }
 
-    @Test @DisplayName("심부름 삭제 테스트")
+    @Test @DisplayName("심부름 삭제 테스트") @Disabled
     void 심부름_삭제_테스트(){
         // Then
         ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
