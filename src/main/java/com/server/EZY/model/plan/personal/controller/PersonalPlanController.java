@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/v1/plan/personal")
 @RequiredArgsConstructor
@@ -31,7 +33,10 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getAllPersonalPlan(){
+    public CommonResult getAllPersonalPlan(
+            @RequestParam(value = "startDateTime", required = false)LocalDateTime startDateTimeOrNull,
+            @RequestParam(value = "endDateTime", required = false)LocalDateTime endDateTimeOrNull
+    ){
         return responseService.getListResult(personalPlanService.getAllPersonalPlan());
     }
 
