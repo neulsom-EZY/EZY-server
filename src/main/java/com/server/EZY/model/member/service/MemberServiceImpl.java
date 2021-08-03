@@ -49,37 +49,45 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String signup(MemberDto memberDto) {
-        if(!memberRepository.existsByUsername(memberDto.getUsername())){
-            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        if (memberDto.getUsername().startsWith("@")){
+            if(!memberRepository.existsByUsername(memberDto.getUsername())){
+                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
-            MemberEntity memberEntity = memberRepository.save(memberDto.toEntity());
+                MemberEntity memberEntity = memberRepository.save(memberDto.toEntity());
 
-            return memberEntity.getUsername();
+                return memberEntity.getUsername();
+            } else {
+                throw new MemberAlreadyExistException();
+            }
         } else {
-            throw new MemberAlreadyExistException();
+            throw new MemberNotFoundException(); //유효하지 않은 이름 형식입니다 Exception 추가 부탁드립니다.
         }
     }
 
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
-        MemberEntity findUser = memberRepository.findByUsername(loginDto.getUsername());
-        if (findUser == null) throw new MemberNotFoundException();
-        // 비밀번호 검증
-        boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
-        if (!passwordCheck) throw new MemberNotFoundException();
+        if (loginDto.getUsername().startsWith("@")) {
+            MemberEntity findUser = memberRepository.findByUsername(loginDto.getUsername());
+            if (findUser == null) throw new MemberNotFoundException();
+            // 비밀번호 검증
+            boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
+            if (!passwordCheck) throw new MemberNotFoundException();
 
-        String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
-        String refreshToken = jwtTokenProvider.createRefreshToken();
+            String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
+            String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        redisUtil.deleteData(loginDto.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
-        redisUtil.setDataExpire(loginDto.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
+            redisUtil.deleteData(loginDto.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
+            redisUtil.setDataExpire(loginDto.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
 
-        Map<String ,String> map = new HashMap<>();
-        map.put("username", loginDto.getUsername());
-        map.put("accessToken", "Bearer " + accessToken); // accessToken 반환
-        map.put("refreshToken", "Bearer " + refreshToken); // refreshToken 반환
+            Map<String ,String> map = new HashMap<>();
+            map.put("username", loginDto.getUsername());
+            map.put("accessToken", "Bearer " + accessToken); // accessToken 반환
+            map.put("refreshToken", "Bearer " + refreshToken); // refreshToken 반환
 
-        return map;
+            return map;
+        } else {
+            throw new MemberNotFoundException(); //유효하지 않은 이름 형식입니다 Exception 추가 부탁드립니다.
+        }
     }
 
     /**
