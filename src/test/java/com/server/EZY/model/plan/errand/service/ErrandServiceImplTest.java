@@ -20,7 +20,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -85,7 +84,7 @@ class ErrandServiceImplTest {
         MemberEntity kimEntity = MemberEntity.builder()
                 .username("@kim")
                 .password("1234")
-                .phoneNumber("010-1234-1234")
+                .phoneNumber("01012341234")
                 .build();
 
         //When
