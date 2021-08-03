@@ -20,7 +20,7 @@ import javax.persistence.*;
 @DiscriminatorValue(value = "errand")
 public class ErrandEntity extends PlanEntity {
 
-    @ManyToOne @JoinColumn(name = "errand_status_id", nullable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "errand_status_id", nullable = false, updatable = false)
     private ErrandStatusEntity errandStatusEntity;
 
     private String location;
