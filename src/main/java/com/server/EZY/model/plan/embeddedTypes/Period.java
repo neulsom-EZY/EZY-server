@@ -17,10 +17,10 @@ import java.util.Objects;
 public class Period {
 
     @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    private LocalDateTime startDateTime;
 
     @Column(name = "end_time", nullable = false)
-    private LocalDateTime endTime;
+    private LocalDateTime endDateTime;
 
     /**
      * Period객체를 업데이트 한다.
@@ -28,8 +28,8 @@ public class Period {
      * @author 정시원
      */
     public void updatePeriod(Period updatedPeriod){
-        this.startTime = updatedPeriod.startTime != null ? updatedPeriod.startTime : this.startTime;
-        this.endTime = updatedPeriod.endTime != null ? updatedPeriod.endTime : this.endTime;
+        this.startDateTime = updatedPeriod.startDateTime != null ? updatedPeriod.startDateTime : this.startDateTime;
+        this.endDateTime = updatedPeriod.endDateTime != null ? updatedPeriod.endDateTime : this.endDateTime;
     }
 
     @Override @Generated
@@ -37,11 +37,11 @@ public class Period {
         if (this == o) return true;
         if (!(o instanceof Period)) return false;
         Period period = (Period) o;
-        return Objects.equals(getStartTime(), period.getStartTime()) && Objects.equals(getEndTime(), period.getEndTime());
+        return Objects.equals(getStartDateTime(), period.getStartDateTime()) && Objects.equals(getEndDateTime(), period.getEndDateTime());
     }
 
     @Override @Generated
     public int hashCode() {
-        return Objects.hash(getStartTime(), getEndTime());
+        return Objects.hash(getStartDateTime(), getEndDateTime());
     }
 }
