@@ -10,7 +10,6 @@ import com.server.EZY.model.plan.errand.repository.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.ErrandStatusRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -112,7 +112,7 @@ class ErrandTest {
         assertEquals(savedSiwonErrandEntity.getLocation(), savedJihwanErrandEntity.getLocation());
     }
 
-    @Test @DisplayName("심부름 삭제 테스트") @Disabled
+    @Test @DisplayName("심부름 삭제 테스트")
     void 심부름_삭제_테스트(){
         // Then
         ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
@@ -138,7 +138,7 @@ class ErrandTest {
                 .planInfo(planInfo)
                 .period(period)
                 .build();
-        ErrandEntity savedSiwonErrandEntity = errandRepository.save(siwonErrand);
+        errandRepository.save(siwonErrand);
 
         ErrandEntity jihwanErrand = ErrandEntity.builder()
                 .memberEntity(memberJihwan)
@@ -147,17 +147,25 @@ class ErrandTest {
                 .planInfo(planInfo)
                 .period(period)
                 .build();
-        ErrandEntity savedJihwanErrandEntity = errandRepository.save(jihwanErrand);
+        errandRepository.save(jihwanErrand);
 
         // When
         errandRepository.deleteById(siwonErrand.getPlanIdx());
         errandRepository.deleteById(jihwanErrand.getPlanIdx());
-        errandStatusRepository.deleteById(errandStatusEntity.getErrandStatusIdx());
 
         // Then
-        assertFalse(errandStatusRepository.existsById(1L));
-        assertFalse(errandRepository.existsById(1L));
-        assertFalse(errandRepository.existsById(2L));
+        assertThrows(
+                NoSuchElementException.class,
+                () -> errandStatusRepository.findById(1L).get()
+        );
+        assertThrows(
+                NoSuchElementException.class,
+                () -> errandRepository.findById(1L).get()
+        );
+        assertThrows(
+                NoSuchElementException.class,
+                () -> errandRepository.findById(2L).get()
+        );
     }
 
 }
