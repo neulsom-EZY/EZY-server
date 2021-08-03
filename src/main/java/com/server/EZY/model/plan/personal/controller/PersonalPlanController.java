@@ -39,12 +39,14 @@ public class PersonalPlanController {
             @RequestParam(value = "endDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeOrNull
     ){
         if (startDateTimeOrNull != null){
-            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
-        } else if(endDateTimeOrNull != null){
-            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
-        } else if(startDateTimeOrNull!=null && endDateTimeOrNull!=null){
-            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
-        } else{
+            return responseService.getListResult(personalPlanService.getThisStartDateTimePersonalEntities(startDateTimeOrNull));
+        }
+//        else if(endDateTimeOrNull != null){
+//            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+//        } else if(startDateTimeOrNull!=null && endDateTimeOrNull!=null){
+//            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+//        }
+        else{
             return responseService.getListResult(personalPlanService.getAllPersonalPlan());
         }
     }
