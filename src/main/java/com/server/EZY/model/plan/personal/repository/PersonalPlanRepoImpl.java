@@ -7,6 +7,7 @@ import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPla
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +20,16 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
         return jpaQueryFactory
                 .selectFrom(personalPlanEntity)
                 .where(personalPlanEntity.memberEntity.eq(memberEntity)).fetch();
+    }
+
+    @Override
+    public List<PersonalPlanEntity> findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartTime(MemberEntity memberEntity, LocalDateTime startDateTime) {
+        return jpaQueryFactory
+                .selectFrom(personalPlanEntity)
+                .where(
+                        personalPlanEntity.memberEntity.eq(memberEntity),
+                        personalPlanEntity.period.startTime.eq(startDateTime)
+                ).fetch();
     }
 
     @Override
