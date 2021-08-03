@@ -26,11 +26,16 @@ public class ErrandServiceImpl implements ErrandService{
      */
     @Override
     public ErrandEntity sendErrand(ErrandSetDto errandSetDto) {
+        /**
+         * currentUser: 보내는 사람
+         * recipientIdx: 받는 사람
+         */
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
+        Long recipientIdx = memberRepository.findByUsername(errandSetDto.getRecipient()).getMemberIdx();
 
         ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
                 .senderIdx(currentUser.getMemberIdx())
-                .recipientIdx(memberRepository.findByUsername(errandSetDto.getRecipient()).getMemberIdx())
+                .recipientIdx(recipientIdx)
                 .responseStatus(ResponseStatus.NOT_READ)
                 .build();
 
