@@ -84,7 +84,7 @@ class ErrandServiceImplTest {
         MemberEntity kimEntity = MemberEntity.builder()
                 .username("@kim")
                 .password("1234")
-                .phoneNumber("01012341234")
+                .phoneNumber("01023212312")
                 .build();
 
         //When
