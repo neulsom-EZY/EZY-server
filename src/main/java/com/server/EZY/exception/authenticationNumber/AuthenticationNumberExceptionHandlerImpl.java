@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
-public class AuthenticationNumberExceptionAdviceImpl implements AuthenticationNumberExceptionAdvice{
+public class AuthenticationNumberExceptionHandlerImpl implements AuthenticationNumberExceptionHandler {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 

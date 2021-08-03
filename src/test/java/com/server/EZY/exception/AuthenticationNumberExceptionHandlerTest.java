@@ -2,7 +2,7 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.exception.authenticationNumber.AuthenticationNumberExceptionAdvice;
+import com.server.EZY.exception.authenticationNumber.AuthenticationNumberExceptionHandler;
 import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
 import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
@@ -23,11 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DisplayName("AuthenticationNumberExceptionAdvice test")
 @AutoConfigureMockMvc
-public class AuthenticationNumberExceptionAdviceTest {
+public class AuthenticationNumberExceptionHandlerTest {
 
     @Autowired ObjectMapper objMapper;
     @Autowired MessageSource messageSource;
-    @Autowired AuthenticationNumberExceptionAdvice authenticationNumberExceptionAdvice;
+    @Autowired
+    AuthenticationNumberExceptionHandler authenticationNumberExceptionHandler;
 
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
@@ -54,15 +55,15 @@ public class AuthenticationNumberExceptionAdviceTest {
     void InvalidAuthenticationNumberException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int INVALID_AUTHENTICATION_NUMBER_CODE_KO = getExceptionCode(AuthenticationNumberExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.KOREA);
-        final int INVALID_AUTHENTICATION_NUMBER_CODE_EN = getExceptionCode(AuthenticationNumberExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.ENGLISH);
-        final String INVALID_AUTHENTICATION_NUMBER_MSG_KO = getExceptionMsg(AuthenticationNumberExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.KOREA);
-        final String INVALID_AUTHENTICATION_NUMBER_MSG_EN = getExceptionMsg(AuthenticationNumberExceptionAdvice.INVALID_AUTHENTICATION_NUMBER, Locale.ENGLISH);
+        final int INVALID_AUTHENTICATION_NUMBER_CODE_KO = getExceptionCode(AuthenticationNumberExceptionHandler.INVALID_AUTHENTICATION_NUMBER, Locale.KOREA);
+        final int INVALID_AUTHENTICATION_NUMBER_CODE_EN = getExceptionCode(AuthenticationNumberExceptionHandler.INVALID_AUTHENTICATION_NUMBER, Locale.ENGLISH);
+        final String INVALID_AUTHENTICATION_NUMBER_MSG_KO = getExceptionMsg(AuthenticationNumberExceptionHandler.INVALID_AUTHENTICATION_NUMBER, Locale.KOREA);
+        final String INVALID_AUTHENTICATION_NUMBER_MSG_EN = getExceptionMsg(AuthenticationNumberExceptionHandler.INVALID_AUTHENTICATION_NUMBER, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = authenticationNumberExceptionAdvice.invalidAuthenticationNumberException(new InvalidAuthenticationNumberException());
+        CommonResult commonResult_KO = authenticationNumberExceptionHandler.invalidAuthenticationNumberException(new InvalidAuthenticationNumberException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = authenticationNumberExceptionAdvice.invalidAuthenticationNumberException(new InvalidAuthenticationNumberException());
+        CommonResult commonResult_EN = authenticationNumberExceptionHandler.invalidAuthenticationNumberException(new InvalidAuthenticationNumberException());
 
         // Then
         assertEquals(INVALID_AUTHENTICATION_NUMBER_CODE_KO, INVALID_AUTHENTICATION_NUMBER_CODE_EN);
@@ -81,15 +82,15 @@ public class AuthenticationNumberExceptionAdviceTest {
     void AuthenticationNumberTransferFailedException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_KO = getExceptionCode(AuthenticationNumberExceptionAdvice.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.KOREA);
-        final int AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_EN = getExceptionCode(AuthenticationNumberExceptionAdvice.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.ENGLISH);
-        final String AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_KO = getExceptionMsg(AuthenticationNumberExceptionAdvice.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.KOREA);
-        final String AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_EN = getExceptionMsg(AuthenticationNumberExceptionAdvice.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.ENGLISH);
+        final int AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_KO = getExceptionCode(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.KOREA);
+        final int AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_EN = getExceptionCode(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.ENGLISH);
+        final String AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_KO = getExceptionMsg(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.KOREA);
+        final String AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_EN = getExceptionMsg(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = authenticationNumberExceptionAdvice.authenticationNumberTransferFailedException(new AuthenticationNumberTransferFailedException());
+        CommonResult commonResult_KO = authenticationNumberExceptionHandler.authenticationNumberTransferFailedException(new AuthenticationNumberTransferFailedException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = authenticationNumberExceptionAdvice.authenticationNumberTransferFailedException(new AuthenticationNumberTransferFailedException());
+        CommonResult commonResult_EN = authenticationNumberExceptionHandler.authenticationNumberTransferFailedException(new AuthenticationNumberTransferFailedException());
 
         // Then
         assertEquals(AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_KO, AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_EN);

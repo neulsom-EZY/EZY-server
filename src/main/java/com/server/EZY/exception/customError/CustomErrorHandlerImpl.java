@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
-public class CustomErrorAdviceImpl implements CustomErrorAdvice {
+public class CustomErrorHandlerImpl implements CustomErrorHandler {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 

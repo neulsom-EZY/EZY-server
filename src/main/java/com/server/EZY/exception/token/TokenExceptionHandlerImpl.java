@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
-public class TokenExceptionAdviceImpl implements TokenExceptionAdvice{
+public class TokenExceptionHandlerImpl implements TokenExceptionHandler {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 

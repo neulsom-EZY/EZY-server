@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
-public class MemberExceptionAdviceImpl implements MemberExceptionAdvice{
+public class MemberExceptionHandlerImpl implements MemberExceptionHandler {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 

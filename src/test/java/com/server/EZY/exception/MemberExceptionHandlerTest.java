@@ -2,7 +2,7 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.exception.user.MemberExceptionAdvice;
+import com.server.EZY.exception.user.MemberExceptionHandler;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
@@ -25,14 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DisplayName("ExceptionAdvice test")
 @AutoConfigureMockMvc
-public class MemberExceptionAdviceTest {
+public class MemberExceptionHandlerTest {
 
     @Autowired
     ObjectMapper objMapper;
     @Autowired
     MessageSource messageSource;
     @Autowired
-    MemberExceptionAdvice memberExceptionAdvice;
+    MemberExceptionHandler memberExceptionHandler;
 
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
@@ -59,15 +59,15 @@ public class MemberExceptionAdviceTest {
     void MemberNotFoundException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.KOREA);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.MEMBER_NOT_FOUND, Locale.ENGLISH);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionHandler.MEMBER_NOT_FOUND, Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionHandler.MEMBER_NOT_FOUND, Locale.ENGLISH);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionHandler.MEMBER_NOT_FOUND, Locale.KOREA);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionHandler.MEMBER_NOT_FOUND, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = memberExceptionAdvice.memberNotFoundException(new MemberNotFoundException());
+        CommonResult commonResult_KO = memberExceptionHandler.memberNotFoundException(new MemberNotFoundException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = memberExceptionAdvice.memberNotFoundException(new MemberNotFoundException());
+        CommonResult commonResult_EN = memberExceptionHandler.memberNotFoundException(new MemberNotFoundException());
 
         // Then
         assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, MEMBER_NOT_FOUND_EXCEPTION_CODE_EN);
@@ -85,15 +85,15 @@ public class MemberExceptionAdviceTest {
     void MemberAlreadyExistException() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
-        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.KOREA);
-        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionHandler.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final int MEMBER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionHandler.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionHandler.MEMBER_ALREADY_EXIST, Locale.KOREA);
+        final String MEMBER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionHandler.MEMBER_ALREADY_EXIST, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = memberExceptionAdvice.memberAlreadyExistException(new MemberAlreadyExistException());
+        CommonResult commonResult_KO = memberExceptionHandler.memberAlreadyExistException(new MemberAlreadyExistException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = memberExceptionAdvice.memberAlreadyExistException(new MemberAlreadyExistException());
+        CommonResult commonResult_EN = memberExceptionHandler.memberAlreadyExistException(new MemberAlreadyExistException());
 
         // Then
         assertEquals(MEMBER_NOT_FOUND_EXCEPTION_CODE_KO, MEMBER_NOT_FOUND_EXCEPTION_CODE_EN);
@@ -111,16 +111,16 @@ public class MemberExceptionAdviceTest {
     void UsernameNotFoundException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
-        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
-        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.KOREA);
-        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.USERNAME_NOT_FOUND, Locale.ENGLISH);
+        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionHandler.USERNAME_NOT_FOUND, Locale.KOREA);
+        final int USERNAME_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionHandler.USERNAME_NOT_FOUND, Locale.ENGLISH);
+        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionHandler.USERNAME_NOT_FOUND, Locale.KOREA);
+        final String USERNAME_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionHandler.USERNAME_NOT_FOUND, Locale.ENGLISH);
 
         final String username = "siwony_";
         // When
-        CommonResult commonResult_KO = memberExceptionAdvice.usernameNotFoundException(new UsernameNotFoundException(username));
+        CommonResult commonResult_KO = memberExceptionHandler.usernameNotFoundException(new UsernameNotFoundException(username));
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = memberExceptionAdvice.usernameNotFoundException(new UsernameNotFoundException(username));
+        CommonResult commonResult_EN = memberExceptionHandler.usernameNotFoundException(new UsernameNotFoundException(username));
 
         // Then
         assertEquals(USERNAME_NOT_FOUND_EXCEPTION_CODE_KO, USERNAME_NOT_FOUND_EXCEPTION_CODE_EN);
@@ -138,15 +138,15 @@ public class MemberExceptionAdviceTest {
     void InvalidAccessException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int INVALID_ACCESS_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
-        final int INVALID_ACCESS_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
-        final String INVALID_ACCESS_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionAdvice.INVALID_ACCESS, Locale.KOREA);
-        final String INVALID_ACCESS_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionAdvice.INVALID_ACCESS, Locale.ENGLISH);
+        final int INVALID_ACCESS_EXCEPTION_CODE_KO = getExceptionCode(MemberExceptionHandler.INVALID_ACCESS, Locale.KOREA);
+        final int INVALID_ACCESS_EXCEPTION_CODE_EN = getExceptionCode(MemberExceptionHandler.INVALID_ACCESS, Locale.ENGLISH);
+        final String INVALID_ACCESS_EXCEPTION_MSG_KO = getExceptionMsg(MemberExceptionHandler.INVALID_ACCESS, Locale.KOREA);
+        final String INVALID_ACCESS_EXCEPTION_MSG_EN = getExceptionMsg(MemberExceptionHandler.INVALID_ACCESS, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = memberExceptionAdvice.invalidAccessException(new InvalidAccessException());
+        CommonResult commonResult_KO = memberExceptionHandler.invalidAccessException(new InvalidAccessException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = memberExceptionAdvice.invalidAccessException(new InvalidAccessException());
+        CommonResult commonResult_EN = memberExceptionHandler.invalidAccessException(new InvalidAccessException());
 
         // Then
         assertEquals(INVALID_ACCESS_EXCEPTION_CODE_KO, INVALID_ACCESS_EXCEPTION_CODE_EN);

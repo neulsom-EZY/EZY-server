@@ -2,7 +2,7 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.exception.unknownException.UnknownExceptionAdvice;
+import com.server.EZY.exception.unknownException.UnknownExceptionHandler;
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -21,11 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DisplayName("ExceptionAdvice test")
 @AutoConfigureMockMvc
-class UnknownExceptionAdviceTest {
+class UnknownExceptionHandlerTest {
 
     @Autowired ObjectMapper objMapper;
     @Autowired MessageSource messageSource;
-    @Autowired UnknownExceptionAdvice unknownExceptionAdvice;
+    @Autowired
+    UnknownExceptionHandler unknownExceptionHandler;
 
     // LocalContext의 locale을 변경한다.
     void setLocal(Locale locale){
@@ -52,16 +53,16 @@ class UnknownExceptionAdviceTest {
     void DefaultException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int DEFAULT_EXCEPTION_CODE_KO = getExceptionCode(UnknownExceptionAdvice.DEFAULT_EXCEPTION, Locale.KOREA);
-        final int USER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(UnknownExceptionAdvice.DEFAULT_EXCEPTION, Locale.ENGLISH);
+        final int DEFAULT_EXCEPTION_CODE_KO = getExceptionCode(UnknownExceptionHandler.DEFAULT_EXCEPTION, Locale.KOREA);
+        final int USER_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(UnknownExceptionHandler.DEFAULT_EXCEPTION, Locale.ENGLISH);
 
-        final String USER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(UnknownExceptionAdvice.DEFAULT_EXCEPTION, Locale.KOREA);
-        final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(UnknownExceptionAdvice.DEFAULT_EXCEPTION, Locale.ENGLISH);
+        final String USER_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(UnknownExceptionHandler.DEFAULT_EXCEPTION, Locale.KOREA);
+        final String USER_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(UnknownExceptionHandler.DEFAULT_EXCEPTION, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = unknownExceptionAdvice.defaultException(new Exception());
+        CommonResult commonResult_KO = unknownExceptionHandler.defaultException(new Exception());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = unknownExceptionAdvice.defaultException(new Exception());
+        CommonResult commonResult_EN = unknownExceptionHandler.defaultException(new Exception());
 
         // Then
         assertEquals(DEFAULT_EXCEPTION_CODE_KO, USER_NOT_FOUND_EXCEPTION_CODE_EN);

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public interface CustomErrorAdvice {
+public interface CustomErrorHandler {
 
     String CUSTOM_401_UNAUTHORIZED = "unauthorized";
     String CUSTOM_403_FORBIDDEN = "forbidden";

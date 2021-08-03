@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,8 +74,8 @@ class ErrandTest {
                 .explanation("PersonalPlanService 끝내버려")
                 .build();
         Period period = Period.builder()
-                .startTime(LocalDateTime.of(20201, 7, 27, 17, 30))
-                .endTime(LocalDateTime.of(20201, 7, 27, 20, 30))
+                .startDateTime(LocalDateTime.of(20201, 7, 27, 17, 30))
+                .endDateTime(LocalDateTime.of(20201, 7, 27, 20, 30))
                 .build();
 
         ErrandEntity siwonErrand = ErrandEntity.builder()
@@ -106,6 +107,9 @@ class ErrandTest {
         // period == 시원의 period == 지환의 period
         assertEquals(period, savedSiwonErrandEntity.getPeriod());
         assertEquals(savedSiwonErrandEntity.getPeriod(), jihwanErrand.getPeriod());
+
+        assertNull(savedSiwonErrandEntity.getLocation()); // location를 저장안했기 때문에 null
+        assertEquals(savedSiwonErrandEntity.getLocation(), savedJihwanErrandEntity.getLocation());
     }
 
     @Test @DisplayName("심부름 삭제 테스트")
@@ -123,8 +127,8 @@ class ErrandTest {
                 .explanation("PersonalPlanService 끝내버려")
                 .build();
         Period period = Period.builder()
-                .startTime(LocalDateTime.of(20201, 7, 27, 17, 30))
-                .endTime(LocalDateTime.of(20201, 7, 27, 20, 30))
+                .startDateTime(LocalDateTime.of(20201, 7, 27, 17, 30))
+                .endDateTime(LocalDateTime.of(20201, 7, 27, 20, 30))
                 .build();
 
         ErrandEntity siwonErrand = ErrandEntity.builder()
@@ -134,7 +138,7 @@ class ErrandTest {
                 .planInfo(planInfo)
                 .period(period)
                 .build();
-        ErrandEntity savedSiwonErrandEntity = errandRepository.save(siwonErrand);
+        errandRepository.save(siwonErrand);
 
         ErrandEntity jihwanErrand = ErrandEntity.builder()
                 .memberEntity(memberJihwan)
@@ -143,17 +147,25 @@ class ErrandTest {
                 .planInfo(planInfo)
                 .period(period)
                 .build();
-        ErrandEntity savedJihwanErrandEntity = errandRepository.save(jihwanErrand);
+        errandRepository.save(jihwanErrand);
 
         // When
         errandRepository.deleteById(siwonErrand.getPlanIdx());
         errandRepository.deleteById(jihwanErrand.getPlanIdx());
-        errandStatusRepository.deleteById(errandStatusEntity.getErrandStatusIdx());
 
         // Then
-        assertFalse(errandStatusRepository.existsById(1L));
-        assertFalse(errandRepository.existsById(1L));
-        assertFalse(errandRepository.existsById(2L));
+        assertThrows(
+                NoSuchElementException.class,
+                () -> errandStatusRepository.findById(1L).get()
+        );
+        assertThrows(
+                NoSuchElementException.class,
+                () -> errandRepository.findById(1L).get()
+        );
+        assertThrows(
+                NoSuchElementException.class,
+                () -> errandRepository.findById(2L).get()
+        );
     }
 
 }
