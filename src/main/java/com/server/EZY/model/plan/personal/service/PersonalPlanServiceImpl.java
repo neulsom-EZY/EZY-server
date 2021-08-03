@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -47,6 +48,12 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     public List<PersonalPlanEntity> getAllPersonalPlan() {
         MemberEntity currentUser = userUtil.getCurrentUser();
         return personalPlanRepository.findAllPersonalPlanByMemberEntity(currentUser);
+    }
+
+    @Override
+    public List<PersonalPlanEntity> getThisStartDateTimePersonalEntities(LocalDateTime startDateTime) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        return personalPlanRepository.findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartTime(currentUser, startDateTime);
     }
 
     /**
