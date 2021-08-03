@@ -74,8 +74,8 @@ class ErrandTest {
                 .explanation("PersonalPlanService 끝내버려")
                 .build();
         Period period = Period.builder()
-                .startTime(LocalDateTime.of(20201, 7, 27, 17, 30))
-                .endTime(LocalDateTime.of(20201, 7, 27, 20, 30))
+                .startDateTime(LocalDateTime.of(20201, 7, 27, 17, 30))
+                .endDateTime(LocalDateTime.of(20201, 7, 27, 20, 30))
                 .build();
 
         ErrandEntity siwonErrand = ErrandEntity.builder()
@@ -127,8 +127,8 @@ class ErrandTest {
                 .explanation("PersonalPlanService 끝내버려")
                 .build();
         Period period = Period.builder()
-                .startTime(LocalDateTime.of(20201, 7, 27, 17, 30))
-                .endTime(LocalDateTime.of(20201, 7, 27, 20, 30))
+                .startDateTime(LocalDateTime.of(20201, 7, 27, 17, 30))
+                .endDateTime(LocalDateTime.of(20201, 7, 27, 20, 30))
                 .build();
 
         ErrandEntity siwonErrand = ErrandEntity.builder()
