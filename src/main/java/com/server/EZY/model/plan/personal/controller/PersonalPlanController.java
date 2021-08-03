@@ -42,6 +42,8 @@ public class PersonalPlanController {
             return responseService.getListResult(personalPlanService.getAllPersonalPlan());
         } else if(endDateTimeOrNull != null){
             return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        } else if(startDateTimeOrNull!=null && endDateTimeOrNull!=null){
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
         } else{
             return responseService.getListResult(personalPlanService.getAllPersonalPlan());
         }
