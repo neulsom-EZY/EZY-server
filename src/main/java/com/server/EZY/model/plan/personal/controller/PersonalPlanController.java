@@ -40,7 +40,7 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getThisPersonalPlan(@PathVariable Long planIdx){
+    public CommonResult getThisPersonalPlan(@PathVariable("planIdx") Long planIdx){
         return responseService.getSingleResult(personalPlanService.getThisPersonalPlan(planIdx));
     }
 
