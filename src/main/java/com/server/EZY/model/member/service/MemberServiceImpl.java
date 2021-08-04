@@ -49,18 +49,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String signup(MemberDto memberDto) {
-        if (memberDto.getUsername().startsWith("@")){
-            if(!memberRepository.existsByUsername(memberDto.getUsername())){
-                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        if(!memberRepository.existsByUsername(memberDto.getUsername())){
+            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
-                MemberEntity memberEntity = memberRepository.save(memberDto.toEntity());
+            MemberEntity memberEntity = memberRepository.save(memberDto.toEntity());
 
-                return memberEntity.getUsername();
-            } else {
-                throw new MemberAlreadyExistException();
-            }
+            return memberEntity.getUsername();
         } else {
-            throw new MemberNotFoundException(); //유효하지 않은 이름 형식입니다 Exception 추가 부탁드립니다.
+            throw new MemberAlreadyExistException();
         }
     }
 
