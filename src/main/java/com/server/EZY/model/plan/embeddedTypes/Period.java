@@ -1,6 +1,8 @@
 package com.server.EZY.model.plan.embeddedTypes;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,10 +18,12 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class Period {
 
-    @Column(name = "start_time", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @Column(name = "start_date_time", nullable = false)
     private LocalDateTime startDateTime;
 
-    @Column(name = "end_time", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @Column(name = "end_date_time", nullable = false)
     private LocalDateTime endDateTime;
 
     /**

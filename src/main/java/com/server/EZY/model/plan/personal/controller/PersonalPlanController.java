@@ -7,8 +7,14 @@ import com.server.EZY.response.result.CommonResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Slf4j
 @RestController
 @RequestMapping("/v1/plan/personal")
 @RequiredArgsConstructor
@@ -31,8 +37,20 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getAllPersonalPlan(){
-        return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+    public CommonResult getAllPersonalPlan(
+            @RequestParam(value = "startDate", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDateOrNull,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDateOrNull
+    ){
+        log.debug("====it's startDateOrNull======{}======", startDateOrNull);
+        log.debug("=====it's endDateOrNull====={}======", endDateOrNull);
+
+        if (startDateOrNull != null && endDateOrNull == null){
+            return responseService.getListResult(personalPlanService.getThisStartDateTimePersonalEntities(startDateOrNull));
+        } else if(startDateOrNull!=null && endDateOrNull != null){
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        } else{
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        }
     }
 
     @GetMapping("/{planIdx}")
@@ -40,7 +58,7 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getThisPersonalPlan(@PathVariable Long planIdx){
+    public CommonResult getThisPersonalPlan(@PathVariable("planIdx") Long planIdx){
         return responseService.getSingleResult(personalPlanService.getThisPersonalPlan(planIdx));
     }
 
