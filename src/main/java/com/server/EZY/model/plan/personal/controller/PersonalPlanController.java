@@ -41,16 +41,14 @@ public class PersonalPlanController {
             @RequestParam(value = "startDate", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDateOrNull,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDateOrNull
     ){
-        log.debug("======{}======", startDateOrNull);
-        if (startDateOrNull != null){
+        log.debug("====it's startDateOrNull======{}======", startDateOrNull);
+        log.debug("=====it's endDateOrNull====={}======", endDateOrNull);
+
+        if (startDateOrNull != null && endDateOrNull == null){
             return responseService.getListResult(personalPlanService.getThisStartDateTimePersonalEntities(startDateOrNull));
-        }
-//        else if(endDateTimeOrNull != null){
-//            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
-//        } else if(startDateTimeOrNull!=null && endDateTimeOrNull!r=null){
-//            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
-//        }
-        else{
+        } else if(startDateOrNull!=null && endDateOrNull != null){
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        } else{
             return responseService.getListResult(personalPlanService.getAllPersonalPlan());
         }
     }
