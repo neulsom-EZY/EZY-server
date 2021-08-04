@@ -37,15 +37,16 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult getAllPersonalPlan(
-            @RequestParam(value = "startDateTime", required = false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTimeOrNull,
-            @RequestParam(value = "endDateTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeOrNull
+            @RequestParam(value = "startDate", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime startDateOrNull,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime endDateOrNull
     ){
-        if (startDateTimeOrNull != null){
-            return responseService.getListResult(personalPlanService.getThisStartDateTimePersonalEntities(startDateTimeOrNull));
+        log.debug("======{}======", startDateOrNull);
+        if (startDateOrNull != null){
+            return responseService.getListResult(personalPlanService.getThisStartDateTimePersonalEntities(startDateOrNull));
         }
 //        else if(endDateTimeOrNull != null){
 //            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
-//        } else if(startDateTimeOrNull!=null && endDateTimeOrNull!=null){
+//        } else if(startDateTimeOrNull!=null && endDateTimeOrNull!r=null){
 //            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
 //        }
         else{
