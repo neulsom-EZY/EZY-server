@@ -9,13 +9,16 @@ import com.server.EZY.model.plan.tag.TagEntity;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PersonalPlanServiceImpl implements PersonalPlanService{
@@ -54,6 +57,10 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     @Override
     public List<PersonalPlanEntity> getThisStartDateTimePersonalEntities(LocalDate startDate) {
         MemberEntity currentUser = userUtil.getCurrentUser();
+        log.debug("==this is currentUser====={}==========", currentUser);
+        log.debug("==this is startDate====={}==========", startDate);
+        log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
+        log.debug("====== this is startDate atEndOfDay: {}==========", startDate.atTime(LocalTime.MAX));
         return personalPlanRepository.findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartDateTime(currentUser, startDate);
     }
 
