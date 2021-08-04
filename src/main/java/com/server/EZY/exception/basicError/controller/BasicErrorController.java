@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/error/")
+@RequestMapping(BasicErrorHandler.BASIC_ERROR_BASE_URL)
 @RequiredArgsConstructor
 public class BasicErrorController {
 
