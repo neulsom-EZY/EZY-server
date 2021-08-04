@@ -66,9 +66,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
-        MemberEntity findUser = memberRepository.findByUsername(loginDto.getUsername());
-        boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), findUser.getPassword());
-        if (findUser == null || !passwordCheck) throw new MemberNotFoundException();
+        MemberEntity memberEntity = memberRepository.findByUsername(loginDto.getUsername());
+        boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), memberEntity.getPassword());
+        if (memberEntity == null || !passwordCheck) throw new MemberNotFoundException();
 
         String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -142,8 +142,8 @@ public class MemberServiceImpl implements MemberService {
     public String validAuthKey(String key) {
         String username = redisUtil.getData(key);
 
-        MemberEntity findUser = memberRepository.findByUsername(username);
-        if (findUser == null) throw new InvalidAuthenticationNumberException();
+        MemberEntity memberEntity = memberRepository.findByUsername(username);
+        if (memberEntity == null) throw new InvalidAuthenticationNumberException();
 
         redisUtil.deleteData(key);
 
@@ -159,10 +159,10 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public String findUsername(String phoneNumber) {
-        MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
-        if (findUser == null) throw new MemberNotFoundException();
+        MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber);
+        if (memberEntity == null) throw new MemberNotFoundException();
 
-        return findUser.getUsername();
+        return memberEntity.getUsername();
     }
 
     /**
@@ -173,10 +173,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String changeUsername(UsernameChangeDto usernameChangeDto) {
-        MemberEntity findUser = memberRepository.findByUsername(usernameChangeDto.getUsername());
-        if (findUser == null) throw new MemberNotFoundException();
+        MemberEntity memberEntity = memberRepository.findByUsername(usernameChangeDto.getUsername());
+        if (memberEntity == null) throw new MemberNotFoundException();
 
-        findUser.updateUsername(usernameChangeDto.getNewUsername());
+        memberEntity.updateUsername(usernameChangeDto.getNewUsername());
 
         return usernameChangeDto.getUsername() + "유저 " + usernameChangeDto.getNewUsername() + "(으)로 닉네임 업데이트 완료";
     }
@@ -190,9 +190,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String changePassword(PasswordChangeDto passwordChangeDto) {
-        MemberEntity findUser = memberRepository.findByUsername(passwordChangeDto.getUsername());
-        if (findUser == null) throw new MemberNotFoundException();
-        findUser.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+        MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeDto.getUsername());
+        if (memberEntity == null) throw new MemberNotFoundException();
+        memberEntity.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
 
         return passwordChangeDto.getUsername() + "회원 비밀번호 변경완료";
     }
@@ -205,11 +205,11 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public String deleteUser(AuthDto deleteUserDto) {
-        MemberEntity findUser = memberRepository.findByUsername(deleteUserDto.getUsername());
-        if (findUser == null) throw new MemberNotFoundException();
+        MemberEntity memberEntity = memberRepository.findByUsername(deleteUserDto.getUsername());
+        if (memberEntity == null) throw new MemberNotFoundException();
 
-        if (passwordEncoder.matches(deleteUserDto.getPassword(), findUser.getPassword())) {
-            memberRepository.deleteById(findUser.getMemberIdx());
+        if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
+            memberRepository.deleteById(memberEntity.getMemberIdx());
         }
 
         return deleteUserDto.getUsername() + "회원 회원탈퇴완료";

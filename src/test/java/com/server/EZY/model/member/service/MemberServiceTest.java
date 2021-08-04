@@ -116,13 +116,13 @@ public class MemberServiceTest {
         //given
         String phoneNumber = "01012345678";
 
-        MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
+        MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber);
 
         //when
         String username = memberService.findUsername(phoneNumber);
 
         //then
-        assertEquals(findUser.getUsername(), username);
+        assertEquals(memberEntity.getUsername(), username);
     }
 
     @Test
