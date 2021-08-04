@@ -27,10 +27,6 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
     @Override
     public List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
             MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-
-        log.debug("====== it's personalPlan startTime: {}=========",
-                personalPlanEntity.period.startDateTime);
-
         return jpaQueryFactory
                 .selectFrom(personalPlanEntity)
                 .where(
