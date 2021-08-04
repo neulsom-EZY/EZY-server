@@ -39,22 +39,15 @@ public class MemberControllerTest {
     @BeforeEach
     public void before(@Autowired MemberController memberController) {
         mvc = MockMvcBuilders.standaloneSetup(memberController).build();
-
-        MemberDto memberDto = MemberDto.builder()
-                .username("JsonWebTok")
-                .password("1234")
-                .phoneNumber("01012345678")
-                .build();
-        memberService.signup(memberDto);
     }
 
     @Test
     @DisplayName("회원가입 테스트")
     public void signupTest() throws Exception {
         MemberDto memberDto = MemberDto.builder()
-                .username("JsonWebTok")
+                .username("@bBbB")
                 .password("1234")
-                .phoneNumber("01012345678")
+                .phoneNumber("01008090809")
                 .build();
 
         String content = objectMapper.writeValueAsString(memberDto);
@@ -73,7 +66,7 @@ public class MemberControllerTest {
     @DisplayName("로그인 테스트")
     public void signInTest() throws Exception {
         AuthDto loginDto = AuthDto.builder()
-                .username("JsonWebTok")
+                .username("@Json")
                 .password("1234")
                 .build();
 
@@ -140,8 +133,8 @@ public class MemberControllerTest {
     public void usernameChangeTest() throws Exception {
 
         UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
-                .username("JsonWebTok")
-                .newUsername("배태현")
+                .username("@BaeTul")
+                .newUsername("@Baebae")
                 .build();
 
         String content = objectMapper.writeValueAsString(usernameChangeDto);
@@ -160,7 +153,7 @@ public class MemberControllerTest {
     public void pwdChangeTest() throws Exception {
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .username("배태현")
+                .username("@Baeeeee")
                 .newPassword("string")
                 .build();
 
