@@ -23,7 +23,7 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
     }
 
     @Override
-    public List<PersonalPlanEntity> findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartTime(MemberEntity memberEntity, LocalDateTime startDateTime) {
+    public List<PersonalPlanEntity> findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartDateTime(MemberEntity memberEntity, LocalDateTime startDateTime) {
         return jpaQueryFactory
                 .selectFrom(personalPlanEntity)
                 .where(

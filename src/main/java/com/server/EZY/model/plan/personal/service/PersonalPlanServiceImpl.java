@@ -53,7 +53,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     @Override
     public List<PersonalPlanEntity> getThisStartDateTimePersonalEntities(LocalDateTime startDateTime) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        return personalPlanRepository.findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartTime(currentUser, startDateTime);
+        return personalPlanRepository.findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartDateTime(currentUser, startDateTime);
     }
 
     /**
