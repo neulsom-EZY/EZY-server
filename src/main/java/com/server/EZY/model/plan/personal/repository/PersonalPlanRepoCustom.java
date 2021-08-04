@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface PersonalPlanRepoCustom {
     List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity);
-    List<PersonalPlanEntity> findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartDateTime(MemberEntity memberEntity, LocalDate startDate);
+    List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime);
     PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx);
 }

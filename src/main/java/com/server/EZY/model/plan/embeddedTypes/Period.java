@@ -18,11 +18,11 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class Period {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startDateTime;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd kk:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endDateTime;
 

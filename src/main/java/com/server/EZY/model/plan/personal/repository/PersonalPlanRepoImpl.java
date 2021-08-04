@@ -6,12 +6,12 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPlanEntity;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
 
@@ -25,12 +25,17 @@ public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
     }
 
     @Override
-    public List<PersonalPlanEntity> findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartDateTime(MemberEntity memberEntity, LocalDate startDate) {
+    public List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
+            MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+
+        log.debug("====== it's personalPlan startTime: {}=========",
+                personalPlanEntity.period.startDateTime);
+
         return jpaQueryFactory
                 .selectFrom(personalPlanEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity),
-                        personalPlanEntity.period.startDateTime.between(startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX))
+                        personalPlanEntity.period.startDateTime.between(startDateTime, endDateTime)
                 ).fetch();
     }
 

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -61,7 +60,8 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         log.debug("==this is startDate====={}==========", startDate);
         log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
         log.debug("====== this is startDate atEndOfDay: {}==========", startDate.atTime(LocalTime.MAX));
-        return personalPlanRepository.findAllPersonalPlanEntitiesByMemberEntityAndPeriodStartDateTime(currentUser, startDate);
+        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
+                currentUser, startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX));
     }
 
     /**
