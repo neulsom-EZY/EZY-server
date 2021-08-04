@@ -13,6 +13,7 @@ import java.util.Collections;
 @NoArgsConstructor
 public class MemberDto {
     @NotBlank(message = "username should be valid")
+    @Pattern(regexp = "^@[a-zA-Z]*$", message = "유효하지 않은 이름 형식입니다.")
     @Size(min = 1, max = 10)
     private String username;
 

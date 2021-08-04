@@ -51,7 +51,7 @@ public class CertifiedMemberControllerTest {
     public void withdrawalTest() throws Exception {
 
         AuthDto deleteUserDto = AuthDto.builder()
-                .username("배태현")
+                .username("@BaeTul")
                 .password("1234")
                 .build();
 
