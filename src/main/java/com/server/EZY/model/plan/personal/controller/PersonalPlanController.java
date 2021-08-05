@@ -44,7 +44,7 @@ public class PersonalPlanController {
         log.debug("=====it's endDateOrNull====={}======", endDateOrNull);
 
         if (startDateOrNull != null && endDateOrNull == null){
-            return responseService.getListResult(personalPlanService.getThisDatePersonalEntities(startDateOrNull));
+            return responseService.getListResult(personalPlanService.getThisDatePersonalPlanEntities(startDateOrNull));
         } else if(startDateOrNull!=null && endDateOrNull != null){
             return responseService.getListResult(personalPlanService.getAllPersonalPlan());
         } else{

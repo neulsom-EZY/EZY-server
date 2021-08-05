@@ -54,12 +54,17 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     }
 
     @Override
-    public List<PersonalPlanEntity> getThisDatePersonalEntities(LocalDate startDate) {
+    public List<PersonalPlanEntity> getThisDatePersonalPlanEntities(LocalDate startDate) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
         log.debug("====== this is startDate atEndOfDay: {}==========", startDate.atTime(LocalTime.MAX));
         return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
                 currentUser, startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX));
+    }
+
+    @Override
+    public List<PersonalPlanEntity> getPersonalPlanEntitiesBetweeen(LocalDate startDate, LocalDate endDate) {
+        return null;
     }
 
     /**
