@@ -13,7 +13,7 @@ import java.util.Collections;
 @NoArgsConstructor
 public class MemberDto {
     @NotBlank(message = "username should be valid")
-    @Pattern(regexp = "^@[a-zA-Z]*$", message = "유효하지 않은 이름 형식입니다.")
+    @Pattern(regexp = "^@[a-zA-Z]*$")
     @Size(min = 1, max = 10)
     private String username;
 
@@ -22,7 +22,7 @@ public class MemberDto {
     private String password;
 
     @NotBlank(message = "phoneNumber should be valid")
-    @Pattern(regexp = "^[0-9]{11}$", message = "유효하지 않은 전화번호 형식입니다.")
+    @Pattern(regexp = "^[0-9]{11}$")
     @Size(min = 11, max = 11)
     private String phoneNumber;
 

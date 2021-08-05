@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class PasswordChangeDto {
 
     @NotBlank(message = "username should be valid")
-    @Pattern(regexp = "^@[a-zA-Z]*$", message = "유효하지 않은 이름 형식입니다.")
+    @Pattern(regexp = "^@[a-zA-Z]*$")
     @Size(min = 1, max = 10)
     private String username;
 
