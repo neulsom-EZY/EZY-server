@@ -7,8 +7,13 @@ import com.server.EZY.response.result.CommonResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
+@Slf4j
 @RestController
 @RequestMapping("/v1/plan/personal")
 @RequiredArgsConstructor
@@ -31,8 +36,24 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getAllPersonalPlan(){
-        return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+    public CommonResult getAllPersonalPlan(
+            @RequestParam(value = "startDate", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDateOrNull,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDateOrNull
+    ){
+        log.debug("====it's startDateOrNull======{}======", startDateOrNull);
+        log.debug("=====it's endDateOrNull====={}======", endDateOrNull);
+        /**
+         * if - 사용자가 startDate 와 endDate를 모두 기입했을 때, 기간 내에 수행되는 개인일정 모두 조회
+         * else if - 사용자가 startDate 만 기입을 했을 때, 해당 날짜에 수행되는 개인일정 모두 조회
+         * else - 사용자가 param으로 넘겨준 값이 없을 때, 사용자의 모든 개인일정 조회
+         */
+        if (startDateOrNull!=null && endDateOrNull != null){
+            return responseService.getListResult(personalPlanService.getPersonalPlanEntitiesBetween(startDateOrNull, endDateOrNull));
+        } else if(startDateOrNull != null){
+            return responseService.getListResult(personalPlanService.getThisDatePersonalPlanEntities(startDateOrNull));
+        } else{
+            return responseService.getListResult(personalPlanService.getAllPersonalPlan());
+        }
     }
 
     @GetMapping("/{planIdx}")
@@ -40,7 +61,7 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getThisPersonalPlan(@PathVariable Long planIdx){
+    public CommonResult getThisPersonalPlan(@PathVariable("planIdx") Long planIdx){
         return responseService.getSingleResult(personalPlanService.getThisPersonalPlan(planIdx));
     }
 

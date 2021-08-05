@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public interface TokenExceptionAdvice {
+public interface TokenExceptionHandler {
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";

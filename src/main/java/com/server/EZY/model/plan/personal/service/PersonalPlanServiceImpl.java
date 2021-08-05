@@ -9,11 +9,15 @@ import com.server.EZY.model.plan.tag.TagEntity;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PersonalPlanServiceImpl implements PersonalPlanService{
@@ -47,6 +51,37 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     public List<PersonalPlanEntity> getAllPersonalPlan() {
         MemberEntity currentUser = userUtil.getCurrentUser();
         return personalPlanRepository.findAllPersonalPlanByMemberEntity(currentUser);
+    }
+
+    /**
+     * 해당 Date 에 수행(start) 되는 개인일정을 모두 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @param startDate
+     * @return List<PersonalPlanEntity>
+     * @author 전지환
+     */
+    @Override
+    public List<PersonalPlanEntity> getThisDatePersonalPlanEntities(LocalDate startDate) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
+        log.debug("====== this is startDate atEndOfDay: {}==========", startDate.atTime(LocalTime.MAX));
+        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
+                currentUser, startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX));
+    }
+
+    /**
+     * startDate 와 endDate 기간내에 수행(start) 되는 개인일정을 모두 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @param startDate
+     * @param endDate
+     * @return List<PersonalPlanEntity>
+     * @author 전지환
+     */
+    @Override
+    public List<PersonalPlanEntity> getPersonalPlanEntitiesBetween(LocalDate startDate, LocalDate endDate) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
+        log.debug("====== this is endDate atEndOfDay: {}==========", endDate.atTime(LocalTime.MAX));
+        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
+                currentUser, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.embeddedTypes;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -16,11 +17,13 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class Period {
 
-    @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @Column(name = "start_date_time", nullable = false)
+    private LocalDateTime startDateTime;
 
-    @Column(name = "end_time", nullable = false)
-    private LocalDateTime endTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @Column(name = "end_date_time", nullable = false)
+    private LocalDateTime endDateTime;
 
     /**
      * Period객체를 업데이트 한다.
@@ -28,8 +31,8 @@ public class Period {
      * @author 정시원
      */
     public void updatePeriod(Period updatedPeriod){
-        this.startTime = updatedPeriod.startTime != null ? updatedPeriod.startTime : this.startTime;
-        this.endTime = updatedPeriod.endTime != null ? updatedPeriod.endTime : this.endTime;
+        this.startDateTime = updatedPeriod.startDateTime != null ? updatedPeriod.startDateTime : this.startDateTime;
+        this.endDateTime = updatedPeriod.endDateTime != null ? updatedPeriod.endDateTime : this.endDateTime;
     }
 
     @Override @Generated
@@ -37,11 +40,11 @@ public class Period {
         if (this == o) return true;
         if (!(o instanceof Period)) return false;
         Period period = (Period) o;
-        return Objects.equals(getStartTime(), period.getStartTime()) && Objects.equals(getEndTime(), period.getEndTime());
+        return Objects.equals(getStartDateTime(), period.getStartDateTime()) && Objects.equals(getEndDateTime(), period.getEndDateTime());
     }
 
     @Override @Generated
     public int hashCode() {
-        return Objects.hash(getStartTime(), getEndTime());
+        return Objects.hash(getStartDateTime(), getEndDateTime());
     }
 }

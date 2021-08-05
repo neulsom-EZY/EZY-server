@@ -50,8 +50,8 @@ class PersonalPlanEntityTest {
                 .build();
 
         Period period = Period.builder()
-                .startTime(LocalDateTime.of(2021, 7, 24, 1, 30))
-                .endTime(LocalDateTime.of(2021, 7, 24, 6, 30))
+                .startDateTime(LocalDateTime.of(2021, 7, 24, 1, 30))
+                .endDateTime(LocalDateTime.of(2021, 7, 24, 6, 30))
                 .build();
 
         Boolean repetition = true;
@@ -83,8 +83,8 @@ class PersonalPlanEntityTest {
                 .build();
 
         Period period = Period.builder()
-                .startTime(LocalDateTime.of(2021, 7, 24, 1, 30))
-                .endTime(LocalDateTime.of(2021, 7, 24, 6, 30))
+                .startDateTime(LocalDateTime.of(2021, 7, 24, 1, 30))
+                .endDateTime(LocalDateTime.of(2021, 7, 24, 6, 30))
                 .build();
 
         Boolean repetition = true;

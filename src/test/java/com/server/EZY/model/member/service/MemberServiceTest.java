@@ -74,7 +74,7 @@ public class MemberServiceTest {
     public void signupTest() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("배따횬")
+                .username("@BaeTul")
                 .password("0809")
                 .phoneNumber("01008090809")
                 .build();
@@ -82,14 +82,14 @@ public class MemberServiceTest {
         String signup = memberService.signup(memberDto);
 
         //then
-        assertTrue(signup == "배따횬");
+        assertTrue(signup == "@BaeTul");
     }
 
     @BeforeEach
     public void before(@Autowired MemberController memberController) {
 
         MemberDto memberDto = MemberDto.builder()
-                .username("바따햔")
+                .username("@Baetaehyeon")
                 .password("0809")
                 .phoneNumber("01012345678")
                 .build();
@@ -101,7 +101,7 @@ public class MemberServiceTest {
     public void signinTest() {
         //given
         AuthDto loginDto = AuthDto.builder()
-                .username("바따햔")
+                .username("@Baetaehyeon")
                 .password("0809")
                 .build();
         //when
@@ -116,13 +116,13 @@ public class MemberServiceTest {
         //given
         String phoneNumber = "01012345678";
 
-        MemberEntity findUser = memberRepository.findByPhoneNumber(phoneNumber);
+        MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber);
 
         //when
         String username = memberService.findUsername(phoneNumber);
 
         //then
-        assertEquals(findUser.getUsername(), username);
+        assertEquals(memberEntity.getUsername(), username);
     }
 
     @Test
@@ -132,13 +132,13 @@ public class MemberServiceTest {
         MemberEntity currentUser = currentUser();
 
         UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
-                .username("바따햔")
-                .newUsername("배태현")
+                .username("@Baetaehyeon")
+                .newUsername("@asdfasdf")
                 .build();
         //when //then
         if (currentUser != null) {
             String changeNickname = memberService.changeUsername(usernameChangeDto);
-            assertEquals("바따햔유저 배태현(으)로 닉네임 업데이트 완료", changeNickname);
+            assertEquals("@Baetaehyeon유저 @asdfasdf(으)로 닉네임 업데이트 완료", changeNickname);
         } else {
             log.info("닉네임 변경테스트 실패");
         }
@@ -151,13 +151,13 @@ public class MemberServiceTest {
         MemberEntity currentUser = currentUser();
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .username("배태현")
+                .username("@Baetaehyeon")
                 .newPassword("20040809")
                 .build();
         //when //then
         if (currentUser != null) {
             String changePassword = memberService.changePassword(passwordChangeDto);
-            assertEquals("배태현회원 비밀번호 변경완료", changePassword);
+            assertEquals("@Baetaehyeon회원 비밀번호 변경완료", changePassword);
         } else {
             log.info("비밀번호 변경 테스트 실패");
         }
@@ -170,14 +170,14 @@ public class MemberServiceTest {
         MemberEntity currentUser = currentUser();
 
         AuthDto deleteUserDto = AuthDto.builder()
-                .username("배태현")
+                .username("@Baetaehyeon")
                 .password("1234")
                 .build();
 
         //when
         if (currentUser != null) {
             String withdrawal = memberService.deleteUser(deleteUserDto);
-            assertEquals("배태현회원 회원탈퇴완료", withdrawal);
+            assertEquals("@Baetaehyeon회원 회원탈퇴완료", withdrawal);
         } else {
             log.info("회원탈퇴 테스트 실패");
         }
