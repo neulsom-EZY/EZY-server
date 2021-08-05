@@ -18,5 +18,5 @@ public class PhoneNumberChangeDto {
     @NotBlank(message = "phoneNumber should be valid")
     @Pattern(regexp = "^[0-9]{11}$")
     @Size(min = 11, max = 11)
-    private String phoneNumber;
+    private String newPhoneNumber;
 }
