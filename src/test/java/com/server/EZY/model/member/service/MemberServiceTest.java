@@ -20,6 +20,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class MemberServiceTest {
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("@asdfasdf")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -66,7 +67,7 @@ public class MemberServiceTest {
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("@asdfasdf", currentUserNickname);
     }
 
     @Test
@@ -164,6 +165,29 @@ public class MemberServiceTest {
     }
 
     @Test
+    public void changePhoneNumberTest() {
+        //given
+        MemberEntity currentUser = currentUser();
+
+        //when //then
+        if (currentUser != null) {
+            String username = memberService.changePhoneNumber(
+                    PhoneNumberChangeDto.builder()
+                            .username("@qwerqwer")
+                            .phoneNumber("01049977055")
+                            .build()
+            );
+
+            MemberEntity memberEntity = memberRepository.findByUsername(username);
+
+            assertEquals(memberEntity.getUsername(), username);
+            assertEquals("01049977055", memberEntity.getPhoneNumber());
+        } else {
+            log.info("전화번호 변경 테스트 실패");
+        }
+    }
+
+    @Test
     @DisplayName("회원탈퇴 테스트")
     public void DeleteMemberTest() {
         //given
@@ -190,9 +214,9 @@ public class MemberServiceTest {
      */
     public MemberEntity currentUser() {
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("@qwerqwer")
                 .password("1234")
-                .phoneNumber("01012341234")
+                .phoneNumber("01000000000")
                 .build();
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -211,7 +235,7 @@ public class MemberServiceTest {
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("@qwerqwer", currentUserNickname);
         MemberEntity loginUser = memberRepository.findByUsername(currentUserNickname);
         return loginUser;
     }
