@@ -174,7 +174,7 @@ public class MemberServiceTest {
             String username = memberService.changePhoneNumber(
                     PhoneNumberChangeDto.builder()
                             .username("@qwerqwer")
-                            .phoneNumber("01049977055")
+                            .newPhoneNumber("01049977055")
                             .build()
             );
 
