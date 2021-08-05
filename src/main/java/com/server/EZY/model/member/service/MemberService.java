@@ -39,6 +39,8 @@ public interface MemberService {
 
     String changePassword(PasswordChangeDto passwordChangeDto);
 
+    String changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto);
+
     String deleteUser(AuthDto deleteUserDto);
 
 }

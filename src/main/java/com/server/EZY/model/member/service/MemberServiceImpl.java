@@ -95,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 전화번호로 인증번호를 보내는 로직
+     * 전화번호로 인증번호를 보내는 로직 (이미 회원가입 된 회원에게)
      * @param phoneNumber
      * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
      * @return 문자로 인증번호 전송
@@ -191,6 +191,16 @@ public class MemberServiceImpl implements MemberService {
         memberEntity.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
 
         return passwordChangeDto.getUsername() + "회원 비밀번호 변경완료";
+    }
+
+    @Override
+    @Transactional
+    public String changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
+        MemberEntity memberEntity = memberRepository.findByUsername(phoneNumberChangeDto.getUsername());
+        if (memberEntity == null) throw new MemberNotFoundException();
+        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getPhoneNumber());
+
+        return memberEntity.getUsername();
     }
 
     /**
