@@ -53,13 +53,35 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         return personalPlanRepository.findAllPersonalPlanByMemberEntity(currentUser);
     }
 
+    /**
+     * 해당 Date 에 수행(start) 되는 개인일정을 모두 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @param startDate
+     * @return List<PersonalPlanEntity>
+     * @author 전지환
+     */
     @Override
-    public List<PersonalPlanEntity> getThisStartDateTimePersonalEntities(LocalDate startDate) {
+    public List<PersonalPlanEntity> getThisDatePersonalPlanEntities(LocalDate startDate) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
         log.debug("====== this is startDate atEndOfDay: {}==========", startDate.atTime(LocalTime.MAX));
         return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
                 currentUser, startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX));
+    }
+
+    /**
+     * startDate 와 endDate 기간내에 수행(start) 되는 개인일정을 모두 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     * @param startDate
+     * @param endDate
+     * @return List<PersonalPlanEntity>
+     * @author 전지환
+     */
+    @Override
+    public List<PersonalPlanEntity> getPersonalPlanEntitiesBetween(LocalDate startDate, LocalDate endDate) {
+        MemberEntity currentUser = userUtil.getCurrentUser();
+        log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
+        log.debug("====== this is endDate atEndOfDay: {}==========", endDate.atTime(LocalTime.MAX));
+        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
+                currentUser, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
     }
 
     /**
