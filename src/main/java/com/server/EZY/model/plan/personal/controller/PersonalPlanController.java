@@ -42,7 +42,11 @@ public class PersonalPlanController {
     ){
         log.debug("====it's startDateOrNull======{}======", startDateOrNull);
         log.debug("=====it's endDateOrNull====={}======", endDateOrNull);
-
+        /**
+         * if - 사용자가 startDate 와 endDate를 모두 기입했을 때, 기간 내에 수행되는 개인일정 모두 조회
+         * else if - 사용자가 startDate 만 기입을 했을 때, 해당 날짜에 수행되는 개인일정 모두 조회
+         * else - 사용자가 param으로 넘겨준 값이 없을 때, 사용자의 모든 개인일정 조회
+         */
         if (startDateOrNull!=null && endDateOrNull != null){
             return responseService.getListResult(personalPlanService.getPersonalPlanEntitiesBetween(startDateOrNull, endDateOrNull));
         } else if(startDateOrNull != null){
