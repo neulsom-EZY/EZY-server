@@ -235,4 +235,43 @@ class PersonalPlanServiceImplTest {
         //Then
         assertEquals(personalPlanEntityList.size(), thisDatePersonalPlanEntities.size());
     }
+
+    @Test @DisplayName("내가 원하는 기간의 개인일정이 잘 조회되나요?")
+    void getPersonalPlanEntitiesInThisPeriod(){
+        //Given
+        List<PersonalPlanEntity> wannaFindPersonalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period(new Period(
+                                        LocalDateTime.of(2021, 7, 24, 1, 30),
+                                        LocalDateTime.of(2021, 7, 28, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(2).collect(Collectors.toList());
+
+
+        List<PersonalPlanEntity> anotherPersonalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period(new Period(
+                                        LocalDateTime.of(2021, 7, 22, 1, 30),
+                                        LocalDateTime.of(2021, 7, 24, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(5).collect(Collectors.toList());
+
+        //When
+        List<PersonalPlanEntity> personalPlanEntityList1 = personalPlanRepository.saveAll(wannaFindPersonalPlanEntities);
+        List<PersonalPlanEntity> personalPlanEntityList2 = personalPlanRepository.saveAll(anotherPersonalPlanEntities);
+
+        List<PersonalPlanEntity> personalPlanEntitiesBetween = personalPlanService.getPersonalPlanEntitiesBetween(
+                LocalDate.of(2021, 7, 21), LocalDate.of(2021, 7, 25));
+
+        //Then
+        assertEquals(personalPlanEntityList1.size()+personalPlanEntityList2.size(), personalPlanEntitiesBetween.size());
+    }
 }
