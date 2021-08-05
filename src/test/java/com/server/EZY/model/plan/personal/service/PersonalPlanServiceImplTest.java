@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -195,5 +196,43 @@ class PersonalPlanServiceImplTest {
 
         //Then
         assertTrue(updatedPersonalPlan.getPlanInfo().getTitle().equals("hello world"));
+    }
+
+    @Test @DisplayName("내가 원하는 날짜의 개인일정이 모두 조회되나요?")
+    void getThisDatePersonalPlan() {
+        //Given
+        List<PersonalPlanEntity> wannaFindPersonalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period(new Period(
+                                        LocalDateTime.of(2021, 7, 24, 1, 30),
+                                        LocalDateTime.of(2021, 7, 28, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(2).collect(Collectors.toList());
+
+
+        List<PersonalPlanEntity> anotherPersonalPlanEntities = Stream.generate(
+                () -> PersonalPlanEntity.builder()
+                        .memberEntity(savedMemberEntity)
+                        .repetition(false)
+                        .period(new Period(
+                                        LocalDateTime.of(2021, 7, 22, 1, 30),
+                                        LocalDateTime.of(2021, 7, 24, 1, 30)
+                                )
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+
+        ).limit(5).collect(Collectors.toList());
+
+        //When
+        List<PersonalPlanEntity> personalPlanEntityList = personalPlanRepository.saveAll(wannaFindPersonalPlanEntities);
+        personalPlanRepository.saveAll(anotherPersonalPlanEntities);
+
+        List<PersonalPlanEntity> thisDatePersonalPlanEntities = personalPlanService.getThisDatePersonalPlanEntities(LocalDate.of(2021, 7, 24));
+
+        //Then
+        assertEquals(personalPlanEntityList.size(), thisDatePersonalPlanEntities.size());
     }
 }
