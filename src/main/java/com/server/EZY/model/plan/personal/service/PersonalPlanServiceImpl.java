@@ -63,7 +63,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     }
 
     @Override
-    public List<PersonalPlanEntity> getPersonalPlanEntitiesBetweeen(LocalDate startDate, LocalDate endDate) {
+    public List<PersonalPlanEntity> getPersonalPlanEntitiesBetween(LocalDate startDate, LocalDate endDate) {
         return null;
     }
 
