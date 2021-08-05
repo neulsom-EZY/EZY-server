@@ -193,12 +193,17 @@ public class MemberServiceImpl implements MemberService {
         return passwordChangeDto.getUsername() + "회원 비밀번호 변경완료";
     }
 
+    /**
+     * 전화번호를 변경하는 서비스 로직
+     * @param phoneNumberChangeDto username, newPhoneNumber
+     * @return username
+     */
     @Override
     @Transactional
     public String changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(phoneNumberChangeDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
-        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getPhoneNumber());
+        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
 
         return memberEntity.getUsername();
     }

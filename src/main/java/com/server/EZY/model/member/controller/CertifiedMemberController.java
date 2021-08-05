@@ -24,6 +24,13 @@ public class CertifiedMemberController {
 
     //이 Controller가 return이 아무값도 return되지않음 공백이 뜸 (POSTMAN에서 확인)
 
+
+    /**
+     * (로그인 되어있는 상태에서) 전화번호 인증을 완료하고 전화번호를 변경할 수 있음
+     * 전화번호를 변경하는 controller
+     * @param phoneNumberChangeDto
+     * @return SuccessResult
+     */
     @PutMapping("/change/phone")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
