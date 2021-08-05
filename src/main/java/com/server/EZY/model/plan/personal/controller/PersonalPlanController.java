@@ -12,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -45,7 +44,7 @@ public class PersonalPlanController {
         log.debug("=====it's endDateOrNull====={}======", endDateOrNull);
 
         if (startDateOrNull != null && endDateOrNull == null){
-            return responseService.getListResult(personalPlanService.getThisStartDateTimePersonalEntities(startDateOrNull));
+            return responseService.getListResult(personalPlanService.getThisDatePersonalEntities(startDateOrNull));
         } else if(startDateOrNull!=null && endDateOrNull != null){
             return responseService.getListResult(personalPlanService.getAllPersonalPlan());
         } else{
