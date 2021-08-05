@@ -4,7 +4,6 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PersonalPlanService {

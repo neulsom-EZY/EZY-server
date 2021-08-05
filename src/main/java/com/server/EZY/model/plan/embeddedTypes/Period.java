@@ -2,7 +2,6 @@ package com.server.EZY.model.plan.embeddedTypes;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
