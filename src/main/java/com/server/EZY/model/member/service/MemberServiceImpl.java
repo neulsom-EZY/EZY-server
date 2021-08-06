@@ -152,6 +152,7 @@ public class MemberServiceImpl implements MemberService {
      * 회원을 찾고 회원의 이름을 알려주는 로직
      * @param phoneNumber
      * @return Username
+     * @author 배태현
      */
     @Override
     public String findUsername(String phoneNumber) {
@@ -165,6 +166,7 @@ public class MemberServiceImpl implements MemberService {
      * username을 변경하는 서비스 로직
      * @param usernameChangeDto username, newUsername
      * @return
+     * @author 배태현
      */
     @Override
     @Transactional
@@ -197,6 +199,7 @@ public class MemberServiceImpl implements MemberService {
      * 전화번호를 변경하는 서비스 로직
      * @param phoneNumberChangeDto username, newPhoneNumber
      * @return username
+     * @author 배태현
      */
     @Override
     @Transactional

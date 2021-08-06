@@ -30,6 +30,7 @@ public class CertifiedMemberController {
      * 전화번호를 변경하는 controller
      * @param phoneNumberChangeDto
      * @return SuccessResult
+     * @author 배태현
      */
     @PutMapping("/change/phone")
     @ResponseStatus( HttpStatus.OK )
