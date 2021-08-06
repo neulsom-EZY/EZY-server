@@ -12,16 +12,16 @@ import java.util.Collections;
 @Getter @Setter @Builder
 @NoArgsConstructor
 public class MemberDto {
-    @NotBlank(message = "username should be valid")
+    @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")
     @Size(min = 1, max = 10)
     private String username;
 
-    @NotBlank(message = "password should be valid")
+    @NotBlank
     @Size(min = 4, max = 10)
     private String password;
 
-    @NotBlank(message = "phoneNumber should be valid")
+    @NotBlank
     @Pattern(regexp = "^[0-9]{11}$")
     @Size(min = 11, max = 11)
     private String phoneNumber;

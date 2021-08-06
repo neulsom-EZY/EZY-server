@@ -10,12 +10,12 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor @AllArgsConstructor
 public class PhoneNumberChangeDto {
 
-    @NotBlank(message = "username should be valid")
+    @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")
     @Size(min = 1, max = 10)
     private String username;
 
-    @NotBlank(message = "phoneNumber should be valid")
+    @NotBlank
     @Pattern(regexp = "^[0-9]{11}$")
     @Size(min = 11, max = 11)
     private String newPhoneNumber;

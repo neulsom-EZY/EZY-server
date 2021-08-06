@@ -10,12 +10,12 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor @NoArgsConstructor
 public class UsernameChangeDto {
 
-    @NotBlank(message = "username should be valid")
+    @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")
     @Size(min = 1, max = 10)
     private String username;
 
-    @NotBlank(message = "NewUsername should be valid")
+    @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")
     @Size(min = 1, max = 10)
     private String newUsername;
