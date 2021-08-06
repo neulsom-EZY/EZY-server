@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.tag;
 
 import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.plan.tag.embeddedTypes.Color;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,6 +18,9 @@ public class TagEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
+
+    @Embedded
+    private Color color;
 
     private String tag;
 }
