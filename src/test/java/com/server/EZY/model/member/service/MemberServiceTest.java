@@ -20,6 +20,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class MemberServiceTest {
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("@asdfasdf")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -66,7 +67,7 @@ public class MemberServiceTest {
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("@asdfasdf", currentUserNickname);
     }
 
     @Test
@@ -159,7 +160,30 @@ public class MemberServiceTest {
             String changePassword = memberService.changePassword(passwordChangeDto);
             assertEquals("@Baetaehyeon회원 비밀번호 변경완료", changePassword);
         } else {
-            log.info("비밀번호 변경 테스트 실패");
+            Assertions.fail("비밀번호 변경 테스트 실패");
+        }
+    }
+
+    @Test
+    public void changePhoneNumberTest() {
+        //given
+        MemberEntity currentUser = currentUser();
+
+        //when //then
+        if (currentUser != null) {
+            String username = memberService.changePhoneNumber(
+                    PhoneNumberChangeDto.builder()
+                            .username("@qwerqwer")
+                            .newPhoneNumber("01049977055")
+                            .build()
+            );
+
+            MemberEntity memberEntity = memberRepository.findByUsername(username);
+
+            assertEquals(memberEntity.getUsername(), username);
+            assertEquals("01049977055", memberEntity.getPhoneNumber());
+        } else {
+            Assertions.fail("전화번호 변경 테스트 실패");
         }
     }
 
@@ -179,7 +203,7 @@ public class MemberServiceTest {
             String withdrawal = memberService.deleteUser(deleteUserDto);
             assertEquals("@Baetaehyeon회원 회원탈퇴완료", withdrawal);
         } else {
-            log.info("회원탈퇴 테스트 실패");
+            Assertions.fail("회원탈퇴 테스트 실패");
         }
     }
 
@@ -190,9 +214,9 @@ public class MemberServiceTest {
      */
     public MemberEntity currentUser() {
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("@qwerqwer")
                 .password("1234")
-                .phoneNumber("01012341234")
+                .phoneNumber("01000000000")
                 .build();
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -211,7 +235,7 @@ public class MemberServiceTest {
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("@qwerqwer", currentUserNickname);
         MemberEntity loginUser = memberRepository.findByUsername(currentUserNickname);
         return loginUser;
     }

@@ -14,12 +14,12 @@ import java.util.Collections;
 @Builder
 public class AuthDto {
 
-    @NotBlank(message = "username should be valid")
-    @Pattern(regexp = "^@[a-zA-Z]*$", message = "유효하지 않은 이름 형식입니다.")
+    @NotBlank
+    @Pattern(regexp = "^@[a-zA-Z]*$")
     @Size(min = 1, max = 10)
     private String username;
 
-    @NotBlank(message = "password should be valid")
+    @NotBlank
     @Size(min = 4, max = 10)
     private String password;
 
