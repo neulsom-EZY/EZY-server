@@ -160,7 +160,7 @@ public class MemberServiceTest {
             String changePassword = memberService.changePassword(passwordChangeDto);
             assertEquals("@Baetaehyeon회원 비밀번호 변경완료", changePassword);
         } else {
-            log.info("비밀번호 변경 테스트 실패");
+            Assertions.fail("비밀번호 변경 테스트 실패");
         }
     }
 
@@ -183,7 +183,7 @@ public class MemberServiceTest {
             assertEquals(memberEntity.getUsername(), username);
             assertEquals("01049977055", memberEntity.getPhoneNumber());
         } else {
-            log.info("전화번호 변경 테스트 실패");
+            Assertions.fail("전화번호 변경 테스트 실패");
         }
     }
 
@@ -203,7 +203,7 @@ public class MemberServiceTest {
             String withdrawal = memberService.deleteUser(deleteUserDto);
             assertEquals("@Baetaehyeon회원 회원탈퇴완료", withdrawal);
         } else {
-            log.info("회원탈퇴 테스트 실패");
+            Assertions.fail("회원탈퇴 테스트 실패");
         }
     }
 
