@@ -21,6 +21,9 @@ public class PlanInfo {
     @Column(name = "explanation", nullable = true)
     private String explanation;
 
+    @Column(name = "location", nullable = true)
+    private String location;
+
     /**
      * PlanInfo를 업데이트 하는 매서드
      * @param updatedPlanInfo 업데이트 할 PlanInfo타입의 인자
@@ -29,18 +32,19 @@ public class PlanInfo {
     public void updatePlanInfo(PlanInfo updatedPlanInfo){
         this.title = updatedPlanInfo.title != null ? updatedPlanInfo.title : this.title;
         this.explanation = updatedPlanInfo.explanation != null ? updatedPlanInfo.explanation : this.explanation;
+        this.location = updatedPlanInfo.location != null ? updatedPlanInfo.location : this.location;
     }
 
-    @Override @Generated
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PlanInfo)) return false;
         PlanInfo planInfo = (PlanInfo) o;
-        return getTitle().equals(planInfo.getTitle()) && getExplanation().equals(planInfo.getExplanation());
+        return Objects.equals(getTitle(), planInfo.getTitle()) && Objects.equals(getExplanation(), planInfo.getExplanation()) && Objects.equals(getLocation(), planInfo.getLocation());
     }
 
-    @Override @Generated
+    @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getExplanation());
+        return Objects.hash(getTitle(), getExplanation(), getLocation());
     }
 }
