@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원가입을 하는 서비스 로직 입니다.
      * @param memberDto
-     * @return - if, save 완료
+     * @return - save가 완료되면 memberEntity를 반환합니다.
      * @exception - else, 이미 존재하면 MemberAlreadyExistException
      * @author 배태현
      */
