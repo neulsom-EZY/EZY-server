@@ -97,7 +97,7 @@ public class MemberServiceImpl implements MemberService {
      * 로그아웃하는 서비스 로직
      * (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
      * @param request HttpServletRequest
-     * @return "로그아웃 되었습니다."
+     * @return void
      * @author 배태현
      */
     @Override
