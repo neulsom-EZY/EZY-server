@@ -20,7 +20,7 @@ public class TeamEntity {
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "plan_id")
     private TeamPlanEntity teamPlanEntity;
 
