@@ -29,4 +29,9 @@ public class TeamPlanEntity extends PlanEntity {
     public TeamPlanEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period){
         super(memberEntity, tagEntity, planInfo, period);
     }
+
+    public void updateTeamPlan(TeamPlanEntity teamPlanEntity){
+        planInfo.updatePlanInfo(teamPlanEntity.planInfo);
+        period.updatePeriod(teamPlanEntity.period);
+    }
 }
