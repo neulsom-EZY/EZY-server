@@ -82,7 +82,7 @@ public class MemberServiceTest {
         MemberEntity memberEntity = memberService.signup(memberDto);
 
         //then
-        assertTrue(memberEntity.getUsername() == "@BaeTul");
+        assertEquals("@BaeTul", memberEntity.getUsername());
     }
 
     @BeforeEach
