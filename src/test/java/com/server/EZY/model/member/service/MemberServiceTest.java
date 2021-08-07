@@ -215,7 +215,7 @@ public class MemberServiceTest {
         //when
         if (currentUser != null) {
             MemberEntity findByUsername = memberRepository.findByUsername(deleteUserDto.getUsername());
-            assertEquals(findByUsername.getUsername(), "@Baetaehyeon");
+            assertEquals("@Baetaehyeon", findByUsername.getUsername());
             assertTrue(passwordEncoder.matches(deleteUserDto.getPassword(), findByUsername.getPassword()));
 
             memberService.deleteUser(deleteUserDto);
