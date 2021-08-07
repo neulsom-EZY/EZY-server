@@ -8,8 +8,8 @@ import javax.persistence.*;
 import static javax.persistence.FetchType.*;
 
 @Entity @Table(name = "team")
-@Getter @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,13 @@ public class TeamEntity {
     @JoinColumn(name = "member_id")
     private MemberEntity memberEntity;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "plan_id")
     private TeamPlanEntity teamPlanEntity;
 
+    @Builder
+    public TeamEntity(MemberEntity memberEntity, TeamPlanEntity teamPlanEntity){
+        this.memberEntity = memberEntity;
+        this.teamPlanEntity = teamPlanEntity;
+    }
 }
