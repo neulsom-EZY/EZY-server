@@ -28,7 +28,7 @@ public class MemberController {
     /**
      * 회원가입 controller
      * @param memberDto userDto
-     * @return accessToken
+     * @return SuccessResult
      * @throws Exception Exception
      * @author 배태현
      */
@@ -56,7 +56,7 @@ public class MemberController {
     /**
      * 전화번호로 인증번호 보내기
      * @param phoneNumber
-     * @return true or false
+     * @return SuccessResult
      * @author 배태현
      */
     @PostMapping("/auth")
@@ -69,7 +69,7 @@ public class MemberController {
     /**
      * 받은 인증번호가 맞는지 인증하기
      * @param key
-     * @return (username) + 님 휴대전화 인증 완료
+     * @return SuccessResult
      * @author 배태현
      */
     @PostMapping("/auth/check")
@@ -82,7 +82,7 @@ public class MemberController {
     /**
      * username을 찾는 controller
      * @param phoneNumber
-     * @return 전화번호로 찾은 회원이름
+     * @return SingleResult(찾은 회원이름)
      */
     @PostMapping("/find/username")
     @ResponseStatus( HttpStatus.OK )
@@ -94,7 +94,7 @@ public class MemberController {
     /**
      * username 변경 controller
      * @param usernameChangeDto username, newUsername
-     * @return
+     * @return SuccessResult
      */
     @PutMapping("/change/username")
     @ResponseStatus( HttpStatus.OK )
@@ -107,7 +107,7 @@ public class MemberController {
      * 인증번호 인증을 한 뒤 <br>
      * 비밀번호를 변경하게하는 controller <br>
      * @param passwordChangeDto passwordChangeDto
-     * @return (회원이름)회원 비밀번호 변경완료
+     * @return SuccessResult
      * @author 배태현
      */
     @PutMapping ("/change/password")

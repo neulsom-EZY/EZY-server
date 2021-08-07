@@ -47,6 +47,13 @@ public class MemberServiceImpl implements MemberService {
 
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
 
+    /**
+     * 회원가입을 하는 서비스 로직 입니다.
+     * @param memberDto
+     * @return - if, save 완료
+     * @exception - else, 이미 존재하면 MemberAlreadyExistException
+     * @author 배태현
+     */
     @Override
     public MemberEntity signup(MemberDto memberDto) {
         if(!memberRepository.existsByUsername(memberDto.getUsername())){
@@ -58,6 +65,14 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /**
+     * 로그인을 하는 서비스 로직 입니다.
+     * @param loginDto
+     * @exception 1. username을 통해 회원을 찾을 수 있나요? || loginDto.getPassword()와 찾은 member의 password가 일치한가요?
+     * -> 하나라도 충족되지 않으면 MemberNotFoundException
+     * @return Map<String ,String> (username, accessToken, refreshToken)을 반환 합니다.
+     * @author 배태현
+     */
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(loginDto.getUsername());
@@ -79,7 +94,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그아웃하는 서비스 로직 (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
+     * 로그아웃하는 서비스 로직
+     * (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
      * @param request HttpServletRequest
      * @return "로그아웃 되었습니다."
      * @author 배태현
@@ -97,7 +113,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 전화번호로 인증번호를 보내는 로직
      * @param phoneNumber
-     * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
+     * @exception 1. phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
      * @return 문자로 인증번호 전송
      * @author 배태현
      */
@@ -128,7 +144,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 문자로 받은 인증번호로 인증하는 로직
      * @param key
-     * @return SuccessResult
+     * @return key
      * @author 배태현
      */
     @Override
@@ -142,11 +158,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 전화번호 인증을 완료한 뒤
-     * 전화번호를 한번 더 전송해 그 전화번호로
+     * 전화번호를 전송해 그 전화번호로
      * 회원을 찾고 회원의 이름을 알려주는 로직
      * @param phoneNumber
-     * @return Username
+     * @return memberEntity.getUsername()
      * @author 배태현
      */
     @Override
@@ -160,7 +175,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * username을 변경하는 서비스 로직
      * @param usernameChangeDto username, newUsername
-     * @return
+     * @return void
      * @author 배태현
      */
     @Override
@@ -175,7 +190,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 비밀번호를 변경하는 서비스 로직
      * @param passwordChangeDto username, newPassword
-     * @return (회원닉네임)회원 비밀번호 변경완료
+     * @return void
      * @author 배태현
      */
     @Override
@@ -190,7 +205,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 전화번호를 변경하는 서비스 로직
      * @param phoneNumberChangeDto username, newPhoneNumber
-     * @return username
+     * @return void
      * @author 배태현
      */
     @Override
@@ -205,7 +220,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원탈퇴 서비스 로직
      * @param deleteUserDto
-     * @return (회원이름)회원 회원탈퇴완료
+     * @return void
      * @author 배태현
      */
     @Override
