@@ -101,13 +101,11 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     @Override
-    public String logout(HttpServletRequest request) {
+    public void logout(HttpServletRequest request) {
         String accessToken = jwtTokenProvider.resolveToken(request);
         String username = jwtTokenProvider.getUsername(accessToken);
 
         redisUtil.deleteData(username);
-
-        return "로그아웃 되었습니다.";
     }
 
     /**
