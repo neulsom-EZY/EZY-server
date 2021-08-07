@@ -212,6 +212,8 @@ public class MemberServiceTest {
                 .password("0809")
                 .build();
 
+        boolean catchException = false;
+
         //when
         if (currentUser != null) {
             MemberEntity findByUsername = memberRepository.findByUsername(deleteUserDto.getUsername());
@@ -224,12 +226,14 @@ public class MemberServiceTest {
                 MemberEntity memberEntity = memberRepository.findByUsername(deleteUserDto.getUsername());
                 log.debug(memberEntity.getUsername());
             } catch (NullPointerException e) {
-                assertTrue(e != null);
+                catchException = true;
             }
 
         } else {
             Assertions.fail("회원탈퇴 테스트 실패");
         }
+
+        assertTrue(catchException);
     }
 
     /**
