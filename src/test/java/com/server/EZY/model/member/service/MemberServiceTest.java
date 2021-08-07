@@ -224,7 +224,7 @@ public class MemberServiceTest {
                 MemberEntity memberEntity = memberRepository.findByUsername(deleteUserDto.getUsername());
                 log.debug(memberEntity.getUsername());
             } catch (NullPointerException e) {
-                log.debug("테스트 성공");
+                assertTrue(e != null);
             }
 
         } else {
