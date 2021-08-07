@@ -1,5 +1,6 @@
 package com.server.EZY.model.member.controller;
 
+import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.dto.PasswordChangeDto;

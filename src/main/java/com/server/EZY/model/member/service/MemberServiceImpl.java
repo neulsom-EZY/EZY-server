@@ -48,13 +48,11 @@ public class MemberServiceImpl implements MemberService {
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
 
     @Override
-    public String signup(MemberDto memberDto) {
+    public MemberEntity signup(MemberDto memberDto) {
         if(!memberRepository.existsByUsername(memberDto.getUsername())){
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
-            MemberEntity memberEntity = memberRepository.save(memberDto.toEntity());
-
-            return memberEntity.getUsername();
+            return memberRepository.save(memberDto.toEntity());
         } else {
             throw new MemberAlreadyExistException();
         }
@@ -90,7 +88,9 @@ public class MemberServiceImpl implements MemberService {
     public String logout(HttpServletRequest request) {
         String accessToken = jwtTokenProvider.resolveToken(request);
         String username = jwtTokenProvider.getUsername(accessToken);
+
         redisUtil.deleteData(username);
+
         return "로그아웃 되었습니다.";
     }
 
@@ -165,13 +165,11 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     @Transactional
-    public String changeUsername(UsernameChangeDto usernameChangeDto) {
+    public void changeUsername(UsernameChangeDto usernameChangeDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(usernameChangeDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
 
         memberEntity.updateUsername(usernameChangeDto.getNewUsername());
-
-        return usernameChangeDto.getUsername() + "유저 " + usernameChangeDto.getNewUsername() + "(으)로 닉네임 업데이트 완료";
     }
 
     /**
@@ -182,12 +180,11 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     @Transactional
-    public String changePassword(PasswordChangeDto passwordChangeDto) {
+    public void changePassword(PasswordChangeDto passwordChangeDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
-        memberEntity.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
 
-        return passwordChangeDto.getUsername() + "회원 비밀번호 변경완료";
+        memberEntity.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
     }
 
     /**
@@ -198,12 +195,11 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     @Transactional
-    public String changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
+    public void changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(phoneNumberChangeDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
-        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
 
-        return memberEntity.getUsername();
+        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
     }
 
     /**
@@ -213,14 +209,12 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     @Override
-    public String deleteUser(AuthDto deleteUserDto) {
+    public void deleteUser(AuthDto deleteUserDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(deleteUserDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
 
         if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
             memberRepository.deleteById(memberEntity.getMemberIdx());
         }
-
-        return deleteUserDto.getUsername() + "회원 회원탈퇴완료";
     }
 }

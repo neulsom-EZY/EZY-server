@@ -1,5 +1,6 @@
 package com.server.EZY.model.member.service;
 
+import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ public interface MemberService {
      * @exception - else, 이미 존재하면 userAlreadyExist 터트리기.
      * @author 전지환
      */
-    String signup(MemberDto memberDto);
+    MemberEntity signup(MemberDto memberDto);
 
     /**
      * 로그인을 하는 서비스 로직 입니다.
@@ -35,12 +36,12 @@ public interface MemberService {
 
     String findUsername(String phoneNumber);
 
-    String changeUsername(UsernameChangeDto usernameChangeDto);
+    void changeUsername(UsernameChangeDto usernameChangeDto);
 
-    String changePassword(PasswordChangeDto passwordChangeDto);
+    void changePassword(PasswordChangeDto passwordChangeDto);
 
-    String changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto);
+    void changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto);
 
-    String deleteUser(AuthDto deleteUserDto);
+    void deleteUser(AuthDto deleteUserDto);
 
 }
