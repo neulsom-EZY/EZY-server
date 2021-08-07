@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TeamRepository extends JpaRepository<TeamEntity, Long> {
     List<TeamEntity> findAllByTeamPlanEntity(TeamPlanEntity teamPlanEntity);
+    void deleteAllByTeamPlanEntity(TeamPlanEntity teamPlanEntity);ㅎ
 }
