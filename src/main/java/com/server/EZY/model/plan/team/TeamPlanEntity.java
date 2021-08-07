@@ -17,9 +17,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamPlanEntity extends PlanEntity {
 
-    @Column(name = "team_leader_idx", updatable = false)
-    private Long teamLeaderId;
-
     /**
      * 개인일정을 추가하는 생성자
      * @param memberEntity 연관관계를 맻을 유저엔티티
