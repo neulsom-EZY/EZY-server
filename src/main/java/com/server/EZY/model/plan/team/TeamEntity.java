@@ -24,7 +24,4 @@ public class TeamEntity {
     @JoinColumn(name = "plan_id")
     private TeamPlanEntity teamPlanEntity;
 
-    @Column(name = "team_leader_idx", updatable = false)
-    private Long teamLeaderIdx;
-
 }
