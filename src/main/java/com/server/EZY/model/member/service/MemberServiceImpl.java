@@ -95,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 전화번호로 인증번호를 보내는 로직 (이미 회원가입 된 회원에게)
+     * 전화번호로 인증번호를 보내는 로직
      * @param phoneNumber
      * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
      * @return 문자로 인증번호 전송
@@ -103,11 +103,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void sendAuthKey(String phoneNumber) {
-        MemberEntity findByPhoneNumber = memberRepository.findByPhoneNumber(phoneNumber);
-        if (findByPhoneNumber == null) throw new AuthenticationNumberTransferFailedException();
-
         String authKey = keyUtil.getKey(4);
-        redisUtil.setDataExpire(authKey, findByPhoneNumber.getUsername(), KEY_EXPIRATION_TIME);
+        redisUtil.setDataExpire(authKey, authKey, KEY_EXPIRATION_TIME);
 
         Message coolsms = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();
@@ -136,14 +133,12 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public String validAuthKey(String key) {
-        String username = redisUtil.getData(key);
-
-        MemberEntity memberEntity = memberRepository.findByUsername(username);
-        if (memberEntity == null) throw new InvalidAuthenticationNumberException();
-
-        redisUtil.deleteData(key);
-
-        return username + "님 휴대전화 인증 완료";
+        if (key.equals(redisUtil.getData(key))) {
+            redisUtil.deleteData(key);
+            return key;
+        } else {
+            throw new InvalidAuthenticationNumberException();
+        }
     }
 
     /**
