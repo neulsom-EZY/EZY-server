@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity @Table(name = "team_plan")
-@Getter @Builder
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamPlanEntity extends PlanEntity {
 
