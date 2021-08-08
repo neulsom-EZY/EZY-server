@@ -10,12 +10,14 @@ import com.server.EZY.model.plan.tag.embeddedTypes.Color;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.model.plan.team.repository.team.TeamRepository;
 import com.server.EZY.model.plan.team.repository.teamPlan.TeamPlanRepository;
+import com.server.EZY.testConfig.QueryDslTestConfig;
 import edu.emory.mathcs.backport.java.util.Collections;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
@@ -24,7 +26,7 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
+@DataJpaTest @Import(QueryDslTestConfig.class)
 class TeamEntityTest {
     @Autowired TeamRepository teamRepository;
     @Autowired TeamPlanRepository teamPlanRepository;
@@ -204,7 +206,10 @@ class TeamEntityTest {
                         .build()
         );
 
-        // When
+        /*
+        1. 현재 TeamPlanEntity와 연관관계를 맻고있는 TeamEntity를 모두 찾아 삭제한다.
+        2. 해당 TeamPlan을 삭제한다.
+         */
         teamRepository.deleteAllByTeamPlanEntity(teamPlanEntity);
         teamPlanRepository.delete(teamPlanEntity);
 
@@ -217,8 +222,5 @@ class TeamEntityTest {
         );
         assertEquals(0, teamRepository.findAllByTeamPlanEntity(teamPlanEntity).size());
     }
-
-//    @Test @DisplayName("팀원 추가 로직 테스트")
-
 
 }
