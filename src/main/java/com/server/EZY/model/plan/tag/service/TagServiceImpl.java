@@ -22,4 +22,16 @@ public class TagServiceImpl implements TagService{
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
         return tagRepository.save(tagSetDto.saveToEntity(currentUser));
     }
+
+    @Override
+    public void deleteTag(Long tagIdx) throws Exception {
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
+        TagEntity tagEntity = tagRepository.findByTagIdx(tagIdx);
+
+        if (currentUser == tagEntity.getMemberEntity()){
+            tagRepository.delete(tagEntity);
+        } else{
+            throw new Exception("해당 태그를 삭제할 수 없습니다.");
+        }
+    }
 }
