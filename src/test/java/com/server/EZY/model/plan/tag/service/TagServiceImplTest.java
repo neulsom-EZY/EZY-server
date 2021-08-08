@@ -7,6 +7,7 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.tag.TagEntity;
 import com.server.EZY.model.plan.tag.dto.TagSetDto;
 import com.server.EZY.model.plan.tag.embeddedTypes.Color;
+import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,8 @@ class TagServiceImplTest {
 
     @Autowired
     private TagService tagService;
+    @Autowired
+    private TagRepository tagRepository;
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
@@ -82,5 +85,25 @@ class TagServiceImplTest {
 
         //Then
         assertEquals(tagSetDto.getTag(), saveTag.getTag());
+    }
+
+    @Test @DisplayName("Tag 를 삭제할 수 있나요?")
+    void 태그삭제() throws Exception {
+        //Given
+        TagSetDto tagSetDto = TagSetDto.builder()
+                .tag("지환이 태그")
+                .color(Color.builder()
+                        .red((short) 196)
+                        .green((short) 200)
+                        .blue((short) 255)
+                        .build())
+                .build();
+
+        //When
+        TagEntity saveTag = tagService.saveTag(tagSetDto);
+        tagService.deleteTag(saveTag.getTagIdx());
+
+        //Then
+        assertTrue(tagRepository.findByTagIdx(saveTag.getTagIdx()) == null);
     }
 }
