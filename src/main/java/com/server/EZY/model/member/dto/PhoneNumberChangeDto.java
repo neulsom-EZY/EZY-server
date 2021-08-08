@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class PasswordChangeDto {
+public class PhoneNumberChangeDto {
 
     @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")
@@ -16,6 +16,7 @@ public class PasswordChangeDto {
     private String username;
 
     @NotBlank
-    @Size(min = 4, max = 10)
-    private String newPassword;
+    @Pattern(regexp = "^[0-9]{11}$")
+    @Size(min = 11, max = 11)
+    private String newPhoneNumber;
 }

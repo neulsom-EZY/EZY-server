@@ -76,7 +76,7 @@ class ErrandServiceImplTest {
                         LocalDateTime.of(2021, 7, 24, 1, 30),
                         LocalDateTime.of(2021, 7, 24, 1, 30)
                 ))
-                .planInfo(new PlanInfo("전지환이랑", "놀고오세요"))
+                .planInfo(new PlanInfo("전지환이랑", "놀고오세요", "광주"))
                 .recipient("@kim")
                 .build();
 

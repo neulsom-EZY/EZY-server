@@ -7,13 +7,17 @@ import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @Transactional
+@AutoConfigureMockMvc
 @Slf4j
 public class MemberControllerTest {
 
@@ -114,9 +119,9 @@ public class MemberControllerTest {
 
     @Test
     @DisplayName("username 찾기 테스트")
-    public void findUsername() throws Exception {
+    public void findUsernameTest() throws Exception {
 
-        String content = objectMapper.writeValueAsString("01049977055");
+        String content = objectMapper.writeValueAsString("01012341234");
 
         final ResultActions actions = mvc.perform(post("/v1/member/find/username")
                 .content(content)
@@ -124,8 +129,7 @@ public class MemberControllerTest {
 
         actions
                 .andDo(print())
-                .andExpect(status().isOk()); //http status 200
-
+                .andExpect(status().isOk());
     }
 
     @Test

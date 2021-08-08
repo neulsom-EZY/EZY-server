@@ -78,7 +78,7 @@ class PersonalPlanServiceImplTest {
         // Given
         PersonalPlanEntity savedPersonalPlan = personalPlanService.createPersonalPlan(
                 PersonalPlanSetDto.builder()
-                        .planInfo(new PlanInfo("와우껌", "좋아요"))
+                        .planInfo(new PlanInfo("와우껌", "좋아요", "광주광역시"))
                         .period(new Period(
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
@@ -105,7 +105,7 @@ class PersonalPlanServiceImplTest {
                             LocalDateTime.of(2021, 7, 24, 1, 30),
                             LocalDateTime.of(2021, 7, 24, 1, 30)
                         )
-                ).planInfo(new PlanInfo("하이요", "오하이오")).build()
+                ).planInfo(new PlanInfo("하이요", "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -128,7 +128,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -152,7 +152,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -176,7 +176,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -190,7 +190,7 @@ class PersonalPlanServiceImplTest {
                                 LocalDateTime.of(2021, 2, 12, 1, 30),
                                 LocalDateTime.of(2021, 1, 25, 1, 30)
                         ))
-                        .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ"))
+                        .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ", "광주광역시"))
                         .build()
         );
 
@@ -209,7 +209,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 28, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(2).collect(Collectors.toList());
 
@@ -222,7 +222,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 22, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -247,7 +247,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 28, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주")).build()
 
         ).limit(2).collect(Collectors.toList());
 
@@ -260,7 +260,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 22, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주")).build()
 
         ).limit(5).collect(Collectors.toList());
 

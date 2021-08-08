@@ -92,6 +92,10 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
         this.password = password != null ? password : this.password;
     }
 
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber != null ? phoneNumber : this.phoneNumber;
+    }
+
     @Override @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
