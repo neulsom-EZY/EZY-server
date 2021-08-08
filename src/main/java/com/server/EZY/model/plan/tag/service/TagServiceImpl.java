@@ -24,6 +24,11 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
+    public TagEntity getAllTag() {
+        return null;
+    }
+
+    @Override
     public void deleteTag(Long tagIdx) throws Exception {
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(tagIdx);

@@ -5,5 +5,6 @@ import com.server.EZY.model.plan.tag.dto.TagSetDto;
 
 public interface TagService {
     TagEntity saveTag(TagSetDto tagSetDto);
+    TagEntity getAllTag();
     void deleteTag(Long tagIdx) throws Exception;
 }
