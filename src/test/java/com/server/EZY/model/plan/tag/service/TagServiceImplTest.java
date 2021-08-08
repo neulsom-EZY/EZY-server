@@ -105,5 +105,16 @@ class TagServiceImplTest {
 
         //Then
         assertTrue(tagRepository.findByTagIdx(saveTag.getTagIdx()) == null);
+
+        //Exception When
+        boolean condition = false;
+        try {
+            tagService.deleteTag(saveTag.getTagIdx());
+        } catch (Exception e){
+            condition = true;
+        }
+
+        //Exception Then
+        assertTrue(condition);
     }
 }
