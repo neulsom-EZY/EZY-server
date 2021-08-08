@@ -40,7 +40,7 @@ class TagServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    MemberEntity savedMemberEntity;
+    public MemberEntity savedMemberEntity;
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void GetUserEntity(){
