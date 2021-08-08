@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -108,5 +110,27 @@ class TagServiceImplTest {
 
         //Exception-Then
         assertThrows(Exception.class, () -> tagService.deleteTag(saveTag.getTagIdx()));
+    }
+
+    @Test @DisplayName("태그 전체 조회")
+    void 태그_전체_조회(){
+        //Given
+        List<TagEntity> tagEntities = Stream.generate(
+                () -> TagEntity.builder()
+                        .tag("Hi")
+                        .color(Color.builder()
+                                .red((short) 196)
+                                .green((short) 200)
+                                .blue((short) 255)
+                                .build()
+                        ).memberEntity(savedMemberEntity)
+                        .build()).limit(2).collect(Collectors.toList());
+
+        //When
+        List<TagEntity> tagEntityList = tagRepository.saveAll(tagEntities);
+        List<TagEntity> allTag = tagService.getAllTag();
+
+        //Then
+        assertEquals(allTag.size(), tagEntityList.size());
     }
 }
