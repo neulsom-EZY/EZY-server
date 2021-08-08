@@ -1,7 +1,11 @@
 package com.server.EZY.model.plan.tag.controller;
 
+import com.server.EZY.model.plan.tag.dto.TagSetDto;
+import com.server.EZY.model.plan.tag.service.TagService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,16 +14,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TagController {
 
+    private final TagService tagService;
     private final ResponseService responseService;
 
     /**
      * 태그를 추가하는 Controller
-     * @param tag
-     * @return
-     * @author 배태현
+     * @param tagSetDto
+     * @return getSuccessResult
+     * @author 전지환
      */
     @PostMapping("")
-    public CommonResult addTag(String tag) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult addTag(@RequestBody TagSetDto tagSetDto) {
+        tagService.saveTag(tagSetDto);
         return responseService.getSuccessResult();
     }
 
