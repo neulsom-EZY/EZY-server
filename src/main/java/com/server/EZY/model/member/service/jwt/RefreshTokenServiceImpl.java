@@ -24,6 +24,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
 
+    private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
+
     /**
      * accessToken에서 가져온 username과, refreshToken으로 새로운 accessToken과 refreshToken을 생성하는 메서드
      * @param nickname, refreshToken
@@ -47,9 +49,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             newAccessToken = jwtTokenProvider.createToken(nickname, roles);
             newRefreshToken = jwtTokenProvider.createRefreshToken();
 
-            redisUtil.setDataExpire(nickname, newRefreshToken, 360000 * 1000l* 24 * 180); //새 refreshToken을 다시 저장
+            redisUtil.setDataExpire(nickname, newRefreshToken, REDIS_EXPIRATION_TIME); //새 refreshToken을 다시 저장
 
-            map.put("username", nickname);
+            map.put("nickname", nickname);
             map.put("NewAccessToken", "Bearer " + newAccessToken); // NewAccessToken 반환
             map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
 
