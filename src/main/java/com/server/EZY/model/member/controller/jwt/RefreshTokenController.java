@@ -25,6 +25,11 @@ public class RefreshTokenController {
     private final ResponseService responseService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * accessToken, refreshToken을 재발급 받는 controller
+     * @param request
+     * @return SingleResult (NewAccessToken, NewRefreshToken, nickname)
+     */
     @GetMapping("/refreshtoken")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({

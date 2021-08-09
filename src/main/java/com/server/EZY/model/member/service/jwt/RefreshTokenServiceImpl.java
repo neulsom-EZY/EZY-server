@@ -25,7 +25,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final RedisUtil redisUtil;
 
     /**
-     * accessToken과 refresh토큰을 이용하여 새로운 accessToken과 refreshToken을 생성하는 메서드
+     * accessToken에서 가져온 username과, refreshToken으로 새로운 accessToken과 refreshToken을 생성하는 메서드
      * @param nickname, refreshToken
      * @return Map<String, String> username, newAccessToken, newRefreshToken
      * @author 배태현
