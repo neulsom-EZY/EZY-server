@@ -42,7 +42,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
-    void GetUserEntity(){
+    void getUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
                 .username("@asdfasdf")
@@ -203,7 +203,7 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("회원탈퇴 테스트")
-    public void DeleteMemberTest() {
+    public void deleteMemberTest() {
         //given
         MemberEntity currentUser = currentUser();
 
