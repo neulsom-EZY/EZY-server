@@ -121,6 +121,8 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					'**/exception/**'
 					,'**/dto/**'
+					,'**/repository/**' // DAO(repository)
+					,'**/embeddedTypes/**' //embeddedTypes 제거
 					,'**/EZY/EzyApplication*'
 					,'**/EZY/**/*Test*'
 					,'**/EZY/**/Q*' // Q class 제거
