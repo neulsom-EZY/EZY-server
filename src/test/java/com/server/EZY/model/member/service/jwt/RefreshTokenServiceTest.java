@@ -79,11 +79,12 @@ class RefreshTokenServiceTest {
 
         //when
         Map<String, String> tokenMap = refreshTokenService.getRefreshToken(nickname, refreshToken);
-        String newAccessToken = tokenMap.get("NewAccessToken");
 
-        if (newAccessToken != null && newAccessToken.startsWith("Bearer ")) {
-            newAccessToken = newAccessToken.substring(7);
-        }
+        String newAccessToken = tokenMap.get("NewAccessToken");
+        //검증
+        assertTrue(newAccessToken.startsWith("Bearer "));
+
+        newAccessToken = newAccessToken.substring(7);
 
         //then
         assertThat(tokenMap.get("nickname")).isEqualTo(nickname);
