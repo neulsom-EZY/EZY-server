@@ -41,8 +41,6 @@ public class MemberServiceTest {
     private MemberService memberService;
     @Autowired
     private RedisUtil redisUtil;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     @Test
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")

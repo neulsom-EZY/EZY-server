@@ -22,7 +22,6 @@ public class CertifiedMemberController {
 
     private final MemberService memberService;
     private final ResponseService responseService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     //이 Controller가 return이 아무값도 return되지않음 공백이 뜸 (POSTMAN에서 확인)
 
