@@ -113,6 +113,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("로그아웃 테스트")
     public void logoutTest() {
         //given
         AuthDto loginDto = AuthDto.builder()
