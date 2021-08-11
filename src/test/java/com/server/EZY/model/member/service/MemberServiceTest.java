@@ -39,6 +39,10 @@ public class MemberServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Test
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
@@ -108,6 +112,23 @@ public class MemberServiceTest {
         Map<String, String> signin = memberService.signin(loginDto);
         //then
         assertTrue(true, String.valueOf(signin != null));
+    }
+
+    @Test
+    public void logoutTest() {
+        //given
+        AuthDto loginDto = AuthDto.builder()
+                .username("@Baetaehyeon")
+                .password("0809")
+                .build();
+
+        memberService.signin(loginDto);
+
+        //when
+        memberService.logout(loginDto.getUsername());
+
+        //then
+        assertNull(redisUtil.getData(loginDto.getUsername()));
     }
 
     @Test
