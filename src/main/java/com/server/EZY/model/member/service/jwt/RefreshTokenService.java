@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface RefreshTokenService {
 
-    Map<String, String> getRefreshToken(HttpServletRequest request);
+    Map<String, String> getRefreshToken(String nickname, String refreshToken);
 }

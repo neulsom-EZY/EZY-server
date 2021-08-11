@@ -3,6 +3,7 @@ package com.server.EZY.model.member.controller.jwt;
 import com.server.EZY.model.member.service.jwt.RefreshTokenService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.SingleResult;
+import com.server.EZY.security.jwt.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,13 @@ public class RefreshTokenController {
 
     private final RefreshTokenService refreshTokenService;
     private final ResponseService responseService;
+    private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * accessToken, refreshToken을 재발급 받는 controller
+     * @param request
+     * @return SingleResult (NewAccessToken, NewRefreshToken, nickname)
+     */
     @GetMapping("/refreshtoken")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
@@ -30,7 +37,7 @@ public class RefreshTokenController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public SingleResult<Map<String, String>> refresh(HttpServletRequest request) {
-        Map<String, String> map = refreshTokenService.getRefreshToken(request);
+        Map<String, String> map = refreshTokenService.getRefreshToken(request.getRemoteUser(), jwtTokenProvider.resolveRefreshToken(request));
         return responseService.getSingleResult(map);
     }
 }
