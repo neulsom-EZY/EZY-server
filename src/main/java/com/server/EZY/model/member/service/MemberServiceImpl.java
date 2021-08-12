@@ -96,16 +96,13 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 로그아웃하는 서비스 로직
      * (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
-     * @param request HttpServletRequest
+     * @param nickname
      * @return void
      * @author 배태현
      */
     @Override
-    public void logout(HttpServletRequest request) {
-        String accessToken = jwtTokenProvider.resolveToken(request);
-        String username = jwtTokenProvider.getUsername(accessToken);
-
-        redisUtil.deleteData(username);
+    public void logout(String nickname) {
+        redisUtil.deleteData(nickname);
     }
 
     /**

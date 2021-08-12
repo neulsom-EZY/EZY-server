@@ -13,7 +13,7 @@ public interface MemberService {
 
     Map<String, String> signin(AuthDto loginDto);
 
-    void logout(HttpServletRequest request);
+    void logout(String nickname);
 
     void sendAuthKey(String phoneNumber);
 
