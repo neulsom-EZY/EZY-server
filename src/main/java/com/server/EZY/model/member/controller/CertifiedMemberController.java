@@ -5,6 +5,7 @@ import com.server.EZY.model.member.dto.PhoneNumberChangeDto;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
+import com.server.EZY.security.jwt.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class CertifiedMemberController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult logout(HttpServletRequest request) {
-        memberService.logout(request);
+        memberService.logout(request.getRemoteUser());
         return responseService.getSuccessResult();
     }
 

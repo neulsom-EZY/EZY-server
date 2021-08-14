@@ -48,7 +48,7 @@ public class CertifiedMemberControllerTest {
     
     @Test
     @DisplayName("회원탈퇴 테스트")
-    public void withdrawalTest() throws Exception {
+    public void deleteMemberTest() throws Exception {
 
         AuthDto deleteUserDto = AuthDto.builder()
                 .username("@BaeTul")

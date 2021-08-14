@@ -1,13 +1,13 @@
 package com.server.EZY.model.plan.personal;
 
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
-import com.server.EZY.model.plan.embeddedTypes.Period;
-import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
+import com.server.EZY.model.plan.embedded_type.Period;
+import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.tag.TagEntity;
-import com.server.EZY.model.plan.tag.embeddedTypes.Color;
+import com.server.EZY.model.plan.tag.embedded_type.Color;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.DisplayName;

@@ -2,7 +2,7 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.exception.unknownException.UnknownExceptionHandler;
+import com.server.EZY.exception.unknown_exception.UnknownExceptionHandler;
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

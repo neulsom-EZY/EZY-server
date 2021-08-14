@@ -2,11 +2,11 @@ package com.server.EZY.model.plan.tag.service;
 
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.MemberDto;
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.tag.TagEntity;
 import com.server.EZY.model.plan.tag.dto.TagSetDto;
-import com.server.EZY.model.plan.tag.embeddedTypes.Color;
+import com.server.EZY.model.plan.tag.embedded_type.Color;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
