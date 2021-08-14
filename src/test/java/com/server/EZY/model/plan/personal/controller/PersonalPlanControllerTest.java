@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.personal.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.controller.jwt.RefreshTokenController;
@@ -36,8 +35,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class PersonalPlanControllerTest extends AbstractControllerTest {
     @Autowired
     private PersonalPlanController personalPlanController;
-    @Autowired
-    private RefreshTokenController refreshTokenController;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
