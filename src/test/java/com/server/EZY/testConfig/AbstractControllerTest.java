@@ -9,6 +9,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 public abstract class AbstractControllerTest {
@@ -28,6 +29,7 @@ public abstract class AbstractControllerTest {
         mvc = MockMvcBuilders.standaloneSetup(controller())
                 .addFilter(new CharacterEncodingFilter(StandardCharsets.UTF_8.name(), true))
                 .alwaysDo(print())
+                .alwaysExpect(status().isOk())
                 .build();
     }
 }
