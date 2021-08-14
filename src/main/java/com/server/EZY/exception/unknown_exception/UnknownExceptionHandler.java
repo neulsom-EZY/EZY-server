@@ -1,4 +1,4 @@
-package com.server.EZY.exception.unknownException;
+package com.server.EZY.exception.unknown_exception;
 
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.util.ExceptionResponseObjectUtil;

@@ -1,7 +1,7 @@
-package com.server.EZY.exception.authenticationNumber;
+package com.server.EZY.exception.authentication_number;
 
-import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
-import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

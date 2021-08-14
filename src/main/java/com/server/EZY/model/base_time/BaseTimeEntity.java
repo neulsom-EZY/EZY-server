@@ -1,4 +1,4 @@
-package com.server.EZY.model.baseTime;
+package com.server.EZY.model.base_time;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

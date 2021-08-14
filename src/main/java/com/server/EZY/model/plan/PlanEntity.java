@@ -1,6 +1,6 @@
 package com.server.EZY.model.plan;
 
-import com.server.EZY.model.baseTime.BaseTimeEntity;
+import com.server.EZY.model.base_time.BaseTimeEntity;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;

@@ -1,4 +1,4 @@
-package com.server.EZY.exception.authenticationNumber.exception;
+package com.server.EZY.exception.authentication_number.exception;
 
 public class AuthenticationNumberTransferFailedException extends RuntimeException{
     public AuthenticationNumberTransferFailedException(String msg, Throwable t){

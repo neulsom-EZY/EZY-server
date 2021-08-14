@@ -1,6 +1,6 @@
-package com.server.EZY.exception.basicError.controller;
+package com.server.EZY.exception.basic_error.controller;
 
-import com.server.EZY.exception.basicError.BasicErrorHandler;
+import com.server.EZY.exception.basic_error.BasicErrorHandler;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;

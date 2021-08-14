@@ -1,6 +1,6 @@
 package com.server.EZY.model.member;
 
-import com.server.EZY.model.baseTime.BaseTimeEntity;
+import com.server.EZY.model.base_time.BaseTimeEntity;
 import com.server.EZY.model.member.enum_type.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
