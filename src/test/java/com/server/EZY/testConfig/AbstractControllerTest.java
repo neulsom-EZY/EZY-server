@@ -21,6 +21,7 @@ public abstract class AbstractControllerTest {
      * MockMvcBuilders 를 활용한 MockMvc 커스텀 메서드
      * 1. addFilter: UTF-8 인코딩을 해주지 않으면 테스트 수행 시 body가 깨진다.
      * 2. alwaysDo: 항상 콘솔에 테스트 결과를 찍어줘라.
+     * 3. alwaysExpect: 항상 200 코드를 반환하기를 기대한다.
      *
      * @author: 전지환
      */
