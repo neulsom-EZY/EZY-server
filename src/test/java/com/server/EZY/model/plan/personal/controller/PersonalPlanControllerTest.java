@@ -2,7 +2,6 @@ package com.server.EZY.model.plan.personal.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.member.controller.jwt.RefreshTokenController;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
