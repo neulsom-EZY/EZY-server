@@ -1,4 +1,4 @@
-package com.server.EZY.model.member.enumType;
+package com.server.EZY.model.member.enum_type;
 
 import org.springframework.security.core.GrantedAuthority;
 

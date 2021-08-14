@@ -1,7 +1,7 @@
 package com.server.EZY.model.member.dto;
 
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;

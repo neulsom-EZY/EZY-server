@@ -1,6 +1,6 @@
 package com.server.EZY.model.plan.errand;
 
-import com.server.EZY.model.plan.errand.enumType.ResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ResponseStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,9 +1,6 @@
 package com.server.EZY.security.jwt;
 
-import com.server.EZY.exception.token.exception.AuthorizationHeaderIsEmpty;
-import com.server.EZY.exception.token.exception.InvalidTokenException;
-import com.server.EZY.exception.token.exception.RefreshTokenHeaderIsEmpty;
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.security.Authentication.MyUserDetails;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;

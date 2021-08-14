@@ -1,6 +1,6 @@
 package com.server.EZY.model.member.dto;
 
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.MemberEntity;
 import lombok.*;
 

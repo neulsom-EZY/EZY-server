@@ -2,8 +2,8 @@ package com.server.EZY.model.plan.errand;
 
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.PlanEntity;
-import com.server.EZY.model.plan.embeddedTypes.Period;
-import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
+import com.server.EZY.model.plan.embedded_type.Period;
+import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.tag.TagEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
