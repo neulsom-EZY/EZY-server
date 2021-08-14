@@ -1,5 +1,7 @@
 package com.server.EZY.model.member.service.jwt;
 
+import com.server.EZY.exception.token.exception.TokenLoggedOutException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.enum_type.Role;
@@ -16,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class RefreshTokenServiceTest {
 
     @Autowired
@@ -89,5 +93,20 @@ class RefreshTokenServiceTest {
         assertNotNull(newAccessToken);
         assertThat(jwtTokenProvider.getUsername(newAccessToken)).isEqualTo(nickname);
         assertNotEquals(refreshToken, tokenMap.get("NewRefreshToken"));
+    }
+    
+    @Test
+    @DisplayName("토큰이 재발급을 실패했을 때 예외를 던지나요?")
+    public void tokenException() {
+        //given
+        String nickname = currentUser().getUsername();
+        String refreshToken = jwtTokenProvider.createRefreshToken();
+        redisUtil.setDataExpire("nickname", refreshToken, REDIS_EXPIRATION_TIME);
+
+        //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> refreshTokenService.getRefreshToken(nickname, refreshToken)
+        );
     }
 }
