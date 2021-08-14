@@ -1,7 +1,7 @@
-package com.server.EZY.exception.authenticationNumber;
+package com.server.EZY.exception.authentication_number;
 
-import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
-import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;

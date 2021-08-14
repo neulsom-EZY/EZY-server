@@ -1,6 +1,5 @@
 package com.server.EZY.security;
 
-import com.server.EZY.model.member.enumType.Role;
 import com.server.EZY.security.jwt.JwtTokenFilterConfigurer;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;

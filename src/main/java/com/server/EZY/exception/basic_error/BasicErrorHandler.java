@@ -1,4 +1,4 @@
-package com.server.EZY.exception.basicError;
+package com.server.EZY.exception.basic_error;
 
 import com.server.EZY.exception.response.CustomException;
 import lombok.RequiredArgsConstructor;

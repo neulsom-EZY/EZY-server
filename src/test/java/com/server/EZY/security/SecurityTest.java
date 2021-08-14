@@ -2,7 +2,7 @@ package com.server.EZY.security;
 
 
 import com.server.EZY.model.member.dto.MemberDto;
-import com.server.EZY.security.Authentication.MyUserDetails;
+import com.server.EZY.security.authentication.MyUserDetails;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;

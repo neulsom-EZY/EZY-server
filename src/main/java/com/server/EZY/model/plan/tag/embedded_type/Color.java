@@ -1,4 +1,4 @@
-package com.server.EZY.model.plan.tag.embeddedTypes;
+package com.server.EZY.model.plan.tag.embedded_type;
 
 import lombok.*;
 
