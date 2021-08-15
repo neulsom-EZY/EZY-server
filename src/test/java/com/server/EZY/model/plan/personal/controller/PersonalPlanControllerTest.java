@@ -108,4 +108,15 @@ class PersonalPlanControllerTest extends AbstractControllerTest {
                 .params(params)
         );
     }
+
+    @Test
+    public void getThisPersonalPlan() throws Exception{
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("planIdx", "1L");
+
+        mvc.perform(
+                get("/v1/plan/personal")
+                .params(params)
+        );
+    }
 }
