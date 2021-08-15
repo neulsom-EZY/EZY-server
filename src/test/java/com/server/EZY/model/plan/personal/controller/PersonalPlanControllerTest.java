@@ -22,6 +22,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -92,6 +94,18 @@ class PersonalPlanControllerTest extends AbstractControllerTest {
                 post("/v1/plan/personal")
                 .content(mapper.writeValueAsString(personalPlanSetDto))
                 .contentType(MediaType.APPLICATION_JSON)
+        );
+    }
+
+    @Test
+    public void getAllPersonalPlan() throws Exception{
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("startDate", "2020-10-22");
+        params.add("endDate", "2020-12-12");
+
+        mvc.perform(
+                get("/v1/plan/personal")
+                .params(params)
         );
     }
 }
