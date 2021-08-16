@@ -54,7 +54,7 @@ public class TagController {
      * @author 전지환, 배태현
      */
     @DeleteMapping("/{tagIdx}")
-    public CommonResult deleteTag(@PathVariable("tagIdx") Long tagIdx) throws Exception {
+    public CommonResult deleteThisTag(@PathVariable("tagIdx") Long tagIdx) throws Exception {
         tagService.deleteTag(tagIdx);
         return responseService.getSuccessResult();
     }
