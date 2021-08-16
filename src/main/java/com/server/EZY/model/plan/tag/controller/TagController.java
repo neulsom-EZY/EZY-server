@@ -35,13 +35,16 @@ public class TagController {
 
     /**
      * 태그를 조회하는 Controller
-     * @param tagIdx
-     * @return
-     * @author 배태현
+     * @return getListResult
+     * @author 전지환
      */
-    @GetMapping("/{tagIdx}")
-    public CommonResult getTag(@PathVariable("tagIdx") Long tagIdx) {
-        return responseService.getSuccessResult();
+    @GetMapping("")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult getAllTag() {
+        return responseService.getListResult(tagService.getAllTag());
     }
 
     /**
