@@ -21,7 +21,7 @@ public class TagController {
      * 태그를 추가하는 Controller
      * @param tagSetDto
      * @return getSuccessResult
-     * @author 전지환
+     * @author 전지환, 배태현
      */
     @PostMapping("")
     @ApiImplicitParams({
@@ -36,7 +36,7 @@ public class TagController {
     /**
      * 태그를 조회하는 Controller
      * @return getListResult
-     * @author 전지환
+     * @author 전지환, 배태현
      */
     @GetMapping("")
     @ApiImplicitParams({
@@ -50,11 +50,12 @@ public class TagController {
     /**
      * 태그를 삭제하는 Controller
      * @param tagIdx
-     * @return
-     * @author 배태현
+     * @return getSuccessResult
+     * @author 전지환, 배태현
      */
     @DeleteMapping("/{tagIdx}")
-    public CommonResult deleteTag(@PathVariable("tagIdx") Long tagIdx) {
+    public CommonResult deleteTag(@PathVariable("tagIdx") Long tagIdx) throws Exception {
+        tagService.deleteTag(tagIdx);
         return responseService.getSuccessResult();
     }
 }
