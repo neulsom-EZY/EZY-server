@@ -54,6 +54,10 @@ public class TagController {
      * @author 전지환, 배태현
      */
     @DeleteMapping("/{tagIdx}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
     public CommonResult deleteThisTag(@PathVariable("tagIdx") Long tagIdx) throws Exception {
         tagService.deleteTag(tagIdx);
         return responseService.getSuccessResult();
