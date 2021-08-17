@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.tag.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.MemberDto;
@@ -12,7 +11,6 @@ import com.server.EZY.testConfig.AbstractControllerTest;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest @Transactional @Slf4j
 public class TagControllerTest extends AbstractControllerTest {
@@ -90,6 +88,13 @@ public class TagControllerTest extends AbstractControllerTest {
                 post("/v1/tag")
                 .content(mapper.writeValueAsString(tagSetDto))
                 .contentType(MediaType.APPLICATION_JSON)
+        );
+    }
+
+    @Test @DisplayName("태그 전체 조회 controller 테스트")
+    void getAllTag() throws Exception {
+        mvc.perform(
+                get("/v1/tag")
         );
     }
 }
