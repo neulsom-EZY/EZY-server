@@ -21,7 +21,7 @@ public class TagController {
      * 태그를 추가하는 Controller
      * @param tagSetDto
      * @return getSuccessResult
-     * @author 전지환
+     * @author 전지환, 배태현
      */
     @PostMapping("")
     @ApiImplicitParams({
@@ -35,23 +35,31 @@ public class TagController {
 
     /**
      * 태그를 조회하는 Controller
-     * @param tagIdx
-     * @return
-     * @author 배태현
+     * @return getListResult
+     * @author 전지환, 배태현
      */
-    @GetMapping("/{tagIdx}")
-    public CommonResult getTag(@PathVariable("tagIdx") Long tagIdx) {
-        return responseService.getSuccessResult();
+    @GetMapping("")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult getAllTag() {
+        return responseService.getListResult(tagService.getAllTag());
     }
 
     /**
      * 태그를 삭제하는 Controller
      * @param tagIdx
-     * @return
-     * @author 배태현
+     * @return getSuccessResult
+     * @author 전지환, 배태현
      */
     @DeleteMapping("/{tagIdx}")
-    public CommonResult deleteTag(@PathVariable("tagIdx") Long tagIdx) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult deleteThisTag(@PathVariable("tagIdx") Long tagIdx) throws Exception {
+        tagService.deleteTag(tagIdx);
         return responseService.getSuccessResult();
     }
 }
