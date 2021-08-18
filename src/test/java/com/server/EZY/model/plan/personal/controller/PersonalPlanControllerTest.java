@@ -11,6 +11,7 @@ import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.testConfig.AbstractControllerTest;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -92,6 +95,62 @@ class PersonalPlanControllerTest extends AbstractControllerTest {
                 post("/v1/plan/personal")
                 .content(mapper.writeValueAsString(personalPlanSetDto))
                 .contentType(MediaType.APPLICATION_JSON)
+        );
+    }
+
+    @Test
+    public void getAllPersonalPlan() throws Exception{
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("startDate", "2020-10-22");
+        params.add("endDate", "2020-12-12");
+
+        mvc.perform(
+                get("/v1/plan/personal")
+                .params(params)
+        );
+    }
+
+    @Test
+    public void getThisPersonalPlan() throws Exception{
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("planIdx", "1L");
+
+        mvc.perform(
+                get("/v1/plan/personal")
+                .params(params)
+        );
+    }
+
+    @Test @Disabled
+    public void updateThisPersonalPlan() throws Exception{
+        PersonalPlanSetDto personalPlanSetDto = PersonalPlanSetDto.builder()
+                .planInfo(new PlanInfo("이걸", "변경할거야", "광주광역시"))
+                .period(new Period(
+                                LocalDateTime.of(2021, 7, 24, 1, 30),
+                                LocalDateTime.of(2021, 7, 24, 1, 30)
+                        )
+                )
+                .tagIdx(1L)
+                .repetition(false)
+                .build();
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("planIdx", "1L");
+
+        mvc.perform(
+                put("/v1/plan/personal/{planIdx}", 1L)
+                        .content(mapper.writeValueAsString(personalPlanSetDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+    }
+
+    @Test @Disabled
+    public void deleteThisPersonalPlan() throws Exception{
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("planIdx", "1");
+
+        mvc.perform(
+                delete("/v1/plan/personal/{planIdx}", 1L)
         );
     }
 }
