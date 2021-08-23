@@ -222,6 +222,21 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("memberEntity가 null이라면 MemberNotFoundException이 터지나요?")
+    public void changeUsernameException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.changeUsername(
+                        UsernameChangeDto.builder()
+                                .username("NoUser")
+                                .newUsername("@qoxogus")
+                                .build()
+                )
+        );
+    }
+
+    @Test
     @DisplayName("비밀번호 변경 테스트")
     public void changePasswordTest() {
         //given
