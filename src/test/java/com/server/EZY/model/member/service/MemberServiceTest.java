@@ -142,6 +142,16 @@ public class MemberServiceTest {
                                 .build()
                 )
         );
+
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.signin(
+                        AuthDto.builder()
+                                .username("NoUser")
+                                .password("0809")
+                                .build()
+                )
+        );
     }
 
     @Test
