@@ -186,6 +186,15 @@ public class MemberServiceTest {
     }
 
     @Test
+    public void findUsernameException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.findUsername("NoUser")
+        );
+    }
+
+    @Test
     @DisplayName("Username 변경 테스트")
     public void changeUsername() {
         //given
