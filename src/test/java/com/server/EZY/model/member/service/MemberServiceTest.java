@@ -1,5 +1,6 @@
 package com.server.EZY.model.member.service;
 
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.controller.MemberController;
 import com.server.EZY.model.member.dto.*;
@@ -83,6 +84,23 @@ public class MemberServiceTest {
 
         //then
         assertEquals("@BaeTul", memberEntity.getUsername());
+    }
+
+    @Test
+    @DisplayName("이미 회원가입된 유저입니다 Exception을 반환하는 테스트")
+    public void signupException() {
+        //given
+        MemberDto memberDto = MemberDto.builder()
+                .username(currentUser().getUsername())
+                .password("0809")
+                .phoneNumber("01008090809")
+                .build();
+
+        //when //then
+        assertThrows(
+                MemberAlreadyExistException.class,
+                () -> memberService.signup(memberDto)
+        );
     }
 
     @BeforeEach
