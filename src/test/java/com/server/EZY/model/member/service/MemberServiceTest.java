@@ -1,6 +1,7 @@
 package com.server.EZY.model.member.service;
 
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.controller.MemberController;
 import com.server.EZY.model.member.dto.*;
@@ -126,6 +127,20 @@ public class MemberServiceTest {
         Map<String, String> signin = memberService.signin(loginDto);
         //then
         assertTrue(true, String.valueOf(signin != null));
+    }
+
+    @Test
+    public void signinException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.signin(
+                        AuthDto.builder()
+                                .username(currentUser().getUsername())
+                                .password("0809")
+                                .build()
+                )
+        );
     }
 
     @Test
