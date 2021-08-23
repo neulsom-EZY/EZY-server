@@ -354,6 +354,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("deleteUser에서 MemberNotFoundException이 잘 터지나요?")
     public void deleteUserException() {
         //given //when //then
         assertThrows(
