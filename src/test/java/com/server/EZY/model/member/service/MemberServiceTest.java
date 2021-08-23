@@ -353,6 +353,30 @@ public class MemberServiceTest {
         assertTrue(catchException);
     }
 
+    @Test
+    public void deleteUserException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.deleteUser(
+                        AuthDto.builder()
+                                .username("NoUser")
+                                .password("5678")
+                                .build()
+                )
+        );
+
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.deleteUser(
+                        AuthDto.builder()
+                                .username("@Baetaehyeon")
+                                .password("0000")
+                                .build()
+                )
+        );
+    }
+
     /**
      * 로그인이 되어있는 유저를 만들기위해 뺀 메서드
      * @return loginUser(현재 로그인되어있는 유저)
