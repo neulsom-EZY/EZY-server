@@ -130,6 +130,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호가 일치하지 않는다면 Exception이 터지나요?")
     public void signinException() {
         //given //when //then
         assertThrows(
