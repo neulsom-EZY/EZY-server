@@ -224,6 +224,6 @@ public class MemberServiceImpl implements MemberService {
 
         if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
             memberRepository.deleteById(memberEntity.getMemberIdx());
-        }
+        } else throw new MemberNotFoundException();
     }
 }
