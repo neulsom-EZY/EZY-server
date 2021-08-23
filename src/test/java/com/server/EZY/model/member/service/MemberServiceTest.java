@@ -263,6 +263,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("찾을 수 없는 user Exception이 터지나요?")
     public void changePasswordException() {
         //given //when //then
         assertThrows(
