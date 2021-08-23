@@ -1,5 +1,7 @@
 package com.server.EZY.model.member.service;
 
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.controller.MemberController;
 import com.server.EZY.model.member.dto.*;
@@ -85,6 +87,23 @@ public class MemberServiceTest {
         assertEquals("@BaeTul", memberEntity.getUsername());
     }
 
+    @Test
+    @DisplayName("이미 회원가입된 유저입니다 Exception을 반환하는 테스트")
+    public void signupException() {
+        //given
+        MemberDto memberDto = MemberDto.builder()
+                .username(currentUser().getUsername())
+                .password("0809")
+                .phoneNumber("01008090809")
+                .build();
+
+        //when //then
+        assertThrows(
+                MemberAlreadyExistException.class,
+                () -> memberService.signup(memberDto)
+        );
+    }
+
     @BeforeEach
     public void before(@Autowired MemberController memberController) {
 
@@ -108,6 +127,31 @@ public class MemberServiceTest {
         Map<String, String> signin = memberService.signin(loginDto);
         //then
         assertTrue(true, String.valueOf(signin != null));
+    }
+
+    @Test
+    @DisplayName("비밀번호가 일치하지 않는다면 Exception이 터지나요?")
+    public void signinException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.signin(
+                        AuthDto.builder()
+                                .username(currentUser().getUsername())
+                                .password("0809")
+                                .build()
+                )
+        );
+
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.signin(
+                        AuthDto.builder()
+                                .username("NoUser")
+                                .password("0809")
+                                .build()
+                )
+        );
     }
 
     @Test
@@ -142,6 +186,16 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입된 유저가 아닐 때 Exception이 터지나요?")
+    public void findUsernameException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.findUsername("NoUser")
+        );
+    }
+
+    @Test
     @DisplayName("Username 변경 테스트")
     public void changeUsername() {
         //given
@@ -165,6 +219,21 @@ public class MemberServiceTest {
         } else {
             Assertions.fail("닉네임 변경 테스트 실패");
         }
+    }
+
+    @Test
+    @DisplayName("memberEntity가 null이라면 MemberNotFoundException이 터지나요?")
+    public void changeUsernameException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.changeUsername(
+                        UsernameChangeDto.builder()
+                                .username("NoUser")
+                                .newUsername("@qoxogus")
+                                .build()
+                )
+        );
     }
 
     @Test
@@ -194,6 +263,21 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("찾을 수 없는 user Exception이 터지나요?")
+    public void changePasswordException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.changePassword(
+                        PasswordChangeDto.builder()
+                                .username("NoUser")
+                                .newPassword("0000")
+                                .build()
+                )
+        );
+    }
+
+    @Test
     @DisplayName("전화번호 변경 테스트")
     public void changePhoneNumberTest() {
         //given
@@ -217,6 +301,21 @@ public class MemberServiceTest {
         } else {
             Assertions.fail("전화번호 변경 테스트 실패");
         }
+    }
+
+    @Test
+    @DisplayName("changePhoneNumber에서 MemberNotFoundException이 터지나요?")
+    public void changePhoneNumberException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.changePhoneNumber(
+                        PhoneNumberChangeDto.builder()
+                                .username("NoUser")
+                                .newPhoneNumber("01013131313")
+                                .build()
+                )
+        );
     }
 
     @Test
@@ -252,6 +351,31 @@ public class MemberServiceTest {
         }
 
         assertTrue(catchException);
+    }
+
+    @Test
+    @DisplayName("deleteUser에서 MemberNotFoundException이 잘 터지나요?")
+    public void deleteUserException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.deleteUser(
+                        AuthDto.builder()
+                                .username("NoUser")
+                                .password("5678")
+                                .build()
+                )
+        );
+
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.deleteUser(
+                        AuthDto.builder()
+                                .username("@Baetaehyeon")
+                                .password("0000")
+                                .build()
+                )
+        );
     }
 
     /**

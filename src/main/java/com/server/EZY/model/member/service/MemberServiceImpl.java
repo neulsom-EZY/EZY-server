@@ -73,8 +73,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Map<String, String> signin(AuthDto loginDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(loginDto.getUsername());
+        if (memberEntity == null) throw new MemberNotFoundException();
+
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), memberEntity.getPassword());
-        if (memberEntity == null || !passwordCheck) throw new MemberNotFoundException();
+        if (!passwordCheck) throw new MemberNotFoundException();
 
         String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -222,6 +224,6 @@ public class MemberServiceImpl implements MemberService {
 
         if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
             memberRepository.deleteById(memberEntity.getMemberIdx());
-        }
+        } else throw new MemberNotFoundException();
     }
 }
