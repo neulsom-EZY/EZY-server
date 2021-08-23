@@ -186,6 +186,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입된 유저가 아닐 때 Exception이 터지나요?")
     public void findUsernameException() {
         //given //when //then
         assertThrows(
