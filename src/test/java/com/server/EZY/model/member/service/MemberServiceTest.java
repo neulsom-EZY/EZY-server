@@ -263,6 +263,20 @@ public class MemberServiceTest {
     }
 
     @Test
+    public void changePasswordException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.changePassword(
+                        PasswordChangeDto.builder()
+                                .username("NoUser")
+                                .newPassword("0000")
+                                .build()
+                )
+        );
+    }
+
+    @Test
     @DisplayName("전화번호 변경 테스트")
     public void changePhoneNumberTest() {
         //given
