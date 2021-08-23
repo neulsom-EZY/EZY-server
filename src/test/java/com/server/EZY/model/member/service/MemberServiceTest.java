@@ -304,6 +304,21 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("changePhoneNumber에서 MemberNotFoundException이 터지나요?")
+    public void changePhoneNumberException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.changePhoneNumber(
+                        PhoneNumberChangeDto.builder()
+                                .username("NoUser")
+                                .newPhoneNumber("01013131313")
+                                .build()
+                )
+        );
+    }
+
+    @Test
     @DisplayName("회원탈퇴 테스트")
     public void deleteMemberTest() {
         //given
