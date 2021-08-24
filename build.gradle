@@ -68,6 +68,9 @@ dependencies {
 	annotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 	testAnnotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 	testCompileOnly group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
+	// *** For APNs ***//
+	compile group: 'com.turo', name: 'pushy', version: '0.13.9'
 }
 
 test {
