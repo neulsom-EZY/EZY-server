@@ -71,6 +71,7 @@ dependencies {
 
 	// *** For APNs ***//
 	compile group: 'com.turo', name: 'pushy', version: '0.13.9'
+	implementation group: 'com.notnoop.apns', name: 'apns', version: '1.0.0.Beta6'
 }
 
 test {
