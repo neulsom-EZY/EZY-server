@@ -44,4 +44,4 @@ out/
 
 ### application.yml ###
 /src/main/resources/application.yml
-/src/main/resources/ezy-fcm-firebase-adminsdk-oqjua-d336c6913d.json
+/src/main/resources/ezy-fcm-firebase-adminsdk-key.json
