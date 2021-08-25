@@ -1,4 +1,4 @@
-package com.server.EZY.notification;
+package com.server.EZY.notification.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import org.springframework.core.io.ClassPathResource;
