@@ -50,4 +50,28 @@ public class FirebaseMessagingService {
         log.info("{}  messages were sent successfully", batchResponse);
         // [END send_multicast]
     }
+
+    /**
+     * 색상 및 아이콘 옵션이 있는 알림 메시지
+     * @param fcmMessage
+     * @return message
+     * @author 전지환
+     */
+    public Message apnsMessage(FcmMessage fcmMessage){
+        // [START apns_message]
+        Message message = Message.builder()
+                .setApnsConfig(ApnsConfig.builder()
+                        .putHeader("apns-priority", "10")
+                        .setAps(Aps.builder()
+                                .setAlert(ApsAlert.builder()
+                                        .setTitle(fcmMessage.getSubject())
+                                        .setBody(fcmMessage.getContent())
+                                        .build())
+                                .setBadge(42)
+                                .build())
+                        .build())
+                .build();
+        // [END apns_message]
+        return message;
+    }
 }
