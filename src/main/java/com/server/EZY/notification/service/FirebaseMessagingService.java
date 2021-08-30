@@ -14,6 +14,12 @@ import org.springframework.stereotype.Service;
 public class FirebaseMessagingService {
     private final FirebaseMessaging firebaseMessaging;
 
+    /**
+     * Client device-token 을 이용하여 해당 device 에 알림을 전송합니다.
+     * @param fcmMessage
+     * @param token
+     * @throws FirebaseMessagingException
+     */
     public void sendToToken (FcmMessage fcmMessage, String token) throws FirebaseMessagingException{
         // [START send_to_token]
         Message message = Message.builder()
