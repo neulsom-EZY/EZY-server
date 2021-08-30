@@ -2,7 +2,6 @@ package com.server.EZY.notification.service;
 
 import com.google.firebase.messaging.*;
 import com.server.EZY.notification.FcmMessage;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class FirebaseMessagingService {
-    private final FirebaseMessaging firebaseMessaging;
-
     /**
      * Client device-token 을 이용하여 해당 device 에 알림을 전송합니다.
      * @param fcmMessage
