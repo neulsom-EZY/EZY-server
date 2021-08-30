@@ -1,4 +1,4 @@
-package com.server.EZY.notification.service;
+package com.server.EZY.notification.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
