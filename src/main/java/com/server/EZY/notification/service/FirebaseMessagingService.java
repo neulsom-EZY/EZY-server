@@ -1,20 +1,23 @@
 package com.server.EZY.notification.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
-import java.util.List;
 
 public class FirebaseMessagingService {
-    private String getAccessToken() throws IOException{
-        String firebaseConfigPath = "resources/ezy-fcm-firebase-adminsdk-key.json";
-
+    @Bean
+    private FirebaseMessaging firebaseMessaging() throws IOException{
         GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
-                .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
-
-        googleCredentials.refreshIfExpired();
-        return googleCredentials.getAccessToken().getTokenValue();
+                .fromStream(new ClassPathResource("firebase-service-account.json").getInputStream());
+        FirebaseOptions firebaseOptions = FirebaseOptions.builder()
+                .setCredentials(googleCredentials)
+                .build();
+        FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "EZY");
+        return FirebaseMessaging.getInstance(app);
     }
 }
