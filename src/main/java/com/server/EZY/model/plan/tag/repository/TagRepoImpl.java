@@ -17,7 +17,7 @@ public class TagRepoImpl implements TagRepoCustom {
     private JPAQueryFactory queryFactory;
 
     @Override
-    public List<TagGetDto> getTagInfo(MemberEntity memberEntity) {
+    public List<TagGetDto> findAllTag(MemberEntity memberEntity) {
         return queryFactory
                 .select(Projections.fields(TagGetDto.class,
                         tagEntity.tag,
