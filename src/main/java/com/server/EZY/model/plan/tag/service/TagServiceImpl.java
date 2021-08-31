@@ -29,7 +29,7 @@ public class TagServiceImpl implements TagService{
     @Override
     public List<TagGetDto> getAllTag() {
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
-        return tagRepository.findAllTag(currentUser);
+        return tagRepository.findTagEntitiesByMemberEntity(currentUser);
     }
 
     @Override
