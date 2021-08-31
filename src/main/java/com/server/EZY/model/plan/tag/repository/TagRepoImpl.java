@@ -14,10 +14,10 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class TagRepoImpl implements TagRepoCustom {
-    private JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<TagGetDto> findAllTag(MemberEntity memberEntity) {
+    public List<TagGetDto> findTagEntitiesByMemberEntity(MemberEntity memberEntity) {
         return queryFactory
                 .select(Projections.fields(TagGetDto.class,
                         tagEntity.tag,

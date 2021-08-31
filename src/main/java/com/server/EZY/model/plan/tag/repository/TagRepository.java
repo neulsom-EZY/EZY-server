@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<TagEntity, Long>, TagRepoCustom{
     TagEntity findByTagIdx(Long tagIdx);
-    List<TagEntity> findTagEntitiesByMemberEntity(MemberEntity memberEntity);
 }

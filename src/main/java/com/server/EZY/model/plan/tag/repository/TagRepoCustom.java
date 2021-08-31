@@ -6,5 +6,5 @@ import com.server.EZY.model.plan.tag.dto.TagGetDto;
 import java.util.List;
 
 public interface TagRepoCustom {
-    List<TagGetDto> findAllTag(MemberEntity memberEntity);
+    List<TagGetDto> findTagEntitiesByMemberEntity(MemberEntity memberEntity);
 }
