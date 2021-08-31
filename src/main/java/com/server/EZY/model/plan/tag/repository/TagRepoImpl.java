@@ -22,8 +22,8 @@ public class TagRepoImpl implements TagRepoCustom {
     public List<TagSetDto> findTagEntitiesByMemberEntity(MemberEntity memberEntity) {
         return queryFactory
                 .select(Projections.fields(TagSetDto.class,
-                        tagEntity.color,
-                        tagEntity.tag
+                        tagEntity.tag,
+                        tagEntity.color
                 ))
                 .from(tagEntity)
                 .where(tagEntity.memberEntity.eq(memberEntity))
