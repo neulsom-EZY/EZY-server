@@ -2,6 +2,7 @@ package com.server.EZY.model.plan.tag.service;
 
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.tag.TagEntity;
+import com.server.EZY.model.plan.tag.dto.TagGetDto;
 import com.server.EZY.model.plan.tag.dto.TagSetDto;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,9 +28,13 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
-    public List<TagSetDto> getAllTag() {
+    public List<TagEntity> getAllTag() {
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
-        return tagRepository.findTagEntitiesByMemberEntity(currentUser);
+        List<TagGetDto> tagEntitiesByMemberEntity = tagRepository.findTagEntitiesByMemberEntity(currentUser);
+
+        return tagEntitiesByMemberEntity.stream()
+                .map(TagGetDto::getToEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
