@@ -7,7 +7,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@Getter @Builder @Setter
+@Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class TagSetDto {
     @NotNull
