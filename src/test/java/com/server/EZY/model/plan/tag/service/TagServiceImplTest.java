@@ -129,7 +129,7 @@ class TagServiceImplTest {
 
         //When
         List<TagEntity> tagEntityList = tagRepository.saveAll(tagEntities);
-        List<TagSetDto> allTag = tagService.getAllTag();
+        List<TagEntity> allTag = tagService.getAllTag();
 
         //Then
         assertEquals(allTag.size(), tagEntityList.size());
