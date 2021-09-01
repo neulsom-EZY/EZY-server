@@ -5,6 +5,7 @@ import static com.server.EZY.model.plan.tag.QTagEntity.tagEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
+import com.server.EZY.model.plan.tag.dto.TagGetDto;
 import com.server.EZY.model.plan.tag.dto.TagSetDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +20,9 @@ public class TagRepoImpl implements TagRepoCustom {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TagSetDto> findTagEntitiesByMemberEntity(MemberEntity memberEntity) {
+    public List<TagGetDto> findTagEntitiesByMemberEntity(MemberEntity memberEntity) {
         return queryFactory
-                .select(Projections.fields(TagSetDto.class,
+                .select(Projections.fields(TagGetDto.class,
                         tagEntity.tag,
                         tagEntity.color
                 ))
