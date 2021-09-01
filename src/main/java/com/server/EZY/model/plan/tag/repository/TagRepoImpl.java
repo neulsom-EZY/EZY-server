@@ -6,7 +6,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.tag.dto.TagGetDto;
-import com.server.EZY.model.plan.tag.dto.TagSetDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +27,7 @@ public class TagRepoImpl implements TagRepoCustom {
                 ))
                 .from(tagEntity)
                 .where(tagEntity.memberEntity.eq(memberEntity))
+                .groupBy(tagEntity.tag, tagEntity.color)
                 .fetch();
     }
 }
