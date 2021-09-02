@@ -13,7 +13,7 @@ public class TagGetDto {
     public TagEntity getToEntity(){
         return TagEntity.builder()
                 .tag(this.tag)
-                .color(color)
+                .color(this.color)
                 .build();
     }
 }
