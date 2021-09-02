@@ -32,6 +32,8 @@ public class TagServiceImpl implements TagService{
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
         List<TagGetDto> tagEntitiesByMemberEntity = tagRepository.findTagEntitiesByMemberEntity(currentUser);
 
+        log.info("dto로 찾은 List: {}", tagEntitiesByMemberEntity);
+
         return tagEntitiesByMemberEntity.stream()
                 .map(TagGetDto::getToEntity)
                 .collect(Collectors.toList());
