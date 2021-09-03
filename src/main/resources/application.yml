@@ -47,8 +47,7 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql : trace
-    com.server.EZY.model: debug
-    com.server.EZY.exception: debug
+    com.server.EZY: debug
 
 ### Security ###
 security:
@@ -61,4 +60,3 @@ sms:
   api:
     apikey: NCSU49MID5ZV88LS
     apiSecret: 0NAAGMKADY7ASFEXFQUOHB5RMOHIXXHA
-

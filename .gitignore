@@ -42,5 +42,6 @@ out/
 **/.DS_Store
 **/._.DS_Store
 
-### application.yml ###
-/src/main/resources/application.yml
+### application config file ###
+/src/main/resources/ezy-fcm-firebase-adminsdk-key.json
+/src/main/resources/firebase-service-account.json
