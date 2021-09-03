@@ -8,15 +8,13 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.tag.dto.TagGetDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
-@Repository
 @RequiredArgsConstructor
-public class TagRepoImpl implements TagRepoCustom  {
+public class TagRepositoryImpl implements TagRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
