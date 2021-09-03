@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class PersonalPlanRepoImpl implements PersonalPlanRepoCustom{
+public class PersonalPlanRepositoryImpl implements PersonalPlanRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
