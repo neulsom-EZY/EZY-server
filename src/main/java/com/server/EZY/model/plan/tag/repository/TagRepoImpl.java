@@ -8,11 +8,13 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.tag.dto.TagGetDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
+@Repository
 @RequiredArgsConstructor
 public class TagRepoImpl implements TagRepoCustom {
     private final JPAQueryFactory queryFactory;
@@ -23,12 +25,11 @@ public class TagRepoImpl implements TagRepoCustom {
         log.warn("========== query method에 도달하였습니다. ==========");
         List<TagGetDto> tagGetDtos = queryFactory
                 .select(Projections.fields(TagGetDto.class,
-                        tagEntity.tag,
+                        tagEntity.tag.as("tag"),
                         tagEntity.color
                 ))
                 .from(tagEntity)
                 .where(tagEntity.memberEntity.eq(memberEntity))
-                .groupBy(tagEntity.tag, tagEntity.color)
                 .fetch();
 
         log.info("tagGetDtos는.. {}", tagGetDtos);

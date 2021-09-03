@@ -4,6 +4,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.tag.TagEntity;
 import com.server.EZY.model.plan.tag.dto.TagGetDto;
 import com.server.EZY.model.plan.tag.dto.TagSetDto;
+import com.server.EZY.model.plan.tag.repository.TagRepoCustom;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class TagServiceImpl implements TagService{
 
     private final CurrentUserUtil currentUserUtil;
     private final TagRepository tagRepository;
+    private final TagRepoCustom tagRepoCustom;
 
     @Override
     public TagEntity saveTag(TagSetDto tagSetDto) {
@@ -28,16 +30,12 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
-    public List<TagEntity> getAllTag() {
+    public List<TagGetDto> getAllTag() {
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
         log.info("service logic에 도달하였고, member 조회가 완료되었습니다.");
-        List<TagGetDto> tagEntitiesByMemberEntity = tagRepository.findMyTagEntitiesByMemberEntity(currentUser);
-
-        log.info("dto로 찾은 List: {}", tagEntitiesByMemberEntity);
-
-        return tagEntitiesByMemberEntity.stream()
-                .map(TagGetDto::getToEntity)
-                .collect(Collectors.toList());
+        List<TagGetDto> myTagEntitiesByMemberEntity = tagRepoCustom.findMyTagEntitiesByMemberEntity(currentUser);
+        log.info("이 모든것이 tag: {}", myTagEntitiesByMemberEntity);
+        return myTagEntitiesByMemberEntity;
     }
 
     @Override
