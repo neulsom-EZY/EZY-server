@@ -8,13 +8,15 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.tag.dto.TagSetDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class TagRepoImpl implements TagRepoCustom {
+@Repository
+public class TagRepoImpl implements TagRepoCustom  {
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -25,6 +27,11 @@ public class TagRepoImpl implements TagRepoCustom {
                         tagEntity.tag,
                         tagEntity.color
                 ))
+                // 기본 생성자를 private으로 설정하고 select하고 싶을 때
+//                .select(Projections.fields(TagSetDto.class,
+//                        tagEntity.tag,
+//                        tagEntity.color
+//                ))
                 .from(tagEntity)
                 .where(tagEntity.memberEntity.eq(memberEntity))
                 .fetch();
