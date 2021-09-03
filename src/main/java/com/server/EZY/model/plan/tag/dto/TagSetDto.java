@@ -7,8 +7,8 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@Getter @Builder @Setter
-@NoArgsConstructor(access = AccessLevel.PUBLIC) @AllArgsConstructor
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class TagSetDto {
     @NotNull
     private Color color;
