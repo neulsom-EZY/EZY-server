@@ -30,6 +30,7 @@ public class TagServiceImpl implements TagService{
     @Override
     public List<TagEntity> getAllTag() {
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
+        log.info("service logic에 도달하였고, member 조회가 완료되었습니다.");
         List<TagGetDto> tagEntitiesByMemberEntity = tagRepository.findTagEntitiesByMemberEntity(currentUser);
 
         log.info("dto로 찾은 List: {}", tagEntitiesByMemberEntity);

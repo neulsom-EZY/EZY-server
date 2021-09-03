@@ -20,14 +20,20 @@ public class TagRepoImpl implements TagRepoCustom {
     @Override
     @Transactional(readOnly = true)
     public List<TagGetDto> findTagEntitiesByMemberEntity(MemberEntity memberEntity) {
-        return queryFactory
+        log.info("findTagEntities에 진입하였습니다.");
+        List<TagGetDto> tagGetDtos = queryFactory
                 .select(Projections.fields(TagGetDto.class,
                         tagEntity.tag,
-                        tagEntity.color
+                        tagEntity.color.red,
+                        tagEntity.color.green,
+                        tagEntity.color.blue
                 ))
                 .from(tagEntity)
                 .where(tagEntity.memberEntity.eq(memberEntity))
                 .groupBy(tagEntity.tag, tagEntity.color)
                 .fetch();
+
+        log.info("tagGetDtos는.. {}", tagGetDtos);
+        return tagGetDtos;
     }
 }
