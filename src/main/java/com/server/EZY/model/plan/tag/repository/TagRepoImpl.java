@@ -16,7 +16,8 @@ import java.util.List;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class TagRepoImpl implements TagRepoCustom {
+@Repository
+public class TagRepoImpl implements TagRepoCustom  {
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -28,6 +29,11 @@ public class TagRepoImpl implements TagRepoCustom {
                         tagEntity.tag.as("tag"),
                         tagEntity.color
                 ))
+                // 기본 생성자를 private으로 설정하고 select하고 싶을 때
+//                .select(Projections.fields(TagSetDto.class,
+//                        tagEntity.tag,
+//                        tagEntity.color
+//                ))
                 .from(tagEntity)
                 .where(tagEntity.memberEntity.eq(memberEntity))
                 .fetch();
