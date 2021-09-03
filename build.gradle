@@ -72,6 +72,12 @@ dependencies {
 	// *** For APNs ***//
 	compile group: 'com.turo', name: 'pushy', version: '0.13.9'
 	implementation group: 'com.notnoop.apns', name: 'apns', version: '1.0.0.Beta6'
+
+	//*** For Firebase ***//
+	implementation 'com.google.firebase:firebase-admin:6.8.1'
+
+	//*** okhttp3 ***//
+	implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 }
 
 test {
