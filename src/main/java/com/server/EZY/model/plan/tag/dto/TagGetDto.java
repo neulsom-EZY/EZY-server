@@ -6,13 +6,7 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TagGetDto {
+    private Long tagIdx;
     private String tag;
     private Color color;
-
-//    public TagEntity getToEntity(){
-//        return TagEntity.builder()
-//                .tag(this.tag)
-//                .color(this.color)
-//                .build();
-//    }
 }

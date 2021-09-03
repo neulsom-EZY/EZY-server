@@ -112,26 +112,4 @@ class TagServiceImplTest {
         //Exception-Then
         assertThrows(Exception.class, () -> tagService.deleteTag(saveTag.getTagIdx()));
     }
-
-    @Test @DisplayName("태그 전체 조회") @Disabled
-    void 태그_전체_조회(){
-        //Given
-        List<TagEntity> tagEntities = Stream.generate(
-                () -> TagEntity.builder()
-                        .tag("Hi")
-                        .color(Color.builder()
-                                .red((short) 196)
-                                .green((short) 200)
-                                .blue((short) 255)
-                                .build()
-                        ).memberEntity(savedMemberEntity)
-                        .build()).limit(2).collect(Collectors.toList());
-
-        //When
-        List<TagEntity> tagEntityList = tagRepository.saveAll(tagEntities);
-//        List<TagEntity> allTag = tagService.getAllTag();
-//
-//        //Then
-//        assertEquals(allTag.size(), tagEntityList.size());
-    }
 }
