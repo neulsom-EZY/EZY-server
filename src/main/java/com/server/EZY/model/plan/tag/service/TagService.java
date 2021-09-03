@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TagService {
     TagEntity saveTag(TagSetDto tagSetDto);
-    List<TagEntity> getAllTag();
+    List<TagSetDto> getAllTag();
     void deleteTag(Long tagIdx) throws Exception;
 }
