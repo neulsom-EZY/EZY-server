@@ -6,6 +6,7 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class TagGetDto {
+    private Long tagIdx;
     private String tag;
     private Color color;
 }

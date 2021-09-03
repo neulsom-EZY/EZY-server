@@ -25,7 +25,8 @@ public class TagRepoImpl implements TagRepoCustom  {
         log.warn("========== query method에 도달하였습니다. ==========");
         List<TagGetDto> tagGetDtos = queryFactory
                 .select(Projections.fields(TagGetDto.class,
-                        tagEntity.tag.as("tag"),
+                        tagEntity.tagIdx,
+                        tagEntity.tag,
                         tagEntity.color
                 ))
                 .from(tagEntity)
