@@ -92,18 +92,6 @@ public class MemberController {
     }
 
     /**
-     * username 변경 controller
-     * @param usernameChangeDto username, newUsername
-     * @return SuccessResult
-     */
-    @PutMapping("/change/username")
-    @ResponseStatus( HttpStatus.OK )
-    public CommonResult changeUsername(@Valid @RequestBody UsernameChangeDto usernameChangeDto) {
-        memberService.changeUsername(usernameChangeDto);
-        return responseService.getSuccessResult();
-    }
-
-    /**
      * 인증번호 인증을 한 뒤 <br>
      * 비밀번호를 변경하게하는 controller <br>
      * @param passwordChangeDto passwordChangeDto

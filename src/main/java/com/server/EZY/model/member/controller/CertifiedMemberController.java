@@ -2,6 +2,7 @@ package com.server.EZY.model.member.controller;
 
 import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.dto.PhoneNumberChangeDto;
+import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -41,6 +42,22 @@ public class CertifiedMemberController {
     })
     public CommonResult changePhoneNumber(@RequestBody PhoneNumberChangeDto phoneNumberChangeDto) {
         memberService.changePhoneNumber(phoneNumberChangeDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * username 변경 controller
+     * @param usernameChangeDto username, newUsername
+     * @return SuccessResult
+     */
+    @PutMapping("/change/username")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult changeUsername(@Valid @RequestBody UsernameChangeDto usernameChangeDto) {
+        memberService.changeUsername(usernameChangeDto);
         return responseService.getSuccessResult();
     }
 
