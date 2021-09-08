@@ -5,9 +5,15 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 
 public class FirebaseMessagingConfiguration {
+    private static final String PROJECT_ID = "<YOUR-PROJECT-ID>";
+    private static final String BASE_URL = "https://fcm.googleapis.com";
+    private static final String FCM_SEND_ENDPOINT = "/v1/projects/" + PROJECT_ID + "/messages:send";
+
     private static final String MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging";
     private static final String[] SCOPES = { MESSAGING_SCOPE };
 
@@ -24,5 +30,16 @@ public class FirebaseMessagingConfiguration {
                 .createScoped(Arrays.asList(SCOPES));
         googleCredentials.refreshAccessToken();
         return googleCredentials.getAccessToken().getTokenValue();
+    }
+
+    @Bean
+    private static HttpURLConnection getConnection() throws IOException {
+        // [START use_access_token]
+        URL url = new URL(BASE_URL + FCM_SEND_ENDPOINT);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        httpURLConnection.setRequestProperty("Authorization", "Bearer " + getAccessToken());
+        httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8");
+        return httpURLConnection;
+        // [END use_access_token]
     }
 }
