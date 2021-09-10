@@ -14,6 +14,12 @@ public class IosPushNotificationsService {
     private static final String firebase_server_key = "AAAA833iS8A:APA91bH8ncfGkXkv0ks00KAwm8voLS8Q1idk5altySnNHy3BWBCAlS0PDjXVUHr2e_aD6jKSY7qW8uApeD3rJEMKsFsucfeatwSBuMfXixGgpnRHLc6fXpCAlbkx8DgnKYTuwl9c_gbd";
     private static final String firebase_api_url = "https://fcm.googleapis.com/fcm/send";
 
+    /**
+     * push 전송에서 성능을 위해 비동기로 요청합니다.
+     * @param entity
+     * @return CompletableFuture
+     * @author 전지환
+     */
     @Async
     public CompletableFuture<String> send(HttpEntity<String> entity){
         RestTemplate restTemplate = new RestTemplate();
