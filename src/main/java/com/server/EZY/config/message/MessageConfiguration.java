@@ -82,7 +82,7 @@ public class MessageConfiguration implements WebMvcConfigurer {
          * 우리 프로젝트에서는 yml속 message를 가져오는 데 사용한다.
          * @param basename 사용자 지정 메시지가 정의되어있는 base 디렉토리 위치를 나타낸다.
          * @param locale 지역(국가)정보
-         * @return resourceBundle - 다국어 관련 자원 파일(ex. i18n/excpeion_en.yml)에 대한 정보를 담고 있는 객체
+         * @return resourceBundle - 다국어 관련 자원 파일에 대한 정보를 담고 있는 객체 (다국어 관련 자원 파일은 i18n/exception_ko.yml, i18n/exception_en.yml과 같은 파일를 의미합니다.)
          * @throws MissingResourceException 리소스가 없을 때 발생한다. (예시. i18n 속 yml에 메시지가 없을 때)
          * @author 정시원
          */
