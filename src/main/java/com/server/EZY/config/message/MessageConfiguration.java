@@ -1,4 +1,4 @@
-package com.server.EZY.config.exception;
+package com.server.EZY.config.message;
 
 import net.rakugakibox.util.YamlResourceBundle;
 import org.springframework.beans.factory.annotation.Value;
