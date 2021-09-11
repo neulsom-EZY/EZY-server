@@ -16,6 +16,10 @@ public class CommonResult {
     @ApiModelProperty("응답 메시지")
     private String massage;
 
+    public void updateMassage(String massage){
+        this.massage = massage;
+    }
+
     public CommonResult(CommonResult commonResult){
         this.success = commonResult.success;
         this.code = commonResult.code;
