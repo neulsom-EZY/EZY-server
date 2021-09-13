@@ -120,7 +120,7 @@ public class MemberServiceImpl implements MemberService {
         HashMap<String, String> params = new HashMap<String, String>();
 
         params.put("to", phoneNumber);
-        params.put("from", "01049977055");
+        params.put("from", "07080283503");
         params.put("type", "SMS");
         params.put("text", "[EZY] 인증번호 "+authKey+" 를 입력하세요.");
         params.put("app_version", "test app 1.2");
