@@ -9,15 +9,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 
-<<<<<<< HEAD:src/main/java/com/server/EZY/notification/config/FirebaseMessagingConfig.java
 public class FirebaseMessagingConfig {
-=======
-public class FirebaseMessagingConfiguration {
     private static final String PROJECT_ID = "<YOUR-PROJECT-ID>";
     private static final String BASE_URL = "https://fcm.googleapis.com";
     private static final String FCM_SEND_ENDPOINT = "/v1/projects/" + PROJECT_ID + "/messages:send";
 
->>>>>>> c890763cd9e73e6c6b5906dfee8f8c61bc1e480e:src/main/java/com/server/EZY/notification/config/FirebaseMessagingConfiguration.java
     private static final String MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging";
     private static final String[] SCOPES = { MESSAGING_SCOPE };
 
