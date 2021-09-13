@@ -19,7 +19,7 @@ public class FirebaseMessagingService {
      * @throws FirebaseMessagingException
      * @author 전지환
      */
-    public void sendToToken (FcmMessage fcmMessage, String token) throws FirebaseMessagingException{
+    public void sendToToken (FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException{
         // [START send_to_token]
         Message message = Message.builder()
                 .putData("subject", fcmMessage.getSubject())
@@ -38,7 +38,7 @@ public class FirebaseMessagingService {
      * @throws FirebaseMessagingException
      * @author 전지환
      */
-    public void sendMulticast(FcmMessage fcmMessage, List<String> tokens) throws FirebaseMessagingException {
+    public void sendMulticast(FcmMessage.FcmRequest fcmMessage, List<String> tokens) throws FirebaseMessagingException {
         // [START send_multicast]
         MulticastMessage message = MulticastMessage.builder()
                 .putData("subject", fcmMessage.getSubject())
@@ -57,7 +57,7 @@ public class FirebaseMessagingService {
      * @return message
      * @author 전지환
      */
-    public Message apnsMessage(FcmMessage fcmMessage){
+    public Message apnsMessage(FcmMessage.FcmRequest fcmMessage){
         // [START apns_message]
         Message message = Message.builder()
                 .setApnsConfig(ApnsConfig.builder()
