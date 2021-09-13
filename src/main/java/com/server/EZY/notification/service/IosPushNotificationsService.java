@@ -3,7 +3,6 @@ package com.server.EZY.notification.service;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-@EnableAsync
 public class IosPushNotificationsService {
     private static final String firebase_server_key = "AAAA833iS8A:APA91bH8ncfGkXkv0ks00KAwm8voLS8Q1idk5altySnNHy3BWBCAlS0PDjXVUHr2e_aD6jKSY7qW8uApeD3rJEMKsFsucfeatwSBuMfXixGgpnRHLc6fXpCAlbkx8DgnKYTuwl9c_gbd";
     private static final String firebase_api_url = "https://fcm.googleapis.com/fcm/send";
