@@ -78,11 +78,11 @@ public class MemberServiceImpl implements MemberService {
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), memberEntity.getPassword());
         if (!passwordCheck) throw new MemberNotFoundException();
 
-        String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
+        String accessToken = jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        redisUtil.deleteData(loginDto.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
-        redisUtil.setDataExpire(loginDto.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
+        redisUtil.deleteData(memberEntity.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
+        redisUtil.setDataExpire(memberEntity.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
 
         Map<String ,String> map = new HashMap<>();
         map.put("username", loginDto.getUsername());

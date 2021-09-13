@@ -26,26 +26,16 @@ public class ResponseService {
     }
 
     /**
-     * CommonResult setting method
-     * @param result Client에게 반환할 CommonResult객체
-     * @param commonResponse 요청의 성공/실패 여부 알려주는 CommonResponse
-     * @return CommonResult - 성공/실패 응답 객체 반환
-     * @author 정시원
-     */
-    private CommonResult setResponseResult(CommonResult result, CommonResponse commonResponse){
-        result.setSuccess(commonResponse == CommonResponse.SUCCESS);
-        result.setCode(commonResponse.getCode());
-        result.setMassage(commonResponse.getMassage());
-        return result;
-    }
-
-    /**
-     * 요청 데이터가 없는 성공결과 객체 반환
-     * @return CommonResult - 성공결과 객체
+     * 요청 데이터가 없는 성공 결과 객체 반환
+     * @return CommonResult - 성공 결과를 가지고 있는 CommonResult객체
      * @author 정시원
      */
     public CommonResult getSuccessResult() {
-        return setResponseResult(new CommonResult(), CommonResponse.SUCCESS);
+        return CommonResult.builder()
+                .success(true)
+                .code(CommonResponse.SUCCESS.getCode())
+                .massage(CommonResponse.SUCCESS.getMassage())
+                .build();
     }
 
     /**
@@ -59,7 +49,6 @@ public class ResponseService {
         return new SingleResult<T>(getSuccessResult(), data);
     }
 
-
     /**
      * 다중값의 데이터가 있는 결과 객체 반환
      * @param list 다중 데이터
@@ -72,26 +61,17 @@ public class ResponseService {
     }
 
     /**
-     * 실패결과 객체 반환
-     * @return CommonResult 실패결과 객체
-     * @author 정시원
-     */
-    public CommonResult getFailResult() {
-        return setResponseResult(new CommonResult(), CommonResponse.FAIL);
-    }
-
-    /**
-     * 커스텀 실패결과 객체 반환
+     * 사용자 지정 실패 결과 객체 반환
      * @param code 반환할 code
      * @param msg 반환할 message
      * @return CommonResult - 실패결과 객체
      * @author 정시원
      */
     public CommonResult getFailResult(int code, String msg) {
-        CommonResult result = new CommonResult();
-        result.setSuccess(false);
-        result.setCode(code);
-        result.setMassage(msg);
-        return result;
+        return CommonResult.builder()
+                .success(false)
+                .code(code)
+                .massage(msg)
+                .build();
     }
 }

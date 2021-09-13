@@ -65,4 +65,24 @@ public class CertifiedMemberControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent()); //http status 204
     }
+
+    @Test
+    @DisplayName("username 변경 테스트")
+    public void usernameChangeTest() throws Exception {
+
+        UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
+                .username("@BaeTul")
+                .newUsername("@Baebae")
+                .build();
+
+        String content = objectMapper.writeValueAsString(usernameChangeDto);
+
+        final ResultActions actions = mvc.perform(put("/v1/member/change/username")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        actions
+                .andDo(print())
+                .andExpect(status().isOk()); //http status 200
+    }
 }
