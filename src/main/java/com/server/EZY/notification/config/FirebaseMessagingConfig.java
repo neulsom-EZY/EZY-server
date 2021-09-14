@@ -19,7 +19,6 @@ public class FirebaseMessagingConfig {
 
     /**
      * 이 메서드는 google fcm 서버로 부터 Access token 을 발급 받기 위한 과정입니다.
-     * 이 메서드를 통해서 user device 에 대한 token 을 가져옵니다.
      * @return Access token.
      * @throws IOException
      * @author 전지환
