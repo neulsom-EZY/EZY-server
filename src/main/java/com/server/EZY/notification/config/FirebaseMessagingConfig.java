@@ -1,7 +1,6 @@
 package com.server.EZY.notification.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
-import org.springframework.context.annotation.Bean;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,7 +22,6 @@ public class FirebaseMessagingConfig {
      * @throws IOException
      * @author 전지환
      */
-    @Bean
     private static String getAccessToken() throws IOException {
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new FileInputStream("firebase-service-account.json"))
@@ -39,7 +37,6 @@ public class FirebaseMessagingConfig {
      * @throws IOException
      * @author 전지환
      */
-    @Bean
     private static HttpURLConnection getConnection() throws IOException {
         // [START use_access_token]
         URL url = new URL(BASE_URL + FCM_SEND_ENDPOINT);
