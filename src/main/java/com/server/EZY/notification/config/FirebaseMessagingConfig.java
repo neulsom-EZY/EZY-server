@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.Arrays;
 
 public class FirebaseMessagingConfig {
-    private static final String PROJECT_ID = "<YOUR-PROJECT-ID>";
+    private static final String PROJECT_ID = "ezy-fcm";
     private static final String BASE_URL = "https://fcm.googleapis.com";
     private static final String FCM_SEND_ENDPOINT = "/v1/projects/" + PROJECT_ID + "/messages:send";
 
