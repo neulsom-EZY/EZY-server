@@ -15,7 +15,6 @@ public class FcmMessage {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FcmRequest{
-        private String token;
         private String subject;
         private String content;
 
