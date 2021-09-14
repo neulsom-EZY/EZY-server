@@ -12,5 +12,6 @@ public class FirebaseMessagingConfigTest {
     @DisplayName("token이 잘 가져와 지나요?")
     public void getAccessToken() throws IOException {
         String accessToken = FirebaseMessagingConfig.getAccessToken();
+        System.out.println("accessToken = " + accessToken);
     }
 }
