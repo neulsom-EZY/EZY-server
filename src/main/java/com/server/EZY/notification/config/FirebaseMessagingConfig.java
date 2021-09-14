@@ -24,9 +24,8 @@ public class FirebaseMessagingConfig {
      * @author 전지환
      */
     public static String getAccessToken() throws IOException {
-
         String firebaseConfigPath = "firebase-service-account.json";
-
+      
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
                 .createScoped(Arrays.asList(SCOPES));
