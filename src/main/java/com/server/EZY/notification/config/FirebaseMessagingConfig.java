@@ -22,7 +22,7 @@ public class FirebaseMessagingConfig {
      * @throws IOException
      * @author 전지환
      */
-    private static String getAccessToken() throws IOException {
+    public static String getAccessToken() throws IOException {
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new FileInputStream("firebase-service-account.json"))
                 .createScoped(Arrays.asList(SCOPES));
