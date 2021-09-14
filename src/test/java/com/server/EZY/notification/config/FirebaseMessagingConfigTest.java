@@ -4,11 +4,14 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+
 @SpringBootTest
 public class FirebaseMessagingConfigTest {
     @Test
     @DisplayName("token이 잘 가져와 지나요?")
-    void getAccessToken(){
-
+    public void getAccessToken() throws IOException {
+        String accessToken = FirebaseMessagingConfig.getAccessToken();
+        System.out.println("accessToken = " + accessToken);
     }
 }
