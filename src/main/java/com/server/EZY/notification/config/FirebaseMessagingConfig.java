@@ -3,7 +3,6 @@ package com.server.EZY.notification.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -40,7 +39,7 @@ public class FirebaseMessagingConfig {
      * @throws IOException
      * @author 전지환
      */
-    private static HttpURLConnection getConnection() throws IOException {
+    public static HttpURLConnection getConnection() throws IOException {
         // [START use_access_token]
         URL url = new URL(BASE_URL + FCM_SEND_ENDPOINT);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();

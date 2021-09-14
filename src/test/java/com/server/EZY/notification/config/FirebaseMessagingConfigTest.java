@@ -6,6 +6,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -15,5 +18,12 @@ public class FirebaseMessagingConfigTest {
     public void getAccessToken() throws IOException {
         String accessToken = FirebaseMessagingConfig.getAccessToken();
         log.info("=========fcm AccessToken: {}===========", accessToken);
+    }
+
+    @Test
+    @DisplayName("getConnection method 테스트")
+    public void getConnection_fcm() throws IOException {
+        HttpURLConnection connection = FirebaseMessagingConfig.getConnection();
+        assertTrue(connection!=null);
     }
 }
