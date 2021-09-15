@@ -22,8 +22,8 @@ public class FirebaseMessagingService {
     public void sendToToken (FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException{
         // [START send_to_token]
         Message message = Message.builder()
-                .putData("subject", fcmMessage.getSubject())
-                .putData("content", fcmMessage.getContent())
+                .putData("title", fcmMessage.getTitle())
+                .putData("body", fcmMessage.getBody())
                 .setToken(token)
                 .build();
 
@@ -41,8 +41,8 @@ public class FirebaseMessagingService {
     public void sendMulticast(FcmMessage.FcmRequest fcmMessage, List<String> tokens) throws FirebaseMessagingException {
         // [START send_multicast]
         MulticastMessage message = MulticastMessage.builder()
-                .putData("subject", fcmMessage.getSubject())
-                .putData("content", fcmMessage.getContent())
+                .putData("subject", fcmMessage.getTitle())
+                .putData("content", fcmMessage.getBody())
                 .addAllTokens(tokens)
                 .build();
 
@@ -64,8 +64,8 @@ public class FirebaseMessagingService {
                         .putHeader("apns-priority", "10")
                         .setAps(Aps.builder()
                                 .setAlert(ApsAlert.builder()
-                                        .setTitle(fcmMessage.getSubject())
-                                        .setBody(fcmMessage.getContent())
+                                        .setTitle(fcmMessage.getTitle())
+                                        .setBody(fcmMessage.getBody())
                                         .build())
                                 .setBadge(42)
                                 .build())

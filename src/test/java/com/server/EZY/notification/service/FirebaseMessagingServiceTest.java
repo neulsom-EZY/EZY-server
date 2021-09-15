@@ -20,8 +20,8 @@ public class FirebaseMessagingServiceTest {
     public void sendToToken() throws FirebaseMessagingException {
         //Given
         FcmMessage.FcmRequest sayHello = FcmMessage.FcmRequest.builder()
-                .subject("안녕하세요")
-                .content("Hello world!")
+                .title("안녕하세요")
+                .body("Hello world!")
                 .build();
 
         String token = "38862C718A0C40968254F8EB0E2E64156E35A8BAB91CE1664D9E19B530DEA8F6";
