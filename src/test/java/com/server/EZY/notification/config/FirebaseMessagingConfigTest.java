@@ -29,6 +29,6 @@ public class FirebaseMessagingConfigTest {
     @DisplayName("getConnection method 테스트")
     public void getConnection_fcm() throws IOException {
         HttpURLConnection connection = firebaseMessagingConfig.getConnection();
-        assertTrue(connection!=null);
+        assertNotNull(connection);
     }
 }
