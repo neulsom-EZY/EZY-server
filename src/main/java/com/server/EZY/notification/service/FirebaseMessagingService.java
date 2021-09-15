@@ -12,6 +12,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class FirebaseMessagingService {
+
+    private final FirebaseMessaging firebaseMessaging;
+
     /**
      * Client device-token 을 이용하여 해당 device 에 알림을 전송합니다.
      * @param fcmMessage
@@ -27,7 +30,7 @@ public class FirebaseMessagingService {
                 .setToken(token)
                 .build();
 
-        String response = FirebaseMessaging.getInstance().send(message);
+        String response = firebaseMessaging.send(message);
         log.info("Successfully sent message: {}", response);
     }
 
