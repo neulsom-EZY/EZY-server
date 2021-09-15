@@ -24,7 +24,7 @@ public class FirebaseMessagingConfig {
      * @throws IOException
      * @author 전지환
      */
-    public String getAccessToken() throws IOException {
+    public final String getAccessToken() throws IOException {
         String firebaseConfigPath = "firebase-service-account.json";
       
         GoogleCredentials googleCredentials = GoogleCredentials
@@ -41,7 +41,7 @@ public class FirebaseMessagingConfig {
      * @throws IOException
      * @author 전지환
      */
-    public HttpURLConnection getConnection() throws IOException {
+    public final HttpURLConnection getConnection() throws IOException {
         // [START use_access_token]
         URL url = new URL(BASE_URL + FCM_SEND_ENDPOINT);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
