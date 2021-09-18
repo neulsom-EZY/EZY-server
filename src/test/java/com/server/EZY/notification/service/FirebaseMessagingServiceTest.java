@@ -2,7 +2,7 @@ package com.server.EZY.notification.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.notification.FcmMessage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

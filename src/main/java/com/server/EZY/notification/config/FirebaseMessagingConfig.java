@@ -1,6 +1,10 @@
 package com.server.EZY.notification.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +22,28 @@ public class FirebaseMessagingConfig {
     private final String MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging";
     private final String[] SCOPES = { MESSAGING_SCOPE };
 
+    private final String firebaseConfigPath = "firebase-service-account.json";
+
+    /**
+     * FCM메시지를 보내기 위해 FirebaseMessaging객체를 설정 후 Bean으로 등록해 IoC가 관리하도록 하는 매서드
+     * @return FirebaseMessaging
+     * @throws IOException -
+     * @author 정시원
+     */
+    @Bean
+    private FirebaseMessaging firebaseMessaging() throws IOException {
+        GoogleCredentials googleCredentials = GoogleCredentials
+                .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
+                .createScoped(Arrays.asList(SCOPES));
+        FirebaseOptions firebaseOptions = FirebaseOptions
+                .builder()
+                .setCredentials(googleCredentials)
+                .build();
+
+        FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, PROJECT_ID);
+        return FirebaseMessaging.getInstance(app);
+    }
+
     /**
      * 이 메서드는 google fcm 서버로 부터 Access token 을 발급 받기 위한 과정입니다.
      * @return Access token.
@@ -25,7 +51,6 @@ public class FirebaseMessagingConfig {
      * @author 전지환
      */
     public final String getAccessToken() throws IOException {
-        String firebaseConfigPath = "firebase-service-account.json";
       
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
