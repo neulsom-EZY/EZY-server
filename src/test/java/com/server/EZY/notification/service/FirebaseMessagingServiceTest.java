@@ -24,7 +24,8 @@ public class FirebaseMessagingServiceTest {
                 .body("Hello world!")
                 .build();
 
-        String token = "38862C718A0C40968254F8EB0E2E64156E35A8BAB91CE1664D9E19B530DEA8F6";
+        // 김유진의 FCM registration token
+        String token = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
 
         //When
         firebaseMessagingService.sendToToken(sayHello, token);
