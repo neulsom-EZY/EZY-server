@@ -5,13 +5,13 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-@Component
+@Configuration
 public class FirebaseMessagingConfig {
     private final String PROJECT_ID = "ezy-fcm";
     private final String BASE_URL = "https://fcm.googleapis.com";
@@ -24,12 +24,13 @@ public class FirebaseMessagingConfig {
 
     /**
      * FCM메시지를 보내기 위해 프로젝트의 인증정보를 담고 푸시알람을 보낼 수 있는 FirebaseMessaging객체를 Bean으로 등록합니다.
+     * bean이름은 메서드명을 기준으로 만들어집니다.
      * @return FirebaseMessaging FCM푸시 알람을 보낼 수 있는 객체
      * @throws IOException -
      * @author 정시원
      */
     @Bean
-    private FirebaseMessaging firebaseMessagingInit() throws IOException {
+    protected FirebaseMessaging firebaseMessaging() throws IOException {
         // 프로젝트 인증정보를 담은 객체
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())
