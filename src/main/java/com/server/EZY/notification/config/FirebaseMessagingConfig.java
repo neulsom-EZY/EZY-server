@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Arrays;
 
+@Component
 public class FirebaseMessagingConfig {
     private final String PROJECT_ID = "ezy-fcm";
     private final String BASE_URL = "https://fcm.googleapis.com";
