@@ -9,6 +9,7 @@ import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +36,13 @@ public class CertifiedMemberController {
      * @author 배태현
      */
     @PutMapping("/change/phone")
+    @ApiOperation(value = "전화번호 변경", notes = "전화번호 변경")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult changePhoneNumber(@RequestBody PhoneNumberChangeDto phoneNumberChangeDto) {
+    public CommonResult changePhoneNumber(@Valid @RequestBody PhoneNumberChangeDto phoneNumberChangeDto) {
         memberService.changePhoneNumber(phoneNumberChangeDto);
         return responseService.getSuccessResult();
     }
@@ -51,6 +53,7 @@ public class CertifiedMemberController {
      * @return SuccessResult
      */
     @PutMapping("/change/username")
+    @ApiOperation(value = "이름 변경", notes = "이름 변경")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
@@ -68,6 +71,7 @@ public class CertifiedMemberController {
      * @author 배태현
      */
     @DeleteMapping("/logout")
+    @ApiOperation(value = "로그아웃", notes = "로그아웃")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
@@ -85,6 +89,7 @@ public class CertifiedMemberController {
      * @author 배태현
      */
     @PostMapping ("/delete")
+    @ApiOperation(value = "회원탈퇴", notes = "회원탈퇴")
     @ResponseStatus( HttpStatus.NO_CONTENT )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
