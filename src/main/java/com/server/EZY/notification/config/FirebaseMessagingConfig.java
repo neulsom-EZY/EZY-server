@@ -30,12 +30,12 @@ public class FirebaseMessagingConfig {
     private final String firebaseConfigPath = "firebase-service-account.json";
 
     /**
-     * FCM메시지를 보내기 위해 프로젝트의 인증정보를 담고있는 FirebaseApp객체를 Spring이 Bean을 로드하는 시점에 초기화 하는 객체.<br>
+     * FCM메시지를 보내기 위해 프로젝트의 인증정보를 담고있는 FirebaseApp객체를 Spring이 Bean을 로드하는 시점에 초기화 한다.<br>
      *
-     * {@link FirebaseApp#getInstance(String)}는 초기화 된 인스턴스가 없으면 {@link IllegalStateException}를 발생시킨다..<br>
-     * test code에서 {@link IllegalStateException}("FirebaseApp name [앱 이름] already exists!") 이 발생하여 try-catch문을 작성했다.
+     * {@link FirebaseApp#getInstance(String)}는 초기화 된 인스턴스가 없으면 {@link IllegalStateException}를 발생시킨다.<br>
+     * test code에서 {@link IllegalStateException}("FirebaseApp name [앱 이름] already exists!") 이 발생하여 try-catch문을 함
      * @return FirebaseMessaging FCM푸시 알람을 보낼 수 있는 객체
-     * @throws IOException Stream을 얻기위해 I/O작업을 하므로 발생할 수 있습니다.
+     * @throws IOException Stream을 얻기위해 I/O작업을 하므로 발생할 수 있다.
      * @author 정시원
      */
     @PostConstruct
@@ -61,7 +61,7 @@ public class FirebaseMessagingConfig {
     }
 
     /**
-     * FCM메시지를 보내기위한 {@link FirebaseMessaging}객체를 만들어 Bean으로 등록했다,
+     * FCM메시지를 보내기위한 {@link FirebaseMessaging}객체를 만들어 Bean으로 등록함
      * @return 서버에서 한 번 초기화 한 FirebaseApp 객체로 만든 메시징을 보내기 위한 {@link FirebaseMessaging}객체
      * @see #firebaseAppInit()
      * @author 정시원
