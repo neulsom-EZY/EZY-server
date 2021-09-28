@@ -13,6 +13,10 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * FCM관련 구성요소를 초기화하는 Config클래스
+ * @author 정시원
+ */
 @Slf4j
 @Configuration
 public class FirebaseMessagingConfig {
@@ -49,16 +53,17 @@ public class FirebaseMessagingConfig {
                 .setProjectId(PROJECT_ID)
                 .build();
 
-        try{
-            FirebaseApp.getInstance(PROJECT_ID); // FirebaseApp에 PROJECT_ID에 대한 인스턴스가 없을 때
+        try{// FirebaseApp에 PROJECT_ID에 대한 인스턴스가 없을 때
+            FirebaseApp.getInstance(PROJECT_ID);
         }catch(IllegalStateException e){
-            FirebaseApp.initializeApp(firebaseOptions, PROJECT_ID);
+            FirebaseApp.initializeApp(firebaseOptions, PROJECT_ID); // PROJECT_ID라는 이름을 가진 FirebaseApp객체를 생성한다.
         }
     }
 
     /**
-     * FCM메시지를 보내기위한 FirebaseMessaging객체를 만들어 Bean으로 등록했다,
-     * @return 서버에서 한 번 초기화 한 FirebaseApp 객체로 만든 메시징을 보내기 위한 FirebaseMessaging객체
+     * FCM메시지를 보내기위한 {@link FirebaseMessaging}객체를 만들어 Bean으로 등록했다,
+     * @return 서버에서 한 번 초기화 한 FirebaseApp 객체로 만든 메시징을 보내기 위한 {@link FirebaseMessaging}객체
+     * @see #firebaseAppInit()
      * @author 정시원
      */
     @Bean
