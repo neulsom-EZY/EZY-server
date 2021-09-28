@@ -1,9 +1,7 @@
 package com.server.EZY.notification.service;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.*;
 import com.server.EZY.notification.FcmMessage;
-import com.server.EZY.notification.config.FirebaseMessagingConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
