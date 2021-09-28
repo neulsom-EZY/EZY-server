@@ -27,9 +27,10 @@ public class FirebaseMessagingService {
         // FirebaseMessging으로 푸시알람을 보내기 위한 객체
         Message message = Message.builder()
                 .setNotification(
-                        new Notification(
-                                fcmMessage.getTitle(),
-                                fcmMessage.getBody())
+                        Notification.builder()
+                                .setTitle(fcmMessage.getTitle())
+                                .setBody(fcmMessage.getBody())
+                                .build()
                 )
 //                .putData("title", fcmMessage.getTitle()) // putData는 추가적인 데이터를 보내고 싶을 때 사용한다.
 //                .putData("body", fcmMessage.getBody())
@@ -52,9 +53,10 @@ public class FirebaseMessagingService {
         // [START send_multicast]
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(
-                        new Notification(
-                                fcmMessage.getTitle(),
-                                fcmMessage.getBody())
+                        Notification.builder()
+                                .setTitle(fcmMessage.getTitle())
+                                .setBody(fcmMessage.getBody())
+                                .build()
                 )
                 .addAllTokens(tokens)
                 .build();
