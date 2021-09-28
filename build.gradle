@@ -74,7 +74,8 @@ dependencies {
 	implementation group: 'com.notnoop.apns', name: 'apns', version: '1.0.0.Beta6'
 
 	//*** For Firebase ***//
-	implementation 'com.google.firebase:firebase-admin:6.8.1'
+	implementation 'com.google.firebase:firebase-admin:8.0.1'
+
 
 	//*** okhttp3 ***//
 	implementation 'com.squareup.okhttp3:okhttp:4.9.1'
