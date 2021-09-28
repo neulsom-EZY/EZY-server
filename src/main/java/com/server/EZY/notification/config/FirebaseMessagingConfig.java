@@ -20,7 +20,7 @@ import java.util.Arrays;
 @Slf4j
 @Configuration
 public class FirebaseMessagingConfig {
-    public static final String PROJECT_ID = "ezy-fcm";
+    private final String PROJECT_ID = "ezy-fcm";
     private final String BASE_URL = "https://fcm.googleapis.com";
     private final String FCM_SEND_ENDPOINT = "/v1/projects/" + PROJECT_ID + "/messages:send";
 
