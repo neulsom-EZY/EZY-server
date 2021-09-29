@@ -36,6 +36,9 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
+    @Column(name = "fcm_token", nullable = true, unique = true)
+    private String fcmToken;
+
     @Enumerated(STRING) @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "user_id"))
