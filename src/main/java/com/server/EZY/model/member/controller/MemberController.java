@@ -1,15 +1,13 @@
 package com.server.EZY.model.member.controller;
 
-import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.AuthDto;
-import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.dto.PasswordChangeDto;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.response.result.SingleResult;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +31,9 @@ public class MemberController {
      * @author 배태현
      */
     @PostMapping("/signup")
+    @ApiOperation(value = "회원가입", notes = "회원가입")
     @ResponseStatus( HttpStatus.CREATED )
-    public CommonResult signup(@Valid @ApiParam("Signup User") @RequestBody MemberDto memberDto) throws Exception {
+    public CommonResult signup(@Valid @RequestBody MemberDto memberDto) throws Exception {
         memberService.signup(memberDto);
         return responseService.getSuccessResult();
     }
@@ -47,6 +46,7 @@ public class MemberController {
      * @author 배태현
      */
     @PostMapping("/signin")
+    @ApiOperation(value = "로그인", notes = "로그인")
     @ResponseStatus( HttpStatus.OK )
     public SingleResult<Map<String, String>> signin(@Valid @RequestBody AuthDto loginDto) throws Exception {
         Map<String, String> signinData = memberService.signin(loginDto);
@@ -60,6 +60,7 @@ public class MemberController {
      * @author 배태현
      */
     @PostMapping("/auth")
+    @ApiOperation(value = "전화번호로 인증번호 보내기", notes = "전화번호로 인증번호 보내기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult sendAuthKey(String phoneNumber) {
         memberService.sendAuthKey(phoneNumber);
@@ -73,6 +74,7 @@ public class MemberController {
      * @author 배태현
      */
     @PostMapping("/auth/check")
+    @ApiOperation(value = "인증번호 인증하기", notes = "인증번호 인증하기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult validAuthKey(String key) {
         memberService.validAuthKey(key);
@@ -85,6 +87,7 @@ public class MemberController {
      * @return SingleResult(찾은 회원이름)
      */
     @PostMapping("/find/username")
+    @ApiOperation(value = "이름(아이디)찾기", notes = "이름(아이디)찾기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult findUsername(String phoneNumber) {
         String username = memberService.findUsername(phoneNumber);
@@ -99,6 +102,7 @@ public class MemberController {
      * @author 배태현
      */
     @PutMapping ("/change/password")
+    @ApiOperation(value = "비밀번호 찾기", notes = "비밀번호 찾기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
         memberService.changePassword(passwordChangeDto);

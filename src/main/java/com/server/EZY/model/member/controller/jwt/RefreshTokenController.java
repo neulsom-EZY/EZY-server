@@ -6,6 +6,7 @@ import com.server.EZY.response.result.SingleResult;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class RefreshTokenController {
      * @return SingleResult (NewAccessToken, NewRefreshToken, nickname)
      */
     @GetMapping("/refreshtoken")
+    @ApiOperation(value = "토큰 재발급", notes = "토큰 재발급")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
