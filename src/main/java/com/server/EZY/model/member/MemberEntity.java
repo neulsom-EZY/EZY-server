@@ -99,6 +99,10 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
         this.phoneNumber = phoneNumber != null ? phoneNumber : this.phoneNumber;
     }
 
+    public void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken != null ? fcmToken : this.fcmToken;
+    }
+
     @Override @Generated
     public boolean equals(Object o) {
         if (this == o) return true;
