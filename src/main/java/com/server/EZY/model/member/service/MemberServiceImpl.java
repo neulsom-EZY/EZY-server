@@ -71,6 +71,7 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     @Override
+    @Transactional
     public Map<String, String> signin(AuthDto loginDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(loginDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
@@ -83,6 +84,8 @@ public class MemberServiceImpl implements MemberService {
 
         redisUtil.deleteData(memberEntity.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
         redisUtil.setDataExpire(memberEntity.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
+
+        memberEntity.updateFcmToken(loginDto.getFcmToken());
 
         Map<String ,String> map = new HashMap<>();
         map.put("username", loginDto.getUsername());
