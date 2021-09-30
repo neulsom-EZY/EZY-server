@@ -20,12 +20,12 @@ public class FirebaseMessagingServiceTest {
     public void sendToToken() throws FirebaseMessagingException {
         //Given
         FcmMessage.FcmRequest sayHello = FcmMessage.FcmRequest.builder()
-                .title("안녕하세요")
-                .body("Hello world!")
+                .title("EZY의 세상에 오신 것을 환영합니다!")
+                .body("Hello EZY world!")
                 .build();
 
-        // 김유진의 FCM registration token
-        String token = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
+        // 노연주의 FCM registration token
+        String token = "e60Y1Mnh400Zu_YNhYWEMP:APA91bFCwTIOvgM3CSe9ZH_mLPLeJrL5xE_TPrHQF3UqT_qVMQv_Q0ZsqshExasODCXpMeFZJ2al3dLCJv2n3f4fj-HqHZ7_DPnsKA01NZfHAcZFPGCmt7U0XJCR40_wii0gpiBzvI0Q";
 
         //When
         firebaseMessagingService.sendToToken(sayHello, token);
