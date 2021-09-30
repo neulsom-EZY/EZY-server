@@ -5,7 +5,7 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
-import com.server.EZY.model.plan.errand.enum_type.ResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
 import com.server.EZY.model.plan.errand.repository.ErrandRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class ErrandServiceImpl implements ErrandService{
         ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
                 .senderIdx(currentUser.getMemberIdx())
                 .recipientIdx(recipientIdx)
-                .responseStatus(ResponseStatus.NOT_READ)
+                .errandResponseStatus(ErrandResponseStatus.NOT_READ)
                 .build();
 
         return errandRepository.save(errandSetDto.saveToEntity(currentUser, errandStatusEntity));
