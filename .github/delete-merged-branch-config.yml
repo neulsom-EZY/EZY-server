@@ -1,0 +1,5 @@
+exclude:
+  - feature/*
+  - master
+
+delete_closed_pr: true
