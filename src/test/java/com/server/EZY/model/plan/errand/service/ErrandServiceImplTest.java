@@ -8,7 +8,7 @@ import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
-import com.server.EZY.model.plan.errand.enum_type.ResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -92,7 +92,7 @@ class ErrandServiceImplTest {
         ErrandEntity errandEntity = errandService.sendErrand(errandSetDto);
 
         //Then
-        assertEquals(ResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getResponseStatus());
+        assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getErrandResponseStatus());
         assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandStatusEntity().getRecipientIdx());
     }
 
