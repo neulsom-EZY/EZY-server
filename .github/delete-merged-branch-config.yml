@@ -1,5 +1,4 @@
 exclude:
-  - feature/*
-  - master
+  - develop
 
 delete_closed_pr: true
