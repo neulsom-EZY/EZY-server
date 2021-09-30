@@ -71,6 +71,7 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     @Override
+    @Transactional
     public Map<String, String> signin(AuthDto loginDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(loginDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
@@ -83,6 +84,8 @@ public class MemberServiceImpl implements MemberService {
 
         redisUtil.deleteData(memberEntity.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
         redisUtil.setDataExpire(memberEntity.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
+
+        memberEntity.updateFcmToken(loginDto.getFcmToken());
 
         Map<String ,String> map = new HashMap<>();
         map.put("username", loginDto.getUsername());
@@ -120,7 +123,7 @@ public class MemberServiceImpl implements MemberService {
         HashMap<String, String> params = new HashMap<String, String>();
 
         params.put("to", phoneNumber);
-        params.put("from", "01049977055");
+        params.put("from", "07080283503");
         params.put("type", "SMS");
         params.put("text", "[EZY] 인증번호 "+authKey+" 를 입력하세요.");
         params.put("app_version", "test app 1.2");

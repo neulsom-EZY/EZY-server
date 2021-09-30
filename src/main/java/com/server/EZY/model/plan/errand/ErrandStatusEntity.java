@@ -1,6 +1,6 @@
 package com.server.EZY.model.plan.errand;
 
-import com.server.EZY.model.plan.errand.enum_type.ResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,19 +28,19 @@ public class ErrandStatusEntity {
 
     @Column(name = "response_status")
     @Enumerated(EnumType.STRING)
-    private ResponseStatus responseStatus;
+    private ErrandResponseStatus errandResponseStatus;
 
     /**
      * 심부름의 상태를 추가하는 생성자
      * @param senderIdx 발신자의 MemberIdx
      * @param recipientIdx 수신자의 MemberIdx
-     * @param responseStatus 심부름의 상태
+     * @param errandResponseStatus 심부름의 상태
      * @author 정시원
      */
     @Builder
-    public ErrandStatusEntity(Long senderIdx, Long recipientIdx, ResponseStatus responseStatus){
+    public ErrandStatusEntity(Long senderIdx, Long recipientIdx, ErrandResponseStatus errandResponseStatus){
         this.senderIdx = senderIdx;
         this.recipientIdx = recipientIdx;
-        this.responseStatus = responseStatus;
+        this.errandResponseStatus = errandResponseStatus;
     }
 }

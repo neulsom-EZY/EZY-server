@@ -3,25 +3,22 @@ package com.server.EZY.notification;
 import lombok.*;
 
 public class FcmMessage {
-    @Getter
-    @NoArgsConstructor
+    @Getter @Builder
     @AllArgsConstructor
     public static class MessageResponse{
+        private String validateOnly; // 실제로 메시지를 전달하지 않고 요청을 테스트하기위한 플래그입니다.
         private String message;
     }
 
-    @Getter
-    @Builder
-    @NoArgsConstructor
+    @Getter @Builder
     @AllArgsConstructor
     public static class FcmRequest{
-        private String token;
-        private String subject;
-        private String content;
+        private String title;
+        private String body;
 
-        public void setRequest(String subject, String content){
-            this.subject = subject;
-            this.content = content;
+        public void setRequest(String title, String body){
+            this.title = title;
+            this.body = body;
         }
     }
 }

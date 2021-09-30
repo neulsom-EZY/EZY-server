@@ -36,6 +36,9 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
+    @Column(name = "fcm_token", nullable = true, unique = true)
+    private String fcmToken;
+
     @Enumerated(STRING) @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "user_id"))
@@ -94,6 +97,10 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
 
     public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber != null ? phoneNumber : this.phoneNumber;
+    }
+
+    public void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken != null ? fcmToken : this.fcmToken;
     }
 
     @Override @Generated

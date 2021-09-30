@@ -12,22 +12,33 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class FirebaseMessagingService {
+
+    private final FirebaseMessaging firebaseMessaging;
+
     /**
-     * Client device-token 을 이용하여 해당 device 에 알림을 전송합니다.
-     * @param fcmMessage
-     * @param token
-     * @throws FirebaseMessagingException
-     * @author 전지환
+     * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
+     * @param fcmMessage FCM메시지를 보내기 위한 DTO
+     * @param token FCM registration token 즉 FCM에서 발급한 기기의 토큰이다.
+     * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
+     * @author 전지환, 정시원
      */
-    public void sendToToken (FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException{
-        // [START send_to_token]
+    public void sendToToken (FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException {
+
+        // FirebaseMessging으로 푸시알람을 보내기 위한 객체
         Message message = Message.builder()
-                .putData("subject", fcmMessage.getSubject())
-                .putData("content", fcmMessage.getContent())
+                .setNotification(
+                        Notification.builder()
+                                .setTitle(fcmMessage.getTitle())
+                                .setBody(fcmMessage.getBody())
+                                .build()
+                )
+//                .putData("title", fcmMessage.getTitle()) // putData는 추가적인 데이터를 보내고 싶을 때 사용한다.
+//                .putData("body", fcmMessage.getBody())
                 .setToken(token)
                 .build();
 
-        String response = FirebaseMessaging.getInstance().send(message);
+        String response = firebaseMessaging.send(message);
+        //String response = firebaseMessaging.send(message, true); // 가짜로 푸시 테스트를 하기 위해 두번째 인자로 ture를 넘겨준다.
         log.info("Successfully sent message: {}", response);
     }
 
@@ -41,12 +52,16 @@ public class FirebaseMessagingService {
     public void sendMulticast(FcmMessage.FcmRequest fcmMessage, List<String> tokens) throws FirebaseMessagingException {
         // [START send_multicast]
         MulticastMessage message = MulticastMessage.builder()
-                .putData("subject", fcmMessage.getSubject())
-                .putData("content", fcmMessage.getContent())
+                .setNotification(
+                        Notification.builder()
+                                .setTitle(fcmMessage.getTitle())
+                                .setBody(fcmMessage.getBody())
+                                .build()
+                )
                 .addAllTokens(tokens)
                 .build();
 
-        BatchResponse batchResponse = FirebaseMessaging.getInstance().sendMulticast(message);
+        BatchResponse batchResponse = firebaseMessaging.sendMulticast(message);
         log.info("{}  messages were sent successfully", batchResponse);
         // [END send_multicast]
     }
@@ -64,8 +79,8 @@ public class FirebaseMessagingService {
                         .putHeader("apns-priority", "10")
                         .setAps(Aps.builder()
                                 .setAlert(ApsAlert.builder()
-                                        .setTitle(fcmMessage.getSubject())
-                                        .setBody(fcmMessage.getContent())
+                                        .setTitle(fcmMessage.getTitle())
+                                        .setBody(fcmMessage.getBody())
                                         .build())
                                 .setBadge(42)
                                 .build())
