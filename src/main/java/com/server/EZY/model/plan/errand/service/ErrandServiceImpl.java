@@ -79,8 +79,8 @@ public class ErrandServiceImpl implements ErrandService{
         }
 
         return FcmMessage.FcmRequest.builder()
-                .title("누군가 심부름을 " +sendAction+" 했어요")
-                .body(sender+"님이 보낸 심부름을 확인해보세요!")
+                .title("누군가 심부름을 " +sendAction+"했어요")
+                .body(sender+" 님이 보낸 심부름을 확인해보세요!")
                 .build();
     }
 }
