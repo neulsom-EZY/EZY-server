@@ -53,7 +53,7 @@ public class ErrandServiceImpl implements ErrandService{
         ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, errandStatusEntity));
 
         fcmService.sendToToken(
-                createFcmMessageAboutErrand(sender.getUsername(), recipient.getUsername(), ErrandRole.SENDER),
+                createFcmMessageAboutErrand(sender.getUsername(), recipient.getUsername(), ErrandRole.SENDER, null),
                 "eQb5CygpsUahmPBRDnTc0N:APA91bFaOlt2nZDJKJpO8dZsjS8vSDCZKxZWYBWtNXYUiIiUxLPiGTLcXuyuVTW1uqOxu55Ay9z_1ss-D2uz2xP-C_R2-5yxyV2pqn88zYts4WSxS4pgWgdvFtBAG6nU__dSYH7WW8Qk"
         );
 
@@ -65,17 +65,25 @@ public class ErrandServiceImpl implements ErrandService{
      * @return FcmMessage.FcmRequest
      * @author 전지환
      */
-    public FcmMessage.FcmRequest createFcmMessageAboutErrand(String sender, String recipient, ErrandRole errandRole){
-        String action;
-        log.info("당신은 "+errandRole.toString()+" 입니다.");
+    public FcmMessage.FcmRequest createFcmMessageAboutErrand(String sender, String recipient, ErrandRole errandRole, ErrandResponseStatus errandResponseStatus){
+        String action="";
 
-        switch (errandRole.toString()){
-            case "SENDER" : action = "요청";
-                break;
-            case "RECIPIENT" : action = "전송";
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + errandRole);
+        if (errandRole!=null){
+            switch (errandRole.toString()){
+                case "SENDER" : action = "요청";
+                    break;
+                case "RECIPIENT" : action = "전송";
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + errandRole);
+            }
+        } else if (errandResponseStatus!=null){
+            switch (errandResponseStatus.toString()){
+                case "CANCEL" : action = "거절";
+                    break;
+                case "ACCEPT" : action = "수락";
+                    break;
+            }
         }
 
         return FcmMessage.FcmRequest.builder()
