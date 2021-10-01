@@ -65,6 +65,7 @@ public class ErrandServiceImpl implements ErrandService{
      * @return FcmMessage.FcmRequest
      * @author 전지환
      */
+    @Override
     public FcmMessage.FcmRequest createFcmMessageAboutErrand(String sender, String recipient, ErrandRole errandRole, ErrandResponseStatus errandResponseStatus){
         String action="";
 
