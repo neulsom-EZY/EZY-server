@@ -66,21 +66,21 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 전지환
      */
     public FcmMessage.FcmRequest createFcmMessageAboutErrand(String sender, String recipient, ErrandRole errandRole){
-        String sendAction;
+        String action;
         log.info("당신은 "+errandRole.toString()+" 입니다.");
 
         switch (errandRole.toString()){
-            case "SENDER" : sendAction = "요청";
+            case "SENDER" : action = "요청";
                 break;
-            case "RECIPIENT" : sendAction = "전송";
+            case "RECIPIENT" : action = "전송";
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + errandRole);
         }
 
         return FcmMessage.FcmRequest.builder()
-                .title("누군가 심부름을 " +sendAction+"했어요")
-                .body(sender+" 님이 보낸 심부름을 확인해보세요!")
+                .title("누군가 심부름을 " +action+"했어요")
+                .body(sender+" 님이 "+action+"한 심부름을 확인해보세요!")
                 .build();
     }
 }
