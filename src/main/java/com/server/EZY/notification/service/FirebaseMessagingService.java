@@ -23,7 +23,6 @@ public class FirebaseMessagingService {
      * @author 전지환, 정시원
      */
     public void sendToToken (FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException {
-
         // FirebaseMessging으로 푸시알람을 보내기 위한 객체
         Message message = Message.builder()
                 .setNotification(
@@ -36,7 +35,6 @@ public class FirebaseMessagingService {
                 .build();
 
         String response = firebaseMessaging.send(message);
-        //String response = firebaseMessaging.send(message, true); // 가짜로 푸시 테스트를 하기 위해 두번째 인자로 ture를 넘겨준다.
         log.info("Successfully sent message: {}", response);
     }
 
