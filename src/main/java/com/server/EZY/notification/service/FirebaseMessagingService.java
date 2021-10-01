@@ -32,8 +32,6 @@ public class FirebaseMessagingService {
                                 .setBody(fcmMessage.getBody())
                                 .build()
                 )
-//                .putData("title", fcmMessage.getTitle()) // putData는 추가적인 데이터를 보내고 싶을 때 사용한다.
-//                .putData("body", fcmMessage.getBody())
                 .setToken(token)
                 .build();
 
