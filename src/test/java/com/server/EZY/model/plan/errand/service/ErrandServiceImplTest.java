@@ -44,7 +44,7 @@ class ErrandServiceImplTest {
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("전지환")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -65,7 +65,7 @@ class ErrandServiceImplTest {
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("전지환", currentUserNickname);
     }
 
     @Test @DisplayName("심부름이 잘 저장되나요?")
