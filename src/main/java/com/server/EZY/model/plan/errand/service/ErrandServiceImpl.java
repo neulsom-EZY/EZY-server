@@ -61,8 +61,8 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
-     * 심부름 관련 FcmMessage를 생성할때 사용하는 메서드 입니다.
-     * @return
+     * 심부름 관련 FcmMessage를 생성할 때 사용하는 메서드 입니다.
+     * @return FcmMessage.FcmRequest
      * @author 전지환
      */
     public FcmMessage.FcmRequest createFcmMessageAboutErrand(String sender, String recipient, ErrandRole errandRole){

@@ -91,10 +91,10 @@ class ErrandServiceImplTest {
         //When
         MemberEntity kimEntitySaved = memberRepository.save(kimEntity);
         ErrandEntity errandEntity = errandService.sendErrand(errandSetDto);
-//
-//        //Then
-//        assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getErrandResponseStatus());
-//        assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandStatusEntity().getRecipientIdx());
+
+        //Then
+        assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getErrandResponseStatus());
+        assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandStatusEntity().getRecipientIdx());
     }
 
 }
