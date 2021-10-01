@@ -11,6 +11,10 @@ import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 public class ErrandServiceImpl implements ErrandService{
