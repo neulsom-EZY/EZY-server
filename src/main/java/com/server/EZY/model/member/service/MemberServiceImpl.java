@@ -230,6 +230,11 @@ public class MemberServiceImpl implements MemberService {
         } else throw new MemberNotFoundException();
     }
 
+    /**
+     * fcmToken 변경 서비스로직
+     * @param fcmTokenDto
+     * @author 배태현
+     */
     @Override
     @Transactional
     public void updateFcmToken(FcmTokenDto fcmTokenDto) {

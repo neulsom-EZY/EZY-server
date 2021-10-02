@@ -101,6 +101,12 @@ public class CertifiedMemberController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * fcmToken 변경 컨트롤러
+     * @param fcmTokenDto
+     * @return SuccessResult
+     * @author 배태현
+     */
     @PostMapping("/fcmtoken")
     @ApiOperation(value = "fcmToken 변경", notes = "fcmToken 변경")
     @ResponseStatus( HttpStatus.OK )
