@@ -392,7 +392,8 @@ public class MemberServiceTest {
         memberService.updateFcmToken(fcmTokenDto);
 
         //then
-        assertEquals(fcmTokenDto.getFcmToken(), memberRepository.findById(memberEntity.getMemberIdx()).get().getFcmToken());
+        String currentUserFcmToken = memberRepository.findById(memberEntity.getMemberIdx()).get().getFcmToken();
+        assertEquals(fcmTokenDto.getFcmToken(), currentUserFcmToken);
     }
 
     /**
