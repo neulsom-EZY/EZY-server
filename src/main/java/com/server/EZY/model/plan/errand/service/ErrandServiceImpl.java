@@ -71,19 +71,19 @@ public class ErrandServiceImpl implements ErrandService{
         String action="";
 
         if (errandRole!=null){
-            switch (errandRole.toString()){
-                case "SENDER" : action = "요청";
+            switch (errandRole){
+                case SENDER: action = "요청";
                     break;
-                case "RECIPIENT" : action = "전송";
+                case RECIPIENT: action = "전송";
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + errandRole);
             }
         } else if (errandResponseStatus!=null){
-            switch (errandResponseStatus.toString()){
-                case "CANCEL" : action = "거절";
+            switch (errandResponseStatus){
+                case CANCEL: action = "거절";
                     break;
-                case "ACCEPT" : action = "수락";
+                case ACCEPT: action = "수락";
                     break;
             }
         }

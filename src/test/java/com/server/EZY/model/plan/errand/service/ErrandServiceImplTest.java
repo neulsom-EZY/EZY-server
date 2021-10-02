@@ -110,6 +110,6 @@ class ErrandServiceImplTest {
         //Given
         FcmMessage.FcmRequest messageAboutErrand = errandService.createFcmMessageAboutErrand("jyeonjyan", null, null, ErrandResponseStatus.CANCEL);
         //When
-        firebaseMessagingService.sendToToken(messageAboutErrand, youjinFcmToken);
+        firebaseMessagingService.sendToToken(messageAboutErrand, jihwanFcmToken);
     }
 }
