@@ -39,7 +39,7 @@ public class ErrandServiceImpl implements ErrandService{
     public ErrandEntity sendErrand(ErrandSetDto errandSetDto) throws FirebaseMessagingException {
         /**
          * sender: 보내는 사람
-         * recipientIdx: 받는 사람
+         * recipient: 받는 사람
          */
         MemberEntity sender = currentUserUtil.getCurrentUser();
         MemberEntity recipient = memberRepository.findByUsername(errandSetDto.getRecipient());
@@ -54,7 +54,7 @@ public class ErrandServiceImpl implements ErrandService{
 
         fcmService.sendToToken(
                 createFcmMessageAboutErrand(sender.getUsername(), recipient.getUsername(), ErrandRole.SENDER, null),
-                "eQb5CygpsUahmPBRDnTc0N:APA91bFaOlt2nZDJKJpO8dZsjS8vSDCZKxZWYBWtNXYUiIiUxLPiGTLcXuyuVTW1uqOxu55Ay9z_1ss-D2uz2xP-C_R2-5yxyV2pqn88zYts4WSxS4pgWgdvFtBAG6nU__dSYH7WW8Qk"
+                recipient.getFcmToken()
         );
 
         return savedErrandEntity;
