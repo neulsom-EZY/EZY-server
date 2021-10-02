@@ -1,9 +1,9 @@
 package com.server.EZY.model.member.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter @Setter
+@Getter @Setter @Builder
+@AllArgsConstructor @NoArgsConstructor
 public class FcmTokenDto {
 
     private String fcmToken;
