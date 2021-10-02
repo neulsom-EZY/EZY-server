@@ -8,6 +8,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
+import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
     private final KeyUtil keyUtil;
+    private final CurrentUserUtil currentUserUtil;
 
     @Value("${sms.api.apikey}")
     private String apiKey;
@@ -226,5 +228,13 @@ public class MemberServiceImpl implements MemberService {
         if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
             memberRepository.deleteById(memberEntity.getMemberIdx());
         } else throw new MemberNotFoundException();
+    }
+
+    @Override
+    @Transactional
+    public void updateFcmToken(FcmTokenDto fcmTokenDto) {
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
+
+        currentUser.updateFcmToken(fcmTokenDto.getFcmToken());
     }
 }
