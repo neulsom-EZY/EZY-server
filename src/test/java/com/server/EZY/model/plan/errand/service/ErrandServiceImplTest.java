@@ -76,7 +76,7 @@ class ErrandServiceImplTest {
     }
 
     @Test @DisplayName("심부름이 잘 저장되나요?")
-    void 심부름_저장_조지기() throws FirebaseMessagingException {
+    void 심부름_저장_조지기() throws Exception {
         //Given
         ErrandSetDto errandSetDto = ErrandSetDto.builder()
                 .location("수완스타벅스")
