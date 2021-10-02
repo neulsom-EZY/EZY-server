@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.errand.service;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.errand.ErrandEntity;
@@ -36,13 +35,15 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 전지환
      */
     @Override
-    public ErrandEntity sendErrand(ErrandSetDto errandSetDto) throws FirebaseMessagingException {
+    public ErrandEntity sendErrand(ErrandSetDto errandSetDto) throws Exception {
         /**
          * sender: 보내는 사람
          * recipient: 받는 사람
          */
         MemberEntity sender = currentUserUtil.getCurrentUser();
         MemberEntity recipient = memberRepository.findByUsername(errandSetDto.getRecipient());
+
+        if (sender == recipient) throw new Exception("본인에게는 심부름을 요청할 수 없어요 ㅠㅠ");
 
         ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
                 .senderIdx(sender.getMemberIdx())
