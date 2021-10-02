@@ -378,6 +378,23 @@ public class MemberServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("fcmToken이 잘 변경 되나요 ?")
+    public void fcmTokenUpdateTest() {
+        //given
+        FcmTokenDto fcmTokenDto = FcmTokenDto.builder()
+                .fcmToken("fAp6e7Snyk_kg9ZxvTkt-a:APA91bEsOTGuuATRSKcHnwjqLL_aiT42BoLCuVJHrsW_JmvmfLqw8Ub2bZmUycR6qDyMbU2I41UScu9-kiv5bnI70wNRBXA1ku-IiEp5LiH_ZzGNBai7ZQqY5VGsb3s-BLu13iXEiISm")
+                .build();
+
+        MemberEntity memberEntity = currentUser();
+
+        //when
+        memberService.updateFcmToken(fcmTokenDto);
+
+        //then
+        assertEquals(fcmTokenDto.getFcmToken(), memberRepository.findById(memberEntity.getMemberIdx()).get().getFcmToken());
+    }
+
     /**
      * 로그인이 되어있는 유저를 만들기위해 뺀 메서드
      * @return loginUser(현재 로그인되어있는 유저)
