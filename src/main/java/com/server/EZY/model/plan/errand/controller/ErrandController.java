@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.errand.controller;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.service.ErrandService;
 import com.server.EZY.response.ResponseService;
@@ -50,7 +49,7 @@ public class ErrandController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult sendErrand(@RequestBody ErrandSetDto errandSetDto) throws FirebaseMessagingException {
+    public CommonResult sendErrand(@RequestBody ErrandSetDto errandSetDto) throws Exception {
         errandService.sendErrand(errandSetDto);
         return responseService.getSuccessResult();
     }
