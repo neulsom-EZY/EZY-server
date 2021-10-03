@@ -29,9 +29,6 @@ public class CertifiedMemberController {
     private final MemberService memberService;
     private final ResponseService responseService;
 
-    //이 Controller가 return이 아무값도 return되지않음 공백이 뜸 (POSTMAN에서 확인)
-
-
     /**
      * 전화번호 변경 controller
      * @param phoneNumberChangeDto (username, newPhoneNumber)
@@ -93,7 +90,7 @@ public class CertifiedMemberController {
      */
     @PostMapping ("/delete")
     @ApiOperation(value = "회원탈퇴", notes = "회원탈퇴")
-    @ResponseStatus( HttpStatus.NO_CONTENT )
+    @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
