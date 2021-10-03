@@ -2,6 +2,8 @@ package com.server.EZY.notification;
 
 import lombok.*;
 
+import java.util.Map;
+
 public class FcmMessage {
     @Getter @Builder
     @AllArgsConstructor
@@ -15,5 +17,7 @@ public class FcmMessage {
     public static class FcmRequest{
         private String title;
         private String body;
+
+        private Map<String, String> payloads;
     }
 }
