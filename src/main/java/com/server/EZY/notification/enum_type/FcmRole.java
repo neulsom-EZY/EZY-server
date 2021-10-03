@@ -1,5 +1,5 @@
 package com.server.EZY.notification.enum_type;
 
 public enum FcmRole {
-    TOME, SENDER, RECIPIENT
+    내게쓰기, 보내는사람, 받는사람
 }

@@ -1,5 +1,5 @@
 package com.server.EZY.notification.enum_type;
 
 public enum FcmPurposeType {
-    PERSONALPLAN, ERRAND
+    개인일정, 심부름
 }
