@@ -2,6 +2,7 @@ package com.server.EZY.notification;
 
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class FcmMessage {
@@ -18,6 +19,7 @@ public class FcmMessage {
         private String title;
         private String body;
 
-        private Map<String, String> payloads;
+        @Builder.Default
+        private Map<String, String> payloads = new HashMap<>();
     }
 }

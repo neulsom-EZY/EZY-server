@@ -24,16 +24,24 @@ public class FirebaseMessagingService {
      */
     public void sendToToken (FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException {
         // FirebaseMessging으로 푸시알람을 보내기 위한 객체
-        Message message = Message.builder()
+        Message message;
+
+        Message.Builder messageBuilder = Message.builder()
                 .setNotification(
                         Notification.builder()
                                 .setTitle(fcmMessage.getTitle())
                                 .setBody(fcmMessage.getBody())
                                 .build()
                 )
-                .setToken(token)
-                .putAllData(fcmMessage.getPayloads())
-                .build();
+                .setToken(token);
+        // payloads가 null이라면 Message객체에 payloads를 put하지 않는다.
+        if(fcmMessage.getPayloads().isEmpty()) {
+            message = messageBuilder.build();
+        }else {
+            message = messageBuilder
+                    .putAllData(fcmMessage.getPayloads())
+                    .build();
+        }
 
         String response = firebaseMessaging.send(message);
         log.info("Successfully sent message: {}", response);
