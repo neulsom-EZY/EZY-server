@@ -62,7 +62,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmRole(FcmRole.보내는사람)
                 .build();
         // 여기서 filter 되어 fcm send 까지 완성 함.
-        activeFcmFilterService.checkFcmPurpose(fcmSourceDto);
+        activeFcmFilterService.send(fcmSourceDto);
 
         return savedErrandEntity;
     }

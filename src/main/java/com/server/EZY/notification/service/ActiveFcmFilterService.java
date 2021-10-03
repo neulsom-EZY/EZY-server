@@ -17,6 +17,15 @@ public class ActiveFcmFilterService {
     private final FcmMakerService fcmMakerService;
 
     /**
+     * 목적부터 탐색하여 ~ 최종적으로 전송하게 할 수 있도록 함
+     * @param fcmSourceDto
+     * @throws FirebaseMessagingException
+     */
+    public void send(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+        checkFcmPurpose(fcmSourceDto);
+    }
+
+    /**
      * 자신의 목적에 맞는 메소드로 redirect
      * @param fcmSourceDto
      * @throws FirebaseMessagingException
