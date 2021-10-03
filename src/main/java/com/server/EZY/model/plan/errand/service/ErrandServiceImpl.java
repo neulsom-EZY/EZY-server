@@ -9,7 +9,10 @@ import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
 import com.server.EZY.model.plan.errand.enum_type.ErrandRole;
 import com.server.EZY.model.plan.errand.repository.ErrandRepository;
 import com.server.EZY.notification.FcmMessage;
-import com.server.EZY.notification.service.FirebaseMessagingService;
+import com.server.EZY.notification.dto.FcmSourceDto;
+import com.server.EZY.notification.enum_type.FcmPurposeType;
+import com.server.EZY.notification.enum_type.FcmRole;
+import com.server.EZY.notification.service.ActiveFcmFilterService;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +29,7 @@ public class ErrandServiceImpl implements ErrandService{
     private final CurrentUserUtil currentUserUtil;
     private final MemberRepository memberRepository;
     private final ErrandRepository errandRepository;
-    private final FirebaseMessagingService fcmService;
+    private final ActiveFcmFilterService activeFcmFilterService;
 
     /**
      * 이 메서드는 심부름을 전송(저장) 할 때 사용하는 비즈니스 로직입니다.
@@ -43,8 +46,6 @@ public class ErrandServiceImpl implements ErrandService{
         MemberEntity sender = currentUserUtil.getCurrentUser();
         MemberEntity recipient = memberRepository.findByUsername(errandSetDto.getRecipient());
 
-        if (sender == recipient) throw new Exception("본인에게는 심부름을 요청할 수 없어요 ㅠㅠ");
-
         ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
                 .senderIdx(sender.getMemberIdx())
                 .recipientIdx(recipient.getMemberIdx())
@@ -52,11 +53,19 @@ public class ErrandServiceImpl implements ErrandService{
                 .build();
 
         ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, errandStatusEntity));
+        log.info("==================심부름이 DB에 정상적으로 저장되었습니다.===================");
 
-        fcmService.sendToToken(
-                createFcmMessageAboutErrand(sender.getUsername(), recipient.getUsername(), ErrandRole.SENDER, null),
-                recipient.getFcmToken()
-        );
+        // FCM 전송을 위한 로직
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(FcmRole.보내는사람)
+                .build();
+
+        log.info("==================fcm을 위한 source가 정상적으로 init 되었습니다.===================");
+        activeFcmFilterService.checkFcmPurpose(fcmSourceDto);
+        log.info("==================fcm을 위한 source가 정상적으로 수행 되었습니다.===================");
 
         return savedErrandEntity;
     }

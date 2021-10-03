@@ -5,6 +5,7 @@ import com.server.EZY.notification.enum_type.FcmRole;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
+@Builder
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
