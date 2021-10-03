@@ -54,7 +54,7 @@ public class CertifiedMemberControllerTest {
 
         AuthDto deleteUserDto = AuthDto.builder()
                 .username("@BaeTul")
-                .password("1234")
+                .password("12341234")
                 .build();
 
         String content = objectMapper.writeValueAsString(deleteUserDto);

@@ -50,7 +50,7 @@ public class MemberControllerTest {
     public void signupTest() throws Exception {
         MemberDto memberDto = MemberDto.builder()
                 .username("@bBbB")
-                .password("1234")
+                .password("qwerqwer")
                 .phoneNumber("01008090809")
                 .build();
 
@@ -71,7 +71,7 @@ public class MemberControllerTest {
     public void signInTest() throws Exception {
         AuthDto loginDto = AuthDto.builder()
                 .username("@Json")
-                .password("1234")
+                .password("1234qwer")
                 .build();
 
         String content = objectMapper.writeValueAsString(loginDto);
@@ -117,27 +117,12 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("username 찾기 테스트")
-    public void findUsernameTest() throws Exception {
-
-        String content = objectMapper.writeValueAsString("01012341234");
-
-        final ResultActions actions = mvc.perform(post("/v1/member/find/username")
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        actions
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
     @DisplayName("비밀번호 변경 테스트")
     public void pwdChangeTest() throws Exception {
 
         PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
                 .username("@Baeeeee")
-                .newPassword("string")
+                .newPassword("string1234")
                 .build();
 
         String content = objectMapper.writeValueAsString(passwordChangeDto);
