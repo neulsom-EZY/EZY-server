@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+/**
+ * 인증/인가 후 사용할 수 있는 컨트롤러
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/member")
@@ -30,10 +33,9 @@ public class CertifiedMemberController {
 
 
     /**
-     * (로그인 되어있는 상태에서) 전화번호 인증을 완료하고 전화번호를 변경할 수 있음
-     * 전화번호를 변경하는 controller
-     * @param phoneNumberChangeDto
-     * @return SuccessResult
+     * 전화번호 변경 controller
+     * @param phoneNumberChangeDto (username, newPhoneNumber)
+     * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PutMapping("/change/phone")
@@ -50,8 +52,8 @@ public class CertifiedMemberController {
 
     /**
      * username 변경 controller
-     * @param usernameChangeDto username, newUsername
-     * @return SuccessResult
+     * @param usernameChangeDto (username, newUsername)
+     * @return CommonResult - SuccessResult
      */
     @PutMapping("/change/username")
     @ApiOperation(value = "이름 변경", notes = "이름 변경")
@@ -66,9 +68,9 @@ public class CertifiedMemberController {
     }
 
     /**
-     * "/v1/member/logout"로 요청이 들어오고 (로그인이 되어있는 상태)를 확인했기 때문에 logout한다...
+     * 로그아웃 controller
      * @param request HttpServletRequest
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @DeleteMapping("/logout")
@@ -84,9 +86,9 @@ public class CertifiedMemberController {
     }
 
     /**
-     * "/v1/member/delete"로 요청이 들어와 로그인이 되어있는상태를 확인했기 때문에 회원탈퇴 진행
-     * @param deleteUserDto
-     * @return SuccessResult
+     * 회원탈퇴 controller
+     * @param deleteUserDto (username, password)
+     * @return CommonResult -  SuccessResult
      * @author 배태현
      */
     @PostMapping ("/delete")
@@ -102,9 +104,9 @@ public class CertifiedMemberController {
     }
 
     /**
-     * fcmToken 변경 컨트롤러
-     * @param fcmTokenDto
-     * @return SuccessResult
+     * fcmToken 변경 controller
+     * @param fcmTokenDto (fcmToken)
+     * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PostMapping("/fcmtoken")
