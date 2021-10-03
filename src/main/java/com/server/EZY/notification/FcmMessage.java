@@ -15,10 +15,5 @@ public class FcmMessage {
     public static class FcmRequest{
         private String title;
         private String body;
-
-        public void setRequest(String title, String body){
-            this.title = title;
-            this.body = body;
-        }
     }
 }
