@@ -65,7 +65,7 @@ public class CertifiedMemberControllerTest {
 
         actions
                 .andDo(print())
-                .andExpect(status().isNoContent()); //http status 204
+                .andExpect(status().isOk()); //http status 200
     }
 
     @Test
