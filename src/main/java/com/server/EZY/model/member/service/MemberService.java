@@ -29,4 +29,5 @@ public interface MemberService {
 
     void deleteUser(AuthDto deleteUserDto);
 
+    void updateFcmToken(FcmTokenDto fcmTokenDto);
 }

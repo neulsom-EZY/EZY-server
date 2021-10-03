@@ -8,6 +8,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
+import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
     private final KeyUtil keyUtil;
+    private final CurrentUserUtil currentUserUtil;
 
     @Value("${sms.api.apikey}")
     private String apiKey;
@@ -84,8 +86,6 @@ public class MemberServiceImpl implements MemberService {
 
         redisUtil.deleteData(memberEntity.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
         redisUtil.setDataExpire(memberEntity.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
-
-        memberEntity.updateFcmToken(loginDto.getFcmToken());
 
         Map<String ,String> map = new HashMap<>();
         map.put("username", loginDto.getUsername());
@@ -228,5 +228,18 @@ public class MemberServiceImpl implements MemberService {
         if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
             memberRepository.deleteById(memberEntity.getMemberIdx());
         } else throw new MemberNotFoundException();
+    }
+
+    /**
+     * fcmToken 변경 서비스로직
+     * @param fcmTokenDto
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void updateFcmToken(FcmTokenDto fcmTokenDto) {
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
+
+        currentUser.updateFcmToken(fcmTokenDto.getFcmToken());
     }
 }

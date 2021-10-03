@@ -1,6 +1,7 @@
 package com.server.EZY.model.member.controller;
 
 import com.server.EZY.model.member.dto.AuthDto;
+import com.server.EZY.model.member.dto.FcmTokenDto;
 import com.server.EZY.model.member.dto.PhoneNumberChangeDto;
 import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.service.MemberService;
@@ -97,6 +98,24 @@ public class CertifiedMemberController {
     })
     public CommonResult deleteUser(@Valid @RequestBody AuthDto deleteUserDto) {
         memberService.deleteUser(deleteUserDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * fcmToken 변경 컨트롤러
+     * @param fcmTokenDto
+     * @return SuccessResult
+     * @author 배태현
+     */
+    @PostMapping("/fcmtoken")
+    @ApiOperation(value = "fcmToken 변경", notes = "fcmToken 변경")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult updateFcmToken(@RequestBody FcmTokenDto fcmTokenDto) {
+        memberService.updateFcmToken(fcmTokenDto);
         return responseService.getSuccessResult();
     }
 }
