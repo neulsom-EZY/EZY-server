@@ -35,6 +35,7 @@ public class FirebaseMessagingService {
                                 .build()
                 )
                 .setToken(token)
+                .putAllData(fcmMessage.getPayloads())
                 .build();
 
         String response = firebaseMessaging.send(message);
