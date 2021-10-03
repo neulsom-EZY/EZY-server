@@ -52,7 +52,7 @@ class ErrandServiceImplTest {
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .username("전지환")
+                .username("@jyeonjyan")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -73,10 +73,10 @@ class ErrandServiceImplTest {
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("전지환", currentUserNickname);
+        assertEquals("@jyeonjyan", currentUserNickname);
     }
 
-    @Test @DisplayName("심부름이 잘 저장되나요?") @Disabled
+    @Test @DisplayName("심부름이 잘 저장되나요?")
     void 심부름_저장_조지기() throws Exception {
         //Given
         ErrandSetDto errandSetDto = ErrandSetDto.builder()
@@ -94,6 +94,7 @@ class ErrandServiceImplTest {
                 .username("@kim")
                 .password("1234")
                 .phoneNumber("01023212312")
+                .fcmToken(jihwanFcmToken)
                 .build();
 
         //When
