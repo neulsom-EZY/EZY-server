@@ -1,10 +1,11 @@
-package com.server.EZY.notification.service;
+package com.server.EZY.notification.service.feature;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.notification.FcmMessage;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmActionSelector;
+import com.server.EZY.notification.service.FirebaseMessagingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

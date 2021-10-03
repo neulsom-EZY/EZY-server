@@ -1,4 +1,4 @@
-package com.server.EZY.notification.service;
+package com.server.EZY.notification.service.feature;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.notification.dto.FcmSourceDto;

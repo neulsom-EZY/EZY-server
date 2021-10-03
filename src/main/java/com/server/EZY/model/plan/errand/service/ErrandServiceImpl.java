@@ -12,7 +12,7 @@ import com.server.EZY.notification.FcmMessage;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.enum_type.FcmRole;
-import com.server.EZY.notification.service.ActiveFcmFilterService;
+import com.server.EZY.notification.service.feature.ActiveFcmFilterService;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
