@@ -7,23 +7,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * @version 1.0.0
- * @since 1.0.0
  * @author 전지환
+ * @version 1.0.0
  */
 @Service
 @Slf4j
 @AllArgsConstructor
 public class ActiveFcmFilterService {
-
     private final FcmMakerService fcmMakerService;
 
     /**
-     * fcmSource를 받아 목적에 맞는 fcm 생성 로직으로 redirect 합니다.
+     * 자신의 목적에 맞는 메소드로 redirect
      * @param fcmSourceDto
+     * @throws FirebaseMessagingException
      */
     public void checkFcmPurpose(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
-        log.info("===========FCM 사용 목적이 {}로 인식 됐습니다.", fcmSourceDto.getFcmPurposeType());
+        log.info("===========목적이 {}로 인식 됐습니다.", fcmSourceDto.getFcmPurposeType());
         switch (fcmSourceDto.getFcmPurposeType()){
             case 심부름: activeErrandFcm(fcmSourceDto);
                 break;
@@ -32,7 +31,13 @@ public class ActiveFcmFilterService {
         }
     }
 
+    /**
+     * 자신의 목적, 역할에 맞는 메소드로 redirect
+     * @param fcmSourceDto
+     * @throws FirebaseMessagingException
+     */
     public void activeErrandFcm(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+        log.info("===========역할이 {}로 인식 됐습니다.", fcmSourceDto.getFcmRole());
         switch (fcmSourceDto.getFcmRole()){
             case 보내는사람: fcmMakerService.errandSendFcm(fcmSourceDto);
         }

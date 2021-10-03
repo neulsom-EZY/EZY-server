@@ -19,8 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
+ * @author 전지환
  * @version 1.0.0
- * @since 1.0.0
  */
 @Service
 @Slf4j
@@ -53,19 +53,16 @@ public class ErrandServiceImpl implements ErrandService{
                 .build();
 
         ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, errandStatusEntity));
-        log.info("==================심부름이 DB에 정상적으로 저장되었습니다.===================");
 
-        // FCM 전송을 위한 로직
+        // 여기서 FCM 스펙을 정의 함.
         FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
                 .sender(sender.getUsername())
                 .recipient(recipient.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
                 .fcmRole(FcmRole.보내는사람)
                 .build();
-
-        log.info("==================fcm을 위한 source가 정상적으로 init 되었습니다.===================");
+        // 여기서 filter 되어 fcm send 까지 완성 함.
         activeFcmFilterService.checkFcmPurpose(fcmSourceDto);
-        log.info("==================fcm을 위한 source가 정상적으로 수행 되었습니다.===================");
 
         return savedErrandEntity;
     }

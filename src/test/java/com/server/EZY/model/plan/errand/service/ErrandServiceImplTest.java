@@ -14,7 +14,6 @@ import com.server.EZY.notification.FcmMessage;
 import com.server.EZY.notification.service.FirebaseMessagingService;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

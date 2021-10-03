@@ -9,6 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author 전지환
+ * @version 1.0.0
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -16,6 +20,11 @@ public class FcmMakerService {
     private final FirebaseMessagingService firebaseMessagingService;
     private final MemberRepository memberRepository;
 
+    /**
+     * [목적: 심부름, 역할: 보내는사람] 에 만족하는 메소드
+     * @param fcmSourceDto
+     * @throws FirebaseMessagingException
+     */
     public void errandSendFcm(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
         FcmMessage.FcmRequest request = FcmMessage.FcmRequest.builder()
                 .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을 " + FcmActionSelector.ErrandAction.요청 + " 했어요!")
@@ -25,6 +34,11 @@ public class FcmMakerService {
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
     }
 
+    /**
+     * 받는사람, fcmToken을 찾아주는 메소드
+     * @param recipient
+     * @return recipientFcmToken
+     */
     public String findRecipientFcmToken(String recipient){
         return memberRepository.findByUsername(recipient).getFcmToken();
     }
