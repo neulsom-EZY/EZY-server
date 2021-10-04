@@ -1,9 +1,11 @@
 package com.server.EZY.notification.service;
 
+import com.google.api.core.ApiFuture;
 import com.google.firebase.messaging.*;
 import com.server.EZY.notification.FcmMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -87,44 +89,42 @@ public class FirebaseMessagingService {
         return message;
     }
 
-    //  FCM 비동기 처리는 추후 개선할 예정
-//    /**
-//     * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
-//     * @param fcmMessage FCM메시지를 보내기 위한 DTO
-//     * @param fcmToken FCM registration token 즉 FCM에서 발급한 기기의 토큰이다.
-//     * @param payload 해당 push 알람에대한 추가적인 페이로드
-//     * @return 해당 알람을 비동기로 처리하는({@link ApiFuture})
-//     * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
-//     * @author 정시원
-//     */
-//    @Async
-//    public ApiFuture<String> sendToToken (FcmMessage.FcmRequest fcmMessage, String fcmToken, Map<String, String> payload) {
-//        return sendToToken(fcmMessage, fcmToken, payload, false);
-//    }
-//
-//    /**
-//     * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
-//     * @param fcmMessage FCM메시지를 보내기 위한 DTO
-//     * @param fcmToken FCM registration token 즉 FCM에서 발급한 기기의 토큰이다.
-//     * @param payload 해당 push 알람에대한 추가적인 페이로드
-//     * @param isTest 해당 FCM push 알람 요청을 테스트로 진행 할 여부
-//     * @return 해당 알람을 비동기로 처리하는({@link ApiFuture})
-//     * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
-//     * @author 정시원
-//     */
-//    @Async
-//    public ApiFuture<String> sendToToken (FcmMessage.FcmRequest fcmMessage, String fcmToken, Map<String, String> payload, boolean isTest) {
-//        Message message = Message.builder()
-//                .setNotification(
-//                        Notification.builder()
-//                                .setTitle(fcmMessage.getTitle())
-//                                .setBody(fcmMessage.getBody())
-//                                .build()
-//                )
-//                .setToken(fcmToken)
-//                .putAllData(payload)
-//                .build();
-//
-//        return firebaseMessaging.sendAsync(message, isTest);
-//    }
+    // FCM 비동기 처리는 추후 개선할 예정
+    /**
+     * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
+     * @param fcmMessage FCM메시지를 보내기 위한 DTO
+     * @param fcmToken FCM registration token 즉 FCM에서 발급한 기기의 토큰이다.
+     * @return 해당 알람을 비동기로 처리하는({@link ApiFuture})
+     * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
+     * @author 정시원
+     */
+    @Async
+    public ApiFuture<String> sendAsyncToToken(FcmMessage.FcmRequest fcmMessage, String fcmToken) {
+        return sendAsyncToToken(fcmMessage, fcmToken, false);
+    }
+
+    /**
+     * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
+     * @param fcmMessage FCM메시지를 보내기 위한 DTO
+     * @param fcmToken FCM registration token 즉 FCM에서 발급한 기기의 토큰이다.
+     * @param isTest 해당 FCM push 알람 요청을 테스트로 진행 할 여부
+     * @return 해당 알람을 비동기로 처리하는({@link ApiFuture})
+     * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
+     * @author 정시원
+     */
+    @Async
+    public ApiFuture<String> sendAsyncToToken(FcmMessage.FcmRequest fcmMessage, String fcmToken, boolean isTest) {
+        Message message = Message.builder()
+                .setNotification(
+                        Notification.builder()
+                                .setTitle(fcmMessage.getTitle())
+                                .setBody(fcmMessage.getBody())
+                                .build()
+                )
+                .setToken(fcmToken)
+                .putAllData(fcmMessage.getPayloads())
+                .build();
+
+        return firebaseMessaging.sendAsync(message, isTest);
+    }
 }
