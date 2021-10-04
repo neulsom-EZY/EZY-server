@@ -181,16 +181,15 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 전화번호를 변경하는 서비스 로직
-     * @param phoneNumberChangeDto phoneNumberChangeDto(username, newPhoneNumber)
+     * @param phoneNumberChangeDto phoneNumberChangeDto(newPhoneNumber)
      * @author 배태현
      */
     @Override
     @Transactional
     public void changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
-        MemberEntity memberEntity = memberRepository.findByUsername(phoneNumberChangeDto.getUsername());
-        if (memberEntity == null) throw new MemberNotFoundException();
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
 
-        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
+        currentUser.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
     }
 
     /**
