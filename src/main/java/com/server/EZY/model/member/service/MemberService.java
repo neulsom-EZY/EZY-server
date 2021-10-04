@@ -19,8 +19,6 @@ public interface MemberService {
 
     String validAuthKey(String key);
 
-    String findUsername(String phoneNumber);
-
     void changeUsername(UsernameChangeDto usernameChangeDto);
 
     void changePassword(PasswordChangeDto passwordChangeDto);

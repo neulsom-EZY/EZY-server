@@ -27,7 +27,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     /**
      * accessToken에서 가져온 username과, refreshToken으로 새로운 accessToken과 refreshToken을 생성하는 메서드
      * @param nickname, refreshToken
-     * @return Map<String, String> username, newAccessToken, newRefreshToken
+     * @return Map<String, String> (username, newAccessToken, newRefreshToken)
      * @author 배태현
      */
     @Override

@@ -47,10 +47,10 @@ public class MemberServiceImpl implements MemberService {
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
 
     /**
-     * 회원가입을 하는 서비스 로직 입니다.
-     * @param memberDto
-     * @return - save가 완료되면 memberEntity를 반환합니다.
-     * @exception - else, 이미 존재하면 MemberAlreadyExistException
+     * 회원가입 서비스 로직
+     * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
+     * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
+     * @exception - else, 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
      * @author 배태현
      */
     @Override
@@ -65,11 +65,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그인을 하는 서비스 로직 입니다.
-     * @param loginDto
-     * @exception 1. username을 통해 회원을 찾을 수 있나요? || loginDto.getPassword()와 찾은 member의 password가 일치한가요?
-     * -> 하나라도 충족되지 않으면 MemberNotFoundException
-     * @return Map<String ,String> (username, accessToken, refreshToken)을 반환 합니다.
+     * 로그인 서비스 로직
+     * @param loginDto loginDto(username, password)
+     * @exception - username으로 member를 찾을 수 없거나, 올바르지 않은 비밀번호라면 MemberNotFoundException
+     * @return Map<String ,String> (username, accessToken, refreshToken) 반환
      * @author 배태현
      */
     @Override
@@ -96,10 +95,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그아웃하는 서비스 로직
+     * 로그아웃 서비스 로직
      * (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
      * @param nickname
-     * @return void
      * @author 배태현
      */
     @Override
@@ -108,10 +106,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 전화번호로 인증번호를 보내는 로직
+     * 전화번호로 인증번호를 보내는 서비스 로직
      * @param phoneNumber
-     * @exception 1. phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
-     * @return 문자로 인증번호 전송
+     * @exception - phoneNumber로 member를 찾을 수 없다면 UserNotFoundException
      * @author 배태현
      */
     @Override
@@ -139,9 +136,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 문자로 받은 인증번호로 인증하는 로직
+     * 사용자가 문자로 받은 인증번호를 검증하는 서비스 로직
      * @param key
-     * @return key
+     * @return test코드 작성을 위한 key 반환
      * @author 배태현
      */
     @Override
@@ -155,24 +152,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 전화번호를 전송해 그 전화번호로
-     * 회원을 찾고 회원의 이름을 알려주는 로직
-     * @param phoneNumber
-     * @return memberEntity.getUsername()
-     * @author 배태현
-     */
-    @Override
-    public String findUsername(String phoneNumber) {
-        MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber);
-        if (memberEntity == null) throw new MemberNotFoundException();
-
-        return memberEntity.getUsername();
-    }
-
-    /**
      * username을 변경하는 서비스 로직
-     * @param usernameChangeDto username, newUsername
-     * @return void
+     * @param usernameChangeDto usernameChangeDto(username, newUsername)
      * @author 배태현
      */
     @Override
@@ -186,8 +167,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 비밀번호를 변경하는 서비스 로직
-     * @param passwordChangeDto username, newPassword
-     * @return void
+     * @param passwordChangeDto passwordChangeDto(username, newPassword)
      * @author 배태현
      */
     @Override
@@ -201,23 +181,21 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 전화번호를 변경하는 서비스 로직
-     * @param phoneNumberChangeDto username, newPhoneNumber
-     * @return void
+     * @param phoneNumberChangeDto phoneNumberChangeDto(newPhoneNumber)
      * @author 배태현
      */
     @Override
     @Transactional
     public void changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
-        MemberEntity memberEntity = memberRepository.findByUsername(phoneNumberChangeDto.getUsername());
-        if (memberEntity == null) throw new MemberNotFoundException();
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
 
-        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
+        currentUser.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
     }
 
     /**
      * 회원탈퇴 서비스 로직
-     * @param deleteUserDto
-     * @return void
+     * @param deleteUserDto deleteUserDto(username, password)
+     * @exception - 올바르지 않는 비밀번호일 시 MemberNotFoundException
      * @author 배태현
      */
     @Override
@@ -232,7 +210,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * fcmToken 변경 서비스로직
-     * @param fcmTokenDto
+     * @param fcmTokenDto fcmTokenDto(fcmToken)
      * @author 배태현
      */
     @Override

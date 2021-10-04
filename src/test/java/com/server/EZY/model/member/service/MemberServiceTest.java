@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
@@ -173,29 +174,6 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("username을 찾는 테스트")
-    public void findUsername() {
-        //given
-        String phoneNumber = "01012345678";
-
-        //when
-        String username = memberService.findUsername(phoneNumber);
-
-        //then
-        assertEquals("@Baetaehyeon", username);
-    }
-
-    @Test
-    @DisplayName("회원가입된 유저가 아닐 때 Exception이 터지나요?")
-    public void findUsernameException() {
-        //given //when //then
-        assertThrows(
-                MemberNotFoundException.class,
-                () -> memberService.findUsername("NoUser")
-        );
-    }
-
-    @Test
     @DisplayName("Username 변경 테스트")
     public void changeUsername() {
         //given
@@ -285,37 +263,19 @@ public class MemberServiceTest {
 
         //when //then
         if (currentUser != null) {
-            MemberEntity findByUsername = memberRepository.findByUsername("@Baetaehyeon");
-            assertEquals("01012345678", findByUsername.getPhoneNumber());
+            assertEquals("01000000000", currentUser.getPhoneNumber());
 
             memberService.changePhoneNumber(
                     PhoneNumberChangeDto.builder()
-                            .username("@Baetaehyeon")
                             .newPhoneNumber("01049977055")
                             .build()
             );
 
-            MemberEntity memberEntity = memberRepository.findByUsername("@Baetaehyeon");
-            assertEquals("01049977055", memberEntity.getPhoneNumber());
+            assertEquals("01049977055", currentUser.getPhoneNumber());
 
         } else {
             Assertions.fail("전화번호 변경 테스트 실패");
         }
-    }
-
-    @Test
-    @DisplayName("changePhoneNumber에서 MemberNotFoundException이 터지나요?")
-    public void changePhoneNumberException() {
-        //given //when //then
-        assertThrows(
-                MemberNotFoundException.class,
-                () -> memberService.changePhoneNumber(
-                        PhoneNumberChangeDto.builder()
-                                .username("NoUser")
-                                .newPhoneNumber("01013131313")
-                                .build()
-                )
-        );
     }
 
     @Test
