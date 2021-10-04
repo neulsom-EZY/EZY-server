@@ -104,12 +104,4 @@ class ErrandServiceImplTest {
         assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getErrandResponseStatus());
         assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandStatusEntity().getRecipientIdx());
     }
-
-    @Test @DisplayName("심부름 상태 관련 푸시 알림이 잘 동작하나요?")
-    void 심부름_Res_Status_문구확인() throws FirebaseMessagingException {
-        //Given
-        FcmMessage.FcmRequest messageAboutErrand = errandService.createFcmMessageAboutErrand("jyeonjyan", null, null, ErrandResponseStatus.CANCEL);
-        //When
-        firebaseMessagingService.sendToToken(messageAboutErrand, jihwanFcmToken);
-    }
 }
