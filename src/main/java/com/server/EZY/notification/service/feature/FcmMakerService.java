@@ -26,7 +26,7 @@ public class FcmMakerService {
      * @param fcmSourceDto
      * @throws FirebaseMessagingException
      */
-    public void errandSendFcm(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+    public void sendErrandFcm(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
         FcmMessage.FcmRequest request = FcmMessage.FcmRequest.builder()
                 .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을 " + FcmActionSelector.ErrandAction.요청 + " 했어요!")
                 .body(fcmSourceDto.getSender() + "님이 " + FcmActionSelector.ErrandAction.요청 + "한 심부름을 확인해보세요!")
