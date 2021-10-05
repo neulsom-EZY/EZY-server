@@ -5,6 +5,7 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.notification.FcmMessage;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmActionSelector;
+import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.service.FirebaseMessagingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 public class FcmMakerService {
     private final FirebaseMessagingService firebaseMessagingService;
     private final MemberRepository memberRepository;
-
     /**
      * [목적: 심부름, 역할: 보내는사람] 에 만족하는 메소드
      * @param fcmSourceDto
@@ -29,7 +29,7 @@ public class FcmMakerService {
     public void sendErrandFcm(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
         FcmMessage.FcmRequest request = FcmMessage.FcmRequest.builder()
                 .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을 " + FcmActionSelector.ErrandAction.요청 + " 했어요!")
-                .body(fcmSourceDto.getSender() + "님이 " + FcmActionSelector.ErrandAction.요청 + "한 심부름을 확인해보세요!")
+                .body(fcmSourceDto.getSender() + "님이 " + FcmActionSelector.ErrandAction.요청+"한 "+fcmSourceDto.getFcmPurposeType()+"을 확인해보세요!")
                 .build();
 
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
