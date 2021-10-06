@@ -40,7 +40,7 @@ public class FcmMakerService {
      * @param recipient
      * @return recipientFcmToken
      */
-    public String findRecipientFcmToken(String recipient){
+    private String findRecipientFcmToken(String recipient){
         return memberRepository.findByUsername(recipient).getFcmToken();
     }
 }

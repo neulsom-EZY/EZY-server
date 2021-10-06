@@ -30,7 +30,7 @@ public class ActiveFcmFilterService {
      * @param fcmSourceDto
      * @throws FirebaseMessagingException
      */
-    public void checkFcmPurpose(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+    private void checkFcmPurpose(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
         log.info("===========목적이 {}로 인식 됐습니다.", fcmSourceDto.getFcmPurposeType());
         switch (fcmSourceDto.getFcmPurposeType()){
             case 심부름: checkErrandRole(fcmSourceDto);
@@ -45,7 +45,7 @@ public class ActiveFcmFilterService {
      * @param fcmSourceDto
      * @throws FirebaseMessagingException
      */
-    public void checkErrandRole(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+    private void checkErrandRole(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
         log.info("===========역할이 {}로 인식 됐습니다.", fcmSourceDto.getFcmRole());
         switch (fcmSourceDto.getFcmRole()){
             case 보내는사람: fcmMakerService.sendErrandFcm(fcmSourceDto);
