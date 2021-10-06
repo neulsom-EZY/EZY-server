@@ -2,22 +2,17 @@ package com.server.EZY.model.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.dto.AuthDto;
-import com.server.EZY.model.member.dto.PasswordChangeDto;
+import com.server.EZY.model.member.dto.PasswordChangeInfoDto;
 import com.server.EZY.model.member.dto.MemberDto;
-import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -117,17 +112,17 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("비밀번호 변경 테스트")
-    public void pwdChangeTest() throws Exception {
+    @DisplayName("비밀번호 변경 전 정보, 인증번호 전송 테스트")
+    public void pwdInfoTest() throws Exception {
 
-        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+        PasswordChangeInfoDto passwordChangeInfoDto = PasswordChangeInfoDto.builder()
                 .username("@Baeeeee")
-                .newPassword("string1234")
+                .phoneNumber("01049977055")
                 .build();
 
-        String content = objectMapper.writeValueAsString(passwordChangeDto);
+        String content = objectMapper.writeValueAsString(passwordChangeInfoDto);
 
-        final ResultActions actions = mvc.perform(put("/v1/member/change/password")
+        final ResultActions actions = mvc.perform(post("/v1/member/info/change/password")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
