@@ -108,7 +108,6 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 전화번호로 인증번호를 보내는 서비스 로직
      * @param phoneNumber
-     * @exception - phoneNumber로 member를 찾을 수 없다면 UserNotFoundException
      * @author 배태현
      */
     @Override
@@ -116,13 +115,37 @@ public class MemberServiceImpl implements MemberService {
         String authKey = keyUtil.getKey(4);
         redisUtil.setDataExpire(authKey, authKey, KEY_EXPIRATION_TIME);
 
+        sendMessage(phoneNumber, authKey);
+    }
+
+    /**
+     * 비밀번호를 변경하기 위해 인증번호를 보내는 메서드
+     * @param phoneNumber
+     * @author 배태현
+     */
+    private void sendPasswordAuthKey(String phoneNumber) {
+        MemberEntity findMember = memberRepository.findByPhoneNumber(phoneNumber);
+        if (findMember == null) throw new MemberNotFoundException();
+
+        String authKey = keyUtil.getKey(4);
+        redisUtil.setDataExpire(findMember.getUsername(), authKey, KEY_EXPIRATION_TIME);
+        sendMessage(phoneNumber, authKey);
+    }
+
+    /**
+     * 메세지를 보내는 부분을 메서드로 분리
+     * @param phoneNumber
+     * @param authKey
+     * @author 배태현
+     */
+    private void sendMessage(String phoneNumber, String authKey) {
         Message coolsms = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();
 
         params.put("to", phoneNumber);
         params.put("from", "07080283503");
         params.put("type", "SMS");
-        params.put("text", "[EZY] 인증번호 "+authKey+" 를 입력하세요.");
+        params.put("text", "[EZY] 인증번호 "+ authKey +" 를 입력하세요.");
         params.put("app_version", "test app 1.2");
 
         try {
@@ -138,6 +161,7 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 사용자가 문자로 받은 인증번호를 검증하는 서비스 로직
      * @param key
+     * @exception InvalidAuthenticationNumberException 인증번호가 일치하지 않을 때
      * @return test코드 작성을 위한 key 반환
      * @author 배태현
      */
@@ -146,6 +170,45 @@ public class MemberServiceImpl implements MemberService {
         if (key.equals(redisUtil.getData(key))) {
             redisUtil.deleteData(key);
             return key;
+        } else {
+            throw new InvalidAuthenticationNumberException();
+        }
+    }
+
+    /**
+     * 비밀번호를 변경하기 전 정보를 받고 인증번호를 전송하는 서비스 로직
+     * @param passwordChangeInfoDto passwordChangeDto(username, phoneNumber)
+     * @exception Exception username과 password가 동일한 회원의 정보가 아닐 때
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void passwordInfo(PasswordChangeInfoDto passwordChangeInfoDto) {
+        MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeInfoDto.getUsername());
+        if (memberEntity == null) throw new MemberNotFoundException();
+
+        if (memberEntity.getPhoneNumber().equals(passwordChangeInfoDto.getPhoneNumber())) {
+            sendPasswordAuthKey(passwordChangeInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
+        } else {
+            throw new IllegalArgumentException("변경하려는 회원의 정보를 다시 확인해주세요.");
+        }
+    }
+
+    /**
+     * 인증번호, 새로운 비밀번호를 받아 인증번호가 일치할 시 비밀번호가 변경되는 서비스로직
+     * @param passwordChangeDto passwordChangeDto(key, username, newPassword)
+     * @exception InvalidAuthenticationNumberException 인증번호가 일치하지 않을 때
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void keyAuthAndChangePassword(PasswordChangeDto passwordChangeDto) {
+        if (passwordChangeDto.getKey().equals(redisUtil.getData(passwordChangeDto.getUsername()))) {
+            MemberEntity findMember = memberRepository.findByUsername(passwordChangeDto.getUsername());
+            findMember.updatePassword(
+                    passwordEncoder.encode(passwordChangeDto.getNewPassword())
+            );
+            redisUtil.deleteData(passwordChangeDto.getKey());
         } else {
             throw new InvalidAuthenticationNumberException();
         }
@@ -163,20 +226,6 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity == null) throw new MemberNotFoundException();
 
         memberEntity.updateUsername(usernameChangeDto.getNewUsername());
-    }
-
-    /**
-     * 비밀번호를 변경하는 서비스 로직
-     * @param passwordChangeDto passwordChangeDto(username, newPassword)
-     * @author 배태현
-     */
-    @Override
-    @Transactional
-    public void changePassword(PasswordChangeDto passwordChangeDto) {
-        MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeDto.getUsername());
-        if (memberEntity == null) throw new MemberNotFoundException();
-
-        memberEntity.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
     }
 
     /**

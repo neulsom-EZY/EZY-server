@@ -3,7 +3,6 @@ package com.server.EZY.model.member.service;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -21,7 +20,9 @@ public interface MemberService {
 
     void changeUsername(UsernameChangeDto usernameChangeDto);
 
-    void changePassword(PasswordChangeDto passwordChangeDto);
+    void passwordInfo(PasswordChangeInfoDto passwordChangeInfoDto);
+
+    void keyAuthAndChangePassword(PasswordChangeDto passwordChangeDto);
 
     void changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto);
 
