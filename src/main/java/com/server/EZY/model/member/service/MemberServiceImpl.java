@@ -182,7 +182,6 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     @Override
-    @Transactional
     public void passwordInfo(PasswordChangeInfoDto passwordChangeInfoDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeInfoDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
