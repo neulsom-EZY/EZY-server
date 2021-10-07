@@ -122,7 +122,7 @@ public class MemberControllerTest {
 
         String content = objectMapper.writeValueAsString(memberAuthKeySendInfoDto);
 
-        final ResultActions actions = mvc.perform(post("/v1/member/info/change/password")
+        final ResultActions actions = mvc.perform(post("/v1/member/send/change/password/authkey")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
