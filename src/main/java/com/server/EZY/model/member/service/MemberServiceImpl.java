@@ -183,7 +183,7 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     @Override
-    public void passwordInfo(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto) {
+    public void changePasswordInfoAndSendAuthKey(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(memberAuthKeySendInfoDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
 
