@@ -219,7 +219,7 @@ public class MemberServiceTest {
         //given //when //then
         assertThrows(
                 MemberNotFoundException.class,
-                () -> memberService.changePasswordInfoAndSendAuthKey(
+                () -> memberService.sendAuthKeyByMemberInfo(
                         MemberAuthKeySendInfoDto.builder()
                                 .username("NoUser")
                                 .phoneNumber("01049977055")
