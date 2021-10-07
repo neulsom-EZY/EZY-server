@@ -106,7 +106,7 @@ public class CertifiedMemberController {
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PostMapping("/fcmtoken")
+    @PutMapping("/fcmtoken")
     @ApiOperation(value = "fcmToken 변경", notes = "fcmToken 변경")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
