@@ -107,12 +107,12 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof MemberEntity)) return false;
-        MemberEntity that = (MemberEntity) o;
-        return Objects.equals(getMemberIdx(), that.getMemberIdx()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && Objects.equals(getRoles(), that.getRoles());
+        MemberEntity member = (MemberEntity) o;
+        return Objects.equals(getMemberIdx(), member.getMemberIdx()) && Objects.equals(getUsername(), member.getUsername()) && Objects.equals(getPassword(), member.getPassword()) && Objects.equals(getPhoneNumber(), member.getPhoneNumber()) && Objects.equals(getFcmToken(), member.getFcmToken()) && Objects.equals(getRoles(), member.getRoles());
     }
 
     @Override @Generated
     public int hashCode() {
-        return Objects.hash(getMemberIdx(), getUsername(), getPassword(), getPhoneNumber(), getRoles());
+        return Objects.hash(getMemberIdx(), getUsername(), getPassword(), getPhoneNumber(), getFcmToken(), getRoles());
     }
 }
