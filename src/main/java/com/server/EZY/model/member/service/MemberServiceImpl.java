@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -124,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     private void sendPasswordAuthKey(String phoneNumber) {
-        MemberEntity findMember = memberRepository.findByPhoneNumber(phoneNumber);
+        Optional<MemberEntity> findMember = Optional.ofNullable(memberRepository.findByPhoneNumber(phoneNumber));
         if (findMember == null) throw new MemberNotFoundException();
 
         String authKey = keyUtil.getKey(4);
