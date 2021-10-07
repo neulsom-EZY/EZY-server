@@ -92,7 +92,7 @@ public class MemberController {
     @PostMapping ("/send/info/authkey")
     @ApiOperation(value = "비밀번호 재설정 전 정보, 인증번호 보내기", notes = "비밀번호 재설정 전 정보, 인증번호 보내기")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult passwordChangeInfo(@Valid @RequestBody PasswordChangeInfoDto passwordChangeInfoDto) {
+    public CommonResult sendMemberInfoAndSendAuthKey(@Valid @RequestBody PasswordChangeInfoDto passwordChangeInfoDto) {
         memberService.passwordInfo(passwordChangeInfoDto);
         return responseService.getSuccessResult();
     }
