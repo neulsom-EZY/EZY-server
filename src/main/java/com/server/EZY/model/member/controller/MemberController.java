@@ -2,6 +2,7 @@ package com.server.EZY.model.member.controller;
 
 import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.dto.PasswordChangeDto;
+import com.server.EZY.model.member.dto.MemberAuthKeySendInfoDto;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
@@ -83,15 +84,29 @@ public class MemberController {
     }
 
     /**
-     * 비밀번호를 재설정 controller
-     * @param passwordChangeDto passwordChangeDto(username, newPassword)
+     * 비밀번호 재설정 전 회원정보, 인증번호를 전송하는 controller
+     * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, newPassword)
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PutMapping ("/change/password")
-    @ApiOperation(value = "비밀번호 재설정", notes = "비밀번호 재설정")
+    @PostMapping ("/send/change/password/authkey")
+    @ApiOperation(value = "비밀번호 재설정 전 정보, 인증번호 보내기", notes = "비밀번호 재설정 전 정보, 인증번호 보내기")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+    public CommonResult sendAuthKeyByMemberInfo(@Valid @RequestBody MemberAuthKeySendInfoDto memberAuthKeySendInfoDto) {
+        memberService.sendAuthKeyByMemberInfo(memberAuthKeySendInfoDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 인증번호 인증, 비밀번호 재설정 controller
+     * @param passwordChangeDto passwordChangeDto(key, username, newPassword)
+     * @return CommonResult - SuccessResult
+     * @author 배태현
+     */
+    @PutMapping("/change/password")
+    @ApiOperation(value = "인증번호 인증, 비밀번호 재설정", notes = "인증번호 인증, 비밀번호 재설정")
+    @ResponseStatus ( HttpStatus.OK )
+    public CommonResult changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
         memberService.changePassword(passwordChangeDto);
         return responseService.getSuccessResult();
     }
