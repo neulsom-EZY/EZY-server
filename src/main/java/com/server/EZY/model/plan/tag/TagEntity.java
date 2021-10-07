@@ -6,6 +6,17 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * 일정의 테그를 저장하는 Entity <br>
+ * 연관관계
+ * <ul>
+ *     <li>ManyToOne: {@link MemberEntity}</li>
+ *     <li>OneToOne: {@link com.server.EZY.model.plan.PlanEntity}</li>
+ * <ul/>
+ * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "tag")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
