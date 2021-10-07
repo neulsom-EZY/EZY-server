@@ -125,11 +125,11 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     private void sendAuthKeyAboutChangePassword(String phoneNumber) {
-        Optional<MemberEntity> findMember = Optional.ofNullable(memberRepository.findByPhoneNumber(phoneNumber));
-        if (findMember == null) throw new MemberNotFoundException();
+        MemberEntity findMember = memberRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new MemberNotFoundException());
 
         String authKey = keyUtil.getKey(4);
-        redisUtil.setDataExpire(findMember.get().getUsername(), authKey, KEY_EXPIRATION_TIME);
+        redisUtil.setDataExpire(findMember.getUsername(), authKey, KEY_EXPIRATION_TIME);
         sendMessage(phoneNumber, authKey);
     }
 
