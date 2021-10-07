@@ -18,6 +18,13 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.EnumType.*;
 
+/**
+ * 회원정보를 가지고 있는 member 테이블과 매핑되어 있는 MemberEntity클래스
+ * 현재 담장자: 배태현
+ * @author 정시원, 배태현
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "member")
 @Builder @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
