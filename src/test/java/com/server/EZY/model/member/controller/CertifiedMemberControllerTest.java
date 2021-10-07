@@ -54,7 +54,7 @@ public class CertifiedMemberControllerTest {
 
         AuthDto deleteUserDto = AuthDto.builder()
                 .username("@BaeTul")
-                .password("1234")
+                .password("12341234")
                 .build();
 
         String content = objectMapper.writeValueAsString(deleteUserDto);
@@ -65,7 +65,7 @@ public class CertifiedMemberControllerTest {
 
         actions
                 .andDo(print())
-                .andExpect(status().isNoContent()); //http status 204
+                .andExpect(status().isOk()); //http status 200
     }
 
     @Test

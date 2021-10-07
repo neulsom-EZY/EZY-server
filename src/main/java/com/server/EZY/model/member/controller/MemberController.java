@@ -2,6 +2,7 @@ package com.server.EZY.model.member.controller;
 
 import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.dto.PasswordChangeDto;
+import com.server.EZY.model.member.dto.MemberAuthKeySendInfoDto;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Map;
 
+/**
+ * 인증/인가 전 사용하는 컨트롤러
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1/member")
@@ -25,38 +29,36 @@ public class MemberController {
 
     /**
      * 회원가입 controller
-     * @param memberDto userDto
-     * @return SuccessResult
-     * @throws Exception Exception
+     * @param memberDto userDto(username, password, phoneNumber, fcmToken)
+     * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PostMapping("/signup")
     @ApiOperation(value = "회원가입", notes = "회원가입")
     @ResponseStatus( HttpStatus.CREATED )
-    public CommonResult signup(@Valid @RequestBody MemberDto memberDto) throws Exception {
+    public CommonResult signup(@Valid @RequestBody MemberDto memberDto) {
         memberService.signup(memberDto);
         return responseService.getSuccessResult();
     }
 
     /**
      * 로그인 controller
-     * @param loginDto loginDto
-     * @return username ,accessToken, refreshToken
-     * @throws Exception Exception
+     * @param loginDto loginDto(username, password)
+     * @return SingleResult (username ,accessToken, refreshToken)
      * @author 배태현
      */
     @PostMapping("/signin")
     @ApiOperation(value = "로그인", notes = "로그인")
     @ResponseStatus( HttpStatus.OK )
-    public SingleResult<Map<String, String>> signin(@Valid @RequestBody AuthDto loginDto) throws Exception {
+    public SingleResult<Map<String, String>> signin(@Valid @RequestBody AuthDto loginDto) {
         Map<String, String> signinData = memberService.signin(loginDto);
         return responseService.getSingleResult(signinData);
     }
 
     /**
-     * 전화번호로 인증번호 보내기
+     * 전화번호로 인증번호를 전송하는 controller
      * @param phoneNumber
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PostMapping("/auth")
@@ -68,9 +70,9 @@ public class MemberController {
     }
 
     /**
-     * 받은 인증번호가 맞는지 인증하기
+     * 받은 인증번호가 맞는지 인증하는 controller
      * @param key
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PostMapping("/auth/check")
@@ -82,29 +84,29 @@ public class MemberController {
     }
 
     /**
-     * username을 찾는 controller
-     * @param phoneNumber
-     * @return SingleResult(찾은 회원이름)
+     * 비밀번호 재설정 전 회원정보, 인증번호를 전송하는 controller
+     * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, newPassword)
+     * @return CommonResult - SuccessResult
+     * @author 배태현
      */
-    @PostMapping("/find/username")
-    @ApiOperation(value = "이름(아이디)찾기", notes = "이름(아이디)찾기")
+    @PostMapping ("/send/change/password/authkey")
+    @ApiOperation(value = "비밀번호 재설정 전 정보, 인증번호 보내기", notes = "비밀번호 재설정 전 정보, 인증번호 보내기")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult findUsername(String phoneNumber) {
-        String username = memberService.findUsername(phoneNumber);
-        return responseService.getSingleResult(username);
+    public CommonResult sendAuthKeyByMemberInfo(@Valid @RequestBody MemberAuthKeySendInfoDto memberAuthKeySendInfoDto) {
+        memberService.sendAuthKeyByMemberInfo(memberAuthKeySendInfoDto);
+        return responseService.getSuccessResult();
     }
 
     /**
-     * 인증번호 인증을 한 뒤 <br>
-     * 비밀번호를 변경하게하는 controller <br>
-     * @param passwordChangeDto passwordChangeDto
-     * @return SuccessResult
+     * 인증번호 인증, 비밀번호 재설정 controller
+     * @param passwordChangeDto passwordChangeDto(key, username, newPassword)
+     * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PutMapping ("/change/password")
-    @ApiOperation(value = "비밀번호 찾기", notes = "비밀번호 찾기")
-    @ResponseStatus( HttpStatus.OK )
-    public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+    @PutMapping("/change/password")
+    @ApiOperation(value = "인증번호 인증, 비밀번호 재설정", notes = "인증번호 인증, 비밀번호 재설정")
+    @ResponseStatus ( HttpStatus.OK )
+    public CommonResult changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
         memberService.changePassword(passwordChangeDto);
         return responseService.getSuccessResult();
     }

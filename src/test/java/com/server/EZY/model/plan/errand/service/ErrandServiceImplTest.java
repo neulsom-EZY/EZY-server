@@ -9,6 +9,7 @@ import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.notification.service.FirebaseMessagingService;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +36,13 @@ class ErrandServiceImplTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
+    @Autowired
     private ErrandService errandService;
+
+    String jihwanFcmToken = "eQb5CygpsUahmPBRDnTc0N:APA91bFaOlt2nZDJKJpO8dZsjS8vSDCZKxZWYBWtNXYUiIiUxLPiGTLcXuyuVTW1uqOxu55Ay9z_1ss-D2uz2xP-C_R2-5yxyV2pqn88zYts4WSxS4pgWgdvFtBAG6nU__dSYH7WW8Qk";
+    String youjinFcmToken = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
+    String testingFcmToken = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
 
     MemberEntity savedMemberEntity;
     @BeforeEach
@@ -43,7 +50,7 @@ class ErrandServiceImplTest {
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("@jyeonjyan")
                 .password("1234")
                 .phoneNumber("01012341234")
                 .build();
@@ -64,11 +71,11 @@ class ErrandServiceImplTest {
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("@jyeonjyan", currentUserNickname);
     }
 
     @Test @DisplayName("심부름이 잘 저장되나요?")
-    void 심부름_저장_조지기(){
+    void 심부름_저장_조지기() throws Exception {
         //Given
         ErrandSetDto errandSetDto = ErrandSetDto.builder()
                 .location("수완스타벅스")
@@ -85,6 +92,7 @@ class ErrandServiceImplTest {
                 .username("@kim")
                 .password("1234")
                 .phoneNumber("01023212312")
+                .fcmToken(testingFcmToken)
                 .build();
 
         //When
@@ -95,5 +103,4 @@ class ErrandServiceImplTest {
         assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getErrandResponseStatus());
         assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandStatusEntity().getRecipientIdx());
     }
-
 }

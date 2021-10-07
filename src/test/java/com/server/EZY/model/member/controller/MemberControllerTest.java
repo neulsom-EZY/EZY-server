@@ -2,22 +2,17 @@ package com.server.EZY.model.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.dto.AuthDto;
-import com.server.EZY.model.member.dto.PasswordChangeDto;
+import com.server.EZY.model.member.dto.MemberAuthKeySendInfoDto;
 import com.server.EZY.model.member.dto.MemberDto;
-import com.server.EZY.model.member.dto.UsernameChangeDto;
 import com.server.EZY.model.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -50,7 +45,7 @@ public class MemberControllerTest {
     public void signupTest() throws Exception {
         MemberDto memberDto = MemberDto.builder()
                 .username("@bBbB")
-                .password("1234")
+                .password("qwerqwer")
                 .phoneNumber("01008090809")
                 .build();
 
@@ -71,7 +66,7 @@ public class MemberControllerTest {
     public void signInTest() throws Exception {
         AuthDto loginDto = AuthDto.builder()
                 .username("@Json")
-                .password("1234")
+                .password("1234qwer")
                 .build();
 
         String content = objectMapper.writeValueAsString(loginDto);
@@ -117,32 +112,17 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("username 찾기 테스트")
-    public void findUsernameTest() throws Exception {
+    @DisplayName("비밀번호 변경 전 정보, 인증번호 전송 테스트")
+    public void pwdInfoTest() throws Exception {
 
-        String content = objectMapper.writeValueAsString("01012341234");
-
-        final ResultActions actions = mvc.perform(post("/v1/member/find/username")
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON));
-
-        actions
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("비밀번호 변경 테스트")
-    public void pwdChangeTest() throws Exception {
-
-        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
+        MemberAuthKeySendInfoDto memberAuthKeySendInfoDto = MemberAuthKeySendInfoDto.builder()
                 .username("@Baeeeee")
-                .newPassword("string")
+                .phoneNumber("01049977055")
                 .build();
 
-        String content = objectMapper.writeValueAsString(passwordChangeDto);
+        String content = objectMapper.writeValueAsString(memberAuthKeySendInfoDto);
 
-        final ResultActions actions = mvc.perform(put("/v1/member/change/password")
+        final ResultActions actions = mvc.perform(post("/v1/member/send/change/password/authkey")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 

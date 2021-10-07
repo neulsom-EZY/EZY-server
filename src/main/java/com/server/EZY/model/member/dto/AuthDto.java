@@ -21,15 +21,12 @@ public class AuthDto {
     private String username;
 
     @NotBlank
-    @Size(min = 4, max = 10)
+    @Size(min = 8)
     private String password;
 
-    private String fcmToken;
-
-    public AuthDto(String username, String password, String fcmToken) {
+    public AuthDto(String username, String password) {
         this.username = username;
         this.password = password;
-        this.fcmToken = fcmToken;
     }
 
     public MemberEntity toEntity(){
