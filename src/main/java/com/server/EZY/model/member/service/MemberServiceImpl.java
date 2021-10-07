@@ -124,7 +124,7 @@ public class MemberServiceImpl implements MemberService {
      * @param phoneNumber
      * @author 배태현
      */
-    private void sendPasswordAuthKey(String phoneNumber) {
+    private void sendAuthKeyAboutChangePassword(String phoneNumber) {
         Optional<MemberEntity> findMember = Optional.ofNullable(memberRepository.findByPhoneNumber(phoneNumber));
         if (findMember == null) throw new MemberNotFoundException();
 
@@ -188,7 +188,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity == null) throw new MemberNotFoundException();
 
         if (memberEntity.getPhoneNumber().equals(passwordChangeInfoDto.getPhoneNumber())) {
-            sendPasswordAuthKey(passwordChangeInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
+            sendAuthKeyAboutChangePassword(passwordChangeInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
         } else {
             throw new IllegalArgumentException("변경하려는 회원의 정보를 다시 확인해주세요.");
         }
