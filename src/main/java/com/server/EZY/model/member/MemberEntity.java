@@ -41,7 +41,7 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
 
     @Enumerated(STRING) @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "member_id"))
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
