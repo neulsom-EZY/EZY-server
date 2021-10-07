@@ -106,7 +106,7 @@ public class MemberController {
     @PutMapping("/change/password")
     @ApiOperation(value = "인증번호 인증, 비밀번호 재설정", notes = "인증번호 인증, 비밀번호 재설정")
     @ResponseStatus ( HttpStatus.OK )
-    public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+    public CommonResult changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
         memberService.changePassword(passwordChangeDto);
         return responseService.getSuccessResult();
     }
