@@ -129,7 +129,7 @@ public class MemberServiceImpl implements MemberService {
         if (findMember == null) throw new MemberNotFoundException();
 
         String authKey = keyUtil.getKey(4);
-        redisUtil.setDataExpire(findMember.getUsername(), authKey, KEY_EXPIRATION_TIME);
+        redisUtil.setDataExpire(findMember.get().getUsername(), authKey, KEY_EXPIRATION_TIME);
         sendMessage(phoneNumber, authKey);
     }
 
