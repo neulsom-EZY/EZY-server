@@ -201,7 +201,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     @Transactional
-    public void keyAuthAndChangePassword(PasswordChangeDto passwordChangeDto) {
+    public void changePassword(PasswordChangeDto passwordChangeDto) {
         String authKey = passwordChangeDto.getKey();
         String redisAuthKey = redisUtil.getData(passwordChangeDto.getUsername());
 

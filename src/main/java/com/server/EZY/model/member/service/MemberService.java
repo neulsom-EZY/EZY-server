@@ -22,7 +22,7 @@ public interface MemberService {
 
     void passwordInfo(PasswordChangeInfoDto passwordChangeInfoDto);
 
-    void keyAuthAndChangePassword(PasswordChangeDto passwordChangeDto);
+    void changePassword(PasswordChangeDto passwordChangeDto);
 
     void changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto);
 

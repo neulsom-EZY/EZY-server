@@ -107,7 +107,7 @@ public class MemberController {
     @ApiOperation(value = "인증번호 인증, 비밀번호 재설정", notes = "인증번호 인증, 비밀번호 재설정")
     @ResponseStatus ( HttpStatus.OK )
     public CommonResult passwordChange(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
-        memberService.keyAuthAndChangePassword(passwordChangeDto);
+        memberService.changePassword(passwordChangeDto);
         return responseService.getSuccessResult();
     }
 }
