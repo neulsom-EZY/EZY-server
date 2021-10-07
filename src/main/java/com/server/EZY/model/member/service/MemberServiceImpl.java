@@ -202,12 +202,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void keyAuthAndChangePassword(PasswordChangeDto passwordChangeDto) {
-        if (passwordChangeDto.getKey().equals(redisUtil.getData(passwordChangeDto.getUsername()))) {
+        String authKey = passwordChangeDto.getKey();
+        String redisAuthKey = redisUtil.getData(passwordChangeDto.getUsername());
+
+        if (authKey.equals(redisAuthKey)) {
             MemberEntity findMember = memberRepository.findByUsername(passwordChangeDto.getUsername());
             findMember.updatePassword(
                     passwordEncoder.encode(passwordChangeDto.getNewPassword())
             );
-            redisUtil.deleteData(passwordChangeDto.getKey());
+            redisUtil.deleteData(authKey);
         } else {
             throw new InvalidAuthenticationNumberException();
         }
