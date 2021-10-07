@@ -2,7 +2,7 @@ package com.server.EZY.model.member.controller;
 
 import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.dto.PasswordChangeDto;
-import com.server.EZY.model.member.dto.PasswordChangeInfoDto;
+import com.server.EZY.model.member.dto.MemberAuthKeySendInfoDto;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
@@ -85,15 +85,15 @@ public class MemberController {
 
     /**
      * 비밀번호 재설정 전 회원정보, 인증번호를 전송하는 controller
-     * @param passwordChangeInfoDto passwordChangeDto(username, newPassword)
+     * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, newPassword)
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PostMapping ("/send/info/authkey")
     @ApiOperation(value = "비밀번호 재설정 전 정보, 인증번호 보내기", notes = "비밀번호 재설정 전 정보, 인증번호 보내기")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult sendMemberInfoAndSendAuthKey(@Valid @RequestBody PasswordChangeInfoDto passwordChangeInfoDto) {
-        memberService.passwordInfo(passwordChangeInfoDto);
+    public CommonResult sendMemberInfoAndSendAuthKey(@Valid @RequestBody MemberAuthKeySendInfoDto memberAuthKeySendInfoDto) {
+        memberService.passwordInfo(memberAuthKeySendInfoDto);
         return responseService.getSuccessResult();
     }
 

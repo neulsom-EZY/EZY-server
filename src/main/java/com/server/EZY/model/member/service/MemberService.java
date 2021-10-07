@@ -20,7 +20,7 @@ public interface MemberService {
 
     void changeUsername(UsernameChangeDto usernameChangeDto);
 
-    void passwordInfo(PasswordChangeInfoDto passwordChangeInfoDto);
+    void passwordInfo(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto);
 
     void changePassword(PasswordChangeDto passwordChangeDto);
 

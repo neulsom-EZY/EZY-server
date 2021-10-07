@@ -2,7 +2,7 @@ package com.server.EZY.model.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.dto.AuthDto;
-import com.server.EZY.model.member.dto.PasswordChangeInfoDto;
+import com.server.EZY.model.member.dto.MemberAuthKeySendInfoDto;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -115,12 +115,12 @@ public class MemberControllerTest {
     @DisplayName("비밀번호 변경 전 정보, 인증번호 전송 테스트")
     public void pwdInfoTest() throws Exception {
 
-        PasswordChangeInfoDto passwordChangeInfoDto = PasswordChangeInfoDto.builder()
+        MemberAuthKeySendInfoDto memberAuthKeySendInfoDto = MemberAuthKeySendInfoDto.builder()
                 .username("@Baeeeee")
                 .phoneNumber("01049977055")
                 .build();
 
-        String content = objectMapper.writeValueAsString(passwordChangeInfoDto);
+        String content = objectMapper.writeValueAsString(memberAuthKeySendInfoDto);
 
         final ResultActions actions = mvc.perform(post("/v1/member/info/change/password")
                 .content(content)

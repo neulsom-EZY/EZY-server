@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
-public class PasswordChangeInfoDto {
+public class MemberAuthKeySendInfoDto {
 
     @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")

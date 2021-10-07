@@ -178,17 +178,17 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 비밀번호를 변경하기 전 정보를 받고 인증번호를 전송하는 서비스 로직
-     * @param passwordChangeInfoDto passwordChangeDto(username, phoneNumber)
+     * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, phoneNumber)
      * @exception Exception username과 password가 동일한 회원의 정보가 아닐 때
      * @author 배태현
      */
     @Override
-    public void passwordInfo(PasswordChangeInfoDto passwordChangeInfoDto) {
-        MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeInfoDto.getUsername());
+    public void passwordInfo(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto) {
+        MemberEntity memberEntity = memberRepository.findByUsername(memberAuthKeySendInfoDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
 
-        if (memberEntity.getPhoneNumber().equals(passwordChangeInfoDto.getPhoneNumber())) {
-            sendAuthKeyAboutChangePassword(passwordChangeInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
+        if (memberEntity.getPhoneNumber().equals(memberAuthKeySendInfoDto.getPhoneNumber())) {
+            sendAuthKeyAboutChangePassword(memberAuthKeySendInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
         } else {
             throw new IllegalArgumentException("변경하려는 회원의 정보를 다시 확인해주세요.");
         }
