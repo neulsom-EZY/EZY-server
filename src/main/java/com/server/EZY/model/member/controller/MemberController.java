@@ -89,7 +89,7 @@ public class MemberController {
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PostMapping ("/info/change/password")
+    @PostMapping ("/send/info/authkey")
     @ApiOperation(value = "비밀번호 재설정 전 정보, 인증번호 보내기", notes = "비밀번호 재설정 전 정보, 인증번호 보내기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult passwordChangeInfo(@Valid @RequestBody PasswordChangeInfoDto passwordChangeInfoDto) {
