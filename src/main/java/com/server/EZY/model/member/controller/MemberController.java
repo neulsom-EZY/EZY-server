@@ -30,10 +30,10 @@ public class MemberController {
      * @return CommonResult - SuccessResult
      */
     @PostMapping("/check/username")
-    @ApiOperation(value = "username 체크", notes = "username 체크")
+    @ApiOperation(value = "username 존재 여부 확인", notes = "username 존재 여부 확인")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult checkUsername(@Valid @RequestBody UsernameDto usernameDto) {
-        memberService.checkUsername(usernameDto.getUsername());
+    public CommonResult checkUsernameExist(@Valid @RequestBody UsernameDto usernameDto) {
+        memberService.checkUsernameExist(usernameDto.getUsername());
         return responseService.getSuccessResult();
     }
 

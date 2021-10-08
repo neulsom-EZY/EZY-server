@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
      * @return 이미 가입된 username이 아니라면 true반환 (test 코드 작성을 위한 boolean 타입 반환)
      */
     @Override
-    public boolean checkUsername(String username) {
+    public boolean checkUsernameExist(String username) {
         if (memberRepository.existsByUsername(username)) throw new MemberAlreadyExistException();
         else return true;
     }
