@@ -1,7 +1,8 @@
 package com.server.EZY.model.member.dto;
 
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.MemberEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -20,7 +21,7 @@ public class AuthDto {
     private String username;
 
     @NotBlank
-    @Size(min = 4, max = 10)
+    @Size(min = 8)
     private String password;
 
     public AuthDto(String username, String password) {

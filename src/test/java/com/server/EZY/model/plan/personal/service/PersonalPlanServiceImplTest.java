@@ -2,10 +2,10 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.MemberDto;
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
-import com.server.EZY.model.plan.embeddedTypes.Period;
-import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
+import com.server.EZY.model.plan.embedded_type.Period;
+import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
@@ -19,7 +19,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -78,7 +77,7 @@ class PersonalPlanServiceImplTest {
         // Given
         PersonalPlanEntity savedPersonalPlan = personalPlanService.createPersonalPlan(
                 PersonalPlanSetDto.builder()
-                        .planInfo(new PlanInfo("와우껌", "좋아요"))
+                        .planInfo(new PlanInfo("와우껌", "좋아요", "광주광역시"))
                         .period(new Period(
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
@@ -105,7 +104,7 @@ class PersonalPlanServiceImplTest {
                             LocalDateTime.of(2021, 7, 24, 1, 30),
                             LocalDateTime.of(2021, 7, 24, 1, 30)
                         )
-                ).planInfo(new PlanInfo("하이요", "오하이오")).build()
+                ).planInfo(new PlanInfo("하이요", "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -128,7 +127,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -152,7 +151,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -176,7 +175,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -190,7 +189,7 @@ class PersonalPlanServiceImplTest {
                                 LocalDateTime.of(2021, 2, 12, 1, 30),
                                 LocalDateTime.of(2021, 1, 25, 1, 30)
                         ))
-                        .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ"))
+                        .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ", "광주광역시"))
                         .build()
         );
 
@@ -209,7 +208,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 28, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build()
 
         ).limit(2).collect(Collectors.toList());
 
@@ -222,7 +221,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 22, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주")).build()
 
         ).limit(5).collect(Collectors.toList());
 
@@ -247,7 +246,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
                                         LocalDateTime.of(2021, 7, 28, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주")).build()
 
         ).limit(2).collect(Collectors.toList());
 
@@ -260,7 +259,7 @@ class PersonalPlanServiceImplTest {
                                         LocalDateTime.of(2021, 7, 22, 1, 30),
                                         LocalDateTime.of(2021, 7, 24, 1, 30)
                                 )
-                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오")).build()
+                        ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주")).build()
 
         ).limit(5).collect(Collectors.toList());
 

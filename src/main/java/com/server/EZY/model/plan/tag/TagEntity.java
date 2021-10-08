@@ -1,14 +1,20 @@
 package com.server.EZY.model.plan.tag;
 
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.plan.tag.embeddedTypes.Color;
+import com.server.EZY.model.plan.tag.embedded_type.Color;
 import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * 일정의 테그를 저장하는 Entity <br>
+ * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "tag")
-@Getter @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TagEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +29,12 @@ public class TagEntity {
     private Color color;
 
     private String tag;
+
+    @Builder
+    public TagEntity(MemberEntity memberEntity, Color color, String tag){
+        this.memberEntity = memberEntity;
+        this.color = color;
+        this.tag = tag;
+    }
+
 }

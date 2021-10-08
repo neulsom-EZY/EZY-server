@@ -1,12 +1,13 @@
 package com.server.EZY.model.member.service;
 
+import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.controller.MemberController;
 import com.server.EZY.model.member.dto.*;
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.util.CurrentUserUtil;
-import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -20,14 +21,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -40,10 +39,12 @@ public class MemberServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Test
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
-    void GetUserEntity(){
+    void getUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
                 .username("@asdfasdf")
@@ -80,10 +81,27 @@ public class MemberServiceTest {
                 .phoneNumber("01008090809")
                 .build();
         //when
-        String signup = memberService.signup(memberDto);
+        MemberEntity memberEntity = memberService.signup(memberDto);
 
         //then
-        assertTrue(signup == "@BaeTul");
+        assertEquals("@BaeTul", memberEntity.getUsername());
+    }
+
+    @Test
+    @DisplayName("이미 회원가입된 유저입니다 Exception을 반환하는 테스트")
+    public void signupException() {
+        //given
+        MemberDto memberDto = MemberDto.builder()
+                .username(currentUser().getUsername())
+                .password("0809")
+                .phoneNumber("01008090809")
+                .build();
+
+        //when //then
+        assertThrows(
+                MemberAlreadyExistException.class,
+                () -> memberService.signup(memberDto)
+        );
     }
 
     @BeforeEach
@@ -112,18 +130,46 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("username을 찾는 테스트")
-    public void findUsername() {
-        //given
-        String phoneNumber = "01012345678";
+    @DisplayName("비밀번호가 일치하지 않는다면 Exception이 터지나요?")
+    public void signinException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.signin(
+                        AuthDto.builder()
+                                .username(currentUser().getUsername())
+                                .password("0809")
+                                .build()
+                )
+        );
 
-        MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber);
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.signin(
+                        AuthDto.builder()
+                                .username("NoUser")
+                                .password("0809")
+                                .build()
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("로그아웃 테스트")
+    public void logoutTest() {
+        //given
+        AuthDto loginDto = AuthDto.builder()
+                .username("@Baetaehyeon")
+                .password("0809")
+                .build();
+
+        memberService.signin(loginDto);
 
         //when
-        String username = memberService.findUsername(phoneNumber);
+        memberService.logout(loginDto.getUsername());
 
         //then
-        assertEquals(memberEntity.getUsername(), username);
+        assertNull(redisUtil.getData(loginDto.getUsername()));
     }
 
     @Test
@@ -136,52 +182,70 @@ public class MemberServiceTest {
                 .username("@Baetaehyeon")
                 .newUsername("@asdfasdf")
                 .build();
+
         //when //then
         if (currentUser != null) {
-            String changeNickname = memberService.changeUsername(usernameChangeDto);
-            assertEquals("@Baetaehyeon유저 @asdfasdf(으)로 닉네임 업데이트 완료", changeNickname);
+            MemberEntity findByUsername = memberRepository.findByUsername(usernameChangeDto.getUsername());
+            assertEquals("@Baetaehyeon", findByUsername.getUsername());
+
+            memberService.changeUsername(usernameChangeDto);
+
+            MemberEntity memberEntity = memberRepository.findByUsername(usernameChangeDto.getNewUsername());
+            assertEquals("@asdfasdf", memberEntity.getUsername());
+
         } else {
-            log.info("닉네임 변경테스트 실패");
+            Assertions.fail("닉네임 변경 테스트 실패");
         }
     }
 
     @Test
-    @DisplayName("비밀번호 변경 테스트")
-    public void changePasswordTest() {
-        //given
-        MemberEntity currentUser = currentUser();
-
-        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .username("@Baetaehyeon")
-                .newPassword("20040809")
-                .build();
-        //when //then
-        if (currentUser != null) {
-            String changePassword = memberService.changePassword(passwordChangeDto);
-            assertEquals("@Baetaehyeon회원 비밀번호 변경완료", changePassword);
-        } else {
-            Assertions.fail("비밀번호 변경 테스트 실패");
-        }
+    @DisplayName("memberEntity가 null이라면 MemberNotFoundException이 터지나요?")
+    public void changeUsernameException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.changeUsername(
+                        UsernameChangeDto.builder()
+                                .username("NoUser")
+                                .newUsername("@qoxogus")
+                                .build()
+                )
+        );
     }
 
     @Test
+    @DisplayName("찾을 수 없는 user Exception이 터지나요?")
+    public void changePasswordException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.sendAuthKeyByMemberInfo(
+                        MemberAuthKeySendInfoDto.builder()
+                                .username("NoUser")
+                                .phoneNumber("01049977055")
+                                .build()
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("전화번호 변경 테스트")
     public void changePhoneNumberTest() {
         //given
         MemberEntity currentUser = currentUser();
 
         //when //then
         if (currentUser != null) {
-            String username = memberService.changePhoneNumber(
+            assertEquals("01000000000", currentUser.getPhoneNumber());
+
+            memberService.changePhoneNumber(
                     PhoneNumberChangeDto.builder()
-                            .username("@qwerqwer")
                             .newPhoneNumber("01049977055")
                             .build()
             );
 
-            MemberEntity memberEntity = memberRepository.findByUsername(username);
+            assertEquals("01049977055", currentUser.getPhoneNumber());
 
-            assertEquals(memberEntity.getUsername(), username);
-            assertEquals("01049977055", memberEntity.getPhoneNumber());
         } else {
             Assertions.fail("전화번호 변경 테스트 실패");
         }
@@ -189,22 +253,80 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("회원탈퇴 테스트")
-    public void DeleteMemberTest() {
+    public void deleteMemberTest() {
         //given
         MemberEntity currentUser = currentUser();
 
         AuthDto deleteUserDto = AuthDto.builder()
                 .username("@Baetaehyeon")
-                .password("1234")
+                .password("0809")
                 .build();
+
+        boolean catchException = false;
 
         //when
         if (currentUser != null) {
-            String withdrawal = memberService.deleteUser(deleteUserDto);
-            assertEquals("@Baetaehyeon회원 회원탈퇴완료", withdrawal);
+            MemberEntity findByUsername = memberRepository.findByUsername(deleteUserDto.getUsername());
+            assertEquals("@Baetaehyeon", findByUsername.getUsername());
+            assertTrue(passwordEncoder.matches(deleteUserDto.getPassword(), findByUsername.getPassword()));
+
+            memberService.deleteUser(deleteUserDto);
+
+            try {
+                MemberEntity memberEntity = memberRepository.findByUsername(deleteUserDto.getUsername());
+                log.debug(memberEntity.getUsername());
+            } catch (NullPointerException e) {
+                catchException = true;
+            }
+
         } else {
             Assertions.fail("회원탈퇴 테스트 실패");
         }
+
+        assertTrue(catchException);
+    }
+
+    @Test
+    @DisplayName("deleteUser에서 MemberNotFoundException이 잘 터지나요?")
+    public void deleteUserException() {
+        //given //when //then
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.deleteUser(
+                        AuthDto.builder()
+                                .username("NoUser")
+                                .password("5678")
+                                .build()
+                )
+        );
+
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.deleteUser(
+                        AuthDto.builder()
+                                .username("@Baetaehyeon")
+                                .password("0000")
+                                .build()
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("fcmToken이 잘 변경 되나요 ?")
+    public void fcmTokenUpdateTest() {
+        //given
+        FcmTokenDto fcmTokenDto = FcmTokenDto.builder()
+                .fcmToken("fAp6e7Snyk_kg9ZxvTkt-a:APA91bEsOTGuuATRSKcHnwjqLL_aiT42BoLCuVJHrsW_JmvmfLqw8Ub2bZmUycR6qDyMbU2I41UScu9-kiv5bnI70wNRBXA1ku-IiEp5LiH_ZzGNBai7ZQqY5VGsb3s-BLu13iXEiISm")
+                .build();
+
+        MemberEntity memberEntity = currentUser();
+
+        //when
+        memberService.updateFcmToken(fcmTokenDto);
+
+        //then
+        String currentUserFcmToken = memberRepository.findById(memberEntity.getMemberIdx()).get().getFcmToken();
+        assertEquals(fcmTokenDto.getFcmToken(), currentUserFcmToken);
     }
 
     /**

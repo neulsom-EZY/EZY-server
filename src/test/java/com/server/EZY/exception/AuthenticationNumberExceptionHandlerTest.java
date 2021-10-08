@@ -2,9 +2,9 @@ package com.server.EZY.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.EZY.exception.authenticationNumber.AuthenticationNumberExceptionHandler;
-import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
-import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.authentication_number.AuthenticationNumberExceptionHandler;
+import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

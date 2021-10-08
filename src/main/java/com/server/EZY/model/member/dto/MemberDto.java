@@ -1,7 +1,7 @@
 package com.server.EZY.model.member.dto;
 
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.member.enumType.Role;
+import com.server.EZY.model.member.enum_type.Role;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -18,7 +18,7 @@ public class MemberDto {
     private String username;
 
     @NotBlank
-    @Size(min = 4, max = 10)
+    @Size(min = 8)
     private String password;
 
     @NotBlank
@@ -26,10 +26,13 @@ public class MemberDto {
     @Size(min = 11, max = 11)
     private String phoneNumber;
 
-    public MemberDto(String username, String password, String phoneNumber) {
+    private String fcmToken;
+
+    public MemberDto(String username, String password, String phoneNumber, String fcmToken) {
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.fcmToken = fcmToken;
     }
 
     public MemberEntity toEntity(){
@@ -37,6 +40,7 @@ public class MemberDto {
                 .username(this.getUsername())
                 .password(this.getPassword())
                 .phoneNumber(this.getPhoneNumber())
+                .fcmToken(this.getFcmToken())
                 .roles(Collections.singletonList(Role.ROLE_CLIENT))
                 .build();
     }

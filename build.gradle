@@ -47,6 +47,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3'
 
 	// *** lombok *** //
 	implementation 'org.projectlombok:lombok'
@@ -67,6 +68,17 @@ dependencies {
 	annotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 	testAnnotationProcessor group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 	testCompileOnly group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
+	// *** For APNs ***//
+	compile group: 'com.turo', name: 'pushy', version: '0.13.9'
+	implementation group: 'com.notnoop.apns', name: 'apns', version: '1.0.0.Beta6'
+
+	//*** For Firebase ***//
+	implementation 'com.google.firebase:firebase-admin:8.0.1'
+
+
+	//*** okhttp3 ***//
+	implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 }
 
 test {
@@ -121,6 +133,8 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					'**/exception/**'
 					,'**/dto/**'
+					,'**/repository/**' // DAO(repository)
+					,'**/embeddedTypes/**' //embeddedTypes 제거
 					,'**/EZY/EzyApplication*'
 					,'**/EZY/**/*Test*'
 					,'**/EZY/**/Q*' // Q class 제거

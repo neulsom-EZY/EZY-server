@@ -1,14 +1,14 @@
 package com.server.EZY.model.member.service;
 
-import com.server.EZY.exception.authenticationNumber.exception.AuthenticationNumberTransferFailedException;
-import com.server.EZY.exception.response.CustomException;
-import com.server.EZY.exception.authenticationNumber.exception.InvalidAuthenticationNumberException;
+import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.security.jwt.JwtTokenProvider;
+import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +17,13 @@ import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -36,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
     private final KeyUtil keyUtil;
+    private final CurrentUserUtil currentUserUtil;
 
     @Value("${sms.api.apikey}")
     private String apiKey;
@@ -47,30 +47,45 @@ public class MemberServiceImpl implements MemberService {
 
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
 
+    /**
+     * 회원가입 서비스 로직
+     * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
+     * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
+     * @exception - else, 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
+     * @author 배태현
+     */
     @Override
-    public String signup(MemberDto memberDto) {
+    public MemberEntity signup(MemberDto memberDto) {
         if(!memberRepository.existsByUsername(memberDto.getUsername())){
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
-            MemberEntity memberEntity = memberRepository.save(memberDto.toEntity());
-
-            return memberEntity.getUsername();
+            return memberRepository.save(memberDto.toEntity());
         } else {
             throw new MemberAlreadyExistException();
         }
     }
 
+    /**
+     * 로그인 서비스 로직
+     * @param loginDto loginDto(username, password)
+     * @exception - username으로 member를 찾을 수 없거나, 올바르지 않은 비밀번호라면 MemberNotFoundException
+     * @return Map<String ,String> (username, accessToken, refreshToken) 반환
+     * @author 배태현
+     */
     @Override
+    @Transactional
     public Map<String, String> signin(AuthDto loginDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(loginDto.getUsername());
-        boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), memberEntity.getPassword());
-        if (memberEntity == null || !passwordCheck) throw new MemberNotFoundException();
+        if (memberEntity == null) throw new MemberNotFoundException();
 
-        String accessToken = jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.toEntity().getRoles());
+        boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), memberEntity.getPassword());
+        if (!passwordCheck) throw new MemberNotFoundException();
+
+        String accessToken = jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        redisUtil.deleteData(loginDto.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
-        redisUtil.setDataExpire(loginDto.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
+        redisUtil.deleteData(memberEntity.getUsername()); // accessToken이 만료되지않아도 로그인 할 때 refreshToken도 초기화해서 다시 생성 후 redis에 저장한다.
+        redisUtil.setDataExpire(memberEntity.getUsername(), refreshToken, REDIS_EXPIRATION_TIME);
 
         Map<String ,String> map = new HashMap<>();
         map.put("username", loginDto.getUsername());
@@ -81,24 +96,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그아웃하는 서비스 로직 (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
-     * @param request HttpServletRequest
-     * @return "로그아웃 되었습니다."
+     * 로그아웃 서비스 로직
+     * (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
+     * @param nickname
      * @author 배태현
      */
     @Override
-    public String logout(HttpServletRequest request) {
-        String accessToken = jwtTokenProvider.resolveToken(request);
-        String username = jwtTokenProvider.getUsername(accessToken);
-        redisUtil.deleteData(username);
-        return "로그아웃 되었습니다.";
+    public void logout(String nickname) {
+        redisUtil.deleteData(nickname);
     }
 
     /**
-     * 전화번호로 인증번호를 보내는 로직
+     * 전화번호로 인증번호를 보내는 서비스 로직
      * @param phoneNumber
-     * @exception 1.phoneNumber로 찾은 User가 null이라면 UserNotFoundException()
-     * @return 문자로 인증번호 전송
      * @author 배태현
      */
     @Override
@@ -106,13 +116,37 @@ public class MemberServiceImpl implements MemberService {
         String authKey = keyUtil.getKey(4);
         redisUtil.setDataExpire(authKey, authKey, KEY_EXPIRATION_TIME);
 
+        sendMessage(phoneNumber, authKey);
+    }
+
+    /**
+     * 비밀번호를 변경하기 위해 인증번호를 보내는 메서드
+     * @param phoneNumber
+     * @author 배태현
+     */
+    private void sendAuthKeyAboutChangePassword(String phoneNumber) {
+        MemberEntity findMember = memberRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        String authKey = keyUtil.getKey(4);
+        redisUtil.setDataExpire(findMember.getUsername(), authKey, KEY_EXPIRATION_TIME);
+        sendMessage(phoneNumber, authKey);
+    }
+
+    /**
+     * 메세지를 보내는 부분을 메서드로 분리
+     * @param phoneNumber
+     * @param authKey
+     * @author 배태현
+     */
+    private void sendMessage(String phoneNumber, String authKey) {
         Message coolsms = new Message(apiKey, apiSecret);
         HashMap<String, String> params = new HashMap<String, String>();
 
         params.put("to", phoneNumber);
-        params.put("from", "01049977055");
+        params.put("from", "07080283503");
         params.put("type", "SMS");
-        params.put("text", "[EZY] 인증번호 "+authKey+" 를 입력하세요.");
+        params.put("text", "[EZY] 인증번호 "+ authKey +" 를 입력하세요.");
         params.put("app_version", "test app 1.2");
 
         try {
@@ -126,9 +160,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 문자로 받은 인증번호로 인증하는 로직
+     * 사용자가 문자로 받은 인증번호를 검증하는 서비스 로직
      * @param key
-     * @return SuccessResult
+     * @exception InvalidAuthenticationNumberException 인증번호가 일치하지 않을 때
+     * @return test코드 작성을 위한 key 반환
      * @author 배태현
      */
     @Override
@@ -142,85 +177,99 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 전화번호 인증을 완료한 뒤
-     * 전화번호를 한번 더 전송해 그 전화번호로
-     * 회원을 찾고 회원의 이름을 알려주는 로직
-     * @param phoneNumber
-     * @return Username
+     * 비밀번호를 변경하기 전 정보를 받고 인증번호를 전송하는 서비스 로직
+     * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, phoneNumber)
+     * @exception Exception username과 password가 동일한 회원의 정보가 아닐 때
      * @author 배태현
      */
     @Override
-    public String findUsername(String phoneNumber) {
-        MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber);
+    public void sendAuthKeyByMemberInfo(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto) {
+        MemberEntity memberEntity = memberRepository.findByUsername(memberAuthKeySendInfoDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
 
-        return memberEntity.getUsername();
+        if (memberEntity.getPhoneNumber().equals(memberAuthKeySendInfoDto.getPhoneNumber())) {
+            sendAuthKeyAboutChangePassword(memberAuthKeySendInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
+        } else {
+            throw new IllegalArgumentException("변경하려는 회원의 정보를 다시 확인해주세요.");
+        }
+    }
+
+    /**
+     * 인증번호, 새로운 비밀번호를 받아 인증번호가 일치할 시 비밀번호가 변경되는 서비스로직
+     * @param passwordChangeDto passwordChangeDto(key, username, newPassword)
+     * @exception InvalidAuthenticationNumberException 인증번호가 일치하지 않을 때
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void changePassword(PasswordChangeDto passwordChangeDto) {
+        String authKey = passwordChangeDto.getKey();
+        String redisAuthKey = redisUtil.getData(passwordChangeDto.getUsername());
+
+        if (authKey.equals(redisAuthKey)) {
+            MemberEntity findMember = memberRepository.findByUsername(passwordChangeDto.getUsername());
+            findMember.updatePassword(
+                    passwordEncoder.encode(passwordChangeDto.getNewPassword())
+            );
+            redisUtil.deleteData(authKey);
+        } else {
+            throw new InvalidAuthenticationNumberException();
+        }
     }
 
     /**
      * username을 변경하는 서비스 로직
-     * @param usernameChangeDto username, newUsername
-     * @return
+     * @param usernameChangeDto usernameChangeDto(username, newUsername)
      * @author 배태현
      */
     @Override
     @Transactional
-    public String changeUsername(UsernameChangeDto usernameChangeDto) {
+    public void changeUsername(UsernameChangeDto usernameChangeDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(usernameChangeDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
 
         memberEntity.updateUsername(usernameChangeDto.getNewUsername());
-
-        return usernameChangeDto.getUsername() + "유저 " + usernameChangeDto.getNewUsername() + "(으)로 닉네임 업데이트 완료";
-    }
-
-    /**
-     * 비밀번호를 변경하는 서비스 로직
-     * @param passwordChangeDto username, newPassword
-     * @return (회원닉네임)회원 비밀번호 변경완료
-     * @author 배태현
-     */
-    @Override
-    @Transactional
-    public String changePassword(PasswordChangeDto passwordChangeDto) {
-        MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeDto.getUsername());
-        if (memberEntity == null) throw new MemberNotFoundException();
-        memberEntity.updatePassword(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
-
-        return passwordChangeDto.getUsername() + "회원 비밀번호 변경완료";
     }
 
     /**
      * 전화번호를 변경하는 서비스 로직
-     * @param phoneNumberChangeDto username, newPhoneNumber
-     * @return username
+     * @param phoneNumberChangeDto phoneNumberChangeDto(newPhoneNumber)
      * @author 배태현
      */
     @Override
     @Transactional
-    public String changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
-        MemberEntity memberEntity = memberRepository.findByUsername(phoneNumberChangeDto.getUsername());
-        if (memberEntity == null) throw new MemberNotFoundException();
-        memberEntity.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
+    public void changePhoneNumber(PhoneNumberChangeDto phoneNumberChangeDto) {
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
 
-        return memberEntity.getUsername();
+        currentUser.updatePhoneNumber(phoneNumberChangeDto.getNewPhoneNumber());
     }
 
     /**
      * 회원탈퇴 서비스 로직
-     * @param deleteUserDto
-     * @return (회원이름)회원 회원탈퇴완료
+     * @param deleteUserDto deleteUserDto(username, password)
+     * @exception - 올바르지 않는 비밀번호일 시 MemberNotFoundException
      * @author 배태현
      */
     @Override
-    public String deleteUser(AuthDto deleteUserDto) {
+    public void deleteUser(AuthDto deleteUserDto) {
         MemberEntity memberEntity = memberRepository.findByUsername(deleteUserDto.getUsername());
         if (memberEntity == null) throw new MemberNotFoundException();
 
         if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
             memberRepository.deleteById(memberEntity.getMemberIdx());
-        }
+        } else throw new MemberNotFoundException();
+    }
 
-        return deleteUserDto.getUsername() + "회원 회원탈퇴완료";
+    /**
+     * fcmToken 변경 서비스로직
+     * @param fcmTokenDto fcmTokenDto(fcmToken)
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void updateFcmToken(FcmTokenDto fcmTokenDto) {
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
+
+        currentUser.updateFcmToken(fcmTokenDto.getFcmToken());
     }
 }

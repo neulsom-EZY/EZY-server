@@ -1,17 +1,20 @@
 package com.server.EZY.model.plan.personal;
 
-import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.plan.PlanEntity;
-import com.server.EZY.model.plan.embeddedTypes.Period;
-import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
+import com.server.EZY.model.plan.embedded_type.Period;
+import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.tag.TagEntity;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 
-@Slf4j
+/**
+ * 개인일정의 정보를 저장하는 Entity이다. <br>
+ * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "personal_plan")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

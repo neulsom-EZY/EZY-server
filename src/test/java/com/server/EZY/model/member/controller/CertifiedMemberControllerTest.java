@@ -13,12 +13,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@Transactional
 public class CertifiedMemberControllerTest {
 
     @MockBean
@@ -48,11 +50,11 @@ public class CertifiedMemberControllerTest {
     
     @Test
     @DisplayName("회원탈퇴 테스트")
-    public void withdrawalTest() throws Exception {
+    public void deleteMemberTest() throws Exception {
 
         AuthDto deleteUserDto = AuthDto.builder()
                 .username("@BaeTul")
-                .password("1234")
+                .password("12341234")
                 .build();
 
         String content = objectMapper.writeValueAsString(deleteUserDto);
@@ -63,6 +65,26 @@ public class CertifiedMemberControllerTest {
 
         actions
                 .andDo(print())
-                .andExpect(status().isNoContent()); //http status 204
+                .andExpect(status().isOk()); //http status 200
+    }
+
+    @Test
+    @DisplayName("username 변경 테스트")
+    public void usernameChangeTest() throws Exception {
+
+        UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
+                .username("@BaeTul")
+                .newUsername("@Baebae")
+                .build();
+
+        String content = objectMapper.writeValueAsString(usernameChangeDto);
+
+        final ResultActions actions = mvc.perform(put("/v1/member/change/username")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        actions
+                .andDo(print())
+                .andExpect(status().isOk()); //http status 200
     }
 }
