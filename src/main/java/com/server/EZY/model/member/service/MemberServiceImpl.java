@@ -48,6 +48,19 @@ public class MemberServiceImpl implements MemberService {
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
 
     /**
+     * 이미 가입된 username인지 체크해주는 서비스로직
+     * @param username username
+     * @exception - 이미 가입된 username일 때 MemberAlreadyExistException
+     * @author 배태현
+     * @return 이미 가입된 username이 아니라면 true반환 (test 코드 작성을 위한 boolean 타입 반환)
+     */
+    @Override
+    public boolean checkUsername(String username) {
+        if (memberRepository.existsByUsername(username)) throw new MemberAlreadyExistException();
+        else return true;
+    }
+
+    /**
      * 회원가입 서비스 로직
      * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
      * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.

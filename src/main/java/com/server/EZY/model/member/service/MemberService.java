@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface MemberService {
 
+    boolean checkUsername(String username);
+
     MemberEntity signup(MemberDto memberDto);
 
     Map<String, String> signin(AuthDto loginDto);
