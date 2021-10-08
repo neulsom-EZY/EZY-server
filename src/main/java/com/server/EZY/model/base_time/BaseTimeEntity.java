@@ -11,7 +11,9 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 /**
- * 해당 Entity를 상속한 Entity는 컬럼 추가 시 시작시간, 종료시간 필드를 추가한다.
+ * 해당 Entity를 상속한 Entity는 생성시간, 수정시간 필드를 추가한다. <br>
+ * 생성시간(createdDateTime)는 해당 컬럼이 insert된 시점의 시간을 나타낸다. <br>
+ * 수정시간(modifiedDateTime)는 해당 컬럼이 update된 시점의 시간을 나타낸다.
  * @see com.server.EZY.model.plan.PlanEntity
  * @author 정시원
  * @version 1.0.0
