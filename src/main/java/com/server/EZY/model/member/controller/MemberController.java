@@ -28,6 +28,19 @@ public class MemberController {
     private final ResponseService responseService;
 
     /**
+     * 이미 가입된 username인지 check 해주는 controller
+     * @param username username
+     * @return CommonResult - SuccessResult
+     */
+    @PostMapping("/check/username")
+    @ApiOperation(value = "username 체크", notes = "username 체크")
+    @ResponseStatus( HttpStatus.OK )
+    public CommonResult checkUsername(String username) {
+        memberService.checkUsername(username);
+        return responseService.getSuccessResult();
+    }
+
+    /**
      * 회원가입 controller
      * @param memberDto userDto(username, password, phoneNumber, fcmToken)
      * @return CommonResult - SuccessResult
