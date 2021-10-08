@@ -5,16 +5,16 @@ node {
 
      stage('pwd') {
         sh'''
-        pwd
+        cp /var/jenkins_home/ConfigDir/firebase-service-account.json /var/jenkins_home/workspace/EZY-Spring-Boot/src/main/resources
         '''
      }
 
-//
-//      stage('Build BackEnd') {
-//         sh'''
-//         ./gradlew clean build
-//         '''
-//      }
+
+     stage('Build BackEnd') {
+        sh'''
+        ./gradlew clean build
+        '''
+     }
 //
 //      stage('Build image') {
 //         app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
