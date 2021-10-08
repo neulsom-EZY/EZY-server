@@ -32,7 +32,7 @@ public class MemberController {
     @PostMapping("/check/username")
     @ApiOperation(value = "username 체크", notes = "username 체크")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult checkUsername(UsernameDto usernameDto) {
+    public CommonResult checkUsername(@Valid @RequestBody UsernameDto usernameDto) {
         memberService.checkUsername(usernameDto.getUsername());
         return responseService.getSuccessResult();
     }
