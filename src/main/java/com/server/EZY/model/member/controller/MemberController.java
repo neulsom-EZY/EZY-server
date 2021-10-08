@@ -29,7 +29,7 @@ public class MemberController {
      * @param usernameDto username
      * @return CommonResult - SuccessResult
      */
-    @PostMapping("/check/username")
+    @PostMapping("/verified/username")
     @ApiOperation(value = "username 존재 여부 확인", notes = "username 존재 여부 확인")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult checkUsernameExist(@Valid @RequestBody UsernameDto usernameDto) {
@@ -85,7 +85,7 @@ public class MemberController {
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PostMapping("/check/auth")
+    @PostMapping("/verified/auth")
     @ApiOperation(value = "인증번호 인증하기", notes = "인증번호 인증하기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult validAuthKey(String key) {
