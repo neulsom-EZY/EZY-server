@@ -7,6 +7,12 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
+/**
+ * 회원과 팀 일정의 관계는 ManyToMany이므로 팀(TeamEntity)이라는 관계로 풀어내기 위한 TeamEntity
+ * @author 정시원
+ * @version 미정
+ * @since 미정
+ */
 @Entity @Table(name = "team")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

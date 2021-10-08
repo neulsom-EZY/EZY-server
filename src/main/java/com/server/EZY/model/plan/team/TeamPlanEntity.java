@@ -2,8 +2,8 @@ package com.server.EZY.model.plan.team;
 
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.PlanEntity;
-import com.server.EZY.model.plan.embeddedTypes.Period;
-import com.server.EZY.model.plan.embeddedTypes.PlanInfo;
+import com.server.EZY.model.plan.embedded_type.Period;
+import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.tag.TagEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +12,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * 팀 일정을 저장하는 TeamPlanEntity
+ * @author 정시원
+ * @version 미정
+ * @since 미정
+ */
 @Entity @Table(name = "team_plan")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
