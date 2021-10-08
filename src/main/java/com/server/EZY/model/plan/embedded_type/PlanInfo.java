@@ -9,6 +9,8 @@ import java.util.Objects;
 /**
  * 일정(Plan)의 정보를 임베디드 타입으로 분리한 클래스
  * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
  */
 @Embeddable
 @Builder @Getter

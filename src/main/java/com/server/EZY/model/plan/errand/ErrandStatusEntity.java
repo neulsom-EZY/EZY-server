@@ -7,9 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
 /**
- * 여러개의 심부름을 하나로
+ * 심부름의 일정정보를 저장하는 {@link ErrandEntity}의 상태를 관리하는 {@link ErrandStatusEntity}이다. <br>
+ * {@link ErrandEntity}는 수신자, 발신자 총 2개의 컬럼을 추가하므로 하나의 심부름을 식별하고 추가적인 정보를 저장하기 위해 해당 Entity가 필요하다.
  * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
  */
 @Entity @Table(name = "errand_status")
 @Getter

@@ -9,11 +9,17 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 
-@Slf4j
+/**
+ * 심부름 일정을 저장하는 Entity이다.<br>
+ * 심부름 일정 추가시 수신자/발신자 총 2개의 컬럼이 추가되므로 이를 하나로 식별할 수 있게
+ * ErrandStatusEntity로 연관관계를 맺어 두개의 컬럼을 하나의 심부름으로 식별할 수 있다.
+ * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "errand")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

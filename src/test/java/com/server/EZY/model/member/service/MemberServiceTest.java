@@ -23,7 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +69,19 @@ public class MemberServiceTest {
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
         assertEquals("@asdfasdf", currentUserNickname);
+    }
+
+    @Test
+    @DisplayName("username check 테스트")
+    public void checkUsernameExistTest() {
+        //given
+        String username = "@Baetae";
+
+        //when
+        boolean bool = memberService.isExistUsername(username);
+
+        //then
+        assertEquals(false, bool);
     }
 
     @Test
@@ -215,41 +227,15 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("비밀번호 변경 테스트")
-    public void changePasswordTest() {
-        //given
-        MemberEntity currentUser = currentUser();
-
-        PasswordChangeDto passwordChangeDto = PasswordChangeDto.builder()
-                .username("@Baetaehyeon")
-                .newPassword("20040809")
-                .build();
-
-        //when //then
-        if (currentUser != null) {
-            MemberEntity findByUsername = memberRepository.findByUsername(passwordChangeDto.getUsername());
-            assertTrue(passwordEncoder.matches("0809", findByUsername.getPassword()));
-
-            memberService.changePassword(passwordChangeDto);
-
-            MemberEntity memberEntity = memberRepository.findByUsername(passwordChangeDto.getUsername());
-            assertTrue(passwordEncoder.matches(passwordChangeDto.getNewPassword(), memberEntity.getPassword()));
-
-        } else {
-            Assertions.fail("비밀번호 변경 테스트 실패");
-        }
-    }
-
-    @Test
     @DisplayName("찾을 수 없는 user Exception이 터지나요?")
     public void changePasswordException() {
         //given //when //then
         assertThrows(
                 MemberNotFoundException.class,
-                () -> memberService.changePassword(
-                        PasswordChangeDto.builder()
+                () -> memberService.sendAuthKeyByMemberInfo(
+                        MemberAuthKeySendInfoDto.builder()
                                 .username("NoUser")
-                                .newPassword("0000")
+                                .phoneNumber("01049977055")
                                 .build()
                 )
         );
