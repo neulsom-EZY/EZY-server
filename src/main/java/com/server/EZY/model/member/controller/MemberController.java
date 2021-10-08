@@ -1,9 +1,6 @@
 package com.server.EZY.model.member.controller;
 
-import com.server.EZY.model.member.dto.AuthDto;
-import com.server.EZY.model.member.dto.PasswordChangeDto;
-import com.server.EZY.model.member.dto.MemberAuthKeySendInfoDto;
-import com.server.EZY.model.member.dto.MemberDto;
+import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -29,14 +26,14 @@ public class MemberController {
 
     /**
      * 이미 가입된 username인지 check 해주는 controller
-     * @param username username
+     * @param usernameDto username
      * @return CommonResult - SuccessResult
      */
     @PostMapping("/check/username")
     @ApiOperation(value = "username 체크", notes = "username 체크")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult checkUsername(String username) {
-        memberService.checkUsername(username);
+    public CommonResult checkUsername(UsernameDto usernameDto) {
+        memberService.checkUsername(usernameDto.getUsername());
         return responseService.getSuccessResult();
     }
 
