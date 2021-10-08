@@ -5,12 +5,22 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.tag.TagEntity;
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Slf4j
+/**
+ * 모든 일정 Entity의 슈퍼타입인 PlanEntity이다. <br>
+ * 해당 Entity를 직접적으로 사용하지 않고 다른 Entity에 상속받아 사용한다. <br>
+ * {@link BaseTimeEntity}를 상속받아 생성시간, 변경시간 필드가 추가된다.
+ * @see com.server.EZY.model.plan.personal.PersonalPlanEntity
+ * @see com.server.EZY.model.plan.errand.ErrandEntity
+ * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "plan")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "d_type") //d_type 자동 생성

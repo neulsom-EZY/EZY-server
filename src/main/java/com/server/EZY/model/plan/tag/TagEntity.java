@@ -6,6 +6,12 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * 일정의 테그를 저장하는 Entity <br>
+ * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "tag")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
