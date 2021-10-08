@@ -72,15 +72,6 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("이 username으로 가입된 회원이 있나요 ?")
-    public void checkUsernameExistExceptionTest() {
-        assertThrows(
-                MemberAlreadyExistException.class,
-                () -> memberService.checkUsernameExist("@Baetaehyeon")
-        );
-    }
-
-    @Test
     @DisplayName("username check 테스트")
     public void checkUsernameExistTest() {
         //given
@@ -90,7 +81,7 @@ public class MemberServiceTest {
         boolean bool = memberService.checkUsernameExist(username);
 
         //then
-        assertEquals(true, bool);
+        assertEquals(false, bool);
     }
 
     @Test
