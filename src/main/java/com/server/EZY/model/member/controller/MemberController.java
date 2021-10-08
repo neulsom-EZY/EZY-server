@@ -80,15 +80,15 @@ public class MemberController {
 
     /**
      * 받은 인증번호가 맞는지 인증하는 controller
-     * @param key
+     * @param keyDto key
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PostMapping("/verified/auth")
     @ApiOperation(value = "인증번호 인증하기", notes = "인증번호 인증하기")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult validAuthKey(String key) {
-        memberService.validAuthKey(key);
+    public CommonResult validAuthKey(@Valid @RequestBody KeyDto keyDto) {
+        memberService.validAuthKey(keyDto.getKey());
         return responseService.getSuccessResult();
     }
 
