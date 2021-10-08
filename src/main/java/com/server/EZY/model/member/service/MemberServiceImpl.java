@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -46,6 +45,18 @@ public class MemberServiceImpl implements MemberService {
     private final long KEY_EXPIRATION_TIME = 1000L * 60 * 30; //3분
 
     private long REDIS_EXPIRATION_TIME = JwtTokenProvider.REFRESH_TOKEN_VALIDATION_TIME; //6개월
+
+    /**
+     * 이미 가입된 username인지 체크해주는 서비스로직
+     * @param username username
+     * @exception - 이미 가입된 username일 때 MemberAlreadyExistException
+     * @author 배태현
+     * @return 이미 가입된 username이라면 true반환 / 이미 가입된 username이 아니라면 false반환
+     */
+    @Override
+    public boolean isExistUsername(String username) {
+        return memberRepository.existsByUsername(username);
+    }
 
     /**
      * 회원가입 서비스 로직

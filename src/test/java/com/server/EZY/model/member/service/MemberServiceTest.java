@@ -72,6 +72,19 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("username check 테스트")
+    public void checkUsernameExistTest() {
+        //given
+        String username = "@Baetae";
+
+        //when
+        boolean bool = memberService.isExistUsername(username);
+
+        //then
+        assertEquals(false, bool);
+    }
+
+    @Test
     @DisplayName("회원가입 테스트")
     public void signupTest() {
         //given
