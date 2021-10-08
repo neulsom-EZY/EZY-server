@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface MemberService {
 
-    boolean checkUsernameExist(String username);
+    boolean isExistUsername(String username);
 
     MemberEntity signup(MemberDto memberDto);
 

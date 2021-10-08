@@ -78,7 +78,7 @@ public class MemberServiceTest {
         String username = "@Baetae";
 
         //when
-        boolean bool = memberService.checkUsernameExist(username);
+        boolean bool = memberService.isExistUsername(username);
 
         //then
         assertEquals(false, bool);

@@ -33,7 +33,7 @@ public class MemberController {
     @ApiOperation(value = "username 존재 여부 확인", notes = "username 존재 여부 확인")
     @ResponseStatus( HttpStatus.OK )
     public SingleResult checkUsernameExist(@Valid @RequestBody UsernameDto usernameDto) {
-        return responseService.getSingleResult(memberService.checkUsernameExist(usernameDto.getUsername()));
+        return responseService.getSingleResult(memberService.isExistUsername(usernameDto.getUsername()));
     }
 
     /**
