@@ -102,7 +102,7 @@ public class MemberControllerTest {
 
         String content = objectMapper.writeValueAsString("0000");
 
-        final ResultActions actions = mvc.perform(post("/v1/member/auth/check")
+        final ResultActions actions = mvc.perform(post("/v1/member/check/auth")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 
