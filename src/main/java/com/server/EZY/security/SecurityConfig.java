@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/member/send/change/password/authkey").permitAll()//
                 .antMatchers("/v1/member/change/password").permitAll()//
                 .antMatchers("/v1/member/auth").permitAll()//
-                .antMatchers("/v1/member/auth/check").permitAll()//
+                .antMatchers("/v1/member/check/auth").permitAll()//
                 .antMatchers("/v1/member/refreshtoken").authenticated()// 로그인 된 유저는 모두 접근을 허용함
                 .antMatchers("/v1/member/logout").authenticated() // 로그인 된 유저는 모두 접근을 허용함
                 .antMatchers("/v1/member/delete").authenticated() // 로그인 된 유저는 모두 접근을 허용함
