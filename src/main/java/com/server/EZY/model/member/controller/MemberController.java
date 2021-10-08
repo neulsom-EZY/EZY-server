@@ -66,15 +66,15 @@ public class MemberController {
 
     /**
      * 전화번호로 인증번호를 전송하는 controller
-     * @param phoneNumber
+     * @param phoneNumberDto phoneNumber
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
     @PostMapping("/auth")
     @ApiOperation(value = "전화번호로 인증번호 보내기", notes = "전화번호로 인증번호 보내기")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult sendAuthKey(String phoneNumber) {
-        memberService.sendAuthKey(phoneNumber);
+    public CommonResult sendAuthKey(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
+        memberService.sendAuthKey(phoneNumberDto.getPhoneNumber());
         return responseService.getSuccessResult();
     }
 
