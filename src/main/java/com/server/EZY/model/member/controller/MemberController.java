@@ -32,9 +32,8 @@ public class MemberController {
     @PostMapping("/verified/username")
     @ApiOperation(value = "username 존재 여부 확인", notes = "username 존재 여부 확인")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult checkUsernameExist(@Valid @RequestBody UsernameDto usernameDto) {
-        memberService.checkUsernameExist(usernameDto.getUsername());
-        return responseService.getSuccessResult();
+    public SingleResult checkUsernameExist(@Valid @RequestBody UsernameDto usernameDto) {
+        return responseService.getSingleResult(memberService.checkUsernameExist(usernameDto.getUsername()));
     }
 
     /**
