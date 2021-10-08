@@ -88,7 +88,7 @@ public class MemberController {
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PostMapping("/auth/check")
+    @PostMapping("/check/auth")
     @ApiOperation(value = "인증번호 인증하기", notes = "인증번호 인증하기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult validAuthKey(String key) {
