@@ -33,7 +33,7 @@ public class SecurityTest {
 
         String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
         // 유효한 토큰인지 확인
-        if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
+        if (accessToken != null && !jwtTokenProvider.isTokenExpired(accessToken)){
             String nickname = jwtTokenProvider.getUsername(accessToken);
             Assertions.assertThat(nickname).isEqualTo("배태현");
         }
