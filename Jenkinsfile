@@ -25,5 +25,5 @@ node {
          sh '''docker run -d -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${REPOSITORY_NAME}/${CONTAINER_NAME}:latest''' // 컨테이너 1 // local : container
      }
 
-     //test
+     //test1
 }
