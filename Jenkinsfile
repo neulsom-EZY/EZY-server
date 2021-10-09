@@ -3,14 +3,6 @@ node {
          checkout scm
      }
 
-//      stage('Config') {
-//         sh'''
-//         cp /var/jenkins_home/ConfigDir/firebase-service-account.json /var/jenkins_home/workspace/EZY-Spring-Boot/src/main/resources
-//         rm -rf /var/jenkins_home/workspace/EZY-Spring-Boot/src/main/resources/application.yml
-//         cp /var/jenkins_home/ConfigDir/application.yml /var/jenkins_home/workspace/EZY-Spring-Boot/src/main/resources
-//         '''
-//      }
-
      stage('Build BackEnd') {
         sh'''
         ./gradlew build --exclude-task test
