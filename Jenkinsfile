@@ -24,4 +24,6 @@ node {
          sh '''docker rmi -f `docker images | awk '$1 ~ /ezy-server/ {print $3}'`''' // image 삭제
          sh '''docker run -d -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${REPOSITORY_NAME}/${CONTAINER_NAME}:latest''' // 컨테이너 1 // local : container
      }
+
+     // + hook test
 }
