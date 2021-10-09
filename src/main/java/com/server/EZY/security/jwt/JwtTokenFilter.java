@@ -1,6 +1,7 @@
 package com.server.EZY.security.jwt;
 
-import com.server.EZY.exception.response.CustomException;
+import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
+import com.server.EZY.exception.token.exception.AuthorizationHeaderIsEmpty;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -27,15 +28,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = jwtTokenProvider.resolveToken(request);
 
         try {
-            if(token != null && jwtTokenProvider.validateToken(token)){
+            if(token != null && !jwtTokenProvider.isTokenExpired(token)){
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (CustomException e){
+        } catch (AccessTokenExpiredException e){
             // 사용자가 인증되지 않도록 보장하는 매우 중요한 코드
             SecurityContextHolder.clearContext();
-            response.sendError(e.getHttpStatus().value(), e.getMessage());
-            return;
+            throw new AccessTokenExpiredException();
         }
 
         filterChain.doFilter(request, response);
