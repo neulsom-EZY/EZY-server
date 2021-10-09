@@ -20,6 +20,8 @@ public interface MemberService {
 
     String validAuthKey(String key);
 
+    void sendUsername(String phoneNumber);
+
     void changeUsername(UsernameChangeDto usernameChangeDto);
 
     void sendAuthKeyByMemberInfo(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto);

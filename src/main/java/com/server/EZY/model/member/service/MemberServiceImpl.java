@@ -7,6 +7,7 @@ import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.repository.MemberRepository;
+import com.server.EZY.model.member.service.message.MessageService;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.util.KeyUtil;
@@ -35,12 +36,7 @@ public class MemberServiceImpl implements MemberService {
     private final RedisUtil redisUtil;
     private final KeyUtil keyUtil;
     private final CurrentUserUtil currentUserUtil;
-
-    @Value("${sms.api.apikey}")
-    private String apiKey;
-
-    @Value("${sms.api.apiSecret}")
-    private String apiSecret;
+    private final MessageService messageService;
 
     private final long KEY_EXPIRATION_TIME = 1000L * 60 * 30; //3분
 
@@ -127,47 +123,7 @@ public class MemberServiceImpl implements MemberService {
         String authKey = keyUtil.getKey(4);
         redisUtil.setDataExpire(authKey, authKey, KEY_EXPIRATION_TIME);
 
-        sendMessage(phoneNumber, authKey);
-    }
-
-    /**
-     * 비밀번호를 변경하기 위해 인증번호를 보내는 메서드
-     * @param phoneNumber
-     * @author 배태현
-     */
-    private void sendAuthKeyAboutChangePassword(String phoneNumber) {
-        MemberEntity findMember = memberRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new MemberNotFoundException());
-
-        String authKey = keyUtil.getKey(4);
-        redisUtil.setDataExpire(findMember.getUsername(), authKey, KEY_EXPIRATION_TIME);
-        sendMessage(phoneNumber, authKey);
-    }
-
-    /**
-     * 메세지를 보내는 부분을 메서드로 분리
-     * @param phoneNumber
-     * @param authKey
-     * @author 배태현
-     */
-    private void sendMessage(String phoneNumber, String authKey) {
-        Message coolsms = new Message(apiKey, apiSecret);
-        HashMap<String, String> params = new HashMap<String, String>();
-
-        params.put("to", phoneNumber);
-        params.put("from", "07080283503");
-        params.put("type", "SMS");
-        params.put("text", "[EZY] 인증번호 "+ authKey +" 를 입력하세요.");
-        params.put("app_version", "test app 1.2");
-
-        try {
-            JSONObject obj = coolsms.send(params);
-            log.debug(obj.toString());
-        } catch (CoolsmsException e) {
-            log.debug(e.getMessage());
-            log.debug(String.valueOf(e.getCode()));
-            throw new AuthenticationNumberTransferFailedException();
-        }
+        messageService.sendAuthKeyMessage(phoneNumber, authKey);
     }
 
     /**
@@ -206,6 +162,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 비밀번호를 변경하기 위해 인증번호를 보내는 메서드
+     * @param phoneNumber
+     * @author 배태현
+     */
+    private void sendAuthKeyAboutChangePassword(String phoneNumber) {
+        MemberEntity findMember = memberRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        String authKey = keyUtil.getKey(4);
+        redisUtil.setDataExpire(findMember.getUsername(), authKey, KEY_EXPIRATION_TIME);
+
+        messageService.sendAuthKeyMessage(phoneNumber, authKey);
+    }
+
+    /**
      * 인증번호, 새로운 비밀번호를 받아 인증번호가 일치할 시 비밀번호가 변경되는 서비스로직
      * @param passwordChangeDto passwordChangeDto(key, username, newPassword)
      * @exception InvalidAuthenticationNumberException 인증번호가 일치하지 않을 때
@@ -226,6 +197,16 @@ public class MemberServiceImpl implements MemberService {
         } else {
             throw new InvalidAuthenticationNumberException();
         }
+    }
+
+    @Override
+    public void sendUsername(String phoneNumber) {
+        MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        String username = memberEntity.getUsername().substring(1);
+
+        messageService.sendUsernameMessage(phoneNumber, username);
     }
 
     /**
