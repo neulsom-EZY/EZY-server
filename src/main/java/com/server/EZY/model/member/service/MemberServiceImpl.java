@@ -199,6 +199,11 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /**
+     * 문자로 username을 보내는 서비스로직
+     * @param phoneNumber
+     * @author 배태현
+     */
     @Override
     public void sendUsername(String phoneNumber) {
         MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber)

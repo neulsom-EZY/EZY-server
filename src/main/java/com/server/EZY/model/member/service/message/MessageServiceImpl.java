@@ -53,6 +53,7 @@ public class MessageServiceImpl implements MessageService {
      * 메세지로 username을 보내는 서비스로직
      * @param phoneNumber
      * @param username
+     * @author 배태현
      */
     @Override
     public void sendUsernameMessage(String phoneNumber, String username) {
