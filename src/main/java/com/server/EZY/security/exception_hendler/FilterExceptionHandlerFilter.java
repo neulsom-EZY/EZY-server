@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Exception결과를 json타입으로 response객체에 씁니다.
+     * Exception결과를 Http Status Code, json결과를 response객체에 씁니다.
      * @param response response
      * @param httpStatus 사용자에게 반환할 HttpStatusCode
      * @param commonResult 사용자에게 반환할 Exception결과를 가지고 있는 객체
@@ -62,7 +61,7 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
     }
 
     /**
-     * CommonResult타입의 객체를 json으로 변환
+     * CommonResult타입의 객체를 json으로 변환한다.
      * @param commonResult 사용제에게 반환할 정보를 가지고 있는 commonResult
      * @return 해당 commonResult를 json으로 변환한 값
      * @throws JsonProcessingException - Json으로 변환시 발생할 수 있지만 발생할 일이 없음
