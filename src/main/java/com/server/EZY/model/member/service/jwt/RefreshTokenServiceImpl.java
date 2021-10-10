@@ -1,6 +1,5 @@
 package com.server.EZY.model.member.service.jwt;
 
-import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.enum_type.Role;
