@@ -33,7 +33,7 @@ public class JwtTokenProvider {
      * accessToken의 만료기간 (1시간 - 1hour)
      * @author 배태현
      */
-    private static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60;
+    private static long TOKEN_VALIDATION_SECOND = 1000L;
 
     /**
      * refreshToken의 만료기간 (6달 - 6month)
@@ -167,18 +167,23 @@ public class JwtTokenProvider {
     }
 
     /**
-     * (유효기간 만료 포함) 토큰을 검증하는 메서드
+     * 토큰의 유효기간 만료를 확인하는 메서드
      * @param token
-     * @return false (유효기간이 만료되지 않았을 경우)
-     * @exception AccessTokenExpiredException JWT의 유효기간이 만료되었을 때
+     * @return true (토큰의 유효기간이 만료되었을 경우) | false (토큰의 유효기간이 만료되지 않았을 경우)
      * @author 배태현
      */
-    public Boolean isTokenExpired(String token) {
-        try{
-            extractAllClaims(token).getExpiration();
-            return false;
-        }catch(ExpiredJwtException e) {
-            throw new AccessTokenExpiredException();
-        }
+    public boolean isTokenExpired(String token) {
+        final Date expiration = extractAllClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
+
+    /**
+     * 토큰을 검증하는 메서드
+     * @param token
+     * @return true (토큰이 제대로 검증 되었을 경우) | false (토큰에 문제가 있을 경우)
+     * @author 배태현
+     */
+    public boolean validateToken(String token) {
+        return !isTokenExpired(token);
     }
 }
