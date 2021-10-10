@@ -41,7 +41,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         MemberEntity findUser = memberRepository.findByUsername(nickname);
         List<Role> roles = findUser.getRoles();
 
-        if (redisUtil.getData(nickname).equals(refreshToken) && !jwtTokenProvider.isTokenExpired(refreshToken)) {
+        if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
             redisUtil.deleteData(nickname);//refreshToken이 저장되어있는 레디스 초기화 후
 
             newAccessToken = jwtTokenProvider.createToken(nickname, roles);
