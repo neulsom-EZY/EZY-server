@@ -1,5 +1,6 @@
 package com.server.EZY.model.member.service.jwt;
 
+import com.server.EZY.exception.token.exception.RefreshTokenHeaderIsEmpty;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.enum_type.Role;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +33,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
      */
     @Override
     public Map<String, String> getRefreshToken(String nickname, String refreshToken) {
+        Optional.ofNullable(refreshToken).orElseThrow(RefreshTokenHeaderIsEmpty::new);
+
         Map<String ,String> map = new HashMap<>();
         String newAccessToken = null;
         String newRefreshToken = null;
