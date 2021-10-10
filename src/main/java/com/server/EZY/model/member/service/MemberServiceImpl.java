@@ -150,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity == null) throw new MemberNotFoundException();
 
         if (memberEntity.getPhoneNumber().equals(memberAuthKeySendInfoDto.getPhoneNumber())) {
-            sendAuthKeyAboutChangePassword(memberAuthKeySendInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
+            sendAuthKeyToChangePassword(memberAuthKeySendInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
         } else {
             throw new IllegalArgumentException("변경하려는 회원의 정보를 다시 확인해주세요.");
         }
@@ -161,7 +161,7 @@ public class MemberServiceImpl implements MemberService {
      * @param phoneNumber
      * @author 배태현
      */
-    private void sendAuthKeyAboutChangePassword(String phoneNumber) {
+    private void sendAuthKeyToChangePassword(String phoneNumber) {
         MemberEntity findMember = memberRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new MemberNotFoundException());
 
