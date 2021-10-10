@@ -33,8 +33,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
      */
     @Override
     public Map<String, String> getRefreshToken(String nickname, String refreshToken) {
-        Optional.of(refreshToken).empty()
-                .orElseThrow(() -> new RefreshTokenHeaderIsEmpty());
+        Optional.ofNullable(refreshToken).orElseThrow(RefreshTokenHeaderIsEmpty::new);
 
         Map<String ,String> map = new HashMap<>();
         String newAccessToken = null;
