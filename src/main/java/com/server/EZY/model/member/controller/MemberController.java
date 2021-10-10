@@ -123,7 +123,7 @@ public class MemberController {
     @PostMapping("/find/username")
     @ApiOperation(value = "문자로 username 받기", notes = "문자로 username 받기")
     @ResponseStatus( HttpStatus.OK )
-    public CommonResult sendUsername(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
+    public CommonResult findUsernameByPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
         memberService.sendUsername(phoneNumberDto.getPhoneNumber());
         return responseService.getSuccessResult();
     }
