@@ -119,4 +119,12 @@ public class MemberController {
         memberService.changePassword(passwordChangeDto);
         return responseService.getSuccessResult();
     }
+
+    @PostMapping("/find/username")
+    @ApiOperation(value = "username 찾기 (문자로 username 받기)", notes = "username 찾기 (문자로 username 받기)")
+    @ResponseStatus( HttpStatus.OK )
+    public CommonResult findUsernameByPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
+        memberService.findUsernameByPhoneNumber(phoneNumberDto.getPhoneNumber());
+        return responseService.getSuccessResult();
+    }
 }
