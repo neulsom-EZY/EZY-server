@@ -1,17 +1,16 @@
 package com.server.EZY.security;
 
-
-import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.security.authentication.MyUserDetails;
 import com.server.EZY.security.jwt.JwtTokenProvider;
 import com.server.EZY.util.RedisUtil;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -35,15 +34,11 @@ public class SecurityTest {
 
         String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
 
-        // 유효한 토큰인지 확인
-        try {
-            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
-                String nickname = jwtTokenProvider.getUsername(accessToken);
-                Assertions.assertThat(nickname).isEqualTo("배태현");
-            }
-        } catch (ExpiredJwtException e) {
-            Assertions.fail("토큰 검증 실패로 인한 테스트 실패");
-        }
+        String nickname = jwtTokenProvider.getUsername(accessToken);
+
+        assertNotNull(accessToken);
+        assertTrue(jwtTokenProvider.validateToken(accessToken));
+        assertThat(nickname).isEqualTo("배태현");
     }
 
 }
