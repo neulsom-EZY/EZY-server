@@ -156,9 +156,10 @@ public class JwtTokenProvider {
      * @throws MalformedJwtException 구조적인 문제가 있는 JWT인 경우
      * @throws SignatureException JWT의 서명을 확인하지 못했을 때
      * @throws UnsupportedJwtException JWT의 형식이 원하는 형식과 맞지 않는 경우
+     * @throws PrematureJwtException 접근이 허용되기 전인 JWT가 수신된 경우
      * @author 배태현
      */
-    public Claims extractAllClaims(String token) throws ExpiredJwtException, IllegalArgumentException, MalformedJwtException, SignatureException, UnsupportedJwtException {
+    public Claims extractAllClaims(String token) throws ExpiredJwtException, IllegalArgumentException, MalformedJwtException, SignatureException, UnsupportedJwtException, PrematureJwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
