@@ -140,7 +140,7 @@ public class JwtTokenProvider {
      */
     public String resolveRefreshToken(HttpServletRequest req){
         String refreshToken = req.getHeader("RefreshToken");
-        if(refreshToken != null){
+        if(refreshToken != null && refreshToken.startsWith("Bearer ")){
             return refreshToken.substring(7);
         } else {
             return null;
