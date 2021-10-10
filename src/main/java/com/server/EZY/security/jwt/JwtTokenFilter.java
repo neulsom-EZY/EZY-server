@@ -2,6 +2,10 @@ package com.server.EZY.security.jwt;
 
 import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
 import com.server.EZY.exception.token.exception.AuthorizationHeaderIsEmpty;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -28,14 +32,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = jwtTokenProvider.resolveToken(request);
 
         try {
-            if(token != null && !jwtTokenProvider.isTokenExpired(token)){
+            if(token != null && jwtTokenProvider.validateToken(token)){
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (AccessTokenExpiredException e){
+        } catch (ExpiredJwtException e){
             // 사용자가 인증되지 않도록 보장하는 매우 중요한 코드
             SecurityContextHolder.clearContext();
             throw new AccessTokenExpiredException();
+        } catch (MalformedJwtException e) {
+            throw new IllegalArgumentException("올바르지 않은 구조의 JWT 형식입니다.");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("적절하지 않은 인자값 입니다.");
+        } catch (SignatureException e) {
+            throw new IllegalArgumentException("JWT의 서명을 확인하지 못하였습니다.");
+        } catch (UnsupportedJwtException e) {
+            throw new IllegalArgumentException("Application 서버의 JWT 형식과 일치하지 않습니다.");
         }
 
         filterChain.doFilter(request, response);
