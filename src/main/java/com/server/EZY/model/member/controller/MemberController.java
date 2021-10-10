@@ -121,7 +121,7 @@ public class MemberController {
     }
 
     @PostMapping("/find/username")
-    @ApiOperation(value = "문자로 username 받기", notes = "문자로 username 받기")
+    @ApiOperation(value = "username 찾기 (문자로 username 받기)", notes = "username 찾기 (문자로 username 받기)")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult findUsernameByPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
         memberService.findUsernameByPhoneNumber(phoneNumberDto.getPhoneNumber());
