@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +33,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
      */
     @Override
     public Map<String, String> getRefreshToken(String nickname, String refreshToken) {
-        if (refreshToken == null) throw new RefreshTokenHeaderIsEmpty();
+        Optional.of(refreshToken).empty()
+                .orElseThrow(() -> new RefreshTokenHeaderIsEmpty());
 
         Map<String ,String> map = new HashMap<>();
         String newAccessToken = null;
