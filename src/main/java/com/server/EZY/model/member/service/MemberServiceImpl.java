@@ -200,7 +200,7 @@ public class MemberServiceImpl implements MemberService {
      * @author 배태현
      */
     @Override
-    public void sendUsername(String phoneNumber) {
+    public void findUsernameByPhoneNumber(String phoneNumber) {
         MemberEntity memberEntity = memberRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new MemberNotFoundException());
 

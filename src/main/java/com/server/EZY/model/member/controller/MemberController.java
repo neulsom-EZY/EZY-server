@@ -124,7 +124,7 @@ public class MemberController {
     @ApiOperation(value = "문자로 username 받기", notes = "문자로 username 받기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult findUsernameByPhoneNumber(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
-        memberService.sendUsername(phoneNumberDto.getPhoneNumber());
+        memberService.findUsernameByPhoneNumber(phoneNumberDto.getPhoneNumber());
         return responseService.getSuccessResult();
     }
 }
