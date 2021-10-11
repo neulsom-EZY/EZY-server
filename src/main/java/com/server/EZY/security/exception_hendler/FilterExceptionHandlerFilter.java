@@ -3,6 +3,7 @@ package com.server.EZY.security.exception_hendler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.exception.token.TokenExceptionHandler;
+import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.unknown_exception.UnknownExceptionHandler;
 import com.server.EZY.response.result.CommonResult;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -38,9 +39,11 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
         try{
             filterChain.doFilter(request, response);
         } catch(ExpiredJwtException e) {
-            //TODO 만료된 Jwt Token에 대한 Exception결과 반환
+            log.debug("=== Filter에서 ExpiredJwtException이 발생했습니다.");
+            //TODO 만료된 Jwt Token에 대한 ExceptionAdvice로직을 tokenExceptionHandler에 작성 후 가저오기
         } catch(JwtException | IllegalArgumentException e) {
-           //TODO 잘못된 Jwt Token에 대한 Exception결과 반환
+            log.debug("=== Filter에서 올바르지 않는 Jwt Exception이 발생했습니다. ===");
+            tokenExceptionHandler.invalidTokenException(new InvalidTokenException());
         } catch(Exception e){
             log.error("=== Filter에서 알 수 없는 Exception이 발생했습니다. ===");
             setResponseForExceptionResult(response, HttpStatus.INTERNAL_SERVER_ERROR, unknownExceptionHandler.defaultException(e));
@@ -48,7 +51,7 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Exception결과를 Http Status Code, json결과를 response객체에 씁니다.
+     * Exception결과에 대한 정보를 Http Status Code, json response객체에 씁니다.
      * @param response response
      * @param httpStatus 사용자에게 반환할 HttpStatusCode
      * @param commonResult 사용자에게 반환할 Exception결과를 가지고 있는 객체
@@ -69,6 +72,5 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
     private String commonResultToJson(CommonResult commonResult) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(commonResult);
     }
-
 
 }
