@@ -50,7 +50,7 @@ public class CertifiedMemberController {
      * @return CommonResult - SuccessResult
      */
     @PutMapping("/change/username")
-    @ApiOperation(value = "이름 변경", notes = "username 변경")
+    @ApiOperation(value = "username 변경", notes = "username 변경")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
