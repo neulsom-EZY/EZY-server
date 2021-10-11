@@ -55,7 +55,7 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
      * @param response response
      * @param httpStatus 사용자에게 반환할 HttpStatusCode
      * @param commonResult 사용자에게 반환할 Exception결과를 가지고 있는 객체
-     * @throws IOException HttpServletResponse에 writer를 통해 body를 작성하면 발생할 수 있다.
+     * @throws IOException HttpServletResponse에 writer를 통해 body를 작성하면 발생할 수 있지만 그럴 가능성은 거의 없다.
      */
     private void setResponseForExceptionResult(HttpServletResponse response, HttpStatus httpStatus, CommonResult commonResult) throws IOException {
         response.setStatus(httpStatus.value());
@@ -65,9 +65,9 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
 
     /**
      * CommonResult타입의 객체를 json으로 변환한다.
-     * @param commonResult 사용제에게 반환할 정보를 가지고 있는 commonResult
+     * @param commonResult 사용자에게 반환할 정보를 가지고 있는 commonResult
      * @return 해당 commonResult를 json으로 변환한 값
-     * @throws JsonProcessingException - Json으로 변환시 발생할 수 있지만 발생할 일이 없음
+     * @throws JsonProcessingException - Json으로 변환시 발생할 수 있지만 발생할 가능성이 거의 없다.
      */
     private String commonResultToJson(CommonResult commonResult) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(commonResult);
