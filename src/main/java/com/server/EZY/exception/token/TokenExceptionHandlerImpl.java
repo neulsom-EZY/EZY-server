@@ -37,7 +37,7 @@ public class TokenExceptionHandlerImpl implements TokenExceptionHandler {
 
     @Override
     public CommonResult expiredJwtException(ExpiredJwtException ex) {
-        log.debug("=== Expired Jwt Exceptino 발생 ===");
+        log.debug("=== Expired Jwt Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObj(EXPIRED_JWT);
     }
 
