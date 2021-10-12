@@ -3,6 +3,7 @@ package com.server.EZY.exception.token;
 import com.server.EZY.exception.token.exception.*;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.util.ExceptionResponseObjectUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -32,6 +33,12 @@ public class TokenExceptionHandlerImpl implements TokenExceptionHandler {
     public CommonResult tokenLoggedOutException(TokenLoggedOutException ex) {
         log.debug("=== Logged Out Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObj(TOKEN_LOGGED_OUT);
+    }
+
+    @Override
+    public CommonResult expiredJwtException(ExpiredJwtException ex) {
+        log.debug("=== Expired Jwt Exceptino 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObj(EXPIRED_JWT);
     }
 
     @Override
