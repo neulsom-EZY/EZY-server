@@ -108,14 +108,15 @@ public class TokenExceptionHandlerTest {
     @Test @DisplayName("ExpiredException 검증")
     void ExpiredException_검증() throws Exception {
         // Given
-        setLocal(Locale.KOREA);
         final int EXPIRED_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionHandler.EXPIRED_JWT, Locale.KOREA);
         final int EXPIRED_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionHandler.EXPIRED_JWT, Locale.ENGLISH);
         final String EXPIRED_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionHandler.EXPIRED_JWT, Locale.KOREA);
         final String EXPIRED_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionHandler.EXPIRED_JWT, Locale.ENGLISH);
 
         // When
+        setLocal(Locale.KOREA);
         CommonResult commonResult_KO = tokenExceptionHandler.expiredJwtException(new ExpiredJwtException(null, null, null));
+
         setLocal(Locale.ENGLISH);
         CommonResult commonResult_EN = tokenExceptionHandler.expiredJwtException(new ExpiredJwtException(null, null, null));
 
