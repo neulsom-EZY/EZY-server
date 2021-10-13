@@ -6,7 +6,7 @@ import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
-import com.server.EZY.model.plan.errand.repository.ErrandRepository;
+import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.enum_type.FcmRole;
