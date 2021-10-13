@@ -40,7 +40,7 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch(ExpiredJwtException e) {
             log.debug("=== Filter에서 ExpiredJwtException이 발생했습니다.");
-            //TODO 만료된 Jwt Token에 대한 ExceptionAdvice로직을 tokenExceptionHandler에 작성 후 가저오기
+            tokenExceptionHandler.expiredJwtException(e);
         } catch(JwtException | IllegalArgumentException e) {
             log.debug("=== Filter에서 올바르지 않는 Jwt Exception이 발생했습니다. ===");
             tokenExceptionHandler.invalidTokenException(new InvalidTokenException());
