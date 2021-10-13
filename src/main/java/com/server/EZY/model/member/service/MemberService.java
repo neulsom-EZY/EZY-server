@@ -22,7 +22,7 @@ public interface MemberService {
 
     void findUsernameByPhoneNumber(String phoneNumber);
 
-    void changeUsername(UsernameChangeDto usernameChangeDto);
+    void changeUsername(UsernameDto usernameDto);
 
     void sendAuthKeyByMemberInfo(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto);
 
