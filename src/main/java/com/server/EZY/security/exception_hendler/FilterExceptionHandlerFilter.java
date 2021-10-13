@@ -2,6 +2,7 @@ package com.server.EZY.security.exception_hendler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.Http;
 import com.server.EZY.exception.token.TokenExceptionHandler;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.unknown_exception.UnknownExceptionHandler;
@@ -40,10 +41,10 @@ public class FilterExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch(ExpiredJwtException e) {
             log.debug("=== Filter에서 ExpiredJwtException이 발생했습니다.");
-            tokenExceptionHandler.expiredJwtException(e);
+            setResponseForExceptionResult(response, HttpStatus.UNAUTHORIZED, tokenExceptionHandler.expiredJwtException(e));
         } catch(JwtException | IllegalArgumentException e) {
             log.debug("=== Filter에서 올바르지 않는 Jwt Exception이 발생했습니다. ===");
-            tokenExceptionHandler.invalidTokenException(new InvalidTokenException());
+            setResponseForExceptionResult(response, HttpStatus.UNAUTHORIZED, tokenExceptionHandler.invalidTokenException(new InvalidTokenException()));
         } catch(Exception e){
             log.error("=== Filter에서 알 수 없는 Exception이 발생했습니다. ===");
             setResponseForExceptionResult(response, HttpStatus.INTERNAL_SERVER_ERROR, unknownExceptionHandler.defaultException(e));
