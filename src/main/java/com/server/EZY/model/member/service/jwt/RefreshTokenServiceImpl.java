@@ -1,6 +1,8 @@
 package com.server.EZY.model.member.service.jwt;
 
+import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.RefreshTokenHeaderIsEmpty;
+import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.enum_type.Role;
@@ -42,7 +44,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         MemberEntity findUser = memberRepository.findByUsername(nickname);
         List<Role> roles = findUser.getRoles();
 
-        if (redisUtil.getData(nickname).equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
+        String redisRefreshToken = Optional.ofNullable(redisUtil.getData(nickname)).orElseThrow(TokenLoggedOutException::new);
+
+        if (redisRefreshToken.equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)) {
             redisUtil.deleteData(nickname);//refreshToken이 저장되어있는 레디스 초기화 후
 
             newAccessToken = jwtTokenProvider.createToken(nickname, roles);
@@ -56,7 +60,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
             return map;
         } else {
-            throw new MemberNotFoundException(); // token 재발급 실패 Exception
+            throw new InvalidTokenException();
         }
     }
 }
