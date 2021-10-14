@@ -92,7 +92,7 @@ public class ErrandServiceImpl implements ErrandService{
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
 
         senderErrandStatusEntity.updateErrandResponseStatus(ErrandResponseStatus.ACCEPT);
-        validRecipientByErrand(senderErrandStatusEntity, currentMember, InvalidAccessException::new);
+        checkRecipientByErrand(senderErrandStatusEntity, currentMember, InvalidAccessException::new);
 
         ErrandEntity recipientErrand = errandRepository.save(senderErrandEntity.cloneByMember(currentMember));
 
@@ -106,7 +106,7 @@ public class ErrandServiceImpl implements ErrandService{
      * @param exceptionSupplier 해당 심부름의 수신자가 아닐경우 던질 exception supplier
      * @author 정시원
      */
-    private void validRecipientByErrand(ErrandStatusEntity errandStatusEntity, MemberEntity memberEntity, Supplier<? extends RuntimeException> exceptionSupplier){
+    private void checkRecipientByErrand(ErrandStatusEntity errandStatusEntity, MemberEntity memberEntity, Supplier<? extends RuntimeException> exceptionSupplier){
         if(!errandStatusEntity.getRecipientIdx().equals(memberEntity.getMemberIdx()))
             throw exceptionSupplier.get();
     }
