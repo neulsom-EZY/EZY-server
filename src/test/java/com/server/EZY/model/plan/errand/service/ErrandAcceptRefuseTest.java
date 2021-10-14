@@ -10,7 +10,6 @@ import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.util.CurrentUserUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -18,14 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -108,10 +105,14 @@ public class ErrandAcceptRefuseTest {
 
         log.info("========= Then =========");
         // 발신자, 수신자의 심부름 정보가 같은지 검증
+        assertNotEquals(senderErrandEntity.getMemberEntity(), recipientErrandEntity.getMemberEntity());
         assertEquals(senderErrandEntity.getPlanInfo(), recipientErrandEntity.getPlanInfo());
         assertEquals(senderErrandEntity.getPeriod(), recipientErrandEntity.getPeriod());
         assertEquals(senderErrandEntity.getLocation(), recipientErrandEntity.getLocation());
 
-        assertEquals(senderErrandStatusEntity, recipientErrandStatusEntity);
+        assertEquals(senderErrandStatusEntity.getErrandStatusIdx(), recipientErrandStatusEntity.getErrandStatusIdx());
+        assertEquals(senderErrandStatusEntity.getSenderIdx(), recipientErrandStatusEntity.getSenderIdx());
+        assertEquals(senderErrandStatusEntity.getRecipientIdx(), recipientErrandStatusEntity.getRecipientIdx());
+        assertEquals(senderErrandStatusEntity.getErrandResponseStatus(), recipientErrandStatusEntity.getErrandResponseStatus());
     }
 }
