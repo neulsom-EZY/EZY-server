@@ -9,6 +9,8 @@ import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
+import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
@@ -27,12 +29,13 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 @Slf4j
 public class ErrandAcceptRefuseTest {
 
     @Autowired private MemberRepository memberRepository;
-    @Autowired private  ErrandService errandService;
+    @Autowired private ErrandService errandService;
+    @Autowired private ErrandStatusRepository errandStatusRepository;
 
     // 전지환의 token
     private final String SENDER_FCM_TOKEN = "eQb5CygpsUahmPBRDnTc0N:APA91bFaOlt2nZDJKJpO8dZsjS8vSDCZKxZWYBWtNXYUiIiUxLPiGTLcXuyuVTW1uqOxu55Ay9z_1ss-D2uz2xP-C_R2-5yxyV2pqn88zYts4WSxS4pgWgdvFtBAG6nU__dSYH7WW8Qk";
@@ -96,14 +99,20 @@ public class ErrandAcceptRefuseTest {
         // 발신자가 심부름 보냄
         ErrandEntity senderErrandEntity = sendErrand(sender);
         ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
 
         log.info("========= When =========");
         //로그인 후 sender의 심부름을 수락함
         signInMember(recipient);
-        ErrandEntity recipientErrandEntity = errandService.acceptErrand(senderErrandEntity.getPlanIdx());
+        ErrandEntity recipientErrandEntity = errandService.acceptErrand(errandIdx);
         ErrandStatusEntity recipientErrandStatusEntity = recipientErrandEntity.getErrandStatusEntity();
 
         log.info("========= Then =========");
+
+        // 발신자, 수신자가 올바른지 확인
+        assertEquals(sender.getMemberIdx(), senderErrandStatusEntity.getSenderIdx());
+        assertEquals(recipient.getMemberIdx(), senderErrandStatusEntity.getRecipientIdx());
+
         // 발신자, 수신자의 심부름 정보가 같은지 검증
         assertNotEquals(senderErrandEntity.getMemberEntity(), recipientErrandEntity.getMemberEntity());
         assertEquals(senderErrandEntity.getPlanInfo(), recipientErrandEntity.getPlanInfo());
@@ -113,6 +122,6 @@ public class ErrandAcceptRefuseTest {
         assertEquals(senderErrandStatusEntity.getErrandStatusIdx(), recipientErrandStatusEntity.getErrandStatusIdx());
         assertEquals(senderErrandStatusEntity.getSenderIdx(), recipientErrandStatusEntity.getSenderIdx());
         assertEquals(senderErrandStatusEntity.getRecipientIdx(), recipientErrandStatusEntity.getRecipientIdx());
-        assertEquals(senderErrandStatusEntity.getErrandResponseStatus(), recipientErrandStatusEntity.getErrandResponseStatus());
+        assertEquals(ErrandResponseStatus.ACCEPT, recipientErrandStatusEntity.getErrandResponseStatus());
     }
 }
