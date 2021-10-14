@@ -34,6 +34,9 @@ public class ErrandStatusEntity {
     @Enumerated(EnumType.STRING)
     private ErrandResponseStatus errandResponseStatus;
 
+    public void updateErrandResponseStatus(ErrandResponseStatus errandResponseStatus){
+        this.errandResponseStatus = errandResponseStatus;
+    }
     /**
      * 심부름의 상태를 추가하는 생성자
      * @param senderIdx 발신자의 MemberIdx
