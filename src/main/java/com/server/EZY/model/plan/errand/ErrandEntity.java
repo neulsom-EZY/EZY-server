@@ -49,12 +49,14 @@ public class ErrandEntity extends PlanEntity {
     }
 
     /**
-     * MemberEntity를 기준으로 현제 객체를 복사해 다른 객체로 반환합니다.
+     * MemberEntity를 기준으로 깊은 복사를 진행합니다. <br>
+     * 실질적으로 해당 Entity의 식별자인 planIdx와 MemberEntity를 제외한 나머지 값들이 저장됩니다.
+     * planIdx는 entity를 식별할 수 있는 식별자 이므로 재사용을 위해 null로 만듦
      * @param memberEntity 복사한 Entity에 set할 member
      * @return planIdx가 null이고 memberEntity가 변경되어 clone된 entity
      * @author 정시원
      */
-    public ErrandEntity cloneByMember(MemberEntity memberEntity){
+    public ErrandEntity cloneBySetMember(MemberEntity memberEntity){
         ErrandEntity clonedErrandEntity = ErrandEntity.builder()
                 .memberEntity(memberEntity)
                 .tagEntity(null)
