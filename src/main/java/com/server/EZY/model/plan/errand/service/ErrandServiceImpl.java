@@ -9,7 +9,6 @@ import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
-import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.enum_type.FcmRole;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Supplier;
 
@@ -34,7 +32,6 @@ public class ErrandServiceImpl implements ErrandService{
     private final CurrentUserUtil currentUserUtil;
     private final MemberRepository memberRepository;
     private final ErrandRepository errandRepository;
-    private final ErrandStatusRepository errandStatusRepository;
     private final ActiveFcmFilterService activeFcmFilterService;
 
     /**
@@ -57,9 +54,8 @@ public class ErrandServiceImpl implements ErrandService{
                 .recipientIdx(recipient.getMemberIdx())
                 .errandResponseStatus(ErrandResponseStatus.NOT_READ)
                 .build();
-        ErrandStatusEntity savedErrandStatusEntity = errandStatusRepository.save(errandStatusEntity);
 
-        ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, savedErrandStatusEntity));
+        ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, errandStatusEntity));
 
         // 여기서 FCM 스펙을 정의 함.
         FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
@@ -83,23 +79,22 @@ public class ErrandServiceImpl implements ErrandService{
      * @throws CustomException        PlanNotFound 해당 심부름이 존재하지 않을 때
      */
     @Override
-    @Transactional
     public ErrandEntity acceptErrand(long errandIdx) {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
                         () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND)
                 );
-        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        ErrandStatusEntity errandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
 
-        senderErrandStatusEntity.updateErrandResponseStatus(ErrandResponseStatus.ACCEPT);
-        validRecipientByErrand(senderErrandStatusEntity, currentMember, InvalidAccessException::new);
+        validRecipientByErrand(errandStatusEntity, currentMember, InvalidAccessException::new);
 
         ErrandEntity recipientErrand = errandRepository.save(senderErrandEntity.cloneByMember(currentMember));
 
         //TODO fcm push알람 작성
         return recipientErrand;
     }
+
     /**
      * 이 심부름의 수신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
      * @param errandStatusEntity - 해당 심부름의 수신자의 정보를 가지고 있는 ErrandStatusEntity
