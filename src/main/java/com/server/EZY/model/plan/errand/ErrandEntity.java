@@ -47,4 +47,32 @@ public class ErrandEntity extends PlanEntity {
         this.errandStatusEntity = errandStatusEntity;
         this.location = location;
     }
+
+    /**
+     * MemberEntity를 기준으로 현제 객체를 복사해 다른 객체로 반환합니다.
+     * @param memberEntity 복사한 Entity에 set할 member
+     * @return planIdx가 null이고 memberEntity가 변경되어 clone된 entity
+     * @author 정시원
+     */
+    public ErrandEntity cloneByMember(MemberEntity memberEntity){
+        ErrandEntity clonedErrandEntity = ErrandEntity.builder()
+                .memberEntity(memberEntity)
+                .tagEntity(null)
+                .planInfo(planInfo)
+                .period(period)
+                .errandStatusEntity(errandStatusEntity)
+                .location(location)
+                .build();
+        clonedErrandEntity.setPlanIdx(null);
+        return clonedErrandEntity;
+    }
+
+    /**
+     * planIdx에 대한 setter
+     * @param planIdx
+     * @author 정시원
+     */
+    private void setPlanIdx(Long planIdx){
+        this.planIdx = planIdx;
+    }
 }
