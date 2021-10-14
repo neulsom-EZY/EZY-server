@@ -22,8 +22,8 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
     @Override
     public Optional<ErrandEntity> findWithErrandStatusByErrandIdx(long errandIdx) {
         Tuple errandEntityTuple = queryFactory
-                .from(errandEntity)
                 .select(errandEntity, errandEntity.errandStatusEntity)
+                .from(errandEntity)
                 .where(errandEntity.planIdx.eq(errandIdx))
                 .fetchOne();
         return Optional.ofNullable(errandEntityTuple.get(errandEntity));
