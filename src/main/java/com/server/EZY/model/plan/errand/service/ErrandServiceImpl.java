@@ -7,6 +7,7 @@ import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
 import com.server.EZY.model.plan.errand.repository.ErrandRepository;
+import com.server.EZY.model.plan.errand.repository.ErrandStatusRepository;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.enum_type.FcmRole;
@@ -28,6 +29,7 @@ public class ErrandServiceImpl implements ErrandService{
     private final MemberRepository memberRepository;
     private final ErrandRepository errandRepository;
     private final ActiveFcmFilterService activeFcmFilterService;
+    private final ErrandStatusRepository errandStatusRepository;
 
     /**
      * 이 메서드는 심부름을 전송(저장) 할 때 사용하는 비즈니스 로직입니다.
@@ -44,13 +46,19 @@ public class ErrandServiceImpl implements ErrandService{
         MemberEntity sender = currentUserUtil.getCurrentUser();
         MemberEntity recipient = memberRepository.findByUsername(errandSetDto.getRecipient());
 
-        ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
+        // 심부름 세부사항을 세팅한다.
+        ErrandStatusEntity errandDetails = ErrandStatusEntity.builder()
                 .senderIdx(sender.getMemberIdx())
                 .recipientIdx(recipient.getMemberIdx())
                 .errandResponseStatus(ErrandResponseStatus.NOT_READ)
                 .build();
 
-        ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, errandStatusEntity));
+        /**
+         * savedErrandDetails: 심부름에 대한 상세정보를 저장한다.
+         * savedErrandEntity: 심부름을 저장한다.
+         */
+        ErrandStatusEntity savedErrandDetails = errandStatusRepository.save(errandDetails);
+        ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, savedErrandDetails));
 
         // 여기서 FCM 스펙을 정의 함.
         FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
