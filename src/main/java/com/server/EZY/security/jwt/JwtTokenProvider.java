@@ -1,5 +1,9 @@
 package com.server.EZY.security.jwt;
 
+import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
+import com.server.EZY.exception.token.exception.AuthorizationHeaderIsEmpty;
+import com.server.EZY.exception.token.exception.RefreshTokenHeaderIsEmpty;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.security.authentication.MyUserDetails;
 import io.jsonwebtoken.*;
@@ -104,59 +108,83 @@ public class JwtTokenProvider {
     }
 
     /**
-     * token을 복호화 하여 claim에서 사용자 이름(Username)을 가져오는 메소드입니다.
-     * @param token Username을 추출 할 token
+     * token에서 username을 추출하는 메서드입니다.
+     * @param token token
      * @return username
      * @author 배태현
      */
     public String getUsername(String token){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return extractAllClaims(token).getSubject();
     }
 
     /**
-     * http header에서 accessToken을 가져오는 메소드입니다.
+     * Header에서 accessToken을 가져오는 메소드입니다.
      * @param req HttpServletRequest
-     * @return true = accesstoken, false = null
+     * @return accesstoken (header가 비어있다면 null)
      * @author 배태현
      */
     public String resolveToken(HttpServletRequest req){
         String bearerToken = req.getHeader("Authorization");
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
-            return  bearerToken.substring(7);
+            return bearerToken.substring(7);
         } else {
             return null;
         }
     }
 
     /**
-     * http header에서 refreshToken을 가져오는 메소드입니다.
+     * Header에서 refreshToken을 가져오는 메소드입니다.
      * @param req HttpServletRequest
-     * @return true = refreshToken, false = null
+     * @return refreshToken (header가 비어있다면 null)
      * @author 배태현
      */
     public String resolveRefreshToken(HttpServletRequest req){
         String refreshToken = req.getHeader("RefreshToken");
-        if(refreshToken != null){
-            return  refreshToken.substring(7);
+        if(refreshToken != null && refreshToken.startsWith("Bearer ")){
+            return refreshToken.substring(7);
         } else {
             return null;
         }
     }
 
     /**
-     * token을 검증하는 메소드 (유효성, 만료일자 검증)
-     * @param token 검증 할 token
-     * @return 토큰이 검증됨 = true, 토큰이 검증되지않음 = false
+     * JWT claim을 추출하는 메서드입니다.
+     * @param token
+     * @return Jwts - claims
+     * @throws ExpiredJwtException JWT의 유효기간이 만료되었을 때
+     * @throws IllegalArgumentException 부적절한 인자가 넘어왔을 때
+     * @throws MalformedJwtException 구조적인 문제가 있는 JWT인 경우
+     * @throws SignatureException JWT의 서명을 확인하지 못했을 때
+     * @throws UnsupportedJwtException JWT의 형식이 원하는 형식과 맞지 않는 경우
+     * @throws PrematureJwtException 접근이 허용되기 전인 JWT가 수신된 경우
+     * @author 배태현
+     */
+    public Claims extractAllClaims(String token) throws ExpiredJwtException, IllegalArgumentException, MalformedJwtException, SignatureException, UnsupportedJwtException, PrematureJwtException {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    /**
+     * 토큰의 유효기간 만료를 확인하는 메서드
+     * @param token
+     * @return true (토큰의 유효기간이 만료되었을 경우) | false (토큰의 유효기간이 만료되지 않았을 경우)
+     * @author 배태현
+     */
+    public boolean isTokenExpired(String token) {
+        final Date expiration = extractAllClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
+
+    /**
+     * 토큰을 검증하는 메서드
+     * @param token
+     * @return true (토큰이 제대로 검증 되었을 경우) | false (토큰에 문제가 있을 경우)
      * @author 배태현
      */
     public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date()); //유효기간 만료 시 false 반환
-        } catch (Exception e) { // 나중에 유효하지 않은 토큰입니다 Exception으로 변경?
-            log.debug(e.getMessage()); //나중에 어떤 Exception이 터지는지 확인하기 위해 logging
-            SecurityContextHolder.clearContext();
-            return false;
-        }
+        return !isTokenExpired(token);
     }
 }

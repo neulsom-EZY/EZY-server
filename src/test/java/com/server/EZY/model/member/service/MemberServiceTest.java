@@ -72,6 +72,19 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("username check 테스트")
+    public void checkUsernameExistTest() {
+        //given
+        String username = "@Baetae";
+
+        //when
+        boolean bool = memberService.isExistUsername(username);
+
+        //then
+        assertEquals(false, bool);
+    }
+
+    @Test
     @DisplayName("회원가입 테스트")
     public void signupTest() {
         //given
@@ -178,39 +191,17 @@ public class MemberServiceTest {
         //given
         MemberEntity currentUser = currentUser();
 
-        UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
-                .username("@Baetaehyeon")
-                .newUsername("@asdfasdf")
+        UsernameDto usernameDto = UsernameDto.builder()
+                .username("@asdfasdf")
                 .build();
 
-        //when //then
-        if (currentUser != null) {
-            MemberEntity findByUsername = memberRepository.findByUsername(usernameChangeDto.getUsername());
-            assertEquals("@Baetaehyeon", findByUsername.getUsername());
+        //when, then
+        assertEquals("@qwerqwer", currentUser.getUsername());
 
-            memberService.changeUsername(usernameChangeDto);
+        memberService.changeUsername(usernameDto);
 
-            MemberEntity memberEntity = memberRepository.findByUsername(usernameChangeDto.getNewUsername());
-            assertEquals("@asdfasdf", memberEntity.getUsername());
-
-        } else {
-            Assertions.fail("닉네임 변경 테스트 실패");
-        }
-    }
-
-    @Test
-    @DisplayName("memberEntity가 null이라면 MemberNotFoundException이 터지나요?")
-    public void changeUsernameException() {
-        //given //when //then
-        assertThrows(
-                MemberNotFoundException.class,
-                () -> memberService.changeUsername(
-                        UsernameChangeDto.builder()
-                                .username("NoUser")
-                                .newUsername("@qoxogus")
-                                .build()
-                )
-        );
+        MemberEntity memberEntity = memberRepository.findByUsername(usernameDto.getUsername());
+        assertEquals("@asdfasdf", memberEntity.getUsername());
     }
 
     @Test

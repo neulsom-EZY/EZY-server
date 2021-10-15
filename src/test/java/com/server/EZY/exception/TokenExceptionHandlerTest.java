@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.exception.token.TokenExceptionHandler;
 import com.server.EZY.exception.token.exception.*;
 import com.server.EZY.response.result.CommonResult;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Header;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -99,6 +101,33 @@ public class TokenExceptionHandlerTest {
 
         assertEquals(INVALID_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
         assertEquals(INVALID_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
+
+        printResult(commonResult_KO, commonResult_EN);
+    }
+
+    @Test @DisplayName("ExpiredException 검증")
+    void ExpiredException_검증() throws Exception {
+        // Given
+        final int EXPIRED_EXCEPTION_CODE_KO = getExceptionCode(TokenExceptionHandler.EXPIRED_JWT, Locale.KOREA);
+        final int EXPIRED_EXCEPTION_CODE_EN = getExceptionCode(TokenExceptionHandler.EXPIRED_JWT, Locale.ENGLISH);
+        final String EXPIRED_EXCEPTION_MSG_KO = getExceptionMsg(TokenExceptionHandler.EXPIRED_JWT, Locale.KOREA);
+        final String EXPIRED_EXCEPTION_MSG_EN = getExceptionMsg(TokenExceptionHandler.EXPIRED_JWT, Locale.ENGLISH);
+
+        // When
+        setLocal(Locale.KOREA);
+        CommonResult commonResult_KO = tokenExceptionHandler.expiredJwtException(new ExpiredJwtException(null, null, null));
+
+        setLocal(Locale.ENGLISH);
+        CommonResult commonResult_EN = tokenExceptionHandler.expiredJwtException(new ExpiredJwtException(null, null, null));
+
+        // Then
+        assertEquals(EXPIRED_EXCEPTION_CODE_KO, EXPIRED_EXCEPTION_CODE_EN);
+
+        assertEquals(EXPIRED_EXCEPTION_CODE_KO, commonResult_KO.getCode());
+        assertEquals(EXPIRED_EXCEPTION_CODE_EN, commonResult_EN.getCode());
+
+        assertEquals(EXPIRED_EXCEPTION_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(EXPIRED_EXCEPTION_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }

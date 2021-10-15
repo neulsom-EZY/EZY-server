@@ -18,6 +18,13 @@ import java.util.stream.Collectors;
 
 import static javax.persistence.EnumType.*;
 
+/**
+ * 회원정보를 가지고 있는 member 테이블과 매핑되어 있는 MemberEntity
+ * 현재 담장자: 배태현
+ * @author 정시원, 배태현
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 @Entity @Table(name = "member")
 @Builder @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
@@ -41,7 +48,7 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
 
     @Enumerated(STRING) @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "member_id"))
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
@@ -107,12 +114,12 @@ public class MemberEntity extends BaseTimeEntity implements UserDetails{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof MemberEntity)) return false;
-        MemberEntity that = (MemberEntity) o;
-        return Objects.equals(getMemberIdx(), that.getMemberIdx()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber()) && Objects.equals(getRoles(), that.getRoles());
+        MemberEntity member = (MemberEntity) o;
+        return Objects.equals(getMemberIdx(), member.getMemberIdx()) && Objects.equals(getUsername(), member.getUsername()) && Objects.equals(getPassword(), member.getPassword()) && Objects.equals(getPhoneNumber(), member.getPhoneNumber()) && Objects.equals(getFcmToken(), member.getFcmToken()) && Objects.equals(getRoles(), member.getRoles());
     }
 
     @Override @Generated
     public int hashCode() {
-        return Objects.hash(getMemberIdx(), getUsername(), getPassword(), getPhoneNumber(), getRoles());
+        return Objects.hash(getMemberIdx(), getUsername(), getPassword(), getPhoneNumber(), getFcmToken(), getRoles());
     }
 }

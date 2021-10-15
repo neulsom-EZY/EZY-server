@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface MemberService {
 
+    boolean isExistUsername(String username);
+
     MemberEntity signup(MemberDto memberDto);
 
     Map<String, String> signin(AuthDto loginDto);
@@ -18,7 +20,9 @@ public interface MemberService {
 
     String validAuthKey(String key);
 
-    void changeUsername(UsernameChangeDto usernameChangeDto);
+    void findUsernameByPhoneNumber(String phoneNumber);
+
+    void changeUsername(UsernameDto usernameDto);
 
     void sendAuthKeyByMemberInfo(MemberAuthKeySendInfoDto memberAuthKeySendInfoDto);
 
