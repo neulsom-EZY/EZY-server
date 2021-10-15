@@ -1,5 +1,6 @@
 package com.server.EZY.model.member.service.jwt;
 
+import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
@@ -105,7 +106,7 @@ class RefreshTokenServiceTest {
 
         //when //then
         assertThrows(
-                MemberNotFoundException.class,
+                InvalidTokenException.class,
                 () -> refreshTokenService.getRefreshToken(nickname, refreshToken)
         );
     }
