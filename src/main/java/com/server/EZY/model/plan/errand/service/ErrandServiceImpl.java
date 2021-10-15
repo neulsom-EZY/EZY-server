@@ -94,7 +94,7 @@ public class ErrandServiceImpl implements ErrandService{
         senderErrandStatusEntity.updateErrandResponseStatus(ErrandResponseStatus.ACCEPT);
         checkRecipientByErrand(senderErrandStatusEntity, currentMember, InvalidAccessException::new);
 
-        ErrandEntity recipientErrand = errandRepository.save(senderErrandEntity.cloneBySetMember(currentMember));
+        ErrandEntity recipientErrand = errandRepository.save(senderErrandEntity.cloneToMemberEntity(currentMember));
 
         //TODO fcm push알람 작성
         return recipientErrand;

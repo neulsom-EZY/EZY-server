@@ -49,14 +49,19 @@ public class ErrandEntity extends PlanEntity {
     }
 
     /**
-     * MemberEntity를 기준으로 깊은 복사를 진행합니다. <br>
-     * 실질적으로 해당 Entity의 식별자인 planIdx와 MemberEntity를 제외한 나머지 값들이 저장됩니다.
-     * planIdx는 entity를 식별할 수 있는 식별자 이므로 재사용을 위해 null로 만듦
-     * @param memberEntity 복사한 Entity에 set할 member
-     * @return planIdx가 null이고 memberEntity가 변경되어 clone된 entity
+     * MemberEntity와 planIdx를 제외한 후 깊은 복사를 진행한다. <br>
+     * <br>
+     *
+     * 복제가 제외된 필드
+     * <ul>
+     *     <li>memberEntity: 메서드에서 인수로 받은 memberEntity로 설정한다.</li>
+     *     <li>planIdx는: Entity를 식별할 수 있는 필드이므로 중복을 허용하지 않아 null로 설정한다. </li>
+     * <ul/>
+     * @param memberEntity 복제할 ErrandEntity에 해당 memberEntity를 설정합니다.
+     * @return planIdx가 null이고 memberEntity가 변경되어 clone된 ErrandEntity
      * @author 정시원
      */
-    public ErrandEntity cloneBySetMember(MemberEntity memberEntity){
+    public ErrandEntity cloneToMemberEntity(MemberEntity memberEntity){
         ErrandEntity clonedErrandEntity = ErrandEntity.builder()
                 .memberEntity(memberEntity)
                 .tagEntity(null)
