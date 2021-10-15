@@ -41,7 +41,6 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 이미 가입된 username인지 체크해주는 서비스로직
      * @param username username
-     * @exception - 이미 가입된 username일 때 MemberAlreadyExistException
      * @author 배태현
      * @return 이미 가입된 username이라면 true반환 / 이미 가입된 username이 아니라면 false반환
      */
@@ -59,7 +58,10 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public MemberEntity signup(MemberDto memberDto) {
-        if(!memberRepository.existsByUsername(memberDto.getUsername())){
+        boolean isExistUsername = !memberRepository.existsByUsername(memberDto.getUsername());
+        boolean isExistPhoneNumber = !memberRepository.existsByPhoneNumber(memberDto.getPhoneNumber());
+
+        if(isExistUsername && isExistPhoneNumber){
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
             return memberRepository.save(memberDto.toEntity());
