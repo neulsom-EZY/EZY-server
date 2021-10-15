@@ -72,13 +72,26 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("username check 테스트")
+    @DisplayName("username 중복여부 확인 테스트")
     public void checkUsernameExistTest() {
         //given
         String username = "@Baetae";
 
         //when
         boolean bool = memberService.isExistUsername(username);
+
+        //then
+        assertEquals(false, bool);
+    }
+
+    @Test
+    @DisplayName("phoneNumber 중복여부 확인 테스트")
+    public void checkPhoneNumberExistTest() {
+        //given
+        String phoneNumber = "01049977055";
+
+        //when
+        boolean bool = memberService.isExistPhoneNumber(phoneNumber);
 
         //then
         assertEquals(false, bool);
