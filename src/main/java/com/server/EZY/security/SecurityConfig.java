@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Entry points
         http.authorizeRequests()
                 .antMatchers("/v1/member/verified/username").permitAll()
+                .antMatchers("/v1/member/verified/phone").permitAll()
                 .antMatchers("/v1/member/signup").permitAll()
                 .antMatchers("/v1/member/signin").permitAll()
                 .antMatchers("/v1/member/find/username").permitAll()
