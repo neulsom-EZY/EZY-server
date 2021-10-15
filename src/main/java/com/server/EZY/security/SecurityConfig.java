@@ -1,8 +1,10 @@
 package com.server.EZY.security;
 
+import com.server.EZY.security.exception_hendler.FilterExceptionHandlerFilter;
+import com.server.EZY.security.exception_hendler.FilterExceptionHandlerFilterConfig;
 import com.server.EZY.security.jwt.JwtTokenFilterConfigurer;
 import com.server.EZY.security.jwt.JwtTokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,15 +17,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private final FilterExceptionHandlerFilter filterExceptionHandlerFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,28 +34,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Entry points
-        http.authorizeRequests()//
+        http.authorizeRequests()
                 .antMatchers("/v1/member/verified/username").permitAll()
-                .antMatchers("/v1/member/signin").permitAll()//
-                .antMatchers("/v1/member/signup").permitAll()//
-                .antMatchers("/v1/member/find/username").permitAll()//
-                .antMatchers("/v1/member/change/username").authenticated()//
-                .antMatchers("/v1/member/find/username").permitAll()//
-                .antMatchers("/v1/member/send/change/password/authkey").permitAll()//
-                .antMatchers("/v1/member/change/password").permitAll()//
-                .antMatchers("/v1/member/auth").permitAll()//
-                .antMatchers("/v1/member/verified/auth").permitAll()//
-                .antMatchers("/v1/member/refreshtoken").authenticated()// 로그인 된 유저는 모두 접근을 허용함
-                .antMatchers("/v1/member/logout").authenticated() // 로그인 된 유저는 모두 접근을 허용함
-                .antMatchers("/v1/member/delete").authenticated() // 로그인 된 유저는 모두 접근을 허용함
-                .antMatchers("/v1/member/fcmtoken").authenticated()
+                .antMatchers("/v1/member/signup").permitAll()
+                .antMatchers("/v1/member/signin").permitAll()
+                .antMatchers("/v1/member/find/username").permitAll()
+                .antMatchers("/v1/member/auth").permitAll()
+                .antMatchers("/v1/member/verified/auth").permitAll()
+                .antMatchers("/v1/member/send/change/password/authkey").permitAll()
+                .antMatchers("/v1/member/change/password").permitAll()
+
                 /* 이렇게 권한에 따라 url접속을 제한할 수 있다. (테스트 완료)
                 .antMatchers("/v1/member/test").hasRole("CLIENT")
                 .antMatchers("/v1/admin/test").hasRole("ADMIN")
                 */
 
                 .antMatchers("/v1/errand/**").permitAll() //개발 편의상 permitAll 처리 해 두었음
-
                 .antMatchers("/v1/tag/**").permitAll() //개발 편의상 permitAll 처리 해 두었음
 
                 .antMatchers("/exception/**").permitAll()
@@ -69,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Apply JWT
         http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+        http.apply(new FilterExceptionHandlerFilterConfig(filterExceptionHandlerFilter));
 
         // Optional, if you want to test the API from a browser
         // http.httpBasic();

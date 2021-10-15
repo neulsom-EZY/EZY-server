@@ -38,16 +38,20 @@ invalid-token:
   code: "-810"
   msg: "토큰이 올바르지 않습니다."
 
-token-logged-out:
+expired-jwt:
   code: "-820"
+  msg: "토큰이 만료되었습니다."
+
+token-logged-out:
+  code: "-830"
   msg: "로그아웃 된 토근입니다."
 
 authorization-header-is-empty:
-  code: "-830"
+  code: "-840"
   msg: "Authorization Header가 비었습니다."
 
 refresh-token-header-is-empty:
-  code: "-840"
+  code: "-850"
   msg: "RefreshToken Header가 비었습니다."
 
 invalid-authentication-number:

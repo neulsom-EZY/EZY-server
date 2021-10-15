@@ -211,16 +211,15 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * username을 변경하는 서비스 로직
-     * @param usernameChangeDto usernameChangeDto(username, newUsername)
+     * @param usernameDto usernameChangeDto(username, newUsername)
      * @author 배태현
      */
     @Override
     @Transactional
-    public void changeUsername(UsernameChangeDto usernameChangeDto) {
-        MemberEntity memberEntity = memberRepository.findByUsername(usernameChangeDto.getUsername());
-        if (memberEntity == null) throw new MemberNotFoundException();
+    public void changeUsername(UsernameDto usernameDto) {
+        MemberEntity currentUser = currentUserUtil.getCurrentUser();
 
-        memberEntity.updateUsername(usernameChangeDto.getNewUsername());
+        currentUser.updateUsername(usernameDto.getUsername());
     }
 
     /**

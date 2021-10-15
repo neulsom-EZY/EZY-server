@@ -72,12 +72,11 @@ public class CertifiedMemberControllerTest {
     @DisplayName("username 변경 테스트")
     public void usernameChangeTest() throws Exception {
 
-        UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
-                .username("@BaeTul")
-                .newUsername("@Baebae")
+        UsernameDto usernameDto = UsernameDto.builder()
+                .username("@Baebae")
                 .build();
 
-        String content = objectMapper.writeValueAsString(usernameChangeDto);
+        String content = objectMapper.writeValueAsString(usernameDto);
 
         final ResultActions actions = mvc.perform(put("/v1/member/change/username")
                 .content(content)

@@ -1,9 +1,6 @@
 package com.server.EZY.model.member.controller;
 
-import com.server.EZY.model.member.dto.AuthDto;
-import com.server.EZY.model.member.dto.FcmTokenDto;
-import com.server.EZY.model.member.dto.PhoneNumberChangeDto;
-import com.server.EZY.model.member.dto.UsernameChangeDto;
+import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -49,18 +46,18 @@ public class CertifiedMemberController {
 
     /**
      * username 변경 controller
-     * @param usernameChangeDto (username, newUsername)
+     * @param usernameDto (username, newUsername)
      * @return CommonResult - SuccessResult
      */
     @PutMapping("/change/username")
-    @ApiOperation(value = "이름 변경", notes = "이름 변경")
+    @ApiOperation(value = "username 변경", notes = "username 변경")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult changeUsername(@Valid @RequestBody UsernameChangeDto usernameChangeDto) {
-        memberService.changeUsername(usernameChangeDto);
+    public CommonResult changeUsername(@Valid @RequestBody UsernameDto usernameDto) {
+        memberService.changeUsername(usernameDto);
         return responseService.getSuccessResult();
     }
 
