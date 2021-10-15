@@ -33,6 +33,13 @@ public class FirebaseMessagingService {
                                 .setBody(fcmMessage.getBody())
                                 .build()
                 )
+                .setApnsConfig(
+                        ApnsConfig.builder()
+                                .setAps(Aps.builder()
+                                        .setSound("default")
+                                        .build()
+                        ).build()
+                )
                 .setToken(token)
                 .putAllData(fcmMessage.getPayloads())
                 .build();
