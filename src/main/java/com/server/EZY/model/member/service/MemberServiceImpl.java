@@ -50,6 +50,17 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 이미 가입된 phoneNumber인지 체크해주는 서비스로직
+     * @param phoneNumber phoneNumber
+     * @author 배태현
+     * @return 이미 가입된 phoneNumber라면 true반환 / 이미 가입된 phoneNumber가 아니라면 false반환
+     */
+    @Override
+    public boolean isExistPhoneNumber(String phoneNumber) {
+        return memberRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    /**
      * 회원가입 서비스 로직
      * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
      * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
