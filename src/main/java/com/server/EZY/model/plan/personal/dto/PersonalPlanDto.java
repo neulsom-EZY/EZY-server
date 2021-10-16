@@ -51,8 +51,8 @@ public class PersonalPlanDto {
 
     }
 
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Getter @Setter
+    @NoArgsConstructor(access = AccessLevel.PUBLIC)
     public static class PersonalPlanDetails {
         private PlanInfo planInfo;
         private Period period;
