@@ -54,6 +54,9 @@ public class PersonalPlanDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class PersonalPlanDetails {
-
+        private PlanInfo planInfo;
+        private Period period;
+        private Long tagIdx;
+        private Boolean repetition;
     }
 }
