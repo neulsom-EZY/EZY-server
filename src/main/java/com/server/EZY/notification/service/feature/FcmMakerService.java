@@ -35,7 +35,7 @@ public class FcmMakerService {
     }
 
     /**
-     * 심부름 수락을 심부름 발신자에게 push알람을 보낸다.
+     * 심부름 수락 정보를 발신자에게 push알람을 보낸다.
      * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
      * @throws FirebaseMessagingException 해당 push알람이 실패할 때
      * @author 정시원
@@ -49,9 +49,9 @@ public class FcmMakerService {
     //TODO 심부름 거절에 대한 push알람 보내는 메서드 생성
 
     /**
-     *
+     * push알람을 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만든다.
      * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
-     * @param senderOfPush 해당 push알람의 주체
+     * @param senderOfPush 해당 push알람을 보내는 회원의 username
      * @param errandAction 심부름에서 하려는 기능
      * @return fcmPush알람의 메시지를 담고 있는 {@link FcmMessage.FcmRequest}객체
      * @author 정시원

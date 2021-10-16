@@ -84,7 +84,7 @@ public class ErrandServiceImpl implements ErrandService{
 
     /**
      * 심부름을 수락한다. <br>
-     * 수신자의 Errand가 DB에 저장되고, 심부름을 수락했다는 push알람을 발신자에게 전송한다.
+     * 수신자의 Errand가 DB에 저장되고, 심부름을 수락 push알람을 발신자에게 전송한다.
      * @param errandIdx 수락할 errandIdx(planIdx)
      * @return 수신자의 ErrandEntity
      * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
@@ -97,7 +97,7 @@ public class ErrandServiceImpl implements ErrandService{
     public ErrandEntity acceptErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
-                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 헨들링 예정
+                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 핸들링 예정
                 );
         ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
