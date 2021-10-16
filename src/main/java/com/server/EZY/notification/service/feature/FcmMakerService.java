@@ -49,7 +49,7 @@ public class FcmMakerService {
     //TODO 심부름 거절에 대한 push알람 보내는 메서드 생성
 
     /**
-     * push알람을 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만듭니다.
+     * push알람을 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만든다.
      * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
      * @param senderOfPush 해당 push알람을 보내는 회원의 username
      * @param errandAction 심부름에서 하려는 기능

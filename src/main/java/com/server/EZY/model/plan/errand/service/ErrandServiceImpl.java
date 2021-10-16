@@ -97,7 +97,7 @@ public class ErrandServiceImpl implements ErrandService{
     public ErrandEntity acceptErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
-                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 헨들링 예정
+                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 핸들링 예정
                 );
         ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
