@@ -50,10 +50,12 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
     @Override
     public PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPersonalPlanIdx(MemberEntity memberEntity, Long personalPlanIdx){
         return jpaQueryFactory
-                .select(Projections.fields(PersonalPlanDto.PersonalPlanDetails.class,
+                .select(Projections.constructor(PersonalPlanDto.PersonalPlanDetails.class,
                         personalPlanEntity.planInfo,
                         personalPlanEntity.period,
-                        personalPlanEntity.tagEntity,
+                        personalPlanEntity.tagEntity.tagIdx,
+                        personalPlanEntity.tagEntity.tag,
+                        personalPlanEntity.tagEntity.color,
                         personalPlanEntity.repetition
                 ))
                 .from(personalPlanEntity)
