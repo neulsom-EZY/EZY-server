@@ -13,6 +13,7 @@ import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,6 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 이미 가입된 username인지 체크해주는 서비스로직
      * @param username username
-     * @exception - 이미 가입된 username일 때 MemberAlreadyExistException
      * @author 배태현
      * @return 이미 가입된 username이라면 true반환 / 이미 가입된 username이 아니라면 false반환
      */
@@ -51,19 +51,33 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 이미 가입된 phoneNumber인지 체크해주는 서비스로직
+     * @param phoneNumber phoneNumber
+     * @author 배태현
+     * @return 이미 가입된 phoneNumber라면 true반환 / 이미 가입된 phoneNumber가 아니라면 false반환
+     */
+    @Override
+    public boolean isExistPhoneNumber(String phoneNumber) {
+        return memberRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    /**
      * 회원가입 서비스 로직
      * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
      * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
-     * @exception - else, 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
+     * @exception - 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
      * @author 배태현
      */
     @Override
     public MemberEntity signup(MemberDto memberDto) {
-        if(!memberRepository.existsByUsername(memberDto.getUsername())){
-            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        try {
+            if(!memberRepository.existsByUsernameAndPhoneNumber(memberDto.getUsername(), memberDto.getPhoneNumber())) {
+                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
-            return memberRepository.save(memberDto.toEntity());
-        } else {
+                return memberRepository.save(memberDto.toEntity());
+            } else throw new MemberAlreadyExistException();
+
+        } catch (DataIntegrityViolationException e) {
             throw new MemberAlreadyExistException();
         }
     }
