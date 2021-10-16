@@ -5,10 +5,12 @@ import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.tag.TagEntity;
+import com.server.EZY.model.plan.tag.embedded_type.Color;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class PersonalPlanDto {
     /**
      * 개인일정을 생성할 때 사용하는 dto 입니다.
@@ -51,12 +53,15 @@ public class PersonalPlanDto {
 
     }
 
-    @Getter @Setter
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PUBLIC)
+    @AllArgsConstructor
     public static class PersonalPlanDetails {
         private PlanInfo planInfo;
         private Period period;
         private Long tagIdx;
+        private String tag;
+        private Color color;
         private Boolean repetition;
     }
 }
