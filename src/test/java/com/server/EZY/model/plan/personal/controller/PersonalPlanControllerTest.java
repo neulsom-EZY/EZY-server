@@ -7,7 +7,6 @@ import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 import com.server.EZY.testConfig.AbstractControllerTest;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;

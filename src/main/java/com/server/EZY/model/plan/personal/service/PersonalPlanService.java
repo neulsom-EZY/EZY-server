@@ -2,7 +2,6 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
 
 import java.time.LocalDate;
 import java.util.List;
