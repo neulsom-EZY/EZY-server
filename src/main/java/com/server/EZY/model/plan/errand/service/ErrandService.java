@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand.service;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.plan.errand.ErrandEntity;
@@ -15,6 +16,9 @@ public interface ErrandService {
      * @return 수신자의 ErrandEntity
      * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
      * @throws CustomException        PlanNotFound 해당 심부름이 존재하지 않을 때
+     * @throws FirebaseMessagingException push알람이 실패할 때
      */
-    ErrandEntity acceptErrand(long errandIdx) throws InvalidAccessException, CustomException;
+    ErrandEntity acceptErrand(long errandIdx) throws InvalidAccessException, CustomException, FirebaseMessagingException;
+
+    // TODO refuseErrand method 생성
 }
