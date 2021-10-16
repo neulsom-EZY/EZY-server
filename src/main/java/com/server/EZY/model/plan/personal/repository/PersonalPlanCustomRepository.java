@@ -7,7 +7,7 @@ import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface PersonalPlanRepositoryCustom {
+public interface PersonalPlanCustomRepository {
     List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity);
     List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime);
     PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx);
