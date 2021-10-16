@@ -13,6 +13,7 @@ import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -69,14 +70,14 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public MemberEntity signup(MemberDto memberDto) {
-        boolean isExistUsername = !memberRepository.existsByUsername(memberDto.getUsername());
-        boolean isExistPhoneNumber = !memberRepository.existsByPhoneNumber(memberDto.getPhoneNumber());
+        try {
+            if(!memberRepository.existsByUsernameAndPhoneNumber(memberDto.getUsername(), memberDto.getPhoneNumber())) {
+                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
-        if(isExistUsername && isExistPhoneNumber){
-            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+                return memberRepository.save(memberDto.toEntity());
+            } else throw new MemberAlreadyExistException();
 
-            return memberRepository.save(memberDto.toEntity());
-        } else {
+        } catch (DataIntegrityViolationException e) {
             throw new MemberAlreadyExistException();
         }
     }
