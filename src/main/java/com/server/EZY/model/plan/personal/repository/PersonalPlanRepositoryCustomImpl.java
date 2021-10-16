@@ -57,7 +57,9 @@ public class PersonalPlanRepositoryCustomImpl implements PersonalPlanRepositoryC
                         personalPlanEntity.repetition
                 ))
                 .from(personalPlanEntity)
-                .where(personalPlanEntity.planIdx.eq(personalPlanIdx))
+                .where(
+                        personalPlanEntity.memberEntity.eq(memberEntity),
+                        personalPlanEntity.planIdx.eq(personalPlanIdx))
                 .fetchOne();
     }
 }
