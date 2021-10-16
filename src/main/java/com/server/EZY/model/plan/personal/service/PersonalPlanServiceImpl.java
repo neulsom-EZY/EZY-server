@@ -90,9 +90,9 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * @return PersonalPlanEntity
      */
     @Override
-    public PersonalPlanEntity getThisPersonalPlan(Long planIdx) {
+    public PersonalPlanDto.PersonalPlanDetails getThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        return personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
+        return personalPlanRepository.getPersonalPlanDetailsByPersonalPlanIdx(currentUser, planIdx);
     }
 
     /**

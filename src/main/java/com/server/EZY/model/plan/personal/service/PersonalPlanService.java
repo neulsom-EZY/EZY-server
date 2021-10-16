@@ -11,7 +11,7 @@ public interface PersonalPlanService {
     List<PersonalPlanEntity> getAllPersonalPlan();
     List<PersonalPlanEntity> getThisDatePersonalPlanEntities(LocalDate startDate);
     List<PersonalPlanEntity> getPersonalPlanEntitiesBetween(LocalDate startDate, LocalDate endDate);
-    PersonalPlanEntity getThisPersonalPlan(Long planIdx);
+    PersonalPlanDto.PersonalPlanDetails getThisPersonalPlan(Long planIdx);
     void deleteThisPersonalPlan(Long planIdx);
     PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanDto.PersonalPlanSet personalPlanSetDto) throws Exception;
 }
