@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
      * 회원가입 서비스 로직
      * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
      * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
-     * @exception - else, 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
+     * @exception - 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
      * @author 배태현
      */
     @Override
