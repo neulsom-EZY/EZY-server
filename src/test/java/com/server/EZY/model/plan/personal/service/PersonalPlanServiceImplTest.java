@@ -7,7 +7,7 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import org.apache.commons.lang.RandomStringUtils;
@@ -76,7 +76,7 @@ class PersonalPlanServiceImplTest {
     void goImplClass(){
         // Given
         PersonalPlanEntity savedPersonalPlan = personalPlanService.createPersonalPlan(
-                PersonalPlanSetDto.builder()
+                PersonalPlanDto.PersonalPlanSet.builder()
                         .planInfo(new PlanInfo("와우껌", "좋아요", "광주광역시"))
                         .period(new Period(
                                         LocalDateTime.of(2021, 7, 24, 1, 30),
@@ -183,7 +183,7 @@ class PersonalPlanServiceImplTest {
         List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
         PersonalPlanEntity updatedPersonalPlan = personalPlanService.updateThisPersonalPlan(
                 3L,
-                PersonalPlanSetDto.builder()
+                PersonalPlanDto.PersonalPlanSet.builder()
                         .repetition(true)
                         .period(new Period(
                                 LocalDateTime.of(2021, 2, 12, 1, 30),

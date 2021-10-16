@@ -2,7 +2,7 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.personal.service.strategy.PersonalPlanStrategy;
 import com.server.EZY.model.plan.tag.TagEntity;
@@ -35,7 +35,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      */
     @Transactional
     @Override
-    public PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlan) {
+    public PersonalPlanEntity createPersonalPlan(PersonalPlanDto.PersonalPlanSet personalPlan) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
         // 저장요청
@@ -104,7 +104,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      */
     @Transactional
     @Override
-    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) {
+    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanDto.PersonalPlanSet personalPlan) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
 
