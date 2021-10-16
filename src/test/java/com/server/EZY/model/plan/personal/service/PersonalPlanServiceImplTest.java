@@ -133,7 +133,7 @@ class PersonalPlanServiceImplTest {
 
         // When
         List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
-        PersonalPlanEntity thisPersonalPlan = personalPlanService.getThisPersonalPlan(planEntities.get(3).getPlanIdx());
+        PersonalPlanDto.PersonalPlanDetails thisPersonalPlan = personalPlanService.getThisPersonalPlan(planEntities.get(3).getPlanIdx());
 
         // Then
         assertTrue(thisPersonalPlan.getPlanInfo().getExplanation() == "오하이오");
