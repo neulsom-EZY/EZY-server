@@ -10,6 +10,12 @@ import lombok.*;
 import javax.validation.constraints.NotNull;
 
 public class PersonalPlanDto {
+    /**
+     * 개인일정을 생성할 때 사용하는 dto 입니다.
+     * @version 1
+     * @since 1
+     * @author 전지환
+     */
     @Getter @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
     public static class PersonalPlanSet {
@@ -23,8 +29,8 @@ public class PersonalPlanDto {
 
         /**
          * 서비스 로직에서 personalPlanSave 시에 Entity set 를 위한 toEntity 메서드
-         * @param memberEntity
-         * @param tagEntity
+         * @param memberEntity 개인 일정을 저장하고자 하는 memberEntity
+         * @param tagEntity nullable
          * @return
          * @author 전지환
          */
@@ -37,5 +43,17 @@ public class PersonalPlanDto {
                     .repetition(this.repetition)
                     .build();
         }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PersonalPlanQick {
+
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PersonalPlanDetails {
+
     }
 }
