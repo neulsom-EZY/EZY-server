@@ -9,6 +9,7 @@ import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPla
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,6 +49,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPersonalPlanIdx(MemberEntity memberEntity, Long personalPlanIdx){
         return jpaQueryFactory
                 .select(Projections.constructor(PersonalPlanDto.PersonalPlanDetails.class,
