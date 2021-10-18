@@ -61,3 +61,7 @@ invalid-authentication-number:
 authentication-number-transfer-failed:
   code: "-710"
   msg: "Authentication number transfer failed"
+
+plan-not-found:
+  code: "-600"
+  msg: "The :planType could not be found."
