@@ -24,6 +24,7 @@ public interface ErrandService {
      * 심부름을 거절한다. <br>
      * 발신자의 Errand가 DB에 삭제되고, 심부름 거절 push알람을 발신자에게 전송한다.
      * @param errandIdx 거절할 errandIdx(planIdx)
+     * @throws FirebaseMessagingException push알람이 실패할 때
      */
-    void refuseErrand(long errandIdx);
+    void refuseErrand(long errandIdx) throws FirebaseMessagingException;
 }

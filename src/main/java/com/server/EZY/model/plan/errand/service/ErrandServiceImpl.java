@@ -120,11 +120,11 @@ public class ErrandServiceImpl implements ErrandService{
     /**
      * 심부름을 거절한다. <br>
      * 발신자의 Errand가 DB에 삭제되고, 심부름 거절 push알람을 발신자에게 전송한다.
-     *
      * @param errandIdx 거절할 errandIdx(planIdx)
+     * @throws FirebaseMessagingException push알람이 실패할 때
      */
     @Override
-    public void refuseErrand(long errandIdx) {
+    public void refuseErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
                         () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 핸들링 예정
@@ -137,7 +137,13 @@ public class ErrandServiceImpl implements ErrandService{
         errandStatusRepository.delete(senderErrandStatusEntity);
         errandRepository.delete(senderErrandEntity);
 
-        //TODO 심부름 거절 push알람 로직구현
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(senderErrandEntity.getMemberEntity().getUsername())
+                .recipient(currentMember.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(FcmRole.받는사람)
+                .build();
+        fcmMakerService.sendRefuseErrandFcmToSender(fcmSourceDto);
     }
 
     /**
