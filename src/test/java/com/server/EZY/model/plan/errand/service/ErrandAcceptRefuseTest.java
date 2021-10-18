@@ -30,7 +30,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-//@Transactional
+@Transactional
 @Slf4j
 public class ErrandAcceptRefuseTest {
 
