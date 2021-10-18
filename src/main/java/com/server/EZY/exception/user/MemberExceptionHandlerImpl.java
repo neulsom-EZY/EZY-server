@@ -3,6 +3,7 @@ package com.server.EZY.exception.user;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
+import com.server.EZY.exception.user.exception.NotCorrectPasswordException;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,11 @@ public class MemberExceptionHandlerImpl implements MemberExceptionHandler {
     public CommonResult invalidAccessException(InvalidAccessException ex) {
         log.debug("=== InvalidAccessException 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObj(INVALID_ACCESS);
+    }
+
+    @Override
+    public CommonResult notCorrectPassword(NotCorrectPasswordException ex) {
+        log.debug("=== NotCorrectPasswordException 발생");
+        return exceptionResponseObjectUtil.getExceptionResponseObj(NOT_CORRECT_PASSWORD);
     }
 }
