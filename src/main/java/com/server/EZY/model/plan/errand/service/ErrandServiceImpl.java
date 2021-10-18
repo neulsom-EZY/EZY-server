@@ -116,6 +116,30 @@ public class ErrandServiceImpl implements ErrandService{
         fcmMakerService.sendAcceptErrandFcmToSender(fcmSourceDto);
         return recipientErrand;
     }
+
+    /**
+     * 심부름을 거절한다. <br>
+     * 발신자의 Errand가 DB에 삭제되고, 심부름 거절 push알람을 발신자에게 전송한다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     */
+    @Override
+    public void refuseErrand(long errandIdx) {
+        ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
+                .orElseThrow(
+                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 핸들링 예정
+                );
+        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        MemberEntity currentMember = currentUserUtil.getCurrentUser();
+
+        checkRecipientByErrand(senderErrandStatusEntity, currentMember, InvalidAccessException::new);
+
+        errandStatusRepository.delete(senderErrandStatusEntity);
+        errandRepository.delete(senderErrandEntity);
+
+        //TODO 심부름 거절 push알람 로직구현
+    }
+
     /**
      * 이 심부름의 수신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
      * @param errandStatusEntity - 해당 심부름의 수신자의 정보를 가지고 있는 ErrandStatusEntity

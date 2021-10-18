@@ -20,5 +20,10 @@ public interface ErrandService {
      */
     ErrandEntity acceptErrand(long errandIdx) throws InvalidAccessException, CustomException, FirebaseMessagingException;
 
-    // TODO refuseErrand method 생성
+    /**
+     * 심부름을 거절한다. <br>
+     * 발신자의 Errand가 DB에 삭제되고, 심부름 거절 push알람을 발신자에게 전송한다.
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     */
+    void refuseErrand(long errandIdx);
 }
