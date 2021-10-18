@@ -7,6 +7,12 @@ import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 
 public interface ErrandService {
+    /**
+     * 이 메서드는 심부름을 전송(저장) 할 때 사용하는 비즈니스 로직입니다.
+     * @param errandSetDto
+     * @return ErrandEntity
+     * @author 전지환
+     */
     ErrandEntity sendErrand(ErrandSetDto errandSetDto) throws Exception;
 
     /**
