@@ -46,10 +46,20 @@ public class FcmMakerService {
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
     }
 
-    //TODO 심부름 거절에 대한 push알람 보내는 메서드 생성
+    /**
+     * 심부름 거절 정보를 발신자에게 push알람을 보낸다.
+     * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
+     * @throws FirebaseMessagingException 해당 push알람이 실패할 때
+     * @author 정시원
+     */
+    public void sendRefuseErrandFcmToSender(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+        FcmMessage.FcmRequest request = makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.거절);
+
+        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+    }
 
     /**
-     * push알람을 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만든다.
+     * 심부름관련 push알람을 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만든다.
      * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
      * @param senderOfPush 해당 push알람을 보내는 회원의 username
      * @param errandAction 심부름에서 하려는 기능
