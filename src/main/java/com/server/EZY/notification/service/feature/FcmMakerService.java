@@ -35,6 +35,35 @@ public class FcmMakerService {
     }
 
     /**
+     * 심부름 수락 정보를 발신자에게 push알람을 보낸다.
+     * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
+     * @throws FirebaseMessagingException 해당 push알람이 실패할 때
+     * @author 정시원
+     */
+    public void sendAcceptErrandFcmToSender(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+        FcmMessage.FcmRequest request = makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.승인);
+
+        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+    }
+
+    //TODO 심부름 거절에 대한 push알람 보내는 메서드 생성
+
+    /**
+     * push알람을 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만든다.
+     * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
+     * @param senderOfPush 해당 push알람을 보내는 회원의 username
+     * @param errandAction 심부름에서 하려는 기능
+     * @return fcmPush알람의 메시지를 담고 있는 {@link FcmMessage.FcmRequest}객체
+     * @author 정시원
+     */
+    private FcmMessage.FcmRequest makeErrandFcmMessage(FcmSourceDto fcmSourceDto, String senderOfPush, FcmActionSelector.ErrandAction errandAction){
+        return FcmMessage.FcmRequest.builder()
+                .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을(를) " + errandAction + " 했어요!")
+                .body(senderOfPush + "님이 " + errandAction+"한 "+fcmSourceDto.getFcmPurposeType()+"을 확인해보세요!")
+                .build();
+    }
+
+    /**
      * 받는사람, fcmToken을 찾아주는 메소드
      * @param recipient
      * @return recipientFcmToken

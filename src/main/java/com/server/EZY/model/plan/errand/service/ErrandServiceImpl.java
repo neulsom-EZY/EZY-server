@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand.service;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.member.MemberEntity;
@@ -14,6 +15,7 @@ import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.enum_type.FcmRole;
 import com.server.EZY.notification.service.feature.ActiveFcmFilterService;
+import com.server.EZY.notification.service.feature.FcmMakerService;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ public class ErrandServiceImpl implements ErrandService{
     private final ErrandRepository errandRepository;
     private final ErrandStatusRepository errandStatusRepository;
     private final ActiveFcmFilterService activeFcmFilterService;
+    private final FcmMakerService fcmMakerService;
 
     /**
      * 이 메서드는 심부름을 전송(저장) 할 때 사용하는 비즈니스 로직입니다.
@@ -81,18 +84,20 @@ public class ErrandServiceImpl implements ErrandService{
 
     /**
      * 심부름을 수락한다. <br>
-     * 수신자의 Errand가 DB에 저장되고, 심부름을 수락했다는 push알람을 발신자에게 전송한다.
+     * 수신자의 Errand가 DB에 저장되고, 심부름을 수락 push알람을 발신자에게 전송한다.
      * @param errandIdx 수락할 errandIdx(planIdx)
      * @return 수신자의 ErrandEntity
      * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
      * @throws CustomException        PlanNotFound 해당 심부름이 존재하지 않을 때
+     * @throws FirebaseMessagingException push알람이 실패할 때
+     * @author 정시원
      */
     @Override
     @Transactional
-    public ErrandEntity acceptErrand(long errandIdx) {
+    public ErrandEntity acceptErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
-                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND)
+                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 핸들링 예정
                 );
         ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
@@ -102,7 +107,13 @@ public class ErrandServiceImpl implements ErrandService{
 
         ErrandEntity recipientErrand = errandRepository.save(senderErrandEntity.cloneToMemberEntity(currentMember));
 
-        //TODO fcm push알람 작성
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(senderErrandEntity.getMemberEntity().getUsername())
+                .recipient(recipientErrand.getMemberEntity().getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(FcmRole.받는사람)
+                .build();
+        fcmMakerService.sendAcceptErrandFcmToSender(fcmSourceDto);
         return recipientErrand;
     }
     /**

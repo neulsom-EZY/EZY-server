@@ -35,7 +35,6 @@ public class ErrandAcceptRefuseTest {
 
     @Autowired private MemberRepository memberRepository;
     @Autowired private ErrandService errandService;
-    @Autowired private ErrandStatusRepository errandStatusRepository;
 
     // 전지환의 token
     private final String SENDER_FCM_TOKEN = "eQb5CygpsUahmPBRDnTc0N:APA91bFaOlt2nZDJKJpO8dZsjS8vSDCZKxZWYBWtNXYUiIiUxLPiGTLcXuyuVTW1uqOxu55Ay9z_1ss-D2uz2xP-C_R2-5yxyV2pqn88zYts4WSxS4pgWgdvFtBAG6nU__dSYH7WW8Qk";
