@@ -58,20 +58,20 @@ public class PlanExceptionHandlerTest {
     @DisplayName("PlanNotFoundException 검증")
     void PlanNotFoundException_검증() throws Exception {
         // Given
-        String planType = PlanType.심부름.name();
+        PlanType planType = PlanType.심부름;
 
-        setLocal(Locale.KOREA);
         final int PLAN_NOT_FOUND_EXCEPTION_CODE_KO = getExceptionCode(PlanExceptionHandler.PLAN_NOT_FOUND, Locale.KOREA);
         final int PLAN_NOT_FOUND_EXCEPTION_CODE_EN = getExceptionCode(PlanExceptionHandler.PLAN_NOT_FOUND, Locale.ENGLISH);
         final String PLAN_NOT_FOUND_EXCEPTION_MSG_KO = getExceptionMsg(PlanExceptionHandler.PLAN_NOT_FOUND, Locale.KOREA)
-                .replace(":planType", planType);
+                .replace(":planType", planType.name());
         final String PLAN_NOT_FOUND_EXCEPTION_MSG_EN = getExceptionMsg(PlanExceptionHandler.PLAN_NOT_FOUND, Locale.ENGLISH)
-                .replace(":planType", planType);
+                .replace(":planType", planType.name());
 
         // When
-        CommonResult commonResult_KO = planExceptionHandler.planNotFoundException(new PlanNotFoundException(PlanType.심부름));
+        setLocal(Locale.KOREA);
+        CommonResult commonResult_KO = planExceptionHandler.planNotFoundException(new PlanNotFoundException(planType));
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = planExceptionHandler.planNotFoundException(new PlanNotFoundException(PlanType.심부름));
+        CommonResult commonResult_EN = planExceptionHandler.planNotFoundException(new PlanNotFoundException(planType));
 
         // Then
         assertEquals(PLAN_NOT_FOUND_EXCEPTION_CODE_KO, PLAN_NOT_FOUND_EXCEPTION_CODE_EN);
