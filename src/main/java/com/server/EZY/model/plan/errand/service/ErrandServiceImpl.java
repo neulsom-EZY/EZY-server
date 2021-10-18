@@ -85,6 +85,7 @@ public class ErrandServiceImpl implements ErrandService{
     /**
      * 심부름을 수락한다. <br>
      * 수신자의 Errand가 DB에 저장되고, 심부름을 수락 push알람을 발신자에게 전송한다.
+     *
      * @param errandIdx 수락할 errandIdx(planIdx)
      * @return 수신자의 ErrandEntity
      * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
@@ -120,10 +121,12 @@ public class ErrandServiceImpl implements ErrandService{
     /**
      * 심부름을 거절한다. <br>
      * 발신자의 Errand가 DB에 삭제되고, 심부름 거절 push알람을 발신자에게 전송한다.
+     *
      * @param errandIdx 거절할 errandIdx(planIdx)
      * @throws FirebaseMessagingException push알람이 실패할 때
      */
     @Override
+    @Transactional
     public void refuseErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
@@ -134,8 +137,8 @@ public class ErrandServiceImpl implements ErrandService{
 
         checkRecipientByErrand(senderErrandStatusEntity, currentMember, InvalidAccessException::new);
 
-        errandStatusRepository.delete(senderErrandStatusEntity);
         errandRepository.delete(senderErrandEntity);
+        errandStatusRepository.delete(senderErrandStatusEntity);
 
         FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
                 .sender(senderErrandEntity.getMemberEntity().getUsername())
@@ -148,6 +151,7 @@ public class ErrandServiceImpl implements ErrandService{
 
     /**
      * 이 심부름의 수신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
+     *
      * @param errandStatusEntity - 해당 심부름의 수신자의 정보를 가지고 있는 ErrandStatusEntity
      * @param memberEntity - 해당심부름의 수신자인지 검증할 MemberEntity
      * @param exceptionSupplier 해당 심부름의 수신자가 아닐경우 던질 exception supplier
