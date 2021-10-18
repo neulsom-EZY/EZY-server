@@ -34,6 +34,10 @@ not-correct-password:
   code: "-940"
   msg: "The password is not correct."
 
+member-information-check-again:
+  code: "-950"
+  msg: "Check the member information again."
+
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."
