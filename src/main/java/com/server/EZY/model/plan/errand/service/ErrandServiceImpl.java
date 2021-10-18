@@ -14,7 +14,6 @@ import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRep
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.enum_type.FcmRole;
-import com.server.EZY.notification.service.feature.ActiveFcmFilterService;
 import com.server.EZY.notification.service.feature.FcmMakerService;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,6 @@ public class ErrandServiceImpl implements ErrandService{
     private final MemberRepository memberRepository;
     private final ErrandRepository errandRepository;
     private final ErrandStatusRepository errandStatusRepository;
-    private final ActiveFcmFilterService activeFcmFilterService;
     private final FcmMakerService fcmMakerService;
 
     /**
@@ -77,7 +75,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmRole(FcmRole.보내는사람)
                 .build();
         // 여기서 filter 되어 fcm send 까지 완성 함.
-        activeFcmFilterService.send(fcmSourceDto);
+        fcmMakerService.sendErrandFcm(fcmSourceDto);
 
         return savedErrandEntity;
     }
