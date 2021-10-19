@@ -24,6 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 회원 관련 서비스 로직 구현부
+ *
+ * @version 1.0.0
+ * @author 배태현
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -43,9 +49,10 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 이미 가입된 username인지 체크해주는 서비스로직
+     *
      * @param username username
-     * @author 배태현
      * @return 이미 가입된 username이라면 true반환 / 이미 가입된 username이 아니라면 false반환
+     * @author 배태현
      */
     @Override
     public boolean isExistUsername(String username) {
@@ -54,9 +61,10 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 이미 가입된 phoneNumber인지 체크해주는 서비스로직
+     *
      * @param phoneNumber phoneNumber
-     * @author 배태현
      * @return 이미 가입된 phoneNumber라면 true반환 / 이미 가입된 phoneNumber가 아니라면 false반환
+     * @author 배태현
      */
     @Override
     public boolean isExistPhoneNumber(String phoneNumber) {
@@ -65,9 +73,10 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 회원가입 서비스 로직
+     *
      * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
-     * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
-     * @exception - 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
+     * @return save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
+     * @exception MemberAlreadyExistException 이미 존재하는 정보의 회원이라면
      * @author 배태현
      */
     @Override
@@ -86,8 +95,10 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 로그인 서비스 로직
+     *
      * @param loginDto loginDto(username, password)
-     * @exception - username으로 member를 찾을 수 없거나, 올바르지 않은 비밀번호라면 MemberNotFoundException
+     * @exception MemberNotFoundException username으로 member를 찾을 수 없을 때
+     * @exception NotCorrectPasswordException 비밀번호가 일치하지 않을 때
      * @return Map<String ,String> (username, accessToken, refreshToken) 반환
      * @author 배태현
      */
@@ -115,9 +126,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그아웃 서비스 로직
+     * 로그아웃 서비스 로직 <br>
      * (redis에 있는 refreshToken을 지워준다) (Client는 accessToken을 지워준다)
-     * @param nickname
+     *
+     * @param nickname nickname
      * @author 배태현
      */
     @Override
@@ -128,7 +140,8 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 전화번호로 인증번호를 보내는 서비스 로직
-     * @param phoneNumber
+     *
+     * @param phoneNumber phoneNumber
      * @author 배태현
      */
     @Override
@@ -141,7 +154,8 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 사용자가 문자로 받은 인증번호를 검증하는 서비스 로직
-     * @param key
+     *
+     * @param key authKey
      * @exception InvalidAuthenticationNumberException 인증번호가 일치하지 않을 때
      * @return test코드 작성을 위한 key 반환
      * @author 배태현
@@ -158,6 +172,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 비밀번호를 변경하기 전 정보를 받고 인증번호를 전송하는 서비스 로직
+     *
      * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, phoneNumber)
      * @exception MemberNotFoundException 회원을 찾을 수 없을 때
      * @exception MemberInformationCheckAgainException 회원에 대한 phoneNumber가 일치하지 않을 때
@@ -177,7 +192,9 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 비밀번호를 변경하기 위해 인증번호를 보내는 메서드
-     * @param phoneNumber
+     *
+     * @param phoneNumber phoneNumber
+     * @exception MemberNotFoundException 회원을 찾을 수 없을 때
      * @author 배태현
      */
     private void sendAuthKeyToChangePassword(String phoneNumber) {
@@ -192,6 +209,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 인증번호, 새로운 비밀번호를 받아 인증번호가 일치할 시 비밀번호가 변경되는 서비스로직
+     *
      * @param passwordChangeDto passwordChangeDto(key, username, newPassword)
      * @exception InvalidAuthenticationNumberException 인증번호가 일치하지 않을 때
      * @author 배태현
@@ -215,7 +233,9 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 문자로 username을 보내는 서비스로직
-     * @param phoneNumber
+     *
+     * @param phoneNumber phoneNumber
+     * @exception MemberNotFoundException 회원을 찾을 수 없을 때
      * @author 배태현
      */
     @Override
@@ -230,6 +250,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * username을 변경하는 서비스 로직
+     *
      * @param usernameDto usernameChangeDto(username, newUsername)
      * @author 배태현
      */
@@ -243,6 +264,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 전화번호를 변경하는 서비스 로직
+     *
      * @param phoneNumberChangeDto phoneNumberChangeDto(newPhoneNumber)
      * @author 배태현
      */
@@ -256,8 +278,10 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 회원탈퇴 서비스 로직
+     *
      * @param deleteUserDto deleteUserDto(username, password)
-     * @exception - 올바르지 않는 비밀번호일 시 MemberNotFoundException
+     * @exception MemberNotFoundException 회원을 찾을 수 없을 때
+     * @exception NotCorrectPasswordException 올바르지 않는 비밀번호일 시
      * @author 배태현
      */
     @Override
@@ -267,11 +291,12 @@ public class MemberServiceImpl implements MemberService {
 
         if (passwordEncoder.matches(deleteUserDto.getPassword(), memberEntity.getPassword())) {
             memberRepository.deleteById(memberEntity.getMemberIdx());
-        } else throw new MemberNotFoundException();
+        } else throw new NotCorrectPasswordException();
     }
 
     /**
      * fcmToken 변경 서비스로직
+     *
      * @param fcmTokenDto fcmTokenDto(fcmToken)
      * @author 배태현
      */

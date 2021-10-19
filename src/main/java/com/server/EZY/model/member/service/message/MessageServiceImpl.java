@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+/**
+ * 문자 서비스 로직 구현부
+ *
+ * @version 1.0.0
+ * @author 배태현
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -69,6 +75,8 @@ public class MessageServiceImpl implements MessageService {
      *
      * @param coolsms coolsms
      * @param params HashMap<String, String> params (사용자의 전화번호 등이 담긴 정보)
+     * @exception AuthenticationNumberTransferFailedException 인증번호 전송에 실패했을 때
+     * @exception CoolsmsException CoolsmsException
      * @author 배태현
      */
     private void sendSms(Message coolsms, HashMap<String, String> params) {
