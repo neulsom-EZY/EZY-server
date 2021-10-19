@@ -36,7 +36,7 @@ public class ErrandStatusCycleController {
      * @param errandIdx 수락할 심부름의 인덱스(planIdx)
      * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
      * @throws PlanNotFoundException  해당 심부름이 존재하지 않을 때
-     * @return 심부름 거절 성공시 SuccessResult
+     * @return SuccessResult - 심부름 거절 성공시
      * @author 배태현, 정시원
      */
     @PutMapping("/accept/{errandIdx}")
@@ -54,7 +54,7 @@ public class ErrandStatusCycleController {
      * @param errandIdx 거절할 심부름의 인덱스(planIdx)
      * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
      * @throws PlanNotFoundException  해당 심부름이 존재하지 않을 때
-     * @return 심부름 거절 성공시 SuccessResult
+     * @return SuccessResult - 심부름 거절 성공시
      * @author 배태현, 정시원
      */
     @ApiImplicitParams({
