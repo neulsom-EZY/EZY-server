@@ -1,10 +1,12 @@
 package com.server.EZY.model.plan.errand.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.repository.MemberRepository;
+import com.server.EZY.model.plan.enum_type.PlanType;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
@@ -95,7 +97,7 @@ public class ErrandServiceImpl implements ErrandService{
     public ErrandEntity acceptErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
-                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 핸들링 예정
+                        () -> new PlanNotFoundException(PlanType.심부름)
                 );
         ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
@@ -127,7 +129,7 @@ public class ErrandServiceImpl implements ErrandService{
     public void refuseErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity senderErrandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
-                        () -> new CustomException("해당 심부름은 존재하지 않습니다.", HttpStatus.NOT_FOUND) //TODO Exception 추가 및 핸들링 예정
+                        () -> new PlanNotFoundException(PlanType.심부름)
                 );
         ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
