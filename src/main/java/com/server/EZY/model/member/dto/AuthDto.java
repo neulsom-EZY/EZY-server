@@ -2,7 +2,6 @@ package com.server.EZY.model.member.dto;
 
 import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.MemberEntity;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -10,9 +9,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
-@Getter @Setter
-@NoArgsConstructor
-@Builder
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class AuthDto {
 
     @NotBlank
@@ -23,11 +21,6 @@ public class AuthDto {
     @NotBlank
     @Size(min = 8)
     private String password;
-
-    public AuthDto(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public MemberEntity toEntity(){
         return MemberEntity.builder()
