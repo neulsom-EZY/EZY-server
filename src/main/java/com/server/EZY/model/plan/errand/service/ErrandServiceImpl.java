@@ -14,7 +14,7 @@ import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRep
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
 import com.server.EZY.notification.enum_type.FcmRole;
-import com.server.EZY.notification.service.feature.FcmMakerService;
+import com.server.EZY.notification.service.feature.FcmActiveSender;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class ErrandServiceImpl implements ErrandService{
     private final MemberRepository memberRepository;
     private final ErrandRepository errandRepository;
     private final ErrandStatusRepository errandStatusRepository;
-    private final FcmMakerService fcmMakerService;
+    private final FcmActiveSender fcmActiveSender;
 
     /**
      * 이 메서드는 심부름을 전송(저장) 할 때 사용하는 비즈니스 로직입니다.
@@ -74,8 +74,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmPurposeType(FcmPurposeType.심부름)
                 .fcmRole(FcmRole.보내는사람)
                 .build();
-        // 여기서 filter 되어 fcm send 까지 완성 함.
-        fcmMakerService.sendErrandFcm(fcmSourceDto);
+        fcmActiveSender.sendRequestErrandFcmToRecipient(fcmSourceDto);
 
         return savedErrandEntity;
     }
@@ -111,7 +110,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmPurposeType(FcmPurposeType.심부름)
                 .fcmRole(FcmRole.받는사람)
                 .build();
-        fcmMakerService.sendAcceptErrandFcmToSender(fcmSourceDto);
+        fcmActiveSender.sendAcceptErrandFcmToSender(fcmSourceDto);
         return recipientErrand;
     }
     /**
