@@ -102,6 +102,6 @@ public class MessageServiceImpl implements MessageService {
         String point = result.get("point").toString();
 
         log.info("Coolsms 잔액정보 : {} 원", cash);
-        log.info("Coolsms 잔액정보 : {} point", point);
+        log.info("Coolsms 잔여포인트 : {} point", point);
     }
 }
