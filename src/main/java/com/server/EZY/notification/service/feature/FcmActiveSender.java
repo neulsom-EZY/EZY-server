@@ -24,9 +24,9 @@ public class FcmActiveSender {
      * @author 전지환
      */
     public void sendRequestErrandFcmToRecipient(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
-        FcmMessage.FcmRequest request = fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.요청);
+        FcmMessage.FcmRequest request = fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getSender(), FcmActionSelector.ErrandAction.요청);
         // 실제로 push를 전송하는 구간
-        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
     }
 
     /**
