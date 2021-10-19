@@ -143,7 +143,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmPurposeType(FcmPurposeType.심부름)
                 .fcmRole(FcmRole.받는사람)
                 .build();
-        fcmMakerService.sendRefuseErrandFcmToSender(fcmSourceDto);
+        fcmActiveSender.sendRefuseErrandFcmToSender(fcmSourceDto);
     }
 
     /**
