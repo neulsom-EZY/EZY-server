@@ -81,9 +81,27 @@ public class MessageServiceImpl implements MessageService {
                 throw new AuthenticationNumberTransferFailedException();
             }
 
+            getSmsCash(coolsms); // Coolsms 잔액정보 조회
         } catch (CoolsmsException e) {
             log.debug(e.getMessage());
             log.debug(String.valueOf(e.getCode()));
         }
+    }
+
+    /**
+     * Coolsms 남은 잔액정보를 조회하는 메서드
+     *
+     * @param coolsms coolsms
+     * @throws CoolsmsException CoolsmsException
+     * @author 배태현
+     */
+    private void getSmsCash(Message coolsms) throws CoolsmsException {
+        JSONObject result = coolsms.balance();
+
+        String cash = result.get("cash").toString();
+        String point = result.get("point").toString();
+
+        log.info("Coolsms 잔액정보 : {} 원", cash);
+        log.info("Coolsms 잔액정보 : {} point", point);
     }
 }
