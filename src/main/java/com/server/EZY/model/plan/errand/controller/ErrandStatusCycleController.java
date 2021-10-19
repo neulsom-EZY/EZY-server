@@ -1,6 +1,8 @@
 package com.server.EZY.model.plan.errand.controller;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.server.EZY.exception.plan.exception.PlanNotFoundException;
+import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.plan.errand.service.ErrandService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -30,8 +32,11 @@ public class ErrandStatusCycleController {
 
     /**
      * 심부름 수락 Controller
-     * @param errandIdx
-     * @return
+     *
+     * @param errandIdx 수락할 심부름의 인덱스(planIdx)
+     * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
+     * @throws PlanNotFoundException  해당 심부름이 존재하지 않을 때
+     * @return 심부름 거절 성공시 SuccessResult
      * @author 배태현, 정시원
      */
     @PutMapping("/accept/{errandIdx}")
@@ -45,8 +50,11 @@ public class ErrandStatusCycleController {
 
     /**
      * 심부름 거절 Controller
-     * @param errandIdx
-     * @return
+     *
+     * @param errandIdx 거절할 심부름의 인덱스(planIdx)
+     * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
+     * @throws PlanNotFoundException  해당 심부름이 존재하지 않을 때
+     * @return 심부름 거절 성공시 SuccessResult
      * @author 배태현, 정시원
      */
     @ApiImplicitParams({
