@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 회원 관련 서비스 로직
+ * 회원 관련 서비스 로직 구현부
  *
  * @version 1.0.0
  * @author 배태현

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * 토큰 재발급 서비스 로직
+ * 토큰 재발급 서비스 로직 구현부
  *
  * @version 1.0.0
  * @author 배태현

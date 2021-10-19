@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 /**
- * 문자 서비스 로직
+ * 문자 서비스 로직 구현부
  *
  * @version 1.0.0
  * @author 배태현
