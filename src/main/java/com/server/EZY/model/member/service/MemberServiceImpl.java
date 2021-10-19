@@ -206,7 +206,7 @@ public class MemberServiceImpl implements MemberService {
             findMember.updatePassword(
                     passwordEncoder.encode(passwordChangeDto.getNewPassword())
             );
-            redisUtil.deleteData(authKey);
+            redisUtil.deleteData(passwordChangeDto.getUsername());
         } else {
             throw new InvalidAuthenticationNumberException();
         }
