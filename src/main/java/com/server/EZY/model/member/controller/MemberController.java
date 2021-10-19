@@ -84,7 +84,7 @@ public class MemberController {
      * @author 배태현
      */
     @PostMapping("/auth")
-    @ApiOperation(value = "전화번호로 인증번호 보내기", notes = "전화번호로 인증번호 보내기")
+    @ApiOperation(value = "전화번호로 인증번호 전송하기", notes = "전화번호로 인증번호 전송하기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult sendAuthKey(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
         memberService.sendAuthKey(phoneNumberDto.getPhoneNumber());
