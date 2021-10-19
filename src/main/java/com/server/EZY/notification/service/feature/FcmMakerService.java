@@ -24,7 +24,7 @@ public class FcmMakerService {
      */
     public FcmMessage.FcmRequest makeErrandFcmMessage(FcmSourceDto fcmSourceDto, String senderOfPush, FcmActionSelector.ErrandAction errandAction){
         return FcmMessage.FcmRequest.builder()
-                .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을(를) " + errandAction + " 했어요!")
+                .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을 " + errandAction + " 했어요!")
                 .body(senderOfPush + "님이 " + errandAction+"한 "+fcmSourceDto.getFcmPurposeType()+"을 확인해보세요!")
                 .build();
     }
