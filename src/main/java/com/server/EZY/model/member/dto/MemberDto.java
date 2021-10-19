@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.Collections;
 
 @Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class MemberDto {
     @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")
