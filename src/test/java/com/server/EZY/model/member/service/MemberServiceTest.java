@@ -307,7 +307,7 @@ public class MemberServiceTest {
         );
 
         assertThrows(
-                MemberNotFoundException.class,
+                NotCorrectPasswordException.class,
                 () -> memberService.deleteUser(
                         AuthDto.builder()
                                 .username("@Baetaehyeon")
