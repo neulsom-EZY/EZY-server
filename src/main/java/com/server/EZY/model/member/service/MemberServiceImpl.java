@@ -2,7 +2,9 @@ package com.server.EZY.model.member.service;
 
 import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
+import com.server.EZY.exception.user.exception.MemberInformationCheckAgainException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
+import com.server.EZY.exception.user.exception.NotCorrectPasswordException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.repository.MemberRepository;
@@ -96,7 +98,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity == null) throw new MemberNotFoundException();
 
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), memberEntity.getPassword());
-        if (!passwordCheck) throw new MemberNotFoundException();
+        if (!passwordCheck) throw new NotCorrectPasswordException();
 
         String accessToken = jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -168,7 +170,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity.getPhoneNumber().equals(memberAuthKeySendInfoDto.getPhoneNumber())) {
             sendAuthKeyToChangePassword(memberAuthKeySendInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
         } else {
-            throw new IllegalArgumentException("변경하려는 회원의 정보를 다시 확인해주세요.");
+            throw new MemberInformationCheckAgainException();
         }
     }
 
