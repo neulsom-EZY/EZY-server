@@ -10,6 +10,8 @@ public interface MemberService {
 
     boolean isExistUsername(String username);
 
+    boolean isExistPhoneNumber(String phoneNumber);
+
     MemberEntity signup(MemberDto memberDto);
 
     Map<String, String> signin(AuthDto loginDto);

@@ -1,8 +1,6 @@
 package com.server.EZY.exception.user;
 
-import com.server.EZY.exception.user.exception.InvalidAccessException;
-import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
-import com.server.EZY.exception.user.exception.MemberNotFoundException;
+import com.server.EZY.exception.user.exception.*;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +13,8 @@ public interface MemberExceptionHandler {
     String MEMBER_ALREADY_EXIST = "member-already-exist";
     String INVALID_ACCESS = "invalid-access";
     String USERNAME_NOT_FOUND = "username-not-found";
+    String NOT_CORRECT_PASSWORD = "not-correct-password";
+    String MEMBER_INFORMATION_CHECK_AGAIN = "member-information-check-again";
 
     // 회원를 찾을 수 없습니다.
     @ExceptionHandler(MemberNotFoundException.class)
@@ -35,4 +35,14 @@ public interface MemberExceptionHandler {
     @ExceptionHandler(InvalidAccessException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult invalidAccessException(InvalidAccessException ex);
+
+    // 비밀번호가 올바르지 않습니다.
+    @ExceptionHandler(NotCorrectPasswordException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    CommonResult notCorrectPassword(NotCorrectPasswordException ex);
+
+    // 변경하려는 회원의 정보를 다시 확인해주세요
+    @ExceptionHandler(MemberInformationCheckAgainException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    CommonResult memberInformationCheckAgain(MemberInformationCheckAgainException ex);
 }

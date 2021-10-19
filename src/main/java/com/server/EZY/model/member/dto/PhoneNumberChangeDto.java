@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class PhoneNumberChangeDto {
 
     @NotBlank

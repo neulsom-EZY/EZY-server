@@ -5,6 +5,7 @@ import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.response.result.SingleResult;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,18 @@ public class MemberController {
     @ResponseStatus( HttpStatus.OK )
     public SingleResult checkUsernameExist(@Valid @RequestBody UsernameDto usernameDto) {
         return responseService.getSingleResult(memberService.isExistUsername(usernameDto.getUsername()));
+    }
+
+    /**
+     * 이미 가입된 phoneNumber인지 check 해주는 controller
+     * @param phoneNumberDto phoneNumber
+     * @return CommonResult - SuccessResult
+     */
+    @PostMapping("/verified/phone")
+    @ApiOperation(value = "phoneNumber 존재 여부 확인", notes = "phoneNumber 존재 여부 확인")
+    @ResponseStatus( HttpStatus.OK )
+    public SingleResult checkPhoneNumberExist(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
+        return responseService.getSingleResult(memberService.isExistPhoneNumber(phoneNumberDto.getPhoneNumber()));
     }
 
     /**
@@ -71,7 +84,7 @@ public class MemberController {
      * @author 배태현
      */
     @PostMapping("/auth")
-    @ApiOperation(value = "전화번호로 인증번호 보내기", notes = "전화번호로 인증번호 보내기")
+    @ApiOperation(value = "전화번호로 인증번호 전송하기", notes = "전화번호로 인증번호 전송하기")
     @ResponseStatus( HttpStatus.OK )
     public CommonResult sendAuthKey(@Valid @RequestBody PhoneNumberDto phoneNumberDto) {
         memberService.sendAuthKey(phoneNumberDto.getPhoneNumber());

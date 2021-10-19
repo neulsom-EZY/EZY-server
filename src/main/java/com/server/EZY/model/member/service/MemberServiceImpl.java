@@ -2,7 +2,9 @@ package com.server.EZY.model.member.service;
 
 import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
+import com.server.EZY.exception.user.exception.MemberInformationCheckAgainException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
+import com.server.EZY.exception.user.exception.NotCorrectPasswordException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.repository.MemberRepository;
@@ -13,6 +15,7 @@ import com.server.EZY.util.KeyUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +44,6 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 이미 가입된 username인지 체크해주는 서비스로직
      * @param username username
-     * @exception - 이미 가입된 username일 때 MemberAlreadyExistException
      * @author 배태현
      * @return 이미 가입된 username이라면 true반환 / 이미 가입된 username이 아니라면 false반환
      */
@@ -51,19 +53,33 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 이미 가입된 phoneNumber인지 체크해주는 서비스로직
+     * @param phoneNumber phoneNumber
+     * @author 배태현
+     * @return 이미 가입된 phoneNumber라면 true반환 / 이미 가입된 phoneNumber가 아니라면 false반환
+     */
+    @Override
+    public boolean isExistPhoneNumber(String phoneNumber) {
+        return memberRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    /**
      * 회원가입 서비스 로직
      * @param memberDto memberDto(username, password, phoneNumber, fcmToken)
      * @return - save가 완료되면 test코드를 위한 memberEntity를 반환합니다.
-     * @exception - else, 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
+     * @exception - 이미 존재하는 정보의 회원이라면 MemberAlreadyExistException
      * @author 배태현
      */
     @Override
     public MemberEntity signup(MemberDto memberDto) {
-        if(!memberRepository.existsByUsername(memberDto.getUsername())){
-            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        try {
+            if(!memberRepository.existsByUsernameAndPhoneNumber(memberDto.getUsername(), memberDto.getPhoneNumber())) {
+                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
-            return memberRepository.save(memberDto.toEntity());
-        } else {
+                return memberRepository.save(memberDto.toEntity());
+            } else throw new MemberAlreadyExistException();
+
+        } catch (DataIntegrityViolationException e) {
             throw new MemberAlreadyExistException();
         }
     }
@@ -82,7 +98,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity == null) throw new MemberNotFoundException();
 
         boolean passwordCheck = passwordEncoder.matches(loginDto.getPassword(), memberEntity.getPassword());
-        if (!passwordCheck) throw new MemberNotFoundException();
+        if (!passwordCheck) throw new NotCorrectPasswordException();
 
         String accessToken = jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -143,7 +159,8 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 비밀번호를 변경하기 전 정보를 받고 인증번호를 전송하는 서비스 로직
      * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, phoneNumber)
-     * @exception Exception username과 password가 동일한 회원의 정보가 아닐 때
+     * @exception MemberNotFoundException 회원을 찾을 수 없을 때
+     * @exception MemberInformationCheckAgainException 회원에 대한 phoneNumber가 일치하지 않을 때
      * @author 배태현
      */
     @Override
@@ -154,7 +171,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberEntity.getPhoneNumber().equals(memberAuthKeySendInfoDto.getPhoneNumber())) {
             sendAuthKeyToChangePassword(memberAuthKeySendInfoDto.getPhoneNumber()); //비밀번호 변경용 인증번호 메세지 전송
         } else {
-            throw new IllegalArgumentException("변경하려는 회원의 정보를 다시 확인해주세요.");
+            throw new MemberInformationCheckAgainException();
         }
     }
 
@@ -190,7 +207,7 @@ public class MemberServiceImpl implements MemberService {
             findMember.updatePassword(
                     passwordEncoder.encode(passwordChangeDto.getNewPassword())
             );
-            redisUtil.deleteData(authKey);
+            redisUtil.deleteData(passwordChangeDto.getUsername());
         } else {
             throw new InvalidAuthenticationNumberException();
         }

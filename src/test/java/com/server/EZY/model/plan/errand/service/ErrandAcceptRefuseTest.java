@@ -10,6 +10,7 @@ import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandStatusEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +30,13 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-//@Transactional
+@Transactional
 @Slf4j
 public class ErrandAcceptRefuseTest {
 
     @Autowired private MemberRepository memberRepository;
     @Autowired private ErrandService errandService;
+    @Autowired private ErrandRepository errandRepository;
     @Autowired private ErrandStatusRepository errandStatusRepository;
 
     // 전지환의 token
@@ -123,5 +125,28 @@ public class ErrandAcceptRefuseTest {
         assertEquals(senderErrandStatusEntity.getSenderIdx(), recipientErrandStatusEntity.getSenderIdx());
         assertEquals(senderErrandStatusEntity.getRecipientIdx(), recipientErrandStatusEntity.getRecipientIdx());
         assertEquals(ErrandResponseStatus.ACCEPT, recipientErrandStatusEntity.getErrandResponseStatus());
+    }
+
+    @Test @DisplayName("심부름 거절 검증")
+    void 심부름_거절_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandStatusEntity.getErrandStatusIdx();
+
+        log.info("========= When =========");
+        //로그인 후 sender의 심부름을 수락함
+        signInMember(recipient);
+        errandService.refuseErrand(errandIdx);
+
+        log.info("========= Then =========");
+        assertFalse(errandRepository.existsById(errandIdx));
+        assertFalse(errandStatusRepository.existsById(errandStatusIdx));
     }
 }
