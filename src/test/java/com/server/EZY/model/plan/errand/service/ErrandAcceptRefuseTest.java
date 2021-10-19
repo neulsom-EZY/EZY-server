@@ -1,8 +1,8 @@
 package com.server.EZY.model.plan.errand.service;
 
 import com.server.EZY.exception.plan.exception.PlanNotFoundException;
+import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.embedded_type.Period;
@@ -17,7 +17,9 @@ import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -128,8 +130,8 @@ public class ErrandAcceptRefuseTest {
         assertEquals(ErrandResponseStatus.ACCEPT, recipientErrandStatusEntity.getErrandResponseStatus());
     }
 
-    @Test @DisplayName("심부름 수락시 해당 심부름이 존재하지 않는다면?")
-    void 심부름_수락_존재하지않음() throws Exception {
+    @Test @DisplayName("심부름 수락시 해당 심부름이 존재하지 않을 떄 PlanNotFoundException검증")
+    void 심부름_수락_PlanNotFoundException_검증() throws Exception {
         log.info("========= Given =========");
         // 발신자, 수신자 생성
         MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
@@ -138,6 +140,27 @@ public class ErrandAcceptRefuseTest {
 
         log.info("========= When, Than =========");
         assertThrows(PlanNotFoundException.class,
+                () -> errandService.acceptErrand(errandIdx)
+        );
+    }
+
+    @Test @DisplayName("심부름 수락을 다른 회원이 할 떄 InvalidAccessException검증")
+    void 심부름_수락_InvalidAccessException_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+        MemberEntity otherMember = makeMember("@otherMember", "fcmToken");
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+
+        log.info("========= When, Then =========");
+        //로그인 후 sender의 심부름을 수락함
+        signInMember(otherMember);
+        assertThrows(InvalidAccessException.class,
                 () -> errandService.acceptErrand(errandIdx)
         );
     }
@@ -165,8 +188,29 @@ public class ErrandAcceptRefuseTest {
         assertFalse(errandStatusRepository.existsById(errandStatusIdx));
     }
 
-    @Test @DisplayName("심부름 거절시 해당 심부름이 존재하지 않는다면?")
-    void 심부름_거절_존재하지않음() throws Exception {
+    @Test @DisplayName("심부름 거절을 다른 회원이 할 떄 InvalidAccessException검증")
+    void 심부름_거절_InvalidAccessException_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+        MemberEntity otherMember = makeMember("@otherMember", "fcmToken");
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+
+        log.info("========= When, Then =========");
+        //로그인 후 sender의 심부름을 수락함
+        signInMember(otherMember);
+        assertThrows(InvalidAccessException.class,
+                () -> errandService.refuseErrand(errandIdx)
+        );
+    }
+
+    @Test @DisplayName("심부름 거절시 해당 심부름이 존재하지 않을 떄 PlanNotFoundException검증")
+    void 심부름_거절_PlanNotFoundException_검증() throws Exception {
         log.info("========= Given =========");
         // 발신자, 수신자 생성
         MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
