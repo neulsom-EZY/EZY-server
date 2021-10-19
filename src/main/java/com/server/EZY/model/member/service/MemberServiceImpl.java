@@ -159,7 +159,8 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 비밀번호를 변경하기 전 정보를 받고 인증번호를 전송하는 서비스 로직
      * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, phoneNumber)
-     * @exception Exception username과 password가 동일한 회원의 정보가 아닐 때
+     * @exception MemberNotFoundException 회원을 찾을 수 없을 때
+     * @exception MemberInformationCheckAgainException 회원에 대한 phoneNumber가 일치하지 않을 때
      * @author 배태현
      */
     @Override
