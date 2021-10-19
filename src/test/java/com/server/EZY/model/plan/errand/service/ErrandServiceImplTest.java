@@ -96,7 +96,7 @@ class ErrandServiceImplTest {
                 .username("@kim")
                 .password("1234")
                 .phoneNumber("01023212312")
-                .fcmToken(jihwanFcmToken)
+                .fcmToken(testingFcmToken)
                 .build();
 
         log.info("========= When 받는사람 회원 저장 ==========");
