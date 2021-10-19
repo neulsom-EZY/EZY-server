@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand.service;
 
+import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.enum_type.Role;
@@ -127,6 +128,20 @@ public class ErrandAcceptRefuseTest {
         assertEquals(ErrandResponseStatus.ACCEPT, recipientErrandStatusEntity.getErrandResponseStatus());
     }
 
+    @Test @DisplayName("심부름 수락시 해당 심부름이 존재하지 않는다면?")
+    void 심부름_수락_존재하지않음() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+        signInMember(recipient);
+        long errandIdx = 999999L;
+
+        log.info("========= When, Than =========");
+        assertThrows(PlanNotFoundException.class,
+                () -> errandService.acceptErrand(errandIdx)
+        );
+    }
+
     @Test @DisplayName("심부름 거절 검증")
     void 심부름_거절_검증() throws Exception {
         log.info("========= Given =========");
@@ -148,5 +163,19 @@ public class ErrandAcceptRefuseTest {
         log.info("========= Then =========");
         assertFalse(errandRepository.existsById(errandIdx));
         assertFalse(errandStatusRepository.existsById(errandStatusIdx));
+    }
+
+    @Test @DisplayName("심부름 거절시 해당 심부름이 존재하지 않는다면?")
+    void 심부름_거절_존재하지않음() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+        signInMember(recipient);
+        long errandIdx = 999999L;
+
+        log.info("========= When, Than =========");
+        assertThrows(PlanNotFoundException.class,
+                () -> errandService.refuseErrand(errandIdx)
+        );
     }
 }
