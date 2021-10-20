@@ -20,17 +20,6 @@ public class ErrandStatusCycleController {
     private final ErrandService errandService;
 
     /**
-     * 심부름을 받은이가 심부름을 확인(읽음)여부 Controller
-     * @param errandIdx
-     * @return
-     * @author 배태현
-     */
-    @GetMapping("/check/{errandIdx}")
-    public CommonResult readThisSchedule(@PathVariable("errandIdx") Long errandIdx) {
-        return responseService.getSuccessResult();
-    }
-
-    /**
      * 심부름 수락 Controller
      *
      * @param errandIdx 수락할 심부름의 인덱스(planIdx)
