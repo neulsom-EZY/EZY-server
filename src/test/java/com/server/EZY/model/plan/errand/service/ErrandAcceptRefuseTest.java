@@ -17,9 +17,7 @@ import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -149,12 +147,11 @@ public class ErrandAcceptRefuseTest {
         log.info("========= Given =========");
         // 발신자, 수신자 생성
         MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
-        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+        makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
         MemberEntity otherMember = makeMember("@otherMember", "fcmToken");
 
         // 발신자가 심부름 보냄
         ErrandEntity senderErrandEntity = sendErrand(sender);
-        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         long errandIdx = senderErrandEntity.getPlanIdx();
 
         log.info("========= When, Then =========");
@@ -193,12 +190,11 @@ public class ErrandAcceptRefuseTest {
         log.info("========= Given =========");
         // 발신자, 수신자 생성
         MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
-        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+        makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
         MemberEntity otherMember = makeMember("@otherMember", "fcmToken");
 
         // 발신자가 심부름 보냄
         ErrandEntity senderErrandEntity = sendErrand(sender);
-        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
         long errandIdx = senderErrandEntity.getPlanIdx();
 
         log.info("========= When, Then =========");
