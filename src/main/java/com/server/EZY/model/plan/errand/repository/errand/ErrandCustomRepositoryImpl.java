@@ -1,6 +1,5 @@
 package com.server.EZY.model.plan.errand.repository.errand;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
 import static com.server.EZY.model.plan.errand.QErrandEntity.errandEntity;
+import static com.server.EZY.model.plan.errand.QErrandStatusEntity.errandStatusEntity;
 
 @RequiredArgsConstructor
 public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
@@ -21,11 +21,11 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
      */
     @Override
     public Optional<ErrandEntity> findWithErrandStatusByErrandIdx(long errandIdx) {
-        Tuple errandEntityTuple = queryFactory
-                .select(errandEntity, errandEntity.errandStatusEntity)
+        ErrandEntity errand = (ErrandEntity) queryFactory
                 .from(errandEntity)
-                .where(errandEntity.planIdx.eq(errandIdx))
+                .join(errandEntity.errandStatusEntity, errandStatusEntity)
+                .fetchJoin()
                 .fetchOne();
-        return Optional.ofNullable(errandEntityTuple.get(errandEntity));
+        return Optional.ofNullable(errand);
     }
 }

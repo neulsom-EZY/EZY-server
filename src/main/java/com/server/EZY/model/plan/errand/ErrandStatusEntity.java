@@ -1,10 +1,7 @@
 package com.server.EZY.model.plan.errand;
 
 import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -18,20 +15,25 @@ import javax.persistence.*;
 @Entity @Table(name = "errand_status")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(onlyExplicitlyIncluded = true) // @ToString.Include 를 명시한 필드만 toString에 포함합니다.
 public class ErrandStatusEntity {
 
     @Id @Column(name = "errand_status_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Include
     private Long errandStatusIdx;
 
     @Column(name = "sender_id")
+    @ToString.Include
     private Long senderIdx;
 
     @Column(name = "recipient_id")
+    @ToString.Include
     private Long recipientIdx;
 
     @Column(name = "response_status")
     @Enumerated(EnumType.STRING)
+    @ToString.Include
     private ErrandResponseStatus errandResponseStatus;
 
     public void updateErrandResponseStatus(ErrandResponseStatus errandResponseStatus){
