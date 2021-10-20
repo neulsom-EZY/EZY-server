@@ -9,7 +9,7 @@ import com.server.EZY.model.plan.enum_type.PlanType;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
-import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.notification.dto.FcmSourceDto;
@@ -57,7 +57,7 @@ public class ErrandServiceImpl implements ErrandService{
         ErrandDetailEntity errandDetails = ErrandDetailEntity.builder()
                 .senderIdx(sender.getMemberIdx())
                 .recipientIdx(recipient.getMemberIdx())
-                .errandResponseStatus(ErrandResponseStatus.NOT_READ)
+                .errandStatus(ErrandStatus.NONE)
                 .build();
 
         /**
@@ -100,7 +100,7 @@ public class ErrandServiceImpl implements ErrandService{
         ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
         MemberEntity currentMember = currentUserUtil.getCurrentUser();
 
-        senderErrandDetailEntity.updateErrandResponseStatus(ErrandResponseStatus.ACCEPT);
+        senderErrandDetailEntity.updateErrandStatus(ErrandStatus.ACCEPT);
         checkRecipientByErrand(senderErrandDetailEntity, currentMember, InvalidAccessException::new);
 
         ErrandEntity recipientErrand = errandRepository.save(senderErrandEntity.cloneToMemberEntity(currentMember));

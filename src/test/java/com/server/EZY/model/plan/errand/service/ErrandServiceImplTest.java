@@ -8,7 +8,7 @@ import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
-import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.notification.service.FirebaseMessagingService;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -105,7 +105,7 @@ class ErrandServiceImplTest {
         ErrandEntity errandEntity = errandService.sendErrand(errandSetDto);
 
         //Then
-        assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandDetailEntity().getErrandResponseStatus());
+        assertEquals(ErrandStatus.NONE, errandEntity.getErrandDetailEntity().getErrandStatus());
         assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandDetailEntity().getRecipientIdx());
     }
 }
