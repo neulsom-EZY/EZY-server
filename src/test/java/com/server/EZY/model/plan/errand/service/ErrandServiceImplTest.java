@@ -105,7 +105,7 @@ class ErrandServiceImplTest {
         ErrandEntity errandEntity = errandService.sendErrand(errandSetDto);
 
         //Then
-        assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getErrandResponseStatus());
-        assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandStatusEntity().getRecipientIdx());
+        assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandDetailEntity().getErrandResponseStatus());
+        assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandDetailEntity().getRecipientIdx());
     }
 }
