@@ -5,7 +5,7 @@ import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
-import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
@@ -62,7 +62,7 @@ class ErrandTest {
          * errandStatus를 만들어 시원과 지환의 각각생성된 Errand테이블과 연관관계를 맻고 저장한다.
          */
         ErrandDetailEntity errandDetailEntity = ErrandDetailEntity.builder()
-                .errandResponseStatus(ErrandResponseStatus.NOT_READ)
+                .errandStatus(ErrandStatus.NONE)
                 .senderIdx(memberSiwon.getMemberIdx())
                 .recipientIdx(memberJihwan.getMemberIdx())
                 .build();
@@ -116,7 +116,7 @@ class ErrandTest {
     void 심부름_삭제_테스트(){
         // Then
         ErrandDetailEntity errandDetailEntity = ErrandDetailEntity.builder()
-                .errandResponseStatus(ErrandResponseStatus.NOT_READ)
+                .errandStatus(ErrandStatus.NONE)
                 .senderIdx(memberSiwon.getMemberIdx())
                 .recipientIdx(memberJihwan.getMemberIdx())
                 .build();

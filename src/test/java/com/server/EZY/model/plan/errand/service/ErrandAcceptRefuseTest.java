@@ -10,7 +10,7 @@ import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
-import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.util.CurrentUserUtil;
@@ -125,7 +125,7 @@ public class ErrandAcceptRefuseTest {
         assertEquals(senderErrandDetailEntity.getErrandDetailIdx(), recipientErrandDetailEntity.getErrandDetailIdx());
         assertEquals(senderErrandDetailEntity.getSenderIdx(), recipientErrandDetailEntity.getSenderIdx());
         assertEquals(senderErrandDetailEntity.getRecipientIdx(), recipientErrandDetailEntity.getRecipientIdx());
-        assertEquals(ErrandResponseStatus.ACCEPT, recipientErrandDetailEntity.getErrandResponseStatus());
+        assertEquals(ErrandStatus.ACCEPT, recipientErrandDetailEntity.getErrandStatus());
     }
 
     @Test @DisplayName("심부름 수락시 해당 심부름이 존재하지 않을 떄 PlanNotFoundException검증")
