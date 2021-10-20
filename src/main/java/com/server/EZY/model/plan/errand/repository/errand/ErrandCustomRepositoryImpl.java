@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
 import static com.server.EZY.model.plan.errand.QErrandEntity.errandEntity;
-import static com.server.EZY.model.plan.errand.QErrandStatusEntity.errandStatusEntity;
+import static com.server.EZY.model.plan.errand.QErrandDetailEntity.errandDetailEntity;
 
 @RequiredArgsConstructor
 public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
@@ -15,7 +15,7 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
     private final JPQLQueryFactory queryFactory;
 
     /**
-     * errandIdx로 ErrandEntity를 연관되어 있는 ErrandStatusEntity와 함께 가져온다.
+     * errandIdx로 ErrandEntity를 연관되어 있는 ErrandDetailEntity와 함께 가져온다.
      * @param errandIdx 심부름 Idx
      * @return ErrandStatus를 같이 조회한 ErrandEntity (null 허용)
      */
@@ -23,7 +23,7 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
     public Optional<ErrandEntity> findWithErrandStatusByErrandIdx(long errandIdx) {
         ErrandEntity errand = (ErrandEntity) queryFactory
                 .from(errandEntity)
-                .join(errandEntity.errandStatusEntity, errandStatusEntity)
+                .join(errandEntity.errandDetailEntity, errandDetailEntity)
                 .fetchJoin()
                 .fetchOne();
         return Optional.ofNullable(errand);

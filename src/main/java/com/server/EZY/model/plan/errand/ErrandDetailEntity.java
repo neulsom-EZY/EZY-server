@@ -6,22 +6,22 @@ import lombok.*;
 import javax.persistence.*;
 
 /**
- * 심부름의 일정정보를 저장하는 {@link ErrandEntity}의 상태를 관리하는 {@link ErrandStatusEntity}이다. <br>
+ * 심부름의 일정정보를 저장하는 {@link ErrandEntity}의 상태를 관리하는 {@link ErrandDetailEntity}이다. <br>
  * {@link ErrandEntity}는 수신자, 발신자 총 2개의 컬럼을 추가하므로 하나의 심부름을 식별하고 추가적인 정보를 저장하기 위해 해당 Entity가 필요하다.
  * @author 정시원
  * @version 1.0.0
  * @since 1.0.0
  */
-@Entity @Table(name = "errand_status")
+@Entity @Table(name = "errand_detail")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(onlyExplicitlyIncluded = true) // @ToString.Include 를 명시한 필드만 toString에 포함합니다.
-public class ErrandStatusEntity {
+public class ErrandDetailEntity {
 
-    @Id @Column(name = "errand_status_id")
+    @Id @Column(name = "errand_detail_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Include
-    private Long errandStatusIdx;
+    private Long errandDetailIdx;
 
     @Column(name = "sender_id")
     @ToString.Include
@@ -47,7 +47,7 @@ public class ErrandStatusEntity {
      * @author 정시원
      */
     @Builder
-    public ErrandStatusEntity(Long senderIdx, Long recipientIdx, ErrandResponseStatus errandResponseStatus){
+    public ErrandDetailEntity(Long senderIdx, Long recipientIdx, ErrandResponseStatus errandResponseStatus){
         this.senderIdx = senderIdx;
         this.recipientIdx = recipientIdx;
         this.errandResponseStatus = errandResponseStatus;

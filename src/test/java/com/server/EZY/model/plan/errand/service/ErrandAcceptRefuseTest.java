@@ -8,7 +8,7 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
-import com.server.EZY.model.plan.errand.ErrandStatusEntity;
+import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
@@ -101,20 +101,20 @@ public class ErrandAcceptRefuseTest {
 
         // 발신자가 심부름 보냄
         ErrandEntity senderErrandEntity = sendErrand(sender);
-        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
         long errandIdx = senderErrandEntity.getPlanIdx();
 
         log.info("========= When =========");
         //로그인 후 sender의 심부름을 수락함
         signInMember(recipient);
         ErrandEntity recipientErrandEntity = errandService.acceptErrand(errandIdx);
-        ErrandStatusEntity recipientErrandStatusEntity = recipientErrandEntity.getErrandStatusEntity();
+        ErrandDetailEntity recipientErrandDetailEntity = recipientErrandEntity.getErrandDetailEntity();
 
         log.info("========= Then =========");
 
         // 발신자, 수신자가 올바른지 확인
-        assertEquals(sender.getMemberIdx(), senderErrandStatusEntity.getSenderIdx());
-        assertEquals(recipient.getMemberIdx(), senderErrandStatusEntity.getRecipientIdx());
+        assertEquals(sender.getMemberIdx(), senderErrandDetailEntity.getSenderIdx());
+        assertEquals(recipient.getMemberIdx(), senderErrandDetailEntity.getRecipientIdx());
 
         // 발신자, 수신자의 심부름 정보가 같은지 검증
         assertNotEquals(senderErrandEntity.getMemberEntity(), recipientErrandEntity.getMemberEntity());
@@ -122,10 +122,10 @@ public class ErrandAcceptRefuseTest {
         assertEquals(senderErrandEntity.getPeriod(), recipientErrandEntity.getPeriod());
         assertEquals(senderErrandEntity.getLocation(), recipientErrandEntity.getLocation());
 
-        assertEquals(senderErrandStatusEntity.getErrandStatusIdx(), recipientErrandStatusEntity.getErrandStatusIdx());
-        assertEquals(senderErrandStatusEntity.getSenderIdx(), recipientErrandStatusEntity.getSenderIdx());
-        assertEquals(senderErrandStatusEntity.getRecipientIdx(), recipientErrandStatusEntity.getRecipientIdx());
-        assertEquals(ErrandResponseStatus.ACCEPT, recipientErrandStatusEntity.getErrandResponseStatus());
+        assertEquals(senderErrandDetailEntity.getErrandDetailIdx(), recipientErrandDetailEntity.getErrandDetailIdx());
+        assertEquals(senderErrandDetailEntity.getSenderIdx(), recipientErrandDetailEntity.getSenderIdx());
+        assertEquals(senderErrandDetailEntity.getRecipientIdx(), recipientErrandDetailEntity.getRecipientIdx());
+        assertEquals(ErrandResponseStatus.ACCEPT, recipientErrandDetailEntity.getErrandResponseStatus());
     }
 
     @Test @DisplayName("심부름 수락시 해당 심부름이 존재하지 않을 떄 PlanNotFoundException검증")
@@ -171,9 +171,9 @@ public class ErrandAcceptRefuseTest {
 
         // 발신자가 심부름 보냄
         ErrandEntity senderErrandEntity = sendErrand(sender);
-        ErrandStatusEntity senderErrandStatusEntity = senderErrandEntity.getErrandStatusEntity();
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
         long errandIdx = senderErrandEntity.getPlanIdx();
-        long errandStatusIdx = senderErrandStatusEntity.getErrandStatusIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
 
         log.info("========= When =========");
         //로그인 후 sender의 심부름을 수락함

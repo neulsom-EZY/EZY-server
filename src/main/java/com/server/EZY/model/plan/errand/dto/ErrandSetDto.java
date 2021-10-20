@@ -4,7 +4,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
-import com.server.EZY.model.plan.errand.ErrandStatusEntity;
+import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -22,13 +22,13 @@ public class ErrandSetDto {
     @NotNull
     private String recipient;
 
-    public ErrandEntity saveToEntity(MemberEntity memberEntity, ErrandStatusEntity errandStatusEntity){
+    public ErrandEntity saveToEntity(MemberEntity memberEntity, ErrandDetailEntity errandDetailEntity){
         return ErrandEntity.builder()
                 .memberEntity(memberEntity)
                 .tagEntity(null)
                 .planInfo(planInfo)
                 .period(period)
-                .errandStatusEntity(errandStatusEntity)
+                .errandDetailEntity(errandDetailEntity)
                 .location(location)
                 .build();
     }
