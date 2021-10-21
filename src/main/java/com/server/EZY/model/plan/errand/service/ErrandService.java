@@ -46,5 +46,5 @@ public interface ErrandService {
      * @param errandIdx 거절할 errandIdx(planIdx)
      * @author 정시원
      */
-    void completionErrand(long errandIdx);
+    void completionErrand(long errandIdx) throws FirebaseMessagingException;
 }

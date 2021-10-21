@@ -3,6 +3,7 @@ package com.server.EZY.model.plan.errand.service;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.enum_type.PlanType;
@@ -143,7 +144,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmPurposeType(FcmPurposeType.심부름)
                 .fcmRole(FcmRole.받는사람)
                 .build();
-        fcmActiveSender.sendRefuseErrandFcmToSender(fcmSourceDto);
+        fcmActiveSender.sendCompletionErrandFcmToRecipient(fcmSourceDto);
     }
 
     /**
@@ -154,17 +155,27 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 정시원
      */
     @Override
-    public void completionErrand(long errandIdx) {
+    public void completionErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
                         () -> new PlanNotFoundException(PlanType.심부름)
                 );
         ErrandDetailEntity errandDetailEntity = errandEntity.getErrandDetailEntity();
-        MemberEntity currentMember = currentUserUtil.getCurrentUser();
+        MemberEntity sender = currentUserUtil.getCurrentUser();
+        MemberEntity recipient = memberRepository.findById(errandDetailEntity.getRecipientIdx()).orElseThrow(MemberNotFoundException::new);
 
-        checkSenderByErrand(errandDetailEntity, currentMember, InvalidAccessException::new);
+        checkSenderByErrand(errandDetailEntity, sender, InvalidAccessException::new);
 
         errandDetailEntity.updateErrandStatus(ErrandStatus.COMPLETION);
+
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(FcmRole.받는사람)
+                .build();
+
+        fcmActiveSender.sendCompletionErrandFcmToRecipient(fcmSourceDto);
     }
 
     /**
