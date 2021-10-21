@@ -15,7 +15,7 @@ import javax.persistence.*;
 /**
  * 심부름 일정을 저장하는 Entity이다.<br>
  * 심부름 일정 추가시 수신자/발신자 총 2개의 컬럼이 추가되므로 이를 하나로 식별할 수 있게
- * ErrandStatusEntity로 연관관계를 맺어 두개의 컬럼을 하나의 심부름으로 식별할 수 있다.
+ * ErrandDetailEntity로 연관관계를 맺어 두개의 컬럼을 하나의 심부름으로 식별할 수 있다.
  * @author 정시원
  * @version 1.0.0
  * @since 1.0.0
@@ -27,7 +27,7 @@ import javax.persistence.*;
 public class ErrandEntity extends PlanEntity {
 
     @ManyToOne @JoinColumn(name = "errand_status_id", nullable = false, updatable = false)
-    private ErrandStatusEntity errandStatusEntity;
+    private ErrandDetailEntity errandDetailEntity;
 
     private String location;
 
@@ -37,14 +37,14 @@ public class ErrandEntity extends PlanEntity {
      * @param tagEntity 심부름의 태그를 지정하는 TagEntity타입의 객체
      * @param planInfo 심부름의 기본적인 정보(title, explanation)을 가지고 있는 PlanInfo타입의 객체
      * @param period 심부름의 시작/종료(startTime, endTime) 시간을 가지고 있는 Period타입의 객체
-     * @param errandStatusEntity 심부름의 상태 및 유저정보들을 가지고 있는 Entity
+     * @param errandDetailEntity 심부름의 상태 및 유저정보들을 가지고 있는 Entity
      * @param location 심부름의 위치를 나타내는 location
      * @author 정시원
      */
     @Builder
-    public ErrandEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, ErrandStatusEntity errandStatusEntity, String location){
+    public ErrandEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, ErrandDetailEntity errandDetailEntity, String location){
         super(memberEntity, tagEntity, planInfo, period);
-        this.errandStatusEntity = errandStatusEntity;
+        this.errandDetailEntity = errandDetailEntity;
         this.location = location;
     }
 
@@ -67,7 +67,7 @@ public class ErrandEntity extends PlanEntity {
                 .tagEntity(null)
                 .planInfo(planInfo)
                 .period(period)
-                .errandStatusEntity(errandStatusEntity)
+                .errandDetailEntity(errandDetailEntity)
                 .location(location)
                 .build();
         clonedErrandEntity.setPlanIdx(null);

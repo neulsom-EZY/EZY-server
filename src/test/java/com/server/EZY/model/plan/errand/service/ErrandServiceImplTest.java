@@ -8,9 +8,10 @@ import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
-import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
+import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.notification.service.FirebaseMessagingService;
 import com.server.EZY.util.CurrentUserUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Slf4j
 class ErrandServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -78,7 +80,7 @@ class ErrandServiceImplTest {
 
     @Test @DisplayName("심부름이 잘 저장되나요?")
     void 심부름_저장_조지기() throws Exception {
-        //Given
+        log.info("==========Given 심부름 세팅==========");
         ErrandSetDto errandSetDto = ErrandSetDto.builder()
                 .location("수완스타벅스")
                 .period(new Period(
@@ -89,7 +91,7 @@ class ErrandServiceImplTest {
                 .recipient("@kim")
                 .build();
 
-        // 받을사람 유저 저장
+        log.info("===========Given 받는사람 회원 세팅============");
         MemberEntity kimEntity = MemberEntity.builder()
                 .username("@kim")
                 .password("1234")
@@ -97,12 +99,13 @@ class ErrandServiceImplTest {
                 .fcmToken(testingFcmToken)
                 .build();
 
-        //When
+        log.info("========= When 받는사람 회원 저장 ==========");
         MemberEntity kimEntitySaved = memberRepository.save(kimEntity);
+        log.info("========= When 심부름 저장 ==========");
         ErrandEntity errandEntity = errandService.sendErrand(errandSetDto);
 
         //Then
-        assertEquals(ErrandResponseStatus.NOT_READ, errandEntity.getErrandStatusEntity().getErrandResponseStatus());
-        assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandStatusEntity().getRecipientIdx());
+        assertEquals(ErrandStatus.NONE, errandEntity.getErrandDetailEntity().getErrandStatus());
+        assertEquals(memberRepository.findByUsername("@kim").getMemberIdx(), errandEntity.getErrandDetailEntity().getRecipientIdx());
     }
 }

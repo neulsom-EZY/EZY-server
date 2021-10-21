@@ -3,7 +3,6 @@ package com.server.EZY.model.member.service.jwt;
 import com.server.EZY.exception.token.exception.InvalidTokenException;
 import com.server.EZY.exception.token.exception.RefreshTokenHeaderIsEmpty;
 import com.server.EZY.exception.token.exception.TokenLoggedOutException;
-import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
@@ -17,6 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * 토큰 재발급 서비스 로직 구현부
+ *
+ * @version 1.0.0
+ * @author 배태현
+ */
 @RequiredArgsConstructor
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
@@ -29,7 +34,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     /**
      * accessToken에서 가져온 username과, refreshToken으로 새로운 accessToken과 refreshToken을 생성하는 메서드
+     *
      * @param nickname, refreshToken
+     * @exception RefreshTokenHeaderIsEmpty refreshToken header가 비어있을 때
+     * @exception TokenLoggedOutException redis에 refreshToken이 비어있을 때 (로그아웃 시 redis에 refreshToken을 지움)
+     * @exception InvalidTokenException redis의 refreshToken과 클라이언트에서 넘어온 refreshToken이 일치하지 않을 때
      * @return Map<String, String> (username, newAccessToken, newRefreshToken)
      * @author 배태현
      */

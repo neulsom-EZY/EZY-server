@@ -27,10 +27,11 @@ public class SecurityTest {
     @Test
     public void tokenTest() {
 
-        MemberDto memberDto = new MemberDto();
-        memberDto.setUsername("배태현");
-        memberDto.setPhoneNumber("010-1234-1234");
-        memberDto.setPassword("1234");
+        MemberDto memberDto = MemberDto.builder()
+                .username("배태현")
+                .phoneNumber("01012341234")
+                .password("1234")
+                .build();
 
         String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
 

@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
+/**
+ * 문자 서비스 로직 구현부
+ *
+ * @version 1.0.0
+ * @author 배태현
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -24,8 +30,9 @@ public class MessageServiceImpl implements MessageService {
 
     /**
      * 메세지로 인증번호를 보내는 서비스로직
-     * @param phoneNumber
-     * @param authKey
+     *
+     * @param phoneNumber phoneNumber
+     * @param authKey authKey
      * @author 배태현
      */
     @Override
@@ -37,22 +44,16 @@ public class MessageServiceImpl implements MessageService {
         params.put("from", "07080283503");
         params.put("type", "SMS");
         params.put("text", "[EZY] 인증번호 "+ authKey +" 를 입력하세요.");
-        params.put("app_version", "test app 1.2");
+        params.put("app_version", "1.0.0");
 
-        try {
-            JSONObject obj = coolsms.send(params);
-            log.debug(obj.toString());
-        } catch (CoolsmsException e) {
-            log.debug(e.getMessage());
-            log.debug(String.valueOf(e.getCode()));
-            throw new AuthenticationNumberTransferFailedException();
-        }
+        sendSms(coolsms, params);
     }
 
     /**
      * 메세지로 username을 보내는 서비스로직
-     * @param phoneNumber
-     * @param username
+     *
+     * @param phoneNumber phoneNumber
+     * @param username username
      * @author 배태현
      */
     @Override
@@ -64,14 +65,50 @@ public class MessageServiceImpl implements MessageService {
         params.put("from", "07080283503");
         params.put("type", "SMS");
         params.put("text", "[EZY] 회원님의 닉네임은 '"+ username +"' 입니다.");
-        params.put("app_version", "test app 1.2");
+        params.put("app_version", "1.0.0");
 
+        sendSms(coolsms, params);
+    }
+
+    /**
+     * 실질적으로 SMS를 전송하는 로직
+     *
+     * @param coolsms coolsms
+     * @param params HashMap<String, String> params (사용자의 전화번호 등이 담긴 정보)
+     * @exception AuthenticationNumberTransferFailedException 인증번호 전송에 실패했을 때
+     * @exception CoolsmsException CoolsmsException
+     * @author 배태현
+     */
+    private void sendSms(Message coolsms, HashMap<String, String> params) {
         try {
             JSONObject obj = coolsms.send(params);
             log.debug(obj.toString());
+
+            if (obj.get("success_count").toString().equals("0")) {
+                throw new AuthenticationNumberTransferFailedException();
+            }
+
+            getSmsCash(coolsms); // Coolsms 잔액정보 조회
         } catch (CoolsmsException e) {
             log.debug(e.getMessage());
             log.debug(String.valueOf(e.getCode()));
         }
+    }
+
+    /**
+     * Coolsms 남은 잔액정보를 조회하는 메서드
+     *
+     * @param coolsms coolsms
+     * @throws CoolsmsException CoolsmsException
+     * @author 배태현
+     */
+    private void getSmsCash(Message coolsms) throws CoolsmsException {
+        JSONObject result = coolsms.balance();
+
+        String cash = result.get("cash").toString();
+        String point = result.get("point").toString();
+
+        log.info("Coolsms 잔액정보 : {} 원", cash);
+        log.info("Coolsms 잔여포인트 : {} point", point);
     }
 }

@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand.controller;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.service.ErrandService;
 import com.server.EZY.response.ResponseService;

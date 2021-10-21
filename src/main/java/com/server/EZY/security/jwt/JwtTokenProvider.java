@@ -1,9 +1,5 @@
 package com.server.EZY.security.jwt;
 
-import com.server.EZY.exception.token.exception.AccessTokenExpiredException;
-import com.server.EZY.exception.token.exception.AuthorizationHeaderIsEmpty;
-import com.server.EZY.exception.token.exception.RefreshTokenHeaderIsEmpty;
-import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.security.authentication.MyUserDetails;
 import io.jsonwebtoken.*;
@@ -13,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -22,21 +17,30 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * JWT 관련 Provider
+ *
+ * @version 1.0.0
+ * @author 배태현
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+
     @Value("${security.jwt.token.secretKey}")
     private String secretKey;
 
     /**
      * accessToken의 만료기간 (1시간 - 1hour)
+     *
      * @author 배태현
      */
     private static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60;
 
     /**
      * refreshToken의 만료기간 (6달 - 6month)
+     *
      * @author 배태현
      */
     public static long REFRESH_TOKEN_VALIDATION_TIME = TOKEN_VALIDATION_SECOND * 24 * 180;
@@ -45,6 +49,7 @@ public class JwtTokenProvider {
 
     /**
      * secretKey를 Base64인코딩방식을 사용하여 인코딩하는 메서드
+     *
      * @author 배태현
      */
     @PostConstruct
@@ -79,6 +84,7 @@ public class JwtTokenProvider {
 
     /**
      * refreshToken을 만드는 메소드이며 보안상의 이유로 claim에 아무정보도 들어가지 않습니다.
+     *
      * @return refreshToken
      * @author 배태현
      */
@@ -98,8 +104,9 @@ public class JwtTokenProvider {
 
     /**
      * 사용자의 인증정보를 조회하는 메소드입니다.
+     *
      * @param token 사용자의 인증정보를 조회 할 token
-     * @return 인증정보 (true || false)
+     * @return Authentication
      * @author 배태현
      */
     public Authentication getAuthentication(String token){
@@ -109,6 +116,7 @@ public class JwtTokenProvider {
 
     /**
      * token에서 username을 추출하는 메서드입니다.
+     *
      * @param token token
      * @return username
      * @author 배태현
@@ -119,6 +127,7 @@ public class JwtTokenProvider {
 
     /**
      * Header에서 accessToken을 가져오는 메소드입니다.
+     *
      * @param req HttpServletRequest
      * @return accesstoken (header가 비어있다면 null)
      * @author 배태현
@@ -134,6 +143,7 @@ public class JwtTokenProvider {
 
     /**
      * Header에서 refreshToken을 가져오는 메소드입니다.
+     *
      * @param req HttpServletRequest
      * @return refreshToken (header가 비어있다면 null)
      * @author 배태현
@@ -149,6 +159,7 @@ public class JwtTokenProvider {
 
     /**
      * JWT claim을 추출하는 메서드입니다.
+     *
      * @param token
      * @return Jwts - claims
      * @throws ExpiredJwtException JWT의 유효기간이 만료되었을 때
@@ -169,7 +180,8 @@ public class JwtTokenProvider {
 
     /**
      * 토큰의 유효기간 만료를 확인하는 메서드
-     * @param token
+     *
+     * @param token token
      * @return true (토큰의 유효기간이 만료되었을 경우) | false (토큰의 유효기간이 만료되지 않았을 경우)
      * @author 배태현
      */
@@ -180,7 +192,8 @@ public class JwtTokenProvider {
 
     /**
      * 토큰을 검증하는 메서드
-     * @param token
+     *
+     * @param token token
      * @return true (토큰이 제대로 검증 되었을 경우) | false (토큰에 문제가 있을 경우)
      * @author 배태현
      */
