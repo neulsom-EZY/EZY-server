@@ -38,4 +38,13 @@ public interface ErrandService {
      * @author 정시원
      */
     void refuseErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 심부름이 성공한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 COMPLETION 으로 변경되고, 수신자에게 성공 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    void completionErrand(long errandIdx);
 }

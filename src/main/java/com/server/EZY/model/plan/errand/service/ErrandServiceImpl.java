@@ -147,6 +147,40 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
+     * 심부름이 성공한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 COMPLETION 으로 변경되고, 수신자에게 성공 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    @Override
+    public void completionErrand(long errandIdx) {
+        ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
+                .orElseThrow(
+                        () -> new PlanNotFoundException(PlanType.심부름)
+                );
+        ErrandDetailEntity errandDetailEntity = errandEntity.getErrandDetailEntity();
+        MemberEntity currentMember = currentUserUtil.getCurrentUser();
+
+        checkSenderByErrand(errandDetailEntity, currentMember, InvalidAccessException::new);
+
+        errandDetailEntity.updateErrandStatus(ErrandStatus.COMPLETION);
+    }
+
+    /**
+     * 이 심부름의 발신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
+     *
+     * @param errandDetailEntity - 해당 심부름의 발신자의 정보를 가지고 있는 ErrandDetailEntity
+     * @param memberEntity - 해당심부름의 발신자인지 검증할 MemberEntity
+     * @param exceptionSupplier 해당 심부름의 발신자가 아닐경우 던질 exception supplier
+     * @author 정시원
+     */
+    private void checkSenderByErrand(ErrandDetailEntity errandDetailEntity, MemberEntity memberEntity, Supplier<? extends RuntimeException> exceptionSupplier){
+        if(!errandDetailEntity.getSenderIdx().equals(memberEntity.getMemberIdx()))
+            throw exceptionSupplier.get();
+    }
+
+    /**
      * 이 심부름의 수신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
      *
      * @param errandDetailEntity - 해당 심부름의 수신자의 정보를 가지고 있는 ErrandDetailEntity
