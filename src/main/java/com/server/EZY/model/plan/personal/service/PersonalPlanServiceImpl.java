@@ -88,6 +88,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * 하나의 personalPlan을 "단건 조회"하기 위해 사용되는 비즈니스 로직입니다.
      * @param planIdx
      * @return PersonalPlanEntity
+     * @author 전지환
      */
     @Override
     public PersonalPlanDto.PersonalPlanDetails getThisPersonalPlan(Long planIdx) {

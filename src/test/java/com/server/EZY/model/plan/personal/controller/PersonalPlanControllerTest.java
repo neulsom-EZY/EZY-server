@@ -7,6 +7,7 @@ import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.testConfig.AbstractControllerTest;
 import com.server.EZY.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,7 +80,7 @@ class PersonalPlanControllerTest extends AbstractControllerTest {
 
     @Test
     public void savePersonalPlan() throws Exception {
-        PersonalPlanSetDto personalPlanSetDto = PersonalPlanSetDto.builder()
+        PersonalPlanDto.PersonalPlanSet personalPlanSetDto = PersonalPlanDto.PersonalPlanSet.builder()
                 .planInfo(new PlanInfo("와우껌", "좋아요", "광주광역시"))
                 .period(new Period(
                                 LocalDateTime.of(2021, 7, 24, 1, 30),
@@ -122,7 +123,7 @@ class PersonalPlanControllerTest extends AbstractControllerTest {
 
     @Test @Disabled
     public void updateThisPersonalPlan() throws Exception{
-        PersonalPlanSetDto personalPlanSetDto = PersonalPlanSetDto.builder()
+        PersonalPlanDto.PersonalPlanSet personalPlanSetDto = PersonalPlanDto.PersonalPlanSet.builder()
                 .planInfo(new PlanInfo("이걸", "변경할거야", "광주광역시"))
                 .period(new Period(
                                 LocalDateTime.of(2021, 7, 24, 1, 30),
