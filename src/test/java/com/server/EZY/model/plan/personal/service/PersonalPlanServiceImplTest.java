@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
-@Commit
+@Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PersonalPlanServiceImplTest {
     @Autowired

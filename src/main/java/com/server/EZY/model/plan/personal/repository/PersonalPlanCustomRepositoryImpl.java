@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPlanEntity;
+import static com.server.EZY.model.plan.QPlanEntity.planEntity;
 import static com.server.EZY.model.plan.tag.QTagEntity.tagEntity;
 
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
@@ -64,7 +65,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                 .from(personalPlanEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity),
-                        personalPlanEntity.planIdx.eq(planIdx))
-                .fetchOne();
+                        personalPlanEntity.planIdx.eq(planIdx)
+                ).fetchOne();
     }
 }
