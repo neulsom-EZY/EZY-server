@@ -10,6 +10,13 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * 개인일정이라는 대분류를 가지고 세부적인 dto를 기술합니다.
+ *
+ * @since 1
+ * @version 1
+ * @author 전지환
+ */
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class PersonalPlanDto {
     /**
@@ -53,6 +60,13 @@ public class PersonalPlanDto {
 
     }
 
+    /**
+     * 특정 개인일정 상세조회에 사용되는 dto 입니다.
+     *
+     * @since 1
+     * @version 1
+     * @author 전지환
+     */
     @Getter
     @NoArgsConstructor(access = AccessLevel.PUBLIC)
     @AllArgsConstructor
