@@ -10,6 +10,7 @@ import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.util.CurrentUserUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -30,7 +32,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+@Slf4j
+@Commit
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PersonalPlanServiceImplTest {
     @Autowired
@@ -118,7 +121,7 @@ class PersonalPlanServiceImplTest {
 
     @Test @DisplayName("하나의 개인일정 단건조회가 가능한가요?")
     void getThisMyPersonalPlan(){
-        // Given
+        log.info("========== Given just personalPlanList ========");
         List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
                 () -> PersonalPlanEntity.builder()
                         .memberEntity(savedMemberEntity)
@@ -131,12 +134,24 @@ class PersonalPlanServiceImplTest {
 
         ).limit(5).collect(Collectors.toList());
 
-        // When
-        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
-        PersonalPlanDto.PersonalPlanDetails thisPersonalPlan = personalPlanService.getThisPersonalPlan(planEntities.get(3).getPlanIdx());
+        log.info("========== Given my own personalPlan ===========");
+        PersonalPlanEntity myPersonalPlan = PersonalPlanEntity.builder()
+                .memberEntity(savedMemberEntity)
+                .repetition(false)
+                .period(new Period(
+                                LocalDateTime.of(2021, 7, 24, 1, 30),
+                                LocalDateTime.of(2021, 7, 24, 1, 30)
+                        )
+                ).planInfo(new PlanInfo(RandomStringUtils.randomAlphabetic(10), "오하이오", "광주광역시")).build();
 
-        // Then
-        assertTrue(thisPersonalPlan.getPlanInfo().getExplanation() == "오하이오");
+        log.info("================= When save just personalPlanEntities ===============");
+        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
+        log.info("============== When save my personalPlan ===================");
+        PersonalPlanEntity myPlanEntity = personalPlanRepository.save(myPersonalPlan);
+
+        log.info("============= Then find my personalPlan ============");
+        PersonalPlanDto.PersonalPlanDetails personalPlanDetailsByPlanIdx = personalPlanRepository.getPersonalPlanDetailsByPlanIdx(savedMemberEntity, myPersonalPlan.getPlanIdx());
+        assertNotNull(personalPlanDetailsByPlanIdx);
     }
 
     @Order(2)

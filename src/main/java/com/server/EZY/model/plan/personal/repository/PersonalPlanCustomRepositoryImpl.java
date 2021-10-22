@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPlanEntity;
+import static com.server.EZY.model.plan.tag.QTagEntity.tagEntity;
 
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
 
     @Override
     @Transactional(readOnly = true)
-    public PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPersonalPlanIdx(MemberEntity memberEntity, Long personalPlanIdx){
+    public PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx){
         return jpaQueryFactory
                 .select(Projections.constructor(PersonalPlanDto.PersonalPlanDetails.class,
                         personalPlanEntity.planInfo,
@@ -63,7 +64,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                 .from(personalPlanEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity),
-                        personalPlanEntity.planIdx.eq(personalPlanIdx))
+                        personalPlanEntity.planIdx.eq(planIdx))
                 .fetchOne();
     }
 }
