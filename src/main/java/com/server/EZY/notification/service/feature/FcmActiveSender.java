@@ -60,7 +60,7 @@ public class FcmActiveSender {
 
     public void sendCompletionErrandFcmToRecipient(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
         FcmMessage.FcmRequest request =
-                fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getSender(), FcmActionSelector.ErrandAction.완료);
+                fcmMakerService.makeErrandConfirmFcmMessageToRecipient(fcmSourceDto, FcmActionSelector.ErrandAction.완료);
 
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
     }
