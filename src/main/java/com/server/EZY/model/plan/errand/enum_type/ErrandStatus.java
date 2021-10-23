@@ -8,5 +8,5 @@ package com.server.EZY.model.plan.errand.enum_type;
  * @since 1.0.0
  */
 public enum ErrandStatus {
-    NONE, ACCEPT, REJECT, CANCEL, COMPLETION, GIVE_UP
+    NONE, ACCEPT, REJECT, CANCEL, COMPLETION, FAIL, GIVE_UP
 }
