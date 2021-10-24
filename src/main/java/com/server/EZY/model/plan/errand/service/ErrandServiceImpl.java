@@ -187,8 +187,7 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 정시원
      */
     private void checkSenderByErrand(ErrandDetailEntity errandDetailEntity, MemberEntity memberEntity, Supplier<? extends RuntimeException> exceptionSupplier){
-        if(!errandDetailEntity.getSenderIdx().equals(memberEntity.getMemberIdx()))
-            throw exceptionSupplier.get();
+        if(!errandDetailEntity.getSenderIdx().equals(memberEntity.getMemberIdx())) throw exceptionSupplier.get();
     }
 
     /**
