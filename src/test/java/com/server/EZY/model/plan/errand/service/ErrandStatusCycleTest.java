@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Slf4j
-public class ErrandAcceptRefuseTest {
+public class ErrandStatusCycleTest {
 
     @Autowired private MemberRepository memberRepository;
     @Autowired private ErrandService errandService;
@@ -217,5 +217,28 @@ public class ErrandAcceptRefuseTest {
         assertThrows(PlanNotFoundException.class,
                 () -> errandService.refuseErrand(errandIdx)
         );
+    }
+
+    @Test @DisplayName("심부름 완료 테스트")
+    void 심부름_완료_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
+
+        log.info("========= When =========");
+        //로그인 후 sender의 심부름을 수락함
+        signInMember(sender);
+        errandService.completionErrand(errandIdx);
+
+        log.info("========= Then =========");
+        assertEquals(senderErrandDetailEntity.getErrandStatus(), ErrandStatus.COMPLETION);
+
     }
 }

@@ -3,6 +3,7 @@ package com.server.EZY.model.plan.errand.service;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
+import com.server.EZY.exception.user.exception.MemberNotFoundException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.enum_type.PlanType;
@@ -147,6 +148,49 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
+     * 심부름이 성공한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 COMPLETION 으로 변경되고, 수신자에게 성공 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    @Override
+    public void completionErrand(long errandIdx) throws FirebaseMessagingException {
+        ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
+                .orElseThrow(
+                        () -> new PlanNotFoundException(PlanType.심부름)
+                );
+        ErrandDetailEntity errandDetailEntity = errandEntity.getErrandDetailEntity();
+        MemberEntity sender = currentUserUtil.getCurrentUser();
+        MemberEntity recipient = memberRepository.findById(errandDetailEntity.getRecipientIdx()).orElseThrow(MemberNotFoundException::new);
+
+        checkSenderByErrand(errandDetailEntity, sender, InvalidAccessException::new);
+
+        errandDetailEntity.updateErrandStatus(ErrandStatus.COMPLETION);
+
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(FcmRole.받는사람)
+                .build();
+
+        fcmActiveSender.sendCompletionErrandFcmToRecipient(fcmSourceDto);
+    }
+
+    /**
+     * 이 심부름의 발신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
+     *
+     * @param errandDetailEntity - 해당 심부름의 발신자의 정보를 가지고 있는 ErrandDetailEntity
+     * @param memberEntity - 해당심부름의 발신자인지 검증할 MemberEntity
+     * @param exceptionSupplier 해당 심부름의 발신자가 아닐경우 던질 exception supplier
+     * @author 정시원
+     */
+    private void checkSenderByErrand(ErrandDetailEntity errandDetailEntity, MemberEntity memberEntity, Supplier<? extends RuntimeException> exceptionSupplier){
+        if(!errandDetailEntity.getSenderIdx().equals(memberEntity.getMemberIdx())) throw exceptionSupplier.get();
+    }
+
+    /**
      * 이 심부름의 수신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
      *
      * @param errandDetailEntity - 해당 심부름의 수신자의 정보를 가지고 있는 ErrandDetailEntity
@@ -155,7 +199,6 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 정시원
      */
     private void checkRecipientByErrand(ErrandDetailEntity errandDetailEntity, MemberEntity memberEntity, Supplier<? extends RuntimeException> exceptionSupplier){
-        if(!errandDetailEntity.getRecipientIdx().equals(memberEntity.getMemberIdx()))
-            throw exceptionSupplier.get();
+        if(!errandDetailEntity.getRecipientIdx().equals(memberEntity.getMemberIdx())) throw exceptionSupplier.get();
     }
 }
