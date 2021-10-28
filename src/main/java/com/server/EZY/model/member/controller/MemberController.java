@@ -5,7 +5,6 @@ import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.response.result.SingleResult;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,10 @@ import javax.validation.Valid;
 import java.util.Map;
 
 /**
- * 인증/인가 전 사용하는 컨트롤러
+ * 인증/인가 전 사용하는 회원 컨트롤러
+ *
+ * @version 1.0.0
+ * @author 배태현
  */
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +29,10 @@ public class MemberController {
 
     /**
      * 이미 가입된 username인지 check 해주는 controller
+     *
      * @param usernameDto username
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PostMapping("/verified/username")
     @ApiOperation(value = "username 존재 여부 확인", notes = "username 존재 여부 확인")
@@ -39,8 +43,10 @@ public class MemberController {
 
     /**
      * 이미 가입된 phoneNumber인지 check 해주는 controller
+     *
      * @param phoneNumberDto phoneNumber
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PostMapping("/verified/phone")
     @ApiOperation(value = "phoneNumber 존재 여부 확인", notes = "phoneNumber 존재 여부 확인")
@@ -51,6 +57,7 @@ public class MemberController {
 
     /**
      * 회원가입 controller
+     *
      * @param memberDto userDto(username, password, phoneNumber, fcmToken)
      * @return CommonResult - SuccessResult
      * @author 배태현
@@ -65,6 +72,7 @@ public class MemberController {
 
     /**
      * 로그인 controller
+     *
      * @param loginDto loginDto(username, password)
      * @return SingleResult (username ,accessToken, refreshToken)
      * @author 배태현
@@ -79,6 +87,7 @@ public class MemberController {
 
     /**
      * 전화번호로 인증번호를 전송하는 controller
+     *
      * @param phoneNumberDto phoneNumber
      * @return CommonResult - SuccessResult
      * @author 배태현
@@ -93,6 +102,7 @@ public class MemberController {
 
     /**
      * 받은 인증번호가 맞는지 인증하는 controller
+     *
      * @param keyDto key
      * @return CommonResult - SuccessResult
      * @author 배태현
@@ -107,6 +117,7 @@ public class MemberController {
 
     /**
      * 비밀번호 재설정 전 회원정보, 인증번호를 전송하는 controller
+     *
      * @param memberAuthKeySendInfoDto memberAuthKeySendInfoDto(username, newPassword)
      * @return CommonResult - SuccessResult
      * @author 배태현
@@ -121,6 +132,7 @@ public class MemberController {
 
     /**
      * 인증번호 인증, 비밀번호 재설정 controller
+     *
      * @param passwordChangeDto passwordChangeDto(key, username, newPassword)
      * @return CommonResult - SuccessResult
      * @author 배태현
@@ -133,6 +145,13 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 문자로 username을 받는 컨트롤러
+     *
+     * @param phoneNumberDto phoneNumberDto(phoneNumber)
+     * @return CommonResult - SuccessResult
+     * @author 배태현
+     */
     @PostMapping("/find/username")
     @ApiOperation(value = "username 찾기 (문자로 username 받기)", notes = "username 찾기 (문자로 username 받기)")
     @ResponseStatus( HttpStatus.OK )

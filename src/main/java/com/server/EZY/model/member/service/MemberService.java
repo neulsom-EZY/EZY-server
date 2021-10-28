@@ -5,7 +5,12 @@ import com.server.EZY.model.member.dto.*;
 
 import java.util.Map;
 
-
+/**
+ * 회원 관련 서비스 로직 선언부
+ *
+ * @version 1.0.0
+ * @author 배태현
+ */
 public interface MemberService {
 
     boolean isExistUsername(String username);

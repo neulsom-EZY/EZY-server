@@ -4,7 +4,6 @@ import com.server.EZY.model.member.dto.*;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
-import com.server.EZY.security.jwt.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
- * 인증/인가 후 사용할 수 있는 컨트롤러
+ * 인증/인가 후 사용할 수 있는 회원 컨트롤러
+ *
+ * @version 1.0.0
+ * @author 배태현
  */
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class CertifiedMemberController {
 
     /**
      * 전화번호 변경 controller
+     *
      * @param phoneNumberChangeDto (username, newPhoneNumber)
      * @return CommonResult - SuccessResult
      * @author 배태현
@@ -46,8 +49,10 @@ public class CertifiedMemberController {
 
     /**
      * username 변경 controller
+     *
      * @param usernameDto (username, newUsername)
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PutMapping("/change/username")
     @ApiOperation(value = "username 변경", notes = "username 변경")
@@ -63,6 +68,7 @@ public class CertifiedMemberController {
 
     /**
      * 로그아웃 controller
+     *
      * @param request HttpServletRequest
      * @return CommonResult - SuccessResult
      * @author 배태현
@@ -81,6 +87,7 @@ public class CertifiedMemberController {
 
     /**
      * 회원탈퇴 controller
+     *
      * @param deleteUserDto (username, password)
      * @return CommonResult -  SuccessResult
      * @author 배태현
@@ -99,6 +106,7 @@ public class CertifiedMemberController {
 
     /**
      * fcmToken 변경 controller
+     *
      * @param fcmTokenDto (fcmToken)
      * @return CommonResult - SuccessResult
      * @author 배태현

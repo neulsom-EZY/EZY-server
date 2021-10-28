@@ -24,7 +24,8 @@ public class FcmActiveSender {
      * @author 전지환
      */
     public void sendRequestErrandFcmToRecipient(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
-        FcmMessage.FcmRequest request = fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getSender(), FcmActionSelector.ErrandAction.요청);
+        FcmMessage.FcmRequest request =
+                fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getSender(), FcmActionSelector.ErrandAction.요청);
         // 실제로 push를 전송하는 구간
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
     }
@@ -37,7 +38,8 @@ public class FcmActiveSender {
      * @author 정시원
      */
     public void sendAcceptErrandFcmToSender(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
-        FcmMessage.FcmRequest request = fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.승인);
+        FcmMessage.FcmRequest request =
+                fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.승인);
         // 실제로 push를 전송하는 구간
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
     }
@@ -50,9 +52,17 @@ public class FcmActiveSender {
      * @author 정시원
      */
     public void sendRefuseErrandFcmToSender(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
-        FcmMessage.FcmRequest request = fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.거절);
+        FcmMessage.FcmRequest request =
+                fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.거절);
 
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+    }
+
+    public void sendCompletionErrandFcmToRecipient(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+        FcmMessage.FcmRequest request =
+                fcmMakerService.makeErrandConfirmFcmMessageToRecipient(fcmSourceDto, FcmActionSelector.ErrandAction.완료);
+
+        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
     }
 
     /**

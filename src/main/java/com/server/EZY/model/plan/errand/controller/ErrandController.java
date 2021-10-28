@@ -56,32 +56,6 @@ public class ErrandController {
     }
 
     /**
-     * 심부름 수락하기
-     *
-     * @return 심부름 수락이 성공할 시 getSuccessResult
-     * @throws FirebaseMessagingException push알람이 실패할 때
-     * @author 정시원
-     */
-    @PostMapping("/accept/{errandIdx}")
-    public CommonResult acceptErrand(@PathVariable("errandIdx") long errandIdx) throws FirebaseMessagingException {
-        errandService.acceptErrand(errandIdx);
-        return responseService.getSuccessResult();
-    }
-
-    /**
-     * 심부름 거절하기
-     *
-     * @return 심부름 거절이 성공할 시 getSuccessResult
-     * @throws FirebaseMessagingException push알람이 실패할 때
-     * @author 정시원
-     */
-    @PostMapping("/refuse/{errandIdx}")
-    public CommonResult refuseErrand(@PathVariable("errandIdx") long errandIdx) throws FirebaseMessagingException {
-        errandService.refuseErrand(errandIdx);
-        return responseService.getSuccessResult();
-    }
-
-    /**
      * 심부름을 받은자가 삭제하는 Controller
      * @param errandIdx
      * @return

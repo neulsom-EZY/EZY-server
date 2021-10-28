@@ -1,6 +1,7 @@
 package com.server.EZY.model.plan.errand.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.plan.errand.ErrandEntity;
@@ -22,7 +23,7 @@ public interface ErrandService {
      * @param errandIdx 수락할 errandIdx(planIdx)
      * @return 수신자의 ErrandEntity
      * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
-     * @throws CustomException        PlanNotFound 해당 심부름이 존재하지 않을 때
+     * @throws PlanNotFoundException  해당 심부름이 존재하지 않을 때
      * @throws FirebaseMessagingException push알람이 실패할 때
      * @author 정시원
      */
@@ -37,4 +38,13 @@ public interface ErrandService {
      * @author 정시원
      */
     void refuseErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 심부름이 성공한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 COMPLETION 으로 변경되고, 수신자에게 성공 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    void completionErrand(long errandIdx) throws FirebaseMessagingException;
 }
