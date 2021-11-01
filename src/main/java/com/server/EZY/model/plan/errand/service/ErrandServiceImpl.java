@@ -179,6 +179,35 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
+     * 심부름을 수신자가 포기한다.
+     *
+     * @param errandIdx 포기할 심부름 Idx
+     * @throws FirebaseMessagingException push알람이 실패할 때
+     * @author 정시원
+     */
+    @Override
+    public void giveUpErrand(long errandIdx) throws FirebaseMessagingException {
+        ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
+                .orElseThrow(
+                        () -> new PlanNotFoundException(PlanType.심부름)
+                );
+        ErrandDetailEntity errandDetailEntity = errandEntity.getErrandDetailEntity();
+        MemberEntity sender = memberRepository.getById(errandDetailEntity.getSenderIdx());
+        MemberEntity recipient = currentUserUtil.getCurrentUser();
+
+        errandDetailEntity.updateErrandStatus(ErrandStatus.GIVE_UP);
+
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(FcmRole.받는사람)
+                .build();
+
+        //TODO 해당 심부름 포기 push알람 전송
+    }
+
+    /**
      * 이 심부름의 발신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
      *
      * @param errandDetailEntity - 해당 심부름의 발신자의 정보를 가지고 있는 ErrandDetailEntity
