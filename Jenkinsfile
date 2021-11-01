@@ -14,4 +14,8 @@ node {
         ./gradlew clean build
         '''
      }
+
+     stage('docker-compose'){
+        sh '''docker-compose up -d'''
+     }
 }
