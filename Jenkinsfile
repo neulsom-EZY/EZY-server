@@ -16,6 +16,6 @@ node {
      }
 
      stage('docker-compose'){
-        sh '''docker-compose up -d'''
+        sh '''/var/jenkins_home/workspace/EZY-Spring-Boot/docker-compose up -d'''
      }
 }
