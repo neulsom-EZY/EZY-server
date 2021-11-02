@@ -195,6 +195,8 @@ public class ErrandServiceImpl implements ErrandService{
         MemberEntity sender = memberRepository.getById(errandDetailEntity.getSenderIdx());
         MemberEntity recipient = currentUserUtil.getCurrentUser();
 
+        checkRecipientByErrand(errandDetailEntity, recipient, InvalidAccessException::new);
+
         errandDetailEntity.updateErrandStatus(ErrandStatus.GIVE_UP);
 
         FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
@@ -204,7 +206,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmRole(FcmRole.받는사람)
                 .build();
 
-        //TODO 해당 심부름 포기 push알람 전송
+        fcmActiveSender.sendGiveUpErrandFcmToSender(fcmSourceDto);
     }
 
     /**
