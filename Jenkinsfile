@@ -4,9 +4,9 @@ node {
      }
 
     stage('Application_Config'){
-        sh '''rm -rf /var/jenkins_home/workspace/EZY-Spring-Boot/src/main/resources/application.yml'''
-        sh '''cp /var/jenkins_home/ConfigDir/application.yml /var/jenkins_home/workspace/EZY-Spring-Boot/src/main/resources'''
-        sh '''cp /var/jenkins_home/ConfigDir/firebase-service-account.json /var/jenkins_home/workspace/EZY-Spring-Boot/src/main/resources'''
+        sh '''rm -rf {DELETE_APPLICATION}'''
+        sh '''cp {SETTING_APPLICATION} {SETTING_APPLICATION_LOCATION}'''
+        sh '''cp {SETTING_FIREBASE} {SETTING_FIREBASE_LOCATION}'''
     }
 
      stage('Build BackEnd') {
