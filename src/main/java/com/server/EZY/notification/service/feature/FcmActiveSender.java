@@ -27,7 +27,7 @@ public class FcmActiveSender {
         FcmMessage.FcmRequest request =
                 fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getSender(), FcmActionSelector.ErrandAction.요청);
         // 실제로 push를 전송하는 구간
-        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
+        firebaseMessagingService.sendToToken(request, findFcmTokenByUsername(fcmSourceDto.getRecipient()));
     }
 
     /**
@@ -41,7 +41,7 @@ public class FcmActiveSender {
         FcmMessage.FcmRequest request =
                 fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.승인);
         // 실제로 push를 전송하는 구간
-        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+        firebaseMessagingService.sendToToken(request, findFcmTokenByUsername(fcmSourceDto.getSender()));
     }
 
     /**
@@ -55,7 +55,7 @@ public class FcmActiveSender {
         FcmMessage.FcmRequest request =
                 fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.거절);
 
-        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+        firebaseMessagingService.sendToToken(request, findFcmTokenByUsername(fcmSourceDto.getSender()));
     }
 
     /**
@@ -68,7 +68,7 @@ public class FcmActiveSender {
         FcmMessage.FcmRequest request =
                 fcmMakerService.makeErrandConfirmFcmMessageToRecipient(fcmSourceDto, FcmActionSelector.ErrandAction.완료);
 
-        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
+        firebaseMessagingService.sendToToken(request, findFcmTokenByUsername(fcmSourceDto.getRecipient()));
     }
 
     /**
@@ -81,7 +81,7 @@ public class FcmActiveSender {
     public void sendGiveUpErrandFcmToSender(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException{
         FcmMessage.FcmRequest request =
                 fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.포기);
-        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+        firebaseMessagingService.sendToToken(request, findFcmTokenByUsername(fcmSourceDto.getSender()));
     }
 
     /**
@@ -91,7 +91,7 @@ public class FcmActiveSender {
      * @return recipientFcmToken
      * @author 전지환
      */
-    private String findRecipientFcmToken(String recipient){
+    private String findFcmTokenByUsername(String recipient){
         return memberRepository.findByUsername(recipient).getFcmToken();
     }
 }
