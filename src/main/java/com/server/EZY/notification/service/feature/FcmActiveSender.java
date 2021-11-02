@@ -58,6 +58,12 @@ public class FcmActiveSender {
         firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
     }
 
+    /**
+     * 심부름 완료 정보를 수신자에게 push알람을 보낸다.
+     *
+     * @param fcmSourceDto 해당 push알람이 실패할 때
+     * @throws FirebaseMessagingException 해당 push알람이 실패할 때
+     */
     public void sendCompletionErrandFcmToRecipient(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
         FcmMessage.FcmRequest request =
                 fcmMakerService.makeErrandConfirmFcmMessageToRecipient(fcmSourceDto, FcmActionSelector.ErrandAction.완료);
