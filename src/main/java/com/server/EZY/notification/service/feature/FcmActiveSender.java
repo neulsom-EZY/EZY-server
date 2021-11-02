@@ -66,6 +66,19 @@ public class FcmActiveSender {
     }
 
     /**
+     * 심부름 포기 정보를 수신자에게 push알람을 보낸다
+     *
+     * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
+     * @throws FirebaseMessagingException 해당 push알람이 실패할 때
+     * @author 정시원
+     */
+    public void sendGiveUpErrandFcmToSender(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException{
+        FcmMessage.FcmRequest request =
+                fcmMakerService.makeErrandFcmMessage(fcmSourceDto, fcmSourceDto.getRecipient(), FcmActionSelector.ErrandAction.포기);
+        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getSender()));
+    }
+
+    /**
      * target, fcm target token을 찾아준다.
      *
      * @param recipient
