@@ -47,4 +47,13 @@ public interface ErrandService {
      * @author 정시원
      */
     void completionErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 심부름을 수신자가 포기한다.
+     *
+     * @param errandIdx 포기할 심부름 Idx
+     * @throws FirebaseMessagingException push알람이 실패할 때
+     * @author 정시원
+     */
+    void giveUpErrand(long errandIdx) throws FirebaseMessagingException;
 }

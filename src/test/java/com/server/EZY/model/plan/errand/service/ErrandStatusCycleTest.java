@@ -239,6 +239,47 @@ public class ErrandStatusCycleTest {
 
         log.info("========= Then =========");
         assertEquals(senderErrandDetailEntity.getErrandStatus(), ErrandStatus.COMPLETION);
+    }
 
+    @Test @DisplayName("심부름 포기 테스트")
+    void 심부름_포기_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
+
+        log.info("========= When =========");
+        //로그인 후 sender의 심부름을 포기함
+        signInMember(recipient);
+        errandService.giveUpErrand(errandIdx);
+
+        log.info("========= Then =========");
+        assertEquals(ErrandStatus.GIVE_UP, senderErrandDetailEntity.getErrandStatus());
+    }
+
+    @Test @DisplayName("심부름 포기를 수신자가 아닌 다른사람이 접근한다면? 테스트")
+    void 심부름_InvalidAccessException_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
+
+        log.info("========= When, Then =========");
+        signInMember(sender); // 수신자가 아닌 발신자가 해당 메서드를 실행할 때
+        assertThrows(InvalidAccessException.class,
+                () -> errandService.giveUpErrand(errandIdx)
+        );
     }
 }
