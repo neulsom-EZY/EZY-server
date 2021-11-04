@@ -77,8 +77,9 @@ public class ErrandStatusCycleController {
      * @return SuccessResult - 심부름 포기 성공시
      * @author 정시원
      */
-    @PutMapping("/give-up")
-    public CommonResult giveUpErrand(@PathVariable("errandIdx") Long errandIdx) {
+    @PutMapping("/give-up/{errandIdx}")
+    public CommonResult giveUpErrand(@PathVariable("errandIdx") Long errandIdx) throws FirebaseMessagingException {
+        errandService.giveUpErrand(errandIdx);
         return responseService.getSuccessResult();
     }
 
