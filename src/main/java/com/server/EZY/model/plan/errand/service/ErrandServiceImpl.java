@@ -207,7 +207,7 @@ public class ErrandServiceImpl implements ErrandService{
                 .fcmRole(FcmRole.받는사람)
                 .build();
 
-        // TODO push알람 추가
+        fcmActiveSender.sendFailErrandFcmToRecipient(fcmSourceDto);
     }
 
     /**
