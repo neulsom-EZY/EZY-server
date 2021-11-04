@@ -4,14 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.model.member.dto.AuthDto;
 import com.server.EZY.model.member.dto.MemberAuthKeySendInfoDto;
 import com.server.EZY.model.member.dto.MemberDto;
-import com.server.EZY.model.member.service.MemberService;
+import com.server.EZY.model.member.dto.PhoneNumberDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,10 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 public class MemberControllerTest {
 
-    @MockBean
-    private MemberService memberService;
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Autowired private ObjectMapper objectMapper;
 
     private MockMvc mvc;
 
@@ -40,6 +36,26 @@ public class MemberControllerTest {
         mvc = MockMvcBuilders.standaloneSetup(memberController).build();
     }
 
+    @Test
+    public void sendUsernameTest() throws Exception {
+        //given
+        PhoneNumberDto phoneNumberDto = PhoneNumberDto.builder()
+                .phoneNumber("01008090809")
+                .build();
+
+        String content = objectMapper.writeValueAsString(phoneNumberDto);
+
+        //when
+        final ResultActions actions = mvc.perform(post("/v1/member/find/username")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+    
     @Test
     @DisplayName("회원가입 테스트")
     public void signupTest() throws Exception {
