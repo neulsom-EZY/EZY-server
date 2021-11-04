@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.Collections;
 
 @Getter @Setter @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class MemberDto {
     @NotBlank
     @Pattern(regexp = "^@[a-zA-Z]*$")
@@ -27,13 +27,6 @@ public class MemberDto {
     private String phoneNumber;
 
     private String fcmToken;
-
-    public MemberDto(String username, String password, String phoneNumber, String fcmToken) {
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.fcmToken = fcmToken;
-    }
 
     public MemberEntity toEntity(){
         return MemberEntity.builder()

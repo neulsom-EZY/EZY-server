@@ -1,15 +1,11 @@
 package com.server.EZY.notification.service.feature;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.notification.FcmMessage;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmActionSelector;
-import com.server.EZY.notification.enum_type.FcmPurposeType;
-import com.server.EZY.notification.service.FirebaseMessagingService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 
 /**
  * @author 전지환
@@ -17,30 +13,38 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
 public class FcmMakerService {
-    private final FirebaseMessagingService firebaseMessagingService;
-    private final MemberRepository memberRepository;
     /**
-     * [목적: 심부름, 역할: 보내는사람] 에 만족하는 메소드
-     * @param fcmSourceDto
-     * @throws FirebaseMessagingException
+     * push알람을 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만든다.
+     *
+     * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
+     * @param senderOfPush 해당 push알람을 보내는 회원의 username
+     * @param errandAction 심부름에서 하려는 기능
+     * @return fcmPush알람의 메시지를 담고 있는 {@link FcmMessage.FcmRequest}
+     * @author 정시원, 전지환
      */
-    public void sendErrandFcm(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
-        FcmMessage.FcmRequest request = FcmMessage.FcmRequest.builder()
-                .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을 " + FcmActionSelector.ErrandAction.요청 + " 했어요!")
-                .body(fcmSourceDto.getSender() + "님이 " + FcmActionSelector.ErrandAction.요청+"한 "+fcmSourceDto.getFcmPurposeType()+"을 확인해보세요!")
+    public FcmMessage.FcmRequest makeErrandFcmMessage(FcmSourceDto fcmSourceDto, String senderOfPush, FcmActionSelector.ErrandAction errandAction){
+        return FcmMessage.FcmRequest.builder()
+                .title("누군가 " + fcmSourceDto.getFcmPurposeType() + "을 " + errandAction + " 했어요!")
+                .body(senderOfPush + "님이 " + errandAction+"한 "+fcmSourceDto.getFcmPurposeType()+"을 확인해보세요!")
                 .build();
-
-        firebaseMessagingService.sendToToken(request, findRecipientFcmToken(fcmSourceDto.getRecipient()));
     }
 
     /**
-     * 받는사람, fcmToken을 찾아주는 메소드
-     * @param recipient
-     * @return recipientFcmToken
+     * 심부름의 완료, 실패 push알람을 수신자에게 보내기 위헤 사용되는 {@link FcmMessage.FcmRequest}객체를 만든다.
+     * TODO 향후 팀내 상의 후 변경할 수 있다.
+     *
+     * @see ErrandStatus#COMPLETION
+     * @see ErrandStatus#FAIL
+     * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO
+     * @param errandAction 심부름에서 하려는 기능
+     * @return fcmPush알람의 메시지를 담고 있는 {@link FcmMessage.FcmRequest}
+     * @author 정시원
      */
-    private String findRecipientFcmToken(String recipient){
-        return memberRepository.findByUsername(recipient).getFcmToken();
+    public FcmMessage.FcmRequest makeErrandConfirmFcmMessageToRecipient(FcmSourceDto fcmSourceDto, FcmActionSelector.ErrandAction errandAction){
+        return FcmMessage.FcmRequest.builder()
+                .title(fcmSourceDto.getFcmPurposeType() + "을 " + errandAction + " 했어요!")
+                .body(fcmSourceDto.getRecipient() + "님이 " + errandAction+"한 "+fcmSourceDto.getFcmPurposeType()+"을 확인해보세요!")
+                .build();
     }
 }

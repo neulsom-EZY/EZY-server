@@ -1,7 +1,9 @@
 package com.server.EZY.model.member.service;
 
 import com.server.EZY.exception.user.exception.MemberAlreadyExistException;
+import com.server.EZY.exception.user.exception.MemberInformationCheckAgainException;
 import com.server.EZY.exception.user.exception.MemberNotFoundException;
+import com.server.EZY.exception.user.exception.NotCorrectPasswordException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.controller.MemberController;
 import com.server.EZY.model.member.dto.*;
@@ -72,6 +74,32 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("username 중복여부 확인 테스트")
+    public void checkUsernameExistTest() {
+        //given
+        String username = "@Baetae";
+
+        //when
+        boolean bool = memberService.isExistUsername(username);
+
+        //then
+        assertEquals(false, bool);
+    }
+
+    @Test
+    @DisplayName("phoneNumber 중복여부 확인 테스트")
+    public void checkPhoneNumberExistTest() {
+        //given
+        String phoneNumber = "01049977055";
+
+        //when
+        boolean bool = memberService.isExistPhoneNumber(phoneNumber);
+
+        //then
+        assertEquals(false, bool);
+    }
+
+    @Test
     @DisplayName("회원가입 테스트")
     public void signupTest() {
         //given
@@ -130,15 +158,15 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("비밀번호가 일치하지 않는다면 Exception이 터지나요?")
+    @DisplayName("비밀번호가 일치하지 않는다면 혹은 회원의 닉네임을 찾을 수 없을 때 Exception이 터지나요?")
     public void signinException() {
         //given //when //then
         assertThrows(
-                MemberNotFoundException.class,
+                NotCorrectPasswordException.class,
                 () -> memberService.signin(
                         AuthDto.builder()
                                 .username(currentUser().getUsername())
-                                .password("0809")
+                                .password("12345678")
                                 .build()
                 )
         );
@@ -178,39 +206,17 @@ public class MemberServiceTest {
         //given
         MemberEntity currentUser = currentUser();
 
-        UsernameChangeDto usernameChangeDto = UsernameChangeDto.builder()
-                .username("@Baetaehyeon")
-                .newUsername("@asdfasdf")
+        UsernameDto usernameDto = UsernameDto.builder()
+                .username("@asdfasdf")
                 .build();
 
-        //when //then
-        if (currentUser != null) {
-            MemberEntity findByUsername = memberRepository.findByUsername(usernameChangeDto.getUsername());
-            assertEquals("@Baetaehyeon", findByUsername.getUsername());
+        //when, then
+        assertEquals("@qwerqwer", currentUser.getUsername());
 
-            memberService.changeUsername(usernameChangeDto);
+        memberService.changeUsername(usernameDto);
 
-            MemberEntity memberEntity = memberRepository.findByUsername(usernameChangeDto.getNewUsername());
-            assertEquals("@asdfasdf", memberEntity.getUsername());
-
-        } else {
-            Assertions.fail("닉네임 변경 테스트 실패");
-        }
-    }
-
-    @Test
-    @DisplayName("memberEntity가 null이라면 MemberNotFoundException이 터지나요?")
-    public void changeUsernameException() {
-        //given //when //then
-        assertThrows(
-                MemberNotFoundException.class,
-                () -> memberService.changeUsername(
-                        UsernameChangeDto.builder()
-                                .username("NoUser")
-                                .newUsername("@qoxogus")
-                                .build()
-                )
-        );
+        MemberEntity memberEntity = memberRepository.findByUsername(usernameDto.getUsername());
+        assertEquals("@asdfasdf", memberEntity.getUsername());
     }
 
     @Test
@@ -301,7 +307,7 @@ public class MemberServiceTest {
         );
 
         assertThrows(
-                MemberNotFoundException.class,
+                NotCorrectPasswordException.class,
                 () -> memberService.deleteUser(
                         AuthDto.builder()
                                 .username("@Baetaehyeon")
@@ -327,6 +333,30 @@ public class MemberServiceTest {
         //then
         String currentUserFcmToken = memberRepository.findById(memberEntity.getMemberIdx()).get().getFcmToken();
         assertEquals(fcmTokenDto.getFcmToken(), currentUserFcmToken);
+    }
+
+    @Test
+    @DisplayName("비밀번호를 변경하기 전 정보를 받고 인증번호를 전송할 때에 Exception들이 제대로 터지나요 ?")
+    public void sendAuthKeyByMemberInfoExceptionTest() {
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> memberService.sendAuthKeyByMemberInfo(
+                        MemberAuthKeySendInfoDto.builder()
+                                .username("NoUser")
+                                .phoneNumber("01000000000")
+                                .build()
+                )
+        );
+
+        assertThrows(
+                MemberInformationCheckAgainException.class,
+                () -> memberService.sendAuthKeyByMemberInfo(
+                        MemberAuthKeySendInfoDto.builder()
+                                .username(currentUser().getUsername())
+                                .phoneNumber("01012341234")
+                                .build()
+                )
+        );
     }
 
     /**

@@ -2,6 +2,7 @@ package com.server.EZY.exception.token;
 
 import com.server.EZY.exception.token.exception.*;
 import com.server.EZY.response.result.CommonResult;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -10,6 +11,7 @@ public interface TokenExceptionHandler {
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
+    String EXPIRED_JWT = "expired-jwt";
     String TOKEN_LOGGED_OUT = "token-logged-out";
     String AUTHORIZATION_HEADER_IS_EMPTY = "authorization-header-is-empty";
     String REFRESH_TOKEN_HEADER_IS_EMPTY = "refresh-token-header-is-empty";
@@ -28,6 +30,10 @@ public interface TokenExceptionHandler {
     @ExceptionHandler(TokenLoggedOutException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult tokenLoggedOutException(TokenLoggedOutException ex);
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    CommonResult expiredJwtException(ExpiredJwtException ex);
 
     // Authorization 헤더가 비었습니다.
     @ExceptionHandler(AuthorizationHeaderIsEmpty.class)

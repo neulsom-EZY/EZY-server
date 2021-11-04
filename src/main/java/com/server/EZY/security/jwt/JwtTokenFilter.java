@@ -1,6 +1,5 @@
 package com.server.EZY.security.jwt;
 
-import com.server.EZY.exception.response.CustomException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -12,9 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/// 데이터베이스 호출을 수행하는 중이므로 OncePerRequestFilter을 사용하여 두 번 이상의 작업을 막는다.
+/**
+ * JWT 관련 filter
+ *
+ * @version 1.0.0
+ * @author 배태현
+ */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
+// 데이터베이스 호출을 수행하는 중이므로 OncePerRequestFilter을 사용하여 두 번 이상의 작업을 막는다.
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -26,16 +31,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
 
-        try {
-            if(token != null && jwtTokenProvider.validateToken(token)){
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (CustomException e){
-            // 사용자가 인증되지 않도록 보장하는 매우 중요한 코드
-            SecurityContextHolder.clearContext();
-            response.sendError(e.getHttpStatus().value(), e.getMessage());
-            return;
+        if(token != null && jwtTokenProvider.validateToken(token)){
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);

@@ -5,9 +5,9 @@ import com.server.EZY.model.member.enum_type.Role;
 import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
-import com.server.EZY.model.plan.errand.enum_type.ErrandResponseStatus;
-import com.server.EZY.model.plan.errand.repository.ErrandRepository;
-import com.server.EZY.model.plan.errand.repository.ErrandStatusRepository;
+import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
+import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
+import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,13 +61,13 @@ class ErrandTest {
         /** When
          * errandStatus를 만들어 시원과 지환의 각각생성된 Errand테이블과 연관관계를 맻고 저장한다.
          */
-        ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
-                .errandResponseStatus(ErrandResponseStatus.NOT_READ)
+        ErrandDetailEntity errandDetailEntity = ErrandDetailEntity.builder()
+                .errandStatus(ErrandStatus.NONE)
                 .senderIdx(memberSiwon.getMemberIdx())
                 .recipientIdx(memberJihwan.getMemberIdx())
                 .build();
-        errandStatusEntity = errandStatusRepository.save(errandStatusEntity);
-        Long errandStatusEntityIdx = errandStatusEntity.getErrandStatusIdx();
+        errandDetailEntity = errandStatusRepository.save(errandDetailEntity);
+        Long ErrandDetailEntityIdx = errandDetailEntity.getErrandDetailIdx();
 
         PlanInfo planInfo = PlanInfo.builder()
                 .title("PersonalPlanService CRUD 끝내기")
@@ -81,7 +81,7 @@ class ErrandTest {
         ErrandEntity siwonErrand = ErrandEntity.builder()
                 .memberEntity(memberSiwon)
                 .tagEntity(null)
-                .errandStatusEntity(errandStatusEntity)
+                .errandDetailEntity(errandDetailEntity)
                 .planInfo(planInfo)
                 .period(period)
                 .build();
@@ -90,15 +90,15 @@ class ErrandTest {
         ErrandEntity jihwanErrand = ErrandEntity.builder()
                 .memberEntity(memberJihwan)
                 .tagEntity(null)
-                .errandStatusEntity(errandStatusEntity)
+                .errandDetailEntity(errandDetailEntity)
                 .planInfo(planInfo)
                 .period(period)
                 .build();
         ErrandEntity savedJihwanErrandEntity = errandRepository.save(jihwanErrand);
         // Then
-        // errandStatusEntity == 시원의 errandStatusEntity == 지환의 errandStatusEntity
-        assertEquals(errandStatusEntity, savedSiwonErrandEntity.getErrandStatusEntity()); // errandStatusEntity와 시원의 errandStatusEntity가 같으면
-        assertEquals(savedSiwonErrandEntity.getErrandStatusEntity(), savedJihwanErrandEntity.getErrandStatusEntity()); //지환과 시원의 errandStatusEntity가 같으면 성공
+        // ErrandDetailEntity == 시원의 ErrandDetailEntity == 지환의 ErrandDetailEntity
+        assertEquals(errandDetailEntity, savedSiwonErrandEntity.getErrandDetailEntity()); // ErrandDetailEntity와 시원의 ErrandDetailEntity가 같으면
+        assertEquals(savedSiwonErrandEntity.getErrandDetailEntity(), savedJihwanErrandEntity.getErrandDetailEntity()); //지환과 시원의 ErrandDetailEntity가 같으면 성공
 
         // planInfo == 시원의 planInfo == 지환의 planInfo
         assertEquals(planInfo, savedSiwonErrandEntity.getPlanInfo());
@@ -115,12 +115,12 @@ class ErrandTest {
     @Test @DisplayName("심부름 삭제 테스트")
     void 심부름_삭제_테스트(){
         // Then
-        ErrandStatusEntity errandStatusEntity = ErrandStatusEntity.builder()
-                .errandResponseStatus(ErrandResponseStatus.NOT_READ)
+        ErrandDetailEntity errandDetailEntity = ErrandDetailEntity.builder()
+                .errandStatus(ErrandStatus.NONE)
                 .senderIdx(memberSiwon.getMemberIdx())
                 .recipientIdx(memberJihwan.getMemberIdx())
                 .build();
-        errandStatusEntity = errandStatusRepository.save(errandStatusEntity);
+        errandDetailEntity = errandStatusRepository.save(errandDetailEntity);
 
         PlanInfo planInfo = PlanInfo.builder()
                 .title("PersonalPlanService CRUD 끝내기")
@@ -134,7 +134,7 @@ class ErrandTest {
         ErrandEntity siwonErrand = ErrandEntity.builder()
                 .memberEntity(memberSiwon)
                 .tagEntity(null)
-                .errandStatusEntity(errandStatusEntity)
+                .errandDetailEntity(errandDetailEntity)
                 .planInfo(planInfo)
                 .period(period)
                 .build();
@@ -143,7 +143,7 @@ class ErrandTest {
         ErrandEntity jihwanErrand = ErrandEntity.builder()
                 .memberEntity(memberJihwan)
                 .tagEntity(null)
-                .errandStatusEntity(errandStatusEntity)
+                .errandDetailEntity(errandDetailEntity)
                 .planInfo(planInfo)
                 .period(period)
                 .build();

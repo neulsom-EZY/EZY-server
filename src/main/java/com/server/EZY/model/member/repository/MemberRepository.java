@@ -8,10 +8,10 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
-    // MyUserDetails 에서 사용.
     MemberEntity findByUsername(String username);
-    // UserService 에서 사용.
     boolean existsByUsername(String username);
+    boolean existsByPhoneNumber(String phoneNumber);
+    boolean existsByUsernameAndPhoneNumber(String username, String phoneNumber);
     Optional<MemberEntity> findByPhoneNumber(String phoneNumber);
 }
 
