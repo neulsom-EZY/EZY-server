@@ -117,12 +117,29 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("이미 회원가입된 유저입니다 Exception을 반환하는 테스트")
-    public void signupException() {
+    public void signupException_1() {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .username(currentUser().getUsername())
                 .password("0809")
                 .phoneNumber("01008090809")
+                .build();
+
+        //when //then
+        assertThrows(
+                MemberAlreadyExistException.class,
+                () -> memberService.signup(memberDto)
+        );
+    }
+
+    @Test
+    @DisplayName("이미 회원가입된 유저입니다 Exception을 반환하는 테스트")
+    public void signupException_2() {
+        //given
+        MemberDto memberDto = MemberDto.builder()
+                .username(currentUser().getUsername())
+                .password("0809")
+                .phoneNumber("01000000000")
                 .build();
 
         //when //then
