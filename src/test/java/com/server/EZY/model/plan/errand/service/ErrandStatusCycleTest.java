@@ -241,6 +241,28 @@ public class ErrandStatusCycleTest {
         assertEquals(senderErrandDetailEntity.getErrandStatus(), ErrandStatus.COMPLETION);
     }
 
+    @Test @DisplayName("심부름 실패 테스트")
+    void 심부름_실패_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
+
+        log.info("========= When =========");
+        //로그인 후 sender의 심부름을 수락함
+        signInMember(sender);
+        errandService.failErrand(errandIdx);
+
+        log.info("========= Then =========");
+        assertEquals(senderErrandDetailEntity.getErrandStatus(), ErrandStatus.FAIL);
+    }
+
     @Test @DisplayName("심부름 포기 테스트")
     void 심부름_포기_검증() throws Exception {
         log.info("========= Given =========");
