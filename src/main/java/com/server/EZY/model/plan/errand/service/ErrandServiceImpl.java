@@ -179,6 +179,38 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
+     * 심부름이 실패한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 FAIL 으로 변경되고, 수신자에게 실패 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    @Override
+    @Transactional
+    public void failErrand(long errandIdx) throws FirebaseMessagingException {
+        ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
+                .orElseThrow(
+                        () -> new PlanNotFoundException(PlanType.심부름)
+                );
+        ErrandDetailEntity errandDetailEntity = errandEntity.getErrandDetailEntity();
+        MemberEntity sender = currentUserUtil.getCurrentUser();
+        MemberEntity recipient = memberRepository.findById(errandDetailEntity.getRecipientIdx()).orElseThrow(MemberNotFoundException::new);
+
+        checkSenderByErrand(errandDetailEntity, sender, InvalidAccessException::new);
+
+        errandDetailEntity.updateErrandStatus(ErrandStatus.FAIL);
+
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(FcmRole.받는사람)
+                .build();
+
+        // TODO push알람 추가
+    }
+
+    /**
      * 심부름을 수신자가 포기한다.
      *
      * @param errandIdx 포기할 심부름 Idx

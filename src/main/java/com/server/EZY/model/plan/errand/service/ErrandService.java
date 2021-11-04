@@ -49,6 +49,15 @@ public interface ErrandService {
     void completionErrand(long errandIdx) throws FirebaseMessagingException;
 
     /**
+     * 심부름이 실패한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 FAIL 으로 변경되고, 수신자에게 실패 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    void failErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
      * 심부름을 수신자가 포기한다.
      *
      * @param errandIdx 포기할 심부름 Idx
