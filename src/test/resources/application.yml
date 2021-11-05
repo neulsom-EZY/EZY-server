@@ -8,7 +8,7 @@ server:
 
 spring:
   profiles:
-    active: test_code
+    active: test_code # 테스트 코드 전용 profile 설정
 
   ### DB 설정 ###
   datasource:
