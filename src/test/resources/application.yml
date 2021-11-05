@@ -7,6 +7,9 @@ server:
       force: true # UTF-8이 SpringBoot 2.x.x 에서는 기본이다.
 
 spring:
+  profiles:
+    active: test_code
+
   ### DB 설정 ###
   datasource:
     url: jdbc:h2:mem:EZY-database
@@ -61,3 +64,6 @@ sms:
   api:
     apikey: NCS7NY4SNRLQKWGE
     apiSecret: GE5VDUZPVLG9RB9QGDST4COFKC1UN7YJ
+
+fcm:
+  isTest: true
