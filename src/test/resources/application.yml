@@ -64,6 +64,3 @@ sms:
   api:
     apikey: NCS7NY4SNRLQKWGE
     apiSecret: GE5VDUZPVLG9RB9QGDST4COFKC1UN7YJ
-
-fcm:
-  isTest: true
