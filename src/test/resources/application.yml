@@ -7,8 +7,10 @@ server:
       force: true # UTF-8이 SpringBoot 2.x.x 에서는 기본이다.
 
 spring:
-  profiles:
-    active: test_code
+  config:
+    activate:
+      on-profile: test_code
+#      on-profile: default  # push알람을 실제로 전송되는지 확인하려면 해당 프로필 사용 혹은 dev, test도 사용가능합
 
   ### DB 설정 ###
   datasource:
