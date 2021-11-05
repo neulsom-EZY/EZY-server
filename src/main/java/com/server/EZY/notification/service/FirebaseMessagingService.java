@@ -36,6 +36,14 @@ public class FirebaseMessagingService {
         log.info("Successfully sent FCM push notification: {}", response);
     }
 
+    /**
+     * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
+     * @param fcmMessage FCM메시지를 보내기 위한 DTO
+     * @param token FCM registration token 즉 FCM에서 발급한 기기의 토큰이다.
+     * @param isFcmTest 실제로 push알람을 보낼지 말지 여부 (해당 토큰의 유효성 검사만 진행)
+     * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
+     * @author 전지환, 정시원
+     */
     private String sendToToken(FcmMessage.FcmRequest fcmMessage, String token, boolean isFcmTest) throws FirebaseMessagingException {
         // FirebaseMessging으로 푸시알람을 보내기 위한 객체
         Message message = Message.builder()
