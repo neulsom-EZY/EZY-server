@@ -7,6 +7,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
@@ -84,6 +85,16 @@ public class FirebaseMessagingConfig {
                 .createScoped(Arrays.asList(SCOPES));
         googleCredentials.refreshIfExpired();
         return googleCredentials.getAccessToken().getTokenValue();
+    }
+
+    @Bean("isFcmTest") @Profile("test_code")
+    public boolean isFcmTestTrue(){
+        return true;
+    }
+
+    @Bean("isFcmTest") @Profile({"dev", "test", "default"})
+    public boolean isFcmTestFalse(){
+        return false;
     }
 
 }
