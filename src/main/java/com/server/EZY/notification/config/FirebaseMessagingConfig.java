@@ -4,9 +4,12 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.server.EZY.notification.FcmMessage;
+import com.server.EZY.notification.service.FirebaseMessagingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +19,8 @@ import java.util.Arrays;
 /**
  * FCM관련 구성요소를 초기화하는 Config클래스
  * @author 정시원
+ * @version 1.0.0
+ * @since 1.0.0
  */
 @Slf4j
 @Configuration
@@ -84,6 +89,34 @@ public class FirebaseMessagingConfig {
                 .createScoped(Arrays.asList(SCOPES));
         googleCredentials.refreshIfExpired();
         return googleCredentials.getAccessToken().getTokenValue();
+    }
+
+    /**
+     * test_code 프로필로 FCM push 알람을 보낼 때 테스트로 보내기 위한 메서드  <br>
+     * 실제로 push 알람을 보내지 않아도 되는 테스트 코드에서 즉, test_code로 실행될 떄 활성화 된다. <br>
+     * @see FirebaseMessagingService#sendToToken(FcmMessage.FcmRequest, String)
+     * @see #isFcmTestFalse
+     * @return true
+     * @author 정시원
+     */
+    @Profile("test_code")
+    @Bean("isFcmTest")
+    public boolean isFcmTestTrue(){
+        return true;
+    }
+
+    /**
+     * 실제 운영시 FCM push 알람을 보낼 떄 실제로 보내기 위한 메서드 <br>
+     * dev, test, default 프로필 즉, 테스트 혹은 실제 운영시 활성화 된다.
+     * @see FirebaseMessagingService#sendToToken(FcmMessage.FcmRequest, String)
+     * @see #isFcmTestTrue()
+     * @return false
+     * @author 정시원
+     */
+    @Profile({"dev", "test", "default"})
+    @Bean("isFcmTest")
+    public boolean isFcmTestFalse(){
+        return false;
     }
 
 }
