@@ -16,6 +16,4 @@ public class FcmSourceDto {
     private String recipient;
     @NotNull
     private FcmPurposeType fcmPurposeType;
-    @NotNull
-    private FcmRole fcmRole;
 }
