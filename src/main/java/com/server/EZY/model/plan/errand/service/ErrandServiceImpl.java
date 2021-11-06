@@ -264,4 +264,21 @@ public class ErrandServiceImpl implements ErrandService{
     private void checkRecipientByErrand(ErrandDetailEntity errandDetailEntity, MemberEntity memberEntity, Supplier<? extends RuntimeException> exceptionSupplier){
         if(!errandDetailEntity.getRecipientIdx().equals(memberEntity.getMemberIdx())) throw exceptionSupplier.get();
     }
+
+    /**
+     * 심부름을 위한 FcmSourceDto를 만든다. <br>
+     * @param sender 해당 심부름의 sender
+     * @param recipient 해당 심부름의 recipient
+     * @param fcmRole
+     * @return 심부름 관련 FcmSourceDto를 생성한다.
+     * @author 정시원
+     */
+    private FcmSourceDto makeFcmSourceDtoByErrand(MemberEntity sender, MemberEntity recipient, FcmRole fcmRole){
+        return FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .fcmRole(fcmRole)
+                .build();
+    }
 }
