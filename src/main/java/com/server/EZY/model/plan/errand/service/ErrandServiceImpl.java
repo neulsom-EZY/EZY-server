@@ -15,7 +15,6 @@ import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
-import com.server.EZY.notification.enum_type.FcmRole;
 import com.server.EZY.notification.service.feature.FcmActiveSender;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;

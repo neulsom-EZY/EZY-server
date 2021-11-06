@@ -1,7 +1,6 @@
 package com.server.EZY.notification.dto;
 
 import com.server.EZY.notification.enum_type.FcmPurposeType;
-import com.server.EZY.notification.enum_type.FcmRole;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
