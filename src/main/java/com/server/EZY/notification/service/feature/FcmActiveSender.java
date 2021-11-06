@@ -72,6 +72,19 @@ public class FcmActiveSender {
     }
 
     /**
+     * 심부름 실패 정보를 수신자에게 push알람을 보낸다.
+     *
+     * @param fcmSourceDto 해당 push알람이 실패할 때
+     * @throws FirebaseMessagingException 해당 push알람이 실패할 때
+     */
+    public void sendFailErrandFcmToRecipient(FcmSourceDto fcmSourceDto) throws FirebaseMessagingException {
+        FcmMessage.FcmRequest request =
+                fcmMakerService.makeErrandConfirmFcmMessageToRecipient(fcmSourceDto, FcmActionSelector.ErrandAction.실패);
+
+        firebaseMessagingService.sendToToken(request, findFcmTokenByUsername(fcmSourceDto.getRecipient()));
+    }
+
+    /**
      * 심부름 포기 정보를 수신자에게 push알람을 보낸다
      *
      * @param fcmSourceDto push알람의 생성에 기본적인 정보를 가지고 있는 DTO

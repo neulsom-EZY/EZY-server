@@ -69,6 +69,21 @@ public class ErrandStatusCycleController {
         return responseService.getSuccessResult();
     }
 
+
+    /**
+     * 심부름 실패 Controller
+     * @param errandIdx
+     * @throws InvalidAccessException 해당 심부름에 잘못된 접근을 할 경우
+     * @throws PlanNotFoundException  해당 심부름이 존재하지 않을 때
+     * @return SuccessResult - 심부름 포기 성공시
+     * @author 정시원
+     */
+    @PutMapping("/fail/{errandIdx}")
+    public CommonResult failErrand(@PathVariable("errandIdx") Long errandIdx) throws FirebaseMessagingException {
+        errandService.failErrand(errandIdx);
+        return responseService.getSuccessResult();
+    }
+
     /**
      * 심부름 포기 Controller
      * @param errandIdx
@@ -77,8 +92,9 @@ public class ErrandStatusCycleController {
      * @return SuccessResult - 심부름 포기 성공시
      * @author 정시원
      */
-    @PutMapping("/give-up")
-    public CommonResult giveUpErrand(@PathVariable("errandIdx") Long errandIdx) {
+    @PutMapping("/give-up/{errandIdx}")
+    public CommonResult giveUpErrand(@PathVariable("errandIdx") Long errandIdx) throws FirebaseMessagingException {
+        errandService.giveUpErrand(errandIdx);
         return responseService.getSuccessResult();
     }
 
