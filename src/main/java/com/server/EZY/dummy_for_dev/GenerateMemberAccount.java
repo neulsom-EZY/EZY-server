@@ -49,7 +49,7 @@ class GenerateMemberAccount {
     private void loggingAccessToken(MemberEntity...memberEntities){
         log.info("\n=============================================================================== Access Token =================================================================================");
         for (MemberEntity memberEntity: memberEntities)
-            log.info("{}: \"{}\"", memberEntity.getUsername(), jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles()));
+            log.info("{}: \"Bearer {}\"", memberEntity.getUsername(), jwtTokenProvider.createToken(memberEntity.getUsername(), memberEntity.getRoles()));
 
         log.info("\n==============================================================================================================================================================================");
     }
