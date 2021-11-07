@@ -1,15 +1,20 @@
 package com.server.EZY.notification.service;
 
 import com.google.api.core.ApiFuture;
+import com.google.api.core.ApiFutureCallback;
+import com.google.api.core.ApiFutures;
 import com.google.firebase.messaging.*;
+import com.server.EZY.exception.fcm_push.FcmPushFailException;
 import com.server.EZY.notification.FcmMessage;
 import com.server.EZY.notification.config.FirebaseMessagingConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
@@ -126,7 +131,8 @@ public class FirebaseMessagingService {
      */
     @Async
     public ApiFuture<String> sendAsyncToToken(FcmMessage.FcmRequest fcmMessage, String fcmToken) {
-        return sendAsyncToToken(fcmMessage, fcmToken, false);
+        ApiFuture<String> apiFutureOfPushResult = sendAsyncToToken(fcmMessage, fcmToken, isFcmTest);
+        return apiFutureOfPushResult;
     }
 
     /**
