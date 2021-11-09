@@ -26,8 +26,6 @@ public class ErrandEntity extends PlanEntity {
     @ManyToOne @JoinColumn(name = "errand_status_id", nullable = false, updatable = false)
     private ErrandDetailEntity errandDetailEntity;
 
-    private String location;
-
     /**
      * 심부름을 추가하는 생성자
      * @param memberEntity 연관관계를 맻을 유저엔티티
