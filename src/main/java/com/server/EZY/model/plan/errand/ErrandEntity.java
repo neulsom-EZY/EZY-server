@@ -5,7 +5,10 @@ import com.server.EZY.model.plan.PlanEntity;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.tag.TagEntity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -40,7 +43,6 @@ public class ErrandEntity extends PlanEntity {
     public ErrandEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, ErrandDetailEntity errandDetailEntity, String location){
         super(memberEntity, tagEntity, planInfo, period);
         this.errandDetailEntity = errandDetailEntity;
-        this.location = location;
     }
 
     /**
@@ -56,12 +58,15 @@ public class ErrandEntity extends PlanEntity {
      * @return planIdx가 null이고 memberEntity가 변경되어 clone된 ErrandEntity
      * @author 정시원
      */
-    @SneakyThrows // Exception을 무시하기 위한 annotation
     public ErrandEntity cloneToMemberEntity(MemberEntity memberEntity){
-        ErrandEntity clonedErrandEntity = (ErrandEntity) clone();
+        ErrandEntity clonedErrandEntity = ErrandEntity.builder()
+                .memberEntity(memberEntity)
+                .tagEntity(null)
+                .planInfo(planInfo)
+                .period(period)
+                .errandDetailEntity(errandDetailEntity)
+                .build();
         clonedErrandEntity.planIdx = null;
-        clonedErrandEntity.memberEntity = memberEntity;
-
         return clonedErrandEntity;
     }
 
