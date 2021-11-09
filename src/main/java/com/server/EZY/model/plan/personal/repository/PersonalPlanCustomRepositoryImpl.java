@@ -9,6 +9,7 @@ import static com.server.EZY.model.plan.QPlanEntity.planEntity;
 import static com.server.EZY.model.plan.tag.QTagEntity.tagEntity;
 
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
+import com.server.EZY.model.plan.personal.dto.QPersonalPlanDto_PersonalPlanDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
     @Transactional(readOnly = true)
     public PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx){
         return jpaQueryFactory
-                .select(Projections.constructor(PersonalPlanDto.PersonalPlanDetails.class,
+                .select(new QPersonalPlanDto_PersonalPlanDetails(
                         personalPlanEntity.planInfo,
                         personalPlanEntity.period,
                         personalPlanEntity.tagEntity.tagIdx,
@@ -62,7 +63,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                         personalPlanEntity.tagEntity.color,
                         personalPlanEntity.repetition
                 ))
-                .from(personalPlanEntity)
+                .from(personalPlanEntity, tagEntity, planEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity),
                         personalPlanEntity.planIdx.eq(planIdx)

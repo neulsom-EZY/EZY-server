@@ -154,7 +154,8 @@ class PersonalPlanServiceImplTest {
 
         log.info("============= Then find my personalPlan ============");
         PersonalPlanDto.PersonalPlanDetails personalPlanDetailsByPlanIdx = personalPlanRepository.getPersonalPlanDetailsByPlanIdx(savedMemberEntity, myPersonalPlan.getPlanIdx());
-//        assertNotNull(personalPlanDetailsByPlanIdx);
+        log.info("================ result: " + personalPlanDetailsByPlanIdx);
+        assertNotNull(personalPlanDetailsByPlanIdx);
     }
 
     @Order(2)

@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.personal.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
@@ -69,7 +70,6 @@ public class PersonalPlanDto {
      */
     @Getter
     @NoArgsConstructor(access = AccessLevel.PUBLIC)
-    @AllArgsConstructor
     public static class PersonalPlanDetails {
         private PlanInfo planInfo;
         private Period period;
@@ -77,5 +77,15 @@ public class PersonalPlanDto {
         private String tag;
         private Color color;
         private Boolean repetition;
+
+        @QueryProjection
+        public PersonalPlanDetails(PlanInfo planInfo, Period period, Long tagIdx, String tag, Color color, Boolean repetition) {
+            this.planInfo = planInfo;
+            this.period = period;
+            this.tagIdx = tagIdx;
+            this.tag = tag;
+            this.color = color;
+            this.repetition = repetition;
+        }
     }
 }
