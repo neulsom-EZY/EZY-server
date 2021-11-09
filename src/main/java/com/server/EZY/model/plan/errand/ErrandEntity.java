@@ -62,20 +62,11 @@ public class ErrandEntity extends PlanEntity {
         ErrandEntity clonedErrandEntity = ErrandEntity.builder()
                 .memberEntity(memberEntity)
                 .tagEntity(null)
-                .planInfo(planInfo)
-                .period(period)
-                .errandDetailEntity(errandDetailEntity)
+                .planInfo(this.planInfo)
+                .period(this.period)
+                .errandDetailEntity(this.errandDetailEntity)
                 .build();
         clonedErrandEntity.planIdx = null;
         return clonedErrandEntity;
-    }
-
-    /**
-     * planIdx에 대한 setter
-     * @param planIdx
-     * @author 정시원
-     */
-    private void setPlanIdx(Long planIdx){
-        this.planIdx = planIdx;
     }
 }
