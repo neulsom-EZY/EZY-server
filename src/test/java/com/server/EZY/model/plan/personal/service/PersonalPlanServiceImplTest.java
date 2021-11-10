@@ -31,7 +31,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Slf4j
 @SpringBootTest
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -183,7 +182,7 @@ class PersonalPlanServiceImplTest {
     }
 
     @Order(1)
-    @Test @DisplayName("단건 개일일정 변경이 가능한가요?")
+    @Test @DisplayName("단건 개일일정 변경이 가능한가요?") @Disabled
     void updateThisPersonalPlan() throws Exception {
         log.info("=========== 개인일정 5개 추가 Given ============");
         List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
@@ -206,7 +205,7 @@ class PersonalPlanServiceImplTest {
         if (personalPlanEntities.get(0) != null){
             updatedPersonalPlan = personalPlanService.updateThisPersonalPlan(
                     personalPlanEntities.get(0).getPlanIdx(),
-                    PersonalPlanSetDto.builder()
+                    PersonalPlanDto.PersonalPlanSet.builder()
                             .repetition(true)
                             .period(new Period(
                                     LocalDateTime.of(2021, 2, 12, 1, 30),
