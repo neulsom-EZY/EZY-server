@@ -15,7 +15,6 @@ import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
 import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
-import com.server.EZY.notification.enum_type.FcmRole;
 import com.server.EZY.notification.service.feature.FcmActiveSender;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +72,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(sender.getUsername())
                 .recipient(recipient.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.보내는사람)
                 .build();
         fcmActiveSender.sendRequestErrandFcmToRecipient(fcmSourceDto);
 
@@ -110,7 +108,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(senderErrandEntity.getMemberEntity().getUsername())
                 .recipient(recipientErrand.getMemberEntity().getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
         fcmActiveSender.sendAcceptErrandFcmToSender(fcmSourceDto);
         return recipientErrand;
@@ -142,7 +139,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(senderErrandEntity.getMemberEntity().getUsername())
                 .recipient(currentMember.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
         fcmActiveSender.sendRefuseErrandFcmToSender(fcmSourceDto);
     }
@@ -172,7 +168,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(sender.getUsername())
                 .recipient(recipient.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
 
         fcmActiveSender.sendCompletionErrandFcmToRecipient(fcmSourceDto);
@@ -204,7 +199,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(sender.getUsername())
                 .recipient(recipient.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
 
         fcmActiveSender.sendFailErrandFcmToRecipient(fcmSourceDto);
@@ -235,7 +229,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(sender.getUsername())
                 .recipient(recipient.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
 
         fcmActiveSender.sendGiveUpErrandFcmToSender(fcmSourceDto);
