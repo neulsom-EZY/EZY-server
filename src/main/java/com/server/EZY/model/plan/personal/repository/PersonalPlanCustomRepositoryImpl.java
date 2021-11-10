@@ -2,7 +2,6 @@ package com.server.EZY.model.plan.personal.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.member.QMemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.dto.QPersonalPlanDto_PersonalPlanDetails;
@@ -13,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.server.EZY.model.member.QMemberEntity.*;
-import static com.server.EZY.model.plan.QPlanEntity.planEntity;
 import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPlanEntity;
 import static com.server.EZY.model.plan.tag.QTagEntity.tagEntity;
 

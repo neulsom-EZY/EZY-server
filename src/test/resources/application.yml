@@ -10,7 +10,7 @@ spring:
   ### DB 설정 ###
   datasource:
     url: jdbc:h2:mem:EZY-database
-#   url: jdbc:h2:tcp://localhost/~/EZY-database # 테스트 결과 확인시 사용
+#    url: jdbc:h2:tcp://localhost/~/EZY-database # 테스트 결과 확인시 사용
     driver-class-name: org.h2.Driver
     username: sa
 
