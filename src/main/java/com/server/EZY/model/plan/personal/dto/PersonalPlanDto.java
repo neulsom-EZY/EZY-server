@@ -69,7 +69,7 @@ public class PersonalPlanDto {
      * @author 전지환
      */
     @Getter
-    @NoArgsConstructor(access = AccessLevel.PUBLIC)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class PersonalPlanDetails {
         private PlanInfo planInfo;
         private Period period;
