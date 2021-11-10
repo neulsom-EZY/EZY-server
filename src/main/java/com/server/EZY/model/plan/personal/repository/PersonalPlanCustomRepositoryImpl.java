@@ -65,7 +65,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                         personalPlanEntity.repetition
                 ))
                 .from(personalPlanEntity)
-                .join(personalPlanEntity.tagEntity, tagEntity)
+                .leftJoin(personalPlanEntity.tagEntity, tagEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity),
                         personalPlanEntity.planIdx.eq(planIdx)
