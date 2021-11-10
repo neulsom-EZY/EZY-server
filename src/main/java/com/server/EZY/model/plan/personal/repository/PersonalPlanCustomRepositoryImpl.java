@@ -15,6 +15,12 @@ import java.util.List;
 import static com.server.EZY.model.plan.personal.QPersonalPlanEntity.personalPlanEntity;
 import static com.server.EZY.model.plan.tag.QTagEntity.tagEntity;
 
+/**
+ * 개인일정의 동적쿼리를 담당하는 클래스이다.
+ *
+ * @version 1
+ * @author 전지환
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepository {
@@ -49,6 +55,14 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                 ).fetchOne();
     }
 
+    /**
+     * 단건 개일일정을 조회하는 쿼리 메소드.
+     *
+     * @param memberEntity
+     * @param planIdx
+     * @return PersonalPlanDto.PersonalPlanDetails - @QueryProjection
+     * @author 전지환
+     */
     @Override
     @Transactional(readOnly = true)
     public PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx){
