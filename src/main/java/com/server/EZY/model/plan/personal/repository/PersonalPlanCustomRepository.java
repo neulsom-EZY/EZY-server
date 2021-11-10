@@ -11,5 +11,5 @@ public interface PersonalPlanCustomRepository {
     List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity);
     List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime);
     PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx);
-    PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx);
+    PersonalPlanDto.PersonalPlanDetails findPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx);
 }

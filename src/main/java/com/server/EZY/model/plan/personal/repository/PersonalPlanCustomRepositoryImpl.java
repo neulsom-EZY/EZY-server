@@ -65,7 +65,7 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
      */
     @Override
     @Transactional(readOnly = true)
-    public PersonalPlanDto.PersonalPlanDetails getPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx){
+    public PersonalPlanDto.PersonalPlanDetails findPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx){
         return jpaQueryFactory
                 .select(new QPersonalPlanDto_PersonalPlanDetails(
                         personalPlanEntity.planInfo,

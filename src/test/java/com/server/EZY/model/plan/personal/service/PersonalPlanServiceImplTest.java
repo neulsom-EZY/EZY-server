@@ -20,7 +20,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -153,7 +152,7 @@ class PersonalPlanServiceImplTest {
         PersonalPlanEntity myPlanEntity = personalPlanRepository.save(myPersonalPlan);
 
         log.info("============= Then find my personalPlan ============");
-        PersonalPlanDto.PersonalPlanDetails personalPlanDetailsByPlanIdx = personalPlanRepository.getPersonalPlanDetailsByPlanIdx(savedMemberEntity, myPersonalPlan.getPlanIdx());
+        PersonalPlanDto.PersonalPlanDetails personalPlanDetailsByPlanIdx = personalPlanRepository.findPersonalPlanDetailsByPlanIdx(savedMemberEntity, myPersonalPlan.getPlanIdx());
         log.info("================ result: " + personalPlanDetailsByPlanIdx);
         assertNotNull(personalPlanDetailsByPlanIdx);
     }

@@ -93,7 +93,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
     @Override
     public PersonalPlanDto.PersonalPlanDetails getThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        return personalPlanRepository.getPersonalPlanDetailsByPlanIdx(currentUser, planIdx);
+        return personalPlanRepository.findPersonalPlanDetailsByPlanIdx(currentUser, planIdx);
     }
 
     /**
