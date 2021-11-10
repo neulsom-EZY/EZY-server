@@ -1,6 +1,6 @@
 package com.server.EZY.model.plan.personal.controller;
 
-import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.service.PersonalPlanService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
@@ -26,7 +26,7 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult savePersonalPlan(@RequestBody PersonalPlanSetDto personalPlanSetDto) {
+    public CommonResult savePersonalPlan(@RequestBody PersonalPlanDto.PersonalPlanSet personalPlanSetDto) {
         personalPlanService.createPersonalPlan(personalPlanSetDto);
         return responseService.getSuccessResult();
     }
@@ -70,7 +70,7 @@ public class PersonalPlanController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateThisPersonalPlan(@PathVariable Long planIdx, @RequestBody PersonalPlanSetDto personalPlanSetDto) throws Exception {
+    public CommonResult updateThisPersonalPlan(@PathVariable Long planIdx, @RequestBody PersonalPlanDto.PersonalPlanSet personalPlanSetDto) throws Exception {
         personalPlanService.updateThisPersonalPlan(planIdx, personalPlanSetDto);
         return responseService.getSuccessResult();
     }
