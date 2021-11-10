@@ -108,8 +108,8 @@ class ErrandTest {
         assertEquals(period, savedSiwonErrandEntity.getPeriod());
         assertEquals(savedSiwonErrandEntity.getPeriod(), jihwanErrand.getPeriod());
 
-        assertNull(savedSiwonErrandEntity.getLocation()); // location를 저장안했기 때문에 null
-        assertEquals(savedSiwonErrandEntity.getLocation(), savedJihwanErrandEntity.getLocation());
+        assertNull(savedSiwonErrandEntity.getPlanInfo().getLocation()); // location를 저장안했기 때문에 null
+        assertEquals(savedSiwonErrandEntity.getPlanInfo().getLocation(), savedJihwanErrandEntity.getPlanInfo().getLocation());
     }
 
     @Test @DisplayName("심부름 삭제 테스트")

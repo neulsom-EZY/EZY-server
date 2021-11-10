@@ -120,7 +120,7 @@ public class ErrandStatusCycleTest {
         assertNotEquals(senderErrandEntity.getMemberEntity(), recipientErrandEntity.getMemberEntity());
         assertEquals(senderErrandEntity.getPlanInfo(), recipientErrandEntity.getPlanInfo());
         assertEquals(senderErrandEntity.getPeriod(), recipientErrandEntity.getPeriod());
-        assertEquals(senderErrandEntity.getLocation(), recipientErrandEntity.getLocation());
+        assertEquals(senderErrandEntity.getPlanInfo().getLocation(), recipientErrandEntity.getPlanInfo().getLocation());
 
         assertEquals(senderErrandDetailEntity.getErrandDetailIdx(), recipientErrandDetailEntity.getErrandDetailIdx());
         assertEquals(senderErrandDetailEntity.getSenderIdx(), recipientErrandDetailEntity.getSenderIdx());
