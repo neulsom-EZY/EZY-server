@@ -1,6 +1,6 @@
 package com.server.EZY.model.member.service.message;
 
-import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.FailedToSendMessageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.api.Message;
@@ -75,7 +75,7 @@ public class MessageServiceImpl implements MessageService {
      *
      * @param coolsms coolsms
      * @param params HashMap<String, String> params (사용자의 전화번호 등이 담긴 정보)
-     * @exception AuthenticationNumberTransferFailedException 인증번호 전송에 실패했을 때
+     * @exception FailedToSendMessageException 인증번호 전송에 실패했을 때
      * @exception CoolsmsException CoolsmsException
      * @author 배태현
      */
@@ -85,7 +85,7 @@ public class MessageServiceImpl implements MessageService {
             log.debug(obj.toString());
 
             if (obj.get("success_count").toString().equals("0")) {
-                throw new AuthenticationNumberTransferFailedException();
+                throw new FailedToSendMessageException();
             }
 
             getSmsCash(coolsms); // Coolsms 잔액정보 조회

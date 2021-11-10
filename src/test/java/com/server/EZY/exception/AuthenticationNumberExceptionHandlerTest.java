@@ -3,7 +3,7 @@ package com.server.EZY.exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.EZY.exception.authentication_number.AuthenticationNumberExceptionHandler;
-import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.FailedToSendMessageException;
 import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
 import lombok.extern.slf4j.Slf4j;
@@ -78,28 +78,28 @@ public class AuthenticationNumberExceptionHandlerTest {
     }
 
     @Test
-    @DisplayName("AuthenticationNumberTransferFailedException 검증")
-    void AuthenticationNumberTransferFailedException_검증() throws Exception {
+    @DisplayName("FailToSendMessageException 검증")
+    void FailToSendMessageException_검증() throws Exception {
         // Given
         setLocal(Locale.KOREA);
-        final int AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_KO = getExceptionCode(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.KOREA);
-        final int AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_EN = getExceptionCode(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.ENGLISH);
-        final String AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_KO = getExceptionMsg(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.KOREA);
-        final String AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_EN = getExceptionMsg(AuthenticationNumberExceptionHandler.AUTHENTICATION_NUMBER_TRANSFER_FAILED, Locale.ENGLISH);
+        final int FAIL_TO_SEND_MESSAGE_CODE_KO = getExceptionCode(AuthenticationNumberExceptionHandler.FAIL_TO_SEND_MESSAGE, Locale.KOREA);
+        final int FAIL_TO_SEND_MESSAGE_CODE_EN = getExceptionCode(AuthenticationNumberExceptionHandler.FAIL_TO_SEND_MESSAGE, Locale.ENGLISH);
+        final String FAIL_TO_SEND_MESSAGE_MSG_KO = getExceptionMsg(AuthenticationNumberExceptionHandler.FAIL_TO_SEND_MESSAGE, Locale.KOREA);
+        final String FAIL_TO_SEND_MESSAGE_MSG_EN = getExceptionMsg(AuthenticationNumberExceptionHandler.FAIL_TO_SEND_MESSAGE, Locale.ENGLISH);
 
         // When
-        CommonResult commonResult_KO = authenticationNumberExceptionHandler.authenticationNumberTransferFailedException(new AuthenticationNumberTransferFailedException());
+        CommonResult commonResult_KO = authenticationNumberExceptionHandler.failedToSendMessageException(new FailedToSendMessageException());
         setLocal(Locale.ENGLISH);
-        CommonResult commonResult_EN = authenticationNumberExceptionHandler.authenticationNumberTransferFailedException(new AuthenticationNumberTransferFailedException());
+        CommonResult commonResult_EN = authenticationNumberExceptionHandler.failedToSendMessageException(new FailedToSendMessageException());
 
         // Then
-        assertEquals(AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_KO, AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_EN);
+        assertEquals(FAIL_TO_SEND_MESSAGE_CODE_KO, FAIL_TO_SEND_MESSAGE_CODE_EN);
 
-        assertEquals(AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_KO, commonResult_KO.getCode());
-        assertEquals(AUTHENTICATION_NUMBER_TRANSFER_FAILED_CODE_EN, commonResult_EN.getCode());
+        assertEquals(FAIL_TO_SEND_MESSAGE_CODE_KO, commonResult_KO.getCode());
+        assertEquals(FAIL_TO_SEND_MESSAGE_CODE_EN, commonResult_EN.getCode());
 
-        assertEquals(AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_KO, commonResult_KO.getMassage());
-        assertEquals(AUTHENTICATION_NUMBER_TRANSFER_FAILED_MSG_EN, commonResult_EN.getMassage());
+        assertEquals(FAIL_TO_SEND_MESSAGE_MSG_KO, commonResult_KO.getMassage());
+        assertEquals(FAIL_TO_SEND_MESSAGE_MSG_EN, commonResult_EN.getMassage());
 
         printResult(commonResult_KO, commonResult_EN);
     }

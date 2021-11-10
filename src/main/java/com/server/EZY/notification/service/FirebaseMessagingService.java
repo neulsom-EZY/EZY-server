@@ -1,14 +1,20 @@
 package com.server.EZY.notification.service;
 
 import com.google.api.core.ApiFuture;
+import com.google.api.core.ApiFutureCallback;
+import com.google.api.core.ApiFutures;
 import com.google.firebase.messaging.*;
+import com.server.EZY.exception.fcm_push.FcmPushFailException;
 import com.server.EZY.notification.FcmMessage;
+import com.server.EZY.notification.config.FirebaseMessagingConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +22,12 @@ import java.util.List;
 public class FirebaseMessagingService {
 
     private final FirebaseMessaging firebaseMessaging;
+    /**
+     * 해당 필드명은 Bean과 관련이 있으므로 변경하면 안된다!
+     * @see FirebaseMessagingConfig#isFcmTestTrue()
+     * @see FirebaseMessagingConfig#isFcmTestFalse()
+     */
+    private final boolean isFcmTest;
 
     /**
      * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
@@ -24,7 +36,20 @@ public class FirebaseMessagingService {
      * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
      * @author 전지환, 정시원
      */
-    public void sendToToken (FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException {
+    public void sendToToken(FcmMessage.FcmRequest fcmMessage, String token) throws FirebaseMessagingException {
+        String response = sendToToken(fcmMessage, token, isFcmTest);
+        log.info("Successfully sent FCM push notification: {}", response);
+    }
+
+    /**
+     * FCM registration token을 이용하여 해당 device에 알림을 전송한다.
+     * @param fcmMessage FCM메시지를 보내기 위한 DTO
+     * @param token FCM registration token 즉 FCM에서 발급한 기기의 토큰이다.
+     * @param isFcmTest 실제로 push알람을 보낼지 말지 여부 (해당 토큰의 유효성 검사만 진행)
+     * @throws FirebaseMessagingException FCM 메시지 전송이 실패했을 경우 throw된다.
+     * @author 전지환, 정시원
+     */
+    private String sendToToken(FcmMessage.FcmRequest fcmMessage, String token, boolean isFcmTest) throws FirebaseMessagingException {
         // FirebaseMessging으로 푸시알람을 보내기 위한 객체
         Message message = Message.builder()
                 .setNotification(
@@ -38,14 +63,13 @@ public class FirebaseMessagingService {
                                 .setAps(Aps.builder()
                                         .setSound("default")
                                         .build()
-                        ).build()
+                                ).build()
                 )
                 .setToken(token)
                 .putAllData(fcmMessage.getPayloads())
                 .build();
 
-        String response = firebaseMessaging.send(message);
-        log.info("Successfully sent message: {}", response);
+        return firebaseMessaging.send(message, isFcmTest);
     }
 
     /**
@@ -107,7 +131,8 @@ public class FirebaseMessagingService {
      */
     @Async
     public ApiFuture<String> sendAsyncToToken(FcmMessage.FcmRequest fcmMessage, String fcmToken) {
-        return sendAsyncToToken(fcmMessage, fcmToken, false);
+        ApiFuture<String> apiFutureOfPushResult = sendAsyncToToken(fcmMessage, fcmToken, isFcmTest);
+        return apiFutureOfPushResult;
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.server.EZY.exception.authentication_number.controller;
 
-import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.FailedToSendMessageException;
 import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ public class AuthenticationNumberExceptionController {
     @GetMapping("/invalid-authentication-number")
     public CommonResult invalidAuthenticationNumber(){ throw new InvalidAuthenticationNumberException(); }
 
-    @GetMapping("/authentication-number-transfer-failed")
-    public CommonResult authenticationNumberTransferFailed(){ throw new AuthenticationNumberTransferFailedException(); }
+    @GetMapping("/fail-to-send-message")
+    public CommonResult failToSendMessage(){ throw new FailedToSendMessageException(); }
 
 }

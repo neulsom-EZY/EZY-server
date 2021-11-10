@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Slf4j
 class PersonalPlanServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -184,7 +185,7 @@ class PersonalPlanServiceImplTest {
     @Order(1)
     @Test @DisplayName("단건 개일일정 변경이 가능한가요?")
     void updateThisPersonalPlan() throws Exception {
-        //Given
+        log.info("=========== 개인일정 5개 추가 Given ============");
         List<PersonalPlanEntity> personalPlanEntities = Stream.generate(
                 () -> PersonalPlanEntity.builder()
                         .memberEntity(savedMemberEntity)
@@ -197,21 +198,26 @@ class PersonalPlanServiceImplTest {
 
         ).limit(5).collect(Collectors.toList());
 
-        //When
-        List<PersonalPlanEntity> planEntities = personalPlanRepository.saveAll(personalPlanEntities);
-        PersonalPlanEntity updatedPersonalPlan = personalPlanService.updateThisPersonalPlan(
-                3L,
-                PersonalPlanDto.PersonalPlanSet.builder()
-                        .repetition(true)
-                        .period(new Period(
-                                LocalDateTime.of(2021, 2, 12, 1, 30),
-                                LocalDateTime.of(2021, 1, 25, 1, 30)
-                        ))
-                        .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ", "광주광역시"))
-                        .build()
-        );
+        /**
+         * 미리 .get() 메소드를 통해 null checking 후 update를 시도하는 로직으로 변경 함.
+         * if null 에서 걸린다면 에러 로그를 통해 해결하기 쉬워짐
+         */
+        PersonalPlanEntity updatedPersonalPlan = null;
+        if (personalPlanEntities.get(0) != null){
+            updatedPersonalPlan = personalPlanService.updateThisPersonalPlan(
+                    personalPlanEntities.get(0).getPlanIdx(),
+                    PersonalPlanSetDto.builder()
+                            .repetition(true)
+                            .period(new Period(
+                                    LocalDateTime.of(2021, 2, 12, 1, 30),
+                                    LocalDateTime.of(2021, 1, 25, 1, 30)
+                            ))
+                            .planInfo(new PlanInfo("hello world", "이거 수정됨 ㅎ", "광주광역시"))
+                            .build()
+            );
+        }
 
-        //Then
+        log.info("=========== 개인일정 변경 됨? Then =============");
         assertTrue(updatedPersonalPlan.getPlanInfo().getTitle().equals("hello world"));
     }
 

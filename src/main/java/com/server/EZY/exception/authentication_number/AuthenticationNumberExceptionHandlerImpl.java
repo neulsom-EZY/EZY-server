@@ -1,6 +1,6 @@
 package com.server.EZY.exception.authentication_number;
 
-import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.FailedToSendMessageException;
 import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.util.ExceptionResponseObjectUtil;
@@ -24,8 +24,8 @@ public class AuthenticationNumberExceptionHandlerImpl implements AuthenticationN
     }
 
     @Override
-    public CommonResult authenticationNumberTransferFailedException(AuthenticationNumberTransferFailedException ex) {
-        log.debug("=== AuthenticationNumberTransferFailedException 발생");
-        return exceptionResponseObjectUtil.getExceptionResponseObj(AUTHENTICATION_NUMBER_TRANSFER_FAILED);
+    public CommonResult failedToSendMessageException(FailedToSendMessageException ex) {
+        log.debug("=== FailedToSendMessageException 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObj(FAIL_TO_SEND_MESSAGE);
     }
 }

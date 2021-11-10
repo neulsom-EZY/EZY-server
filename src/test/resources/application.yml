@@ -7,6 +7,9 @@ server:
       force: true # UTF-8이 SpringBoot 2.x.x 에서는 기본이다.
 
 spring:
+  profiles:
+    active: test_code # 테스트 코드 전용 profile 설정
+
   ### DB 설정 ###
   datasource:
     url: jdbc:h2:mem:EZY-database
