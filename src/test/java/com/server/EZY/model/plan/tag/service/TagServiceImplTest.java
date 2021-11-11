@@ -9,6 +9,7 @@ import com.server.EZY.model.plan.tag.dto.TagSetDto;
 import com.server.EZY.model.plan.tag.embedded_type.Color;
 import com.server.EZY.model.plan.tag.repository.TagRepository;
 import com.server.EZY.util.CurrentUserUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Slf4j
 class TagServiceImplTest {
 
     @Autowired
@@ -42,14 +44,17 @@ class TagServiceImplTest {
     private PasswordEncoder passwordEncoder;
 
     public MemberEntity savedMemberEntity;
+    String testingFcmToken = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
+
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("@jyeonjyan")
                 .password("1234")
-                .phoneNumber("01012341234")
+                .phoneNumber("01044444444")
+                .fcmToken(testingFcmToken)
                 .build();
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -60,15 +65,16 @@ class TagServiceImplTest {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 memberDto.getUsername(),
                 memberDto.getPassword(),
-                List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
+                List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name()))
+        );
+
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
-        System.out.println("=================================");
-        System.out.println(context);
+        log.info("=================== context: " + context);
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("@jyeonjyan", currentUserNickname);
     }
 
     @Test @DisplayName("Tag 를 저장할 수 있나요?")
