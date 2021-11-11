@@ -53,7 +53,7 @@ class TagServiceImplTest {
         MemberDto memberDto = MemberDto.builder()
                 .username("@jyeonjyan")
                 .password("1234")
-                .phoneNumber("01012341234")
+                .phoneNumber("01044444444")
                 .fcmToken(testingFcmToken)
                 .build();
 
