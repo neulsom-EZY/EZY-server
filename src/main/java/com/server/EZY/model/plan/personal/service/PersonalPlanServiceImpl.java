@@ -2,7 +2,7 @@ package com.server.EZY.model.plan.personal.service;
 
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
-import com.server.EZY.model.plan.personal.dto.PersonalPlanSetDto;
+import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.repository.PersonalPlanRepository;
 import com.server.EZY.model.plan.personal.service.strategy.PersonalPlanStrategy;
 import com.server.EZY.model.plan.tag.TagEntity;
@@ -35,7 +35,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      */
     @Transactional
     @Override
-    public PersonalPlanEntity createPersonalPlan(PersonalPlanSetDto personalPlan) {
+    public PersonalPlanEntity createPersonalPlan(PersonalPlanDto.PersonalPlanSet personalPlan) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
         // 저장요청
@@ -88,11 +88,12 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      * 하나의 personalPlan을 "단건 조회"하기 위해 사용되는 비즈니스 로직입니다.
      * @param planIdx
      * @return PersonalPlanEntity
+     * @author 전지환
      */
     @Override
-    public PersonalPlanEntity getThisPersonalPlan(Long planIdx) {
+    public PersonalPlanDto.PersonalPlanDetails getThisPersonalPlan(Long planIdx) {
         MemberEntity currentUser = userUtil.getCurrentUser();
-        return personalPlanStrategy.singlePersonalPlanCheck(currentUser, planIdx);
+        return personalPlanRepository.findPersonalPlanDetailsByPlanIdx(currentUser, planIdx);
     }
 
     /**
@@ -104,7 +105,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
      */
     @Transactional
     @Override
-    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanSetDto personalPlan) {
+    public PersonalPlanEntity updateThisPersonalPlan(Long planIdx, PersonalPlanDto.PersonalPlanSet personalPlan) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         TagEntity tagEntity = tagRepository.findByTagIdx(personalPlan.getTagIdx());
 

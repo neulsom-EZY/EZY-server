@@ -56,7 +56,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 
 	// *** querydsl *** //
-	implementation 'com.querydsl:querydsl-jpa'
+	implementation 'com.querydsl:querydsl-jpa:4.4.0'
 
 	// *** 다국어 처리를 위한 yaml-resource-bundle *** //
 	implementation 'net.rakugakibox.util:yaml-resource-bundle:1.2'

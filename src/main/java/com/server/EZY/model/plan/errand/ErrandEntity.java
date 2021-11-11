@@ -29,8 +29,6 @@ public class ErrandEntity extends PlanEntity {
     @ManyToOne @JoinColumn(name = "errand_status_id", nullable = false, updatable = false)
     private ErrandDetailEntity errandDetailEntity;
 
-    private String location;
-
     /**
      * 심부름을 추가하는 생성자
      * @param memberEntity 연관관계를 맻을 유저엔티티
@@ -45,7 +43,6 @@ public class ErrandEntity extends PlanEntity {
     public ErrandEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, ErrandDetailEntity errandDetailEntity, String location){
         super(memberEntity, tagEntity, planInfo, period);
         this.errandDetailEntity = errandDetailEntity;
-        this.location = location;
     }
 
     /**
@@ -65,21 +62,11 @@ public class ErrandEntity extends PlanEntity {
         ErrandEntity clonedErrandEntity = ErrandEntity.builder()
                 .memberEntity(memberEntity)
                 .tagEntity(null)
-                .planInfo(planInfo)
-                .period(period)
-                .errandDetailEntity(errandDetailEntity)
-                .location(location)
+                .planInfo(this.planInfo)
+                .period(this.period)
+                .errandDetailEntity(this.errandDetailEntity)
                 .build();
-        clonedErrandEntity.setPlanIdx(null);
+        clonedErrandEntity.planIdx = null;
         return clonedErrandEntity;
-    }
-
-    /**
-     * planIdx에 대한 setter
-     * @param planIdx
-     * @author 정시원
-     */
-    private void setPlanIdx(Long planIdx){
-        this.planIdx = planIdx;
     }
 }

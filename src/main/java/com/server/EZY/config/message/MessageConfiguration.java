@@ -15,6 +15,12 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * i18n를 위한 configuration class
+ * @author 정시원
+ * @since 1.0.0
+ * @version 1.0.0
+ */
 @Configuration
 public class MessageConfiguration implements WebMvcConfigurer {
 
@@ -45,6 +51,7 @@ public class MessageConfiguration implements WebMvcConfigurer {
     /**
      * 로컬 정보를 변경한 interceptor({@link #localeChangeInterceptor} 참고)를 시스템 레지스터리에 저장한다.<br>
      * @param registry Interceptor의 저장 및 엑세스를 제공한다. (Spring에서 주입한다.)
+     * @author 정시원
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -56,6 +63,7 @@ public class MessageConfiguration implements WebMvcConfigurer {
      * @param basename 사용자 지정 메시지가 정의되어있는 base 디렉토리 위치를 나타낸다. (i18n/exception)
      * @param encoding 인코딩 정보 (application.yml에 UTF-8로 설정했다.)
      * @return (YamlMessageSource)MessageSource - yml속 메시지를 사용하기 위해 설정한 객체
+     * @author 정시원
      */
     @Bean
     public MessageSource messageSource(
