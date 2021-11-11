@@ -88,4 +88,34 @@ public class PersonalPlanDto {
             this.repetition = repetition;
         }
     }
+
+    /**
+     * 모든 개인일정을 조회할 때 사용되는 dto 입니다.
+     *
+     * @since 1
+     * @version 1
+     * @author 전지환
+     */
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PersonalPlanListDto {
+        private Long personalPlanIdx;
+        private PlanInfo planInfo;
+        private Period period;
+        private Long tagIdx;
+        private String tag;
+        private Color color;
+        private Boolean repetition;
+
+        @QueryProjection
+        public PersonalPlanListDto(Long personalPlanIdx, PlanInfo planInfo, Period period, Long tagIdx, String tag, Color color, Boolean repetition) {
+            this.personalPlanIdx = personalPlanIdx;
+            this.planInfo = planInfo;
+            this.period = period;
+            this.tagIdx = tagIdx;
+            this.tag = tag;
+            this.color = color;
+            this.repetition = repetition;
+        }
+    }
 }
