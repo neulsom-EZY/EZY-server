@@ -34,7 +34,7 @@ public class FirebaseMessagingServiceTest {
         firebaseMessagingService.sendToToken(sayHello, token);
     }
 
-    @Test @DisplayName("다중 기기에 동시 전달")
+    @Test @DisplayName("다중 기기에 동시 전달") @Disabled
     public void sendTokenMultiDevice() throws FirebaseMessagingException {
         FcmMessage.FcmRequest sayHello = FcmMessage.FcmRequest.builder()
                 .title("EZY의 세상에 오신 여러분들, 환영합니다!")

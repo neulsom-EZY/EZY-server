@@ -57,6 +57,7 @@ class ErrandServiceImplTest {
                 .username("@jyeonjyan")
                 .password("1234")
                 .phoneNumber("01012341234")
+                .fcmToken(testingFcmToken)
                 .build();
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -67,7 +68,9 @@ class ErrandServiceImplTest {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 memberDto.getUsername(),
                 memberDto.getPassword(),
-                List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
+                List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name()))
+        );
+
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
         System.out.println("=================================");
