@@ -21,6 +21,13 @@ public class PersonalPlanController {
     private final PersonalPlanService personalPlanService;
     private final ResponseService responseService;
 
+    /**
+     * 개인 일정을 추가하는 controller.
+     *
+     * @param personalPlanSetDto
+     * @return getSuccessResult or NOT
+     * @author 전지환
+     */
     @PostMapping
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
@@ -31,12 +38,21 @@ public class PersonalPlanController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 기간별 개인 일정을 조회하는 controller.
+     *
+     * @param startDateOrNull
+     * @param endDateOrNull
+     * @return ListResult
+     * @author 전지환
+     */
     @GetMapping
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult getAllPersonalPlan(
+            // TODO Exception Handling
             @RequestParam(value = "startDate", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDateOrNull,
             @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDateOrNull
     ){
