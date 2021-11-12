@@ -72,6 +72,13 @@ public class PersonalPlanController {
         }
     }
 
+    /**
+     * 개인 일정 단건 조회하는 controller.
+     *
+     * @param planIdx
+     * @return getSingleResult
+     * @author 전지환
+     */
     @GetMapping("/{planIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
@@ -81,6 +88,15 @@ public class PersonalPlanController {
         return responseService.getSingleResult(personalPlanService.getThisPersonalPlan(planIdx));
     }
 
+    /**
+     * 특정 개인 일정을 수정하는 controller.
+     *
+     * @param planIdx
+     * @param personalPlanSetDto
+     * @return getSuccessResult
+     * @throws Exception
+     * @author 전지환
+     */
     @PutMapping("/{planIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
@@ -92,6 +108,13 @@ public class PersonalPlanController {
     }
 
 
+    /**
+     * 특정 개인 일정을 삭제하는 controller.
+     *
+     * @param planIdx
+     * @return getSuccessResult
+     * @author 전지환
+     */
     @DeleteMapping("/{planIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
