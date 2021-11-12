@@ -29,6 +29,24 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
     private final JPAQueryFactory jpaQueryFactory;
 
     /**
+     * personalPlanEntity를 가져야 하는 전략 메소드에서 사용하는 쿼리 메소드
+     *
+     * @param memberEntity
+     * @param planIdx
+     * @return PersonalPlanEntity
+     * @author 전지환
+     */
+    @Override
+    public PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx) {
+        return jpaQueryFactory
+                .selectFrom(personalPlanEntity)
+                .where(
+                        personalPlanEntity.memberEntity.eq(memberEntity),
+                        personalPlanEntity.planIdx.eq(planIdx)
+                ).fetchOne();
+    }
+
+    /**
      * 모든 개인일정을 조회하는 쿼리 메소드.
      *
      * @param memberEntity
@@ -82,16 +100,6 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                         personalPlanEntity.memberEntity.eq(memberEntity),
                         personalPlanEntity.period.startDateTime.between(startDateTime, endDateTime)
                 ).fetch();
-    }
-
-    @Override
-    public PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx) {
-        return jpaQueryFactory
-                .selectFrom(personalPlanEntity)
-                .where(
-                        personalPlanEntity.memberEntity.eq(memberEntity),
-                        personalPlanEntity.planIdx.eq(planIdx)
-                ).fetchOne();
     }
 
     /**

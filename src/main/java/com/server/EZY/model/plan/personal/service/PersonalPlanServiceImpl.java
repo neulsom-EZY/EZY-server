@@ -17,6 +17,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * @version 1
+ * @since 1
+ * @author 전지환
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -103,6 +108,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
 
     /**
      * 내가 지정한 personalPlan을 업데이트 하는 비즈니스 로직입니다.
+     *
      * @param planIdx
      * @param personalPlan
      * @return PersonalPlanEntity
@@ -124,6 +130,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
 
     /**
      * 내가 지정한 personalPlan을 삭제하는 비즈니스 로직입니다.
+     *
      * @param planIdx
      * @author 전지환
      */
