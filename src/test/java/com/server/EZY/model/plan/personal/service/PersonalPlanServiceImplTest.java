@@ -113,7 +113,7 @@ class PersonalPlanServiceImplTest {
 
         // When
         personalPlanRepository.saveAll(personalPlanEntities);
-        List<PersonalPlanEntity> allPersonalPlan = personalPlanService.getAllPersonalPlan();
+        List<PersonalPlanDto.PersonalPlanListDto> allPersonalPlan = personalPlanService.getAllPersonalPlan();
 
         // then
         assertTrue(allPersonalPlan.size() == 5);
