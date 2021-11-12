@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PersonalPlanCustomRepository {
-    List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity);
-    List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime);
+    List<PersonalPlanDto.PersonalPlanListDto> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity);
+    List<PersonalPlanDto.PersonalPlanListDto> findPersonalPlansBetweenDate(MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime);
     PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx);
     PersonalPlanDto.PersonalPlanDetails findPersonalPlanDetailsByPlanIdx(MemberEntity memberEntity, Long planIdx);
 }

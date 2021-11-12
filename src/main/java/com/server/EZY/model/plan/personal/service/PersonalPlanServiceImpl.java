@@ -17,6 +17,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * @version 1
+ * @since 1
+ * @author 전지환
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,44 +49,49 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
 
     /**
      * 내 전체 personalPlan을 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     *
      * @return List<PersonalPlanEntity>
      * @author 전지환
      */
     @Override
-    public List<PersonalPlanEntity> getAllPersonalPlan() {
+    public List<PersonalPlanDto.PersonalPlanListDto> getAllPersonalPlan() {
         MemberEntity currentUser = userUtil.getCurrentUser();
         return personalPlanRepository.findAllPersonalPlanByMemberEntity(currentUser);
     }
 
     /**
      * 해당 Date 에 수행(start) 되는 개인일정을 모두 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     *
      * @param startDate
      * @return List<PersonalPlanEntity>
      * @author 전지환
      */
     @Override
-    public List<PersonalPlanEntity> getThisDatePersonalPlanEntities(LocalDate startDate) {
+    public List<PersonalPlanDto.PersonalPlanListDto> getThisDatePersonalPlanEntities(LocalDate startDate) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
         log.debug("====== this is startDate atEndOfDay: {}==========", startDate.atTime(LocalTime.MAX));
-        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
-                currentUser, startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX));
+        return personalPlanRepository.findPersonalPlansBetweenDate(
+                currentUser, startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX)
+        );
     }
 
     /**
      * startDate 와 endDate 기간내에 수행(start) 되는 개인일정을 모두 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     *
      * @param startDate
      * @param endDate
      * @return List<PersonalPlanEntity>
      * @author 전지환
      */
     @Override
-    public List<PersonalPlanEntity> getPersonalPlanEntitiesBetween(LocalDate startDate, LocalDate endDate) {
+    public List<PersonalPlanDto.PersonalPlanListDto> getPersonalPlanEntitiesBetween(LocalDate startDate, LocalDate endDate) {
         MemberEntity currentUser = userUtil.getCurrentUser();
         log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
         log.debug("====== this is endDate atEndOfDay: {}==========", endDate.atTime(LocalTime.MAX));
-        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
-                currentUser, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
+        return personalPlanRepository.findPersonalPlansBetweenDate(
+                currentUser, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX)
+        );
     }
 
     /**
@@ -98,6 +108,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
 
     /**
      * 내가 지정한 personalPlan을 업데이트 하는 비즈니스 로직입니다.
+     *
      * @param planIdx
      * @param personalPlan
      * @return PersonalPlanEntity
@@ -119,6 +130,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
 
     /**
      * 내가 지정한 personalPlan을 삭제하는 비즈니스 로직입니다.
+     *
      * @param planIdx
      * @author 전지환
      */

@@ -5,6 +5,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.dto.QPersonalPlanDto_PersonalPlanDetails;
+import com.server.EZY.model.plan.personal.dto.QPersonalPlanDto_PersonalPlanListDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,24 +28,14 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity) {
-        return jpaQueryFactory
-                .selectFrom(personalPlanEntity)
-                .where(personalPlanEntity.memberEntity.eq(memberEntity)).fetch();
-    }
-
-    @Override
-    public List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
-            MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return jpaQueryFactory
-                .selectFrom(personalPlanEntity)
-                .where(
-                        personalPlanEntity.memberEntity.eq(memberEntity),
-                        personalPlanEntity.period.startDateTime.between(startDateTime, endDateTime)
-                ).fetch();
-    }
-
+    /**
+     * personalPlanEntity를 가져야 하는 전략 메소드에서 사용하는 쿼리 메소드
+     *
+     * @param memberEntity
+     * @param planIdx
+     * @return PersonalPlanEntity
+     * @author 전지환
+     */
     @Override
     public PersonalPlanEntity findThisPersonalPlanByMemberEntityAndPlanIdx(MemberEntity memberEntity, Long planIdx) {
         return jpaQueryFactory
@@ -53,6 +44,62 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                         personalPlanEntity.memberEntity.eq(memberEntity),
                         personalPlanEntity.planIdx.eq(planIdx)
                 ).fetchOne();
+    }
+
+    /**
+     * 모든 개인일정을 조회하는 쿼리 메소드.
+     *
+     * @param memberEntity
+     * @return List<PersonalPlanDto.PersonalPlanListDto>
+     * @author 전지환
+     */
+    @Override
+    public List<PersonalPlanDto.PersonalPlanListDto> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity) {
+        return jpaQueryFactory
+                .select(new QPersonalPlanDto_PersonalPlanListDto(
+                        personalPlanEntity.planIdx,
+                        personalPlanEntity.planInfo,
+                        personalPlanEntity.period,
+                        personalPlanEntity.tagEntity.tagIdx,
+                        personalPlanEntity.tagEntity.tag,
+                        personalPlanEntity.tagEntity.color,
+                        personalPlanEntity.repetition
+                ))
+                .from(personalPlanEntity)
+                .leftJoin(personalPlanEntity.tagEntity, tagEntity)
+                .where(personalPlanEntity.memberEntity.eq(memberEntity))
+                .fetch();
+    }
+
+    /**
+     * 기간 내의 개인일정(들)을 조회하는 쿼리 메소드.
+     *
+     * @param memberEntity
+     * @param startDateTime
+     * @param endDateTime
+     * @return
+     * @author 전지환
+     */
+    @Override
+    public List<PersonalPlanDto.PersonalPlanListDto> findPersonalPlansBetweenDate(
+            MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime
+    ) {
+        return jpaQueryFactory
+                .select(new QPersonalPlanDto_PersonalPlanListDto(
+                        personalPlanEntity.planIdx,
+                        personalPlanEntity.planInfo,
+                        personalPlanEntity.period,
+                        personalPlanEntity.tagEntity.tagIdx,
+                        personalPlanEntity.tagEntity.tag,
+                        personalPlanEntity.tagEntity.color,
+                        personalPlanEntity.repetition
+                ))
+                .from(personalPlanEntity)
+                .leftJoin(personalPlanEntity.tagEntity, tagEntity)
+                .where(
+                        personalPlanEntity.memberEntity.eq(memberEntity),
+                        personalPlanEntity.period.startDateTime.between(startDateTime, endDateTime)
+                ).fetch();
     }
 
     /**
