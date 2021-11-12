@@ -44,11 +44,12 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
 
     /**
      * 내 전체 personalPlan을 "조회"하기 위해 사용되는 비즈니스 로직입니다.
+     *
      * @return List<PersonalPlanEntity>
      * @author 전지환
      */
     @Override
-    public List<PersonalPlanEntity> getAllPersonalPlan() {
+    public List<PersonalPlanDto.PersonalPlanListDto> getAllPersonalPlan() {
         MemberEntity currentUser = userUtil.getCurrentUser();
         return personalPlanRepository.findAllPersonalPlanByMemberEntity(currentUser);
     }

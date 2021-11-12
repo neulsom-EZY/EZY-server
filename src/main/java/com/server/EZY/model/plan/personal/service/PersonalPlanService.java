@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PersonalPlanService {
     PersonalPlanEntity createPersonalPlan(PersonalPlanDto.PersonalPlanSet personalPlanSetDto);
-    List<PersonalPlanEntity> getAllPersonalPlan();
+    List<PersonalPlanDto.PersonalPlanListDto> getAllPersonalPlan();
     List<PersonalPlanEntity> getThisDatePersonalPlanEntities(LocalDate startDate);
     List<PersonalPlanEntity> getPersonalPlanEntitiesBetween(LocalDate startDate, LocalDate endDate);
     PersonalPlanDto.PersonalPlanDetails getThisPersonalPlan(Long planIdx);
