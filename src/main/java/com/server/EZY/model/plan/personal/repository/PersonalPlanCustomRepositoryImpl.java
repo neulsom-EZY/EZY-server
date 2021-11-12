@@ -63,11 +63,21 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
      * @author 전지환
      */
     @Override
-    public List<PersonalPlanEntity> findPersonalPlansBetweenDate(
+    public List<PersonalPlanDto.PersonalPlanListDto> findPersonalPlansBetweenDate(
             MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime
     ) {
         return jpaQueryFactory
-                .selectFrom(personalPlanEntity)
+                .select(new QPersonalPlanDto_PersonalPlanListDto(
+                        personalPlanEntity.planIdx,
+                        personalPlanEntity.planInfo,
+                        personalPlanEntity.period,
+                        personalPlanEntity.tagEntity.tagIdx,
+                        personalPlanEntity.tagEntity.tag,
+                        personalPlanEntity.tagEntity.color,
+                        personalPlanEntity.repetition
+                ))
+                .from(personalPlanEntity)
+                .leftJoin(personalPlanEntity.tagEntity, tagEntity)
                 .where(
                         personalPlanEntity.memberEntity.eq(memberEntity),
                         personalPlanEntity.period.startDateTime.between(startDateTime, endDateTime)
