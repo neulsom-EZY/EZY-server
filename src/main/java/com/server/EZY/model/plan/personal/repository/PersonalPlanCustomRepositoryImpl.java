@@ -5,6 +5,7 @@ import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.personal.PersonalPlanEntity;
 import com.server.EZY.model.plan.personal.dto.PersonalPlanDto;
 import com.server.EZY.model.plan.personal.dto.QPersonalPlanDto_PersonalPlanDetails;
+import com.server.EZY.model.plan.personal.dto.QPersonalPlanDto_PersonalPlanListDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,11 +28,29 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    /**
+     * 모든 개인일정을 조회하는 쿼리 메소드.
+     *
+     * @param memberEntity
+     * @return List<PersonalPlanDto.PersonalPlanListDto>
+     * @author 전지환
+     */
     @Override
-    public List<PersonalPlanEntity> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity) {
+    public List<PersonalPlanDto.PersonalPlanListDto> findAllPersonalPlanByMemberEntity(MemberEntity memberEntity) {
         return jpaQueryFactory
-                .selectFrom(personalPlanEntity)
-                .where(personalPlanEntity.memberEntity.eq(memberEntity)).fetch();
+                .select(new QPersonalPlanDto_PersonalPlanListDto(
+                        personalPlanEntity.planIdx,
+                        personalPlanEntity.planInfo,
+                        personalPlanEntity.period,
+                        personalPlanEntity.tagEntity.tagIdx,
+                        personalPlanEntity.tagEntity.tag,
+                        personalPlanEntity.tagEntity.color,
+                        personalPlanEntity.repetition
+                ))
+                .from(personalPlanEntity)
+                .leftJoin(personalPlanEntity.tagEntity, tagEntity)
+                .where(personalPlanEntity.memberEntity.eq(memberEntity))
+                .fetch();
     }
 
     @Override

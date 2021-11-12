@@ -99,7 +99,7 @@ public class PersonalPlanDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class PersonalPlanListDto {
-        private Long personalPlanIdx;
+        private Long planIdx;
         private PlanInfo planInfo;
         private Period period;
         private Long tagIdx;
@@ -108,8 +108,8 @@ public class PersonalPlanDto {
         private Boolean repetition;
 
         @QueryProjection
-        public PersonalPlanListDto(Long personalPlanIdx, PlanInfo planInfo, Period period, Long tagIdx, String tag, Color color, Boolean repetition) {
-            this.personalPlanIdx = personalPlanIdx;
+        public PersonalPlanListDto(Long planIdx, PlanInfo planInfo, Period period, Long tagIdx, String tag, Color color, Boolean repetition) {
+            this.planIdx = planIdx;
             this.planInfo = planInfo;
             this.period = period;
             this.tagIdx = tagIdx;
