@@ -65,7 +65,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         MemberEntity currentUser = userUtil.getCurrentUser();
         log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
         log.debug("====== this is startDate atEndOfDay: {}==========", startDate.atTime(LocalTime.MAX));
-        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
+        return personalPlanRepository.findPersonalPlansBetweenDate(
                 currentUser, startDate.atStartOfDay(), startDate.atTime(LocalTime.MAX));
     }
 
@@ -81,7 +81,7 @@ public class PersonalPlanServiceImpl implements PersonalPlanService{
         MemberEntity currentUser = userUtil.getCurrentUser();
         log.debug("====== this is startDate atStartOfDay: {}==========", startDate.atStartOfDay());
         log.debug("====== this is endDate atEndOfDay: {}==========", endDate.atTime(LocalTime.MAX));
-        return personalPlanRepository.findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
+        return personalPlanRepository.findPersonalPlansBetweenDate(
                 currentUser, startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
     }
 

@@ -53,9 +53,19 @@ public class PersonalPlanCustomRepositoryImpl implements PersonalPlanCustomRepos
                 .fetch();
     }
 
+    /**
+     * 기간 내의 개인일정(들)을 조회하는 쿼리 메소드.
+     *
+     * @param memberEntity
+     * @param startDateTime
+     * @param endDateTime
+     * @return
+     * @author 전지환
+     */
     @Override
-    public List<PersonalPlanEntity> findPersonalPlanEntitiesByMemberEntityAndPeriod_StartDateTimeBetween(
-            MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public List<PersonalPlanEntity> findPersonalPlansBetweenDate(
+            MemberEntity memberEntity, LocalDateTime startDateTime, LocalDateTime endDateTime
+    ) {
         return jpaQueryFactory
                 .selectFrom(personalPlanEntity)
                 .where(
