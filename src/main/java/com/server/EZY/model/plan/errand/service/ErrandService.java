@@ -65,4 +65,11 @@ public interface ErrandService {
      * @author 정시원
      */
     void giveUpErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 나의 모든 심부름 내역을 확인하는 메소드.
+     *
+     * @author 전지환
+     */
+    void findAllMyErrands();
 }

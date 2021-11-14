@@ -235,6 +235,16 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
+     * 나의 모든 심부름 내역을 확인하는 메소드.
+     *
+     * @author 전지환
+     */
+    @Override
+    public void findAllMyErrands() {
+        String myUsername = CurrentUserUtil.getCurrentUsername();
+    }
+
+    /**
      * 이 심부름의 발신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
      *
      * @param errandDetailEntity - 해당 심부름의 발신자의 정보를 가지고 있는 ErrandDetailEntity
