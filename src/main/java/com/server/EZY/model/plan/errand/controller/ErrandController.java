@@ -21,17 +21,6 @@ public class ErrandController {
     private final ResponseService responseService;
 
     /**
-     * 심부름 알람을 보내는 Controller (사용자 입장에선 알람을 받게된다)
-     * @param username
-     * @return
-     * @author 배태현
-     */
-    @GetMapping("/{username}")
-    public CommonResult getErrandAlarm(@PathVariable("username") String username) {
-        return responseService.getSuccessResult();
-    }
-
-    /**
      * 모든 심부름를 조회하는 controller
      *
      * @author 전지환
