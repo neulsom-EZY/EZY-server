@@ -80,7 +80,6 @@ public class ErrandStatusCycleTest {
     ErrandEntity sendErrand(MemberEntity sender) throws Exception {
         signInMember(sender); // 발신자 로그인
         ErrandSetDto errandSetDto = ErrandSetDto.builder()
-                .location(RandomStringUtils.randomAlphabetic(6))
                 .period(new Period(
                         LocalDateTime.of(2021, 7, 24, 1, 30),
                         LocalDateTime.of(2021, 7, 24, 1, 30)
