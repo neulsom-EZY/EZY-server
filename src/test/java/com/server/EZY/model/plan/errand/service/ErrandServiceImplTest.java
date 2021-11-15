@@ -149,7 +149,7 @@ class ErrandServiceImplTest {
                 .username("@"+RandomStringUtils.randomAlphabetic(5))
                 .password("1234")
                 .phoneNumber(RandomStringUtils.randomNumeric(11))
-                .fcmToken(testingFcmToken)
+                .fcmToken("testingFcmToken1")
                 .build();
 
 
@@ -170,7 +170,7 @@ class ErrandServiceImplTest {
                 .username("@"+RandomStringUtils.randomAlphabetic(4))
                 .password("1234")
                 .phoneNumber(RandomStringUtils.randomNumeric(11))
-                .fcmToken("testingFcmToken-asdf")
+                .fcmToken("testingFcmToken2")
                 .build();
         MemberEntity recipientEntity = memberRepository.save(recipient);
 
@@ -179,7 +179,7 @@ class ErrandServiceImplTest {
                 .username("@"+RandomStringUtils.randomAlphabetic(4))
                 .password("1234")
                 .phoneNumber(RandomStringUtils.randomNumeric(11))
-                .fcmToken("testingFcmToken")
+                .fcmToken("testingFcmToken3")
                 .build();
         MemberEntity senderEntity_2 = memberRepository.save(sender_2);
 
