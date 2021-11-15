@@ -29,7 +29,6 @@ public class ErrandSetDto {
                 .planInfo(planInfo)
                 .period(period)
                 .errandDetailEntity(errandDetailEntity)
-                .location(location)
                 .build();
     }
 }
