@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -116,5 +117,32 @@ class ErrandServiceImplTest {
         //Then
         assertEquals(ErrandStatus.NONE, errandEntity.getErrandDetailEntity().getErrandStatus());
         assertEquals(memberRepository.findByUsername(kimEntity.getUsername()).getMemberIdx(), errandEntity.getErrandDetailEntity().getRecipientIdx());
+    }
+
+    void 나의_심부름_전체_조회하기(){
+        log.info("=========== Given 심부름 저장 ============");
+        List<ErrandSetDto> errandSetDtoList = Stream.generate(
+                () -> ErrandSetDto.builder()
+                        .location("수완지구 스타벅스")
+                        .period(new Period(
+                                LocalDateTime.of(2021, 7, 24, 1, 30),
+                                LocalDateTime.of(2021, 7, 24, 1, 30)
+                        ))
+                        .planInfo(new PlanInfo("전지환이랑", "놀고오세요", "광주"))
+                        .recipient("@myName")
+                        .build()
+        ).limit(6).collect(Collectors.toList());
+
+        log.info("===========Given 받는사람 회원 세팅============");
+        MemberEntity kimEntity = MemberEntity.builder()
+                .username("@sisisiwony")
+                .password("1234")
+                .phoneNumber(RandomStringUtils.randomNumeric(11))
+                .fcmToken(testingFcmToken)
+                .build();
+
+        log.info("========= When 받는사람 회원 저장 ==========");
+        MemberEntity sisisiwony = memberRepository.save(kimEntity);
+        log.info("========= When 심부름 저장 ==========");
     }
 }
