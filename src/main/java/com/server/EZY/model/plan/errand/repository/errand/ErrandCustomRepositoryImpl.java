@@ -35,7 +35,7 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
     }
 
     /**
-     * 내 심부름 전체를 조회하는 메소드.
+     * 내 모든 심부름을 조회하는 쿼리 메소드.
      * CaseBuilder(sql case) 를 통해 나의 주체를 판별한다.
      *
      * @param myMemberEntity

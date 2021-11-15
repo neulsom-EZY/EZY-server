@@ -7,6 +7,11 @@ import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @version 1
+ * @since 1
+ * @author 전지환, 정시원
+ */
 public interface ErrandCustomRepository {
 
     /**
@@ -18,8 +23,7 @@ public interface ErrandCustomRepository {
     Optional<ErrandEntity> findWithErrandStatusByErrandIdx(long errandIdx);
 
     /**
-     * 나의 전체 Errand를 조회한다.
-     * TODO: title, dateTime
+     * 내 전체 심부름을 조회한다.
      *
      * @param myMemberEntity
      * @author 전지환

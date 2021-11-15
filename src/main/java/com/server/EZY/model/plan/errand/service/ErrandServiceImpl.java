@@ -238,17 +238,15 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
-     * 나의 모든 심부름 내역을 확인하는 메소드.
+     * 내 모든 심부름을 조회하는 메소드.
      *
      * @author 전지환
-     * @return
+     * @return List<ErrandResponseDto.Errands>
      */
     @Override
     public List<ErrandResponseDto.Errands> findAllMyErrands() {
         MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
-        List<ErrandResponseDto.Errands> allErrandsToList = errandRepository.findAllErrandsToList(myMemberEntity);
-        log.info("========== ErrandsList: ", allErrandsToList);
-        return allErrandsToList;
+        return errandRepository.findAllErrandsToList(myMemberEntity);
     }
 
     /**

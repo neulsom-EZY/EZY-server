@@ -9,7 +9,6 @@ import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ErrandService {
     /**
@@ -71,10 +70,10 @@ public interface ErrandService {
     void giveUpErrand(long errandIdx) throws FirebaseMessagingException;
 
     /**
-     * 나의 모든 심부름 내역을 확인하는 메소드.
+     * 내 모든 심부름을 조회하는 메소드.
      *
+     * @return List<ErrandResponseDto.Errands>
      * @author 전지환
-     * @return List<ErrandResponseDto.Errands> (nullable)
      */
     List<ErrandResponseDto.Errands> findAllMyErrands();
 }
