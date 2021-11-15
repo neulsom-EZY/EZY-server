@@ -2,8 +2,8 @@ package com.server.EZY.model.plan.errand.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.server.EZY.model.plan.embedded_type.Period;
-import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class ErrandResponseDto {
@@ -13,6 +13,7 @@ public class ErrandResponseDto {
      * @version 1.0.0
      * @author 전지환
      */
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Errands {
         private Long planIdx;

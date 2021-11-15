@@ -5,14 +5,12 @@ import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.service.ErrandService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
-import com.server.EZY.response.result.ListResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/errand")
@@ -40,6 +38,10 @@ public class ErrandController {
      * @return getListResult
      */
     @GetMapping("/")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
     public CommonResult getAllMyErrands(){
         List<ErrandResponseDto.Errands> allMyErrands = errandService.findAllMyErrands();
         return responseService.getListResult(allMyErrands);
