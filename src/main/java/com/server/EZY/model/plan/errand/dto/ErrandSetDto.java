@@ -12,13 +12,10 @@ import javax.validation.constraints.NotNull;
 @Getter @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class ErrandSetDto {
-    // title, explanation
     @NotNull
     private PlanInfo planInfo;
-    // startTime, endTime
     @NotNull
     private Period period;
-    private String location;
     @NotNull
     private String recipient;
 
