@@ -5,7 +5,11 @@ import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.plan.errand.ErrandEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface ErrandService {
     /**
@@ -70,6 +74,7 @@ public interface ErrandService {
      * 나의 모든 심부름 내역을 확인하는 메소드.
      *
      * @author 전지환
+     * @return List<ErrandResponseDto.Errands> (nullable)
      */
-    void findAllMyErrands();
+    Optional<List<ErrandResponseDto.Errands>> findAllMyErrands();
 }
