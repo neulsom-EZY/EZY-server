@@ -1,10 +1,10 @@
 package com.server.EZY.model.plan.errand.controller;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.service.ErrandService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
+import com.server.EZY.response.result.ListResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,16 @@ public class ErrandController {
     @GetMapping("/{username}")
     public CommonResult getErrandAlarm(@PathVariable("username") String username) {
         return responseService.getSuccessResult();
+    }
+
+    /**
+     * 모든 심부름를 조회하는 controller
+     *
+     * @author 전지환
+     */
+    @GetMapping("/")
+    public void getAllMyErrands(){
+
     }
 
     /**
