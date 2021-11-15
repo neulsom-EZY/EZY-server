@@ -7,9 +7,12 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
+import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
+import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
+import com.server.EZY.model.plan.errand.repository.errand_detail.ErrandDetailRepository;
 import com.server.EZY.notification.service.FirebaseMessagingService;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +51,11 @@ class ErrandServiceImplTest {
     private FirebaseMessagingService firebaseMessagingService;
     @Autowired
     private ErrandService errandService;
+
+    @Autowired
+    private ErrandDetailRepository errandDetailRepository;
+    @Autowired
+    private ErrandRepository errandRepository;
 
     String jihwanFcmToken = "eQb5CygpsUahmPBRDnTc0N:APA91bFaOlt2nZDJKJpO8dZsjS8vSDCZKxZWYBWtNXYUiIiUxLPiGTLcXuyuVTW1uqOxu55Ay9z_1ss-D2uz2xP-C_R2-5yxyV2pqn88zYts4WSxS4pgWgdvFtBAG6nU__dSYH7WW8Qk";
     String youjinFcmToken = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
@@ -88,6 +96,40 @@ class ErrandServiceImplTest {
         assertEquals("@jyeonjyan", currentUserNickname);
     }
 
+    /**
+     * 0 번째 인덱스 sender의 ErrandEntity
+     * 1 번째 인덱스 recipient의 ErrandEntity
+     */
+    List<ErrandEntity> errandGenerate(MemberEntity sender, MemberEntity recipient){
+        ErrandDetailEntity errandDetailEntity = ErrandDetailEntity.builder()
+                .errandStatus(ErrandStatus.NONE)
+                .senderIdx(sender.getMemberIdx())
+                .recipientIdx(recipient.getMemberIdx())
+                .build();
+        errandDetailRepository.save(errandDetailEntity);
+
+        ErrandEntity senderErrandEntity = ErrandEntity.builder()
+                .memberEntity(sender)
+                .period(
+                        Period.builder()
+                                .startDateTime(LocalDateTime.of(2021, 11, 11, 1, 0))
+                                .endDateTime(LocalDateTime.of(2021, 11, 13, 1, 0))
+                                .build()
+                )
+                .planInfo(PlanInfo.builder()
+                        .title(RandomStringUtils.randomAlphabetic(10))
+                        .explanation(RandomStringUtils.randomAlphabetic(30))
+                        .location(RandomStringUtils.randomAlphabetic(30))
+                        .build()
+                )
+                .errandDetailEntity(errandDetailEntity)
+                .build();
+
+        ErrandEntity recipientErrandEntity = senderErrandEntity.cloneToMemberEntity(recipient);
+
+        return errandRepository.saveAll(List.of(senderErrandEntity, recipientErrandEntity));
+    }
+
     @Test @DisplayName("심부름이 잘 저장되나요?") @Disabled
     void 심부름_저장_조지기() throws Exception {
         log.info("==========Given 심부름 세팅==========");
@@ -108,6 +150,7 @@ class ErrandServiceImplTest {
                 .phoneNumber(RandomStringUtils.randomNumeric(11))
                 .fcmToken(testingFcmToken)
                 .build();
+
 
         log.info("========= When 받는사람 회원 저장 ==========");
         MemberEntity kimEntitySaved = memberRepository.save(kimEntity);
