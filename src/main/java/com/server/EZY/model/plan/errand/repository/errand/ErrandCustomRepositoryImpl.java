@@ -2,8 +2,10 @@ package com.server.EZY.model.plan.errand.repository.errand;
 
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.server.EZY.model.plan.errand.ErrandEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.server.EZY.model.plan.errand.QErrandEntity.errandEntity;
@@ -27,5 +29,10 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
                 .fetchJoin()
                 .fetchOne();
         return Optional.ofNullable(errand);
+    }
+
+    @Override
+    public Optional<List<ErrandResponseDto.Errands>> findAllErrandsToList(String username) {
+        return Optional.empty();
     }
 }
