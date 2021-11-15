@@ -9,6 +9,7 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.enum_type.PlanType;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandDetailEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -232,6 +234,18 @@ public class ErrandServiceImpl implements ErrandService{
                 .build();
 
         fcmActiveSender.sendGiveUpErrandFcmToSender(fcmSourceDto);
+    }
+
+    /**
+     * 내 모든 심부름을 조회하는 메소드.
+     *
+     * @author 전지환
+     * @return List<ErrandResponseDto.ErrandPreview>
+     */
+    @Override
+    public List<ErrandResponseDto.ErrandPreview> findAllMyErrands() {
+        MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
+        return errandRepository.findAllErrandsToList(myMemberEntity);
     }
 
     /**

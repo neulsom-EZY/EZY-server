@@ -1,9 +1,14 @@
 package com.server.EZY.model.plan.errand.repository.errand;
 
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPQLQueryFactory;
+import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.errand.ErrandEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
+import com.server.EZY.model.plan.errand.dto.QErrandResponseDto_ErrandPreview;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.server.EZY.model.plan.errand.QErrandEntity.errandEntity;
@@ -27,5 +32,30 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
                 .fetchJoin()
                 .fetchOne();
         return Optional.ofNullable(errand);
+    }
+
+    /**
+     * 내 모든 심부름을 조회하는 쿼리 메소드.
+     * CaseBuilder(sql case) 를 통해 나의 주체를 판별한다.
+     *
+     * @param myMemberEntity
+     * @return List<ErrandResponseDto.ErrandPreview>
+     * @author 전지환
+     */
+    @Override
+    public List<ErrandResponseDto.ErrandPreview> findAllErrandsToList(MemberEntity myMemberEntity) {
+        return queryFactory.
+                select(new QErrandResponseDto_ErrandPreview(
+                        errandEntity.planIdx,
+                        new CaseBuilder()
+                                .when(errandEntity.errandDetailEntity.senderIdx.eq(myMemberEntity.getMemberIdx()))
+                                .then("부탁한 심부름")
+                                .otherwise("받은 심부름"),
+                        errandEntity.planInfo.title,
+                        errandEntity.period
+                ))
+                .from(errandEntity)
+                .where(errandEntity.memberEntity.eq(myMemberEntity))
+                .fetch();
     }
 }
