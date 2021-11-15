@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.server.EZY.model.plan.errand.QErrandEntity.errandEntity;
-import static com.server.EZY.model.plan.QPlanEntity.planEntity;
 import static com.server.EZY.model.plan.errand.QErrandDetailEntity.errandDetailEntity;
 
 @RequiredArgsConstructor
@@ -47,16 +46,16 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
     public Optional<List<ErrandResponseDto.Errands>> findAllErrandsToList(MemberEntity myMemberEntity) {
         List<ErrandResponseDto.Errands> errandsList = queryFactory.
                 select(new QErrandResponseDto_Errands(
-                        planEntity.planIdx,
+                        errandEntity.planIdx,
                         new CaseBuilder()
-                                .when(errandDetailEntity.senderIdx.eq(myMemberEntity.getMemberIdx()))
+                                .when(errandEntity.errandDetailEntity.senderIdx.eq(myMemberEntity.getMemberIdx()))
                                 .then("부탁한 심부름")
                                 .otherwise("받은 심부름"),
-                        planEntity.planInfo.title,
-                        planEntity.period
+                        errandEntity.planInfo.title,
+                        errandEntity.period
                 ))
                 .from(errandEntity)
-                .join(errandEntity._super, planEntity)
+                .where(errandEntity.memberEntity.eq(myMemberEntity))
                 .fetch();
 
         return Optional.ofNullable(errandsList);

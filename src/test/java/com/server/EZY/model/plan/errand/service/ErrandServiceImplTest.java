@@ -9,6 +9,7 @@ import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import com.server.EZY.model.plan.errand.ErrandEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
@@ -32,8 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,7 +63,8 @@ class ErrandServiceImplTest {
     String teahyeonFcmToken = "fAp6e7Snyk_kg9ZxvTkt-a:APA91bEsOTGuuATRSKcHnwjqLL_aiT42BoLCuVJHrsW_JmvmfLqw8Ub2bZmUycR6qDyMbU2I41UScu9-kiv5bnI70wNRBXA1ku-IiEp5LiH_ZzGNBai7ZQqY5VGsb3s-BLu13iXEiISm";
     String testingFcmToken = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
 
-    MemberEntity savedMemberEntity;
+    public MemberEntity myMemberEntity;
+
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void GetUserEntity(){
@@ -71,12 +72,12 @@ class ErrandServiceImplTest {
         MemberDto memberDto = MemberDto.builder()
                 .username("@jyeonjyan")
                 .password("1234")
-                .phoneNumber("01022222222")
+                .phoneNumber(RandomStringUtils.randomNumeric(11))
                 .fcmToken(testingFcmToken)
                 .build();
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        savedMemberEntity = memberService.signup(memberDto);
+        myMemberEntity = memberService.signup(memberDto);
         System.out.println("======== saved =========");
 
         // when login session 발급
@@ -162,30 +163,36 @@ class ErrandServiceImplTest {
         assertEquals(memberRepository.findByUsername(kimEntity.getUsername()).getMemberIdx(), errandEntity.getErrandDetailEntity().getRecipientIdx());
     }
 
+    @Test @DisplayName("심부름 전체 조회하기")
     void 나의_심부름_전체_조회하기(){
-        log.info("=========== Given 심부름 저장 ============");
-        List<ErrandSetDto> errandSetDtoList = Stream.generate(
-                () -> ErrandSetDto.builder()
-                        .location("수완지구 스타벅스")
-                        .period(new Period(
-                                LocalDateTime.of(2021, 7, 24, 1, 30),
-                                LocalDateTime.of(2021, 7, 24, 1, 30)
-                        ))
-                        .planInfo(new PlanInfo("전지환이랑", "놀고오세요", "광주"))
-                        .recipient("@myName")
-                        .build()
-        ).limit(6).collect(Collectors.toList());
-
-        log.info("===========Given 받는사람 회원 세팅============");
-        MemberEntity kimEntity = MemberEntity.builder()
-                .username("@sisisiwony")
+        log.info("========= Given: 받는사람_1 memberEntity 저장 =========");
+        MemberEntity recipient = MemberEntity.builder()
+                .username("@"+RandomStringUtils.randomAlphabetic(4))
                 .password("1234")
                 .phoneNumber(RandomStringUtils.randomNumeric(11))
-                .fcmToken(testingFcmToken)
+                .fcmToken("testingFcmToken-asdf")
                 .build();
+        MemberEntity recipientEntity = memberRepository.save(recipient);
 
-        log.info("========= When 받는사람 회원 저장 ==========");
-        MemberEntity sisisiwony = memberRepository.save(kimEntity);
-        log.info("========= When 심부름 저장 ==========");
+        log.info("=========== Given: 보내는사람_2 memberEntity 저장 =========");
+        MemberEntity sender_2 = MemberEntity.builder()
+                .username("@"+RandomStringUtils.randomAlphabetic(4))
+                .password("1234")
+                .phoneNumber(RandomStringUtils.randomNumeric(11))
+                .fcmToken("testingFcmToken")
+                .build();
+        MemberEntity senderEntity_2 = memberRepository.save(sender_2);
+
+        log.info("=========== Given 심부름 저장 3개 ============");
+        List<ErrandEntity> errandEntities = errandGenerate(myMemberEntity, recipientEntity);
+        errandGenerate(myMemberEntity, recipientEntity);
+        errandGenerate(senderEntity_2, recipientEntity);
+
+        log.info("========== when 나의 심부름 찾기 ============");
+        Optional<List<ErrandResponseDto.Errands>> allMyErrands = errandService.findAllMyErrands();
+
+        log.info("============ then 나의 심부름 전체 사이즈 구하기 ============");
+        Integer integer = allMyErrands.map(List::size).orElse(0);
+        assertEquals(integer, 2);
     }
 }
