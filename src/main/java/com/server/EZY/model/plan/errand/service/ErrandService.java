@@ -72,8 +72,8 @@ public interface ErrandService {
     /**
      * 내 모든 심부름을 조회하는 메소드.
      *
-     * @return List<ErrandResponseDto.Errands>
+     * @return List<ErrandResponseDto.ErrandPreview>
      * @author 전지환
      */
-    List<ErrandResponseDto.Errands> findAllMyErrands();
+    List<ErrandResponseDto.ErrandPreview> findAllMyErrands();
 }

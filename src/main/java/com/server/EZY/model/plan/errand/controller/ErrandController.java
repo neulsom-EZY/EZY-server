@@ -32,7 +32,7 @@ public class ErrandController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult getAllMyErrands(){
-        List<ErrandResponseDto.Errands> allMyErrands = errandService.findAllMyErrands();
+        List<ErrandResponseDto.ErrandPreview> allMyErrands = errandService.findAllMyErrands();
         return responseService.getListResult(allMyErrands);
     }
 

@@ -15,14 +15,14 @@ public class ErrandResponseDto {
      */
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Errands {
+    public static class ErrandPreview {
         private Long planIdx;
         private String subject;
         private String title;
         private Period period;
 
         @QueryProjection
-        public Errands(Long planIdx, String subject, String title, Period period) {
+        public ErrandPreview(Long planIdx, String subject, String title, Period period) {
             this.planIdx = planIdx;
             this.subject = subject;
             this.title = title;

@@ -195,7 +195,7 @@ class ErrandServiceImplTest {
         errandGenerate(senderEntity_2, recipientEntity);
 
         log.info("========== when 나의 심부름 찾기 ============");
-        List<ErrandResponseDto.Errands> allMyErrands = errandService.findAllMyErrands();
+        List<ErrandResponseDto.ErrandPreview> allMyErrands = errandService.findAllMyErrands();
 
         log.info("============ then 나의 심부름 전체 사이즈 구하기 ============");
         Integer integer = allMyErrands.size();

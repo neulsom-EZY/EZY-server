@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -241,10 +240,10 @@ public class ErrandServiceImpl implements ErrandService{
      * 내 모든 심부름을 조회하는 메소드.
      *
      * @author 전지환
-     * @return List<ErrandResponseDto.Errands>
+     * @return List<ErrandResponseDto.ErrandPreview>
      */
     @Override
-    public List<ErrandResponseDto.Errands> findAllMyErrands() {
+    public List<ErrandResponseDto.ErrandPreview> findAllMyErrands() {
         MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
         return errandRepository.findAllErrandsToList(myMemberEntity);
     }

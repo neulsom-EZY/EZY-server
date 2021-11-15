@@ -5,7 +5,7 @@ import com.querydsl.jpa.JPQLQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
-import com.server.EZY.model.plan.errand.dto.QErrandResponseDto_Errands;
+import com.server.EZY.model.plan.errand.dto.QErrandResponseDto_ErrandPreview;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -39,13 +39,13 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
      * CaseBuilder(sql case) 를 통해 나의 주체를 판별한다.
      *
      * @param myMemberEntity
-     * @return List<ErrandResponseDto.Errands>
+     * @return List<ErrandResponseDto.ErrandPreview>
      * @author 전지환
      */
     @Override
-    public List<ErrandResponseDto.Errands> findAllErrandsToList(MemberEntity myMemberEntity) {
+    public List<ErrandResponseDto.ErrandPreview> findAllErrandsToList(MemberEntity myMemberEntity) {
         return queryFactory.
-                select(new QErrandResponseDto_Errands(
+                select(new QErrandResponseDto_ErrandPreview(
                         errandEntity.planIdx,
                         new CaseBuilder()
                                 .when(errandEntity.errandDetailEntity.senderIdx.eq(myMemberEntity.getMemberIdx()))
