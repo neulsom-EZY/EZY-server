@@ -189,10 +189,10 @@ class ErrandServiceImplTest {
         errandGenerate(senderEntity_2, recipientEntity);
 
         log.info("========== when 나의 심부름 찾기 ============");
-        Optional<List<ErrandResponseDto.Errands>> allMyErrands = errandService.findAllMyErrands();
+        List<ErrandResponseDto.Errands> allMyErrands = errandService.findAllMyErrands();
 
         log.info("============ then 나의 심부름 전체 사이즈 구하기 ============");
-        Integer integer = allMyErrands.map(List::size).orElse(0);
+        Integer integer = allMyErrands.size();
         assertEquals(integer, 2);
     }
 }

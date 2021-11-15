@@ -244,9 +244,9 @@ public class ErrandServiceImpl implements ErrandService{
      * @return
      */
     @Override
-    public Optional<List<ErrandResponseDto.Errands>> findAllMyErrands() {
+    public List<ErrandResponseDto.Errands> findAllMyErrands() {
         MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
-        Optional<List<ErrandResponseDto.Errands>> allErrandsToList = errandRepository.findAllErrandsToList(myMemberEntity);
+        List<ErrandResponseDto.Errands> allErrandsToList = errandRepository.findAllErrandsToList(myMemberEntity);
         log.info("========== ErrandsList: ", allErrandsToList);
         return allErrandsToList;
     }

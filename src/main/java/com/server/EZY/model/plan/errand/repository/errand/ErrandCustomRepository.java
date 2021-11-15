@@ -24,5 +24,5 @@ public interface ErrandCustomRepository {
      * @param myMemberEntity
      * @author 전지환
      */
-    Optional<List<ErrandResponseDto.Errands>> findAllErrandsToList(MemberEntity myMemberEntity);
+    List<ErrandResponseDto.Errands> findAllErrandsToList(MemberEntity myMemberEntity);
 }

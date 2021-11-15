@@ -39,12 +39,12 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
      * CaseBuilder(sql case) 를 통해 나의 주체를 판별한다.
      *
      * @param myMemberEntity
-     * @return List<ErrandResponseDto.Errands> (nullable)
+     * @return List<ErrandResponseDto.Errands>
      * @author 전지환
      */
     @Override
-    public Optional<List<ErrandResponseDto.Errands>> findAllErrandsToList(MemberEntity myMemberEntity) {
-        List<ErrandResponseDto.Errands> errandsList = queryFactory.
+    public List<ErrandResponseDto.Errands> findAllErrandsToList(MemberEntity myMemberEntity) {
+        return queryFactory.
                 select(new QErrandResponseDto_Errands(
                         errandEntity.planIdx,
                         new CaseBuilder()
@@ -57,7 +57,5 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
                 .from(errandEntity)
                 .where(errandEntity.memberEntity.eq(myMemberEntity))
                 .fetch();
-
-        return Optional.ofNullable(errandsList);
     }
 }

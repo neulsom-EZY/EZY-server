@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand.controller;
 
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.service.ErrandService;
 import com.server.EZY.response.ResponseService;
@@ -9,6 +10,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/errand")
@@ -33,10 +37,12 @@ public class ErrandController {
      * 모든 심부름를 조회하는 controller
      *
      * @author 전지환
+     * @return
      */
     @GetMapping("/")
-    public void getAllMyErrands(){
-
+    public ListResult getAllMyErrands(){
+        List<ErrandResponseDto.Errands> allMyErrands = errandService.findAllMyErrands();
+        return responseService.getListResult(allMyErrands);
     }
 
     /**

@@ -76,5 +76,5 @@ public interface ErrandService {
      * @author 전지환
      * @return List<ErrandResponseDto.Errands> (nullable)
      */
-    Optional<List<ErrandResponseDto.Errands>> findAllMyErrands();
+    List<ErrandResponseDto.Errands> findAllMyErrands();
 }
