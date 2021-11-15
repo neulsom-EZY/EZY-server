@@ -1,14 +1,10 @@
 package com.server.EZY.model.plan.errand.repository.errand;
 
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
-import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
-import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.dto.QErrandResponseDto_Errands;
 import lombok.RequiredArgsConstructor;
 
@@ -55,7 +51,7 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
                         new CaseBuilder()
                                 .when(errandDetailEntity.senderIdx.eq(myMemberEntity.getMemberIdx()))
                                 .then("부탁한 심부름")
-                                .otherwise("부탁받은 심부름"),
+                                .otherwise("받은 심부름"),
                         planEntity.planInfo.title,
                         planEntity.period
                 ))
