@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,8 +97,11 @@ class ErrandServiceImplTest {
     }
 
     /**
-     * 0 번째 인덱스 sender의 ErrandEntity
-     * 1 번째 인덱스 recipient의 ErrandEntity
+     * 심부름(단건)을 생성합니다.
+     *
+     * @param sender
+     * @param recipient
+     * @author 정시원
      */
     List<ErrandEntity> errandGenerate(MemberEntity sender, MemberEntity recipient){
         ErrandDetailEntity errandDetailEntity = ErrandDetailEntity.builder()
@@ -135,7 +137,6 @@ class ErrandServiceImplTest {
     void 심부름_저장_조지기() throws Exception {
         log.info("==========Given 심부름 세팅==========");
         ErrandSetDto errandSetDto = ErrandSetDto.builder()
-                .location("수완스타벅스")
                 .period(new Period(
                         LocalDateTime.of(2021, 7, 24, 1, 30),
                         LocalDateTime.of(2021, 7, 24, 1, 30)
@@ -163,6 +164,11 @@ class ErrandServiceImplTest {
         assertEquals(memberRepository.findByUsername(kimEntity.getUsername()).getMemberIdx(), errandEntity.getErrandDetailEntity().getRecipientIdx());
     }
 
+    /**
+     * 심부름을 전체 조회합니다.
+     *
+     * @author 전지환
+     */
     @Test @DisplayName("심부름 전체 조회하기")
     void 나의_심부름_전체_조회하기(){
         log.info("========= Given: 받는사람_1 memberEntity 저장 =========");
