@@ -37,10 +37,10 @@ public class ErrandController {
      * 모든 심부름를 조회하는 controller
      *
      * @author 전지환
-     * @return
+     * @return getListResult
      */
     @GetMapping("/")
-    public ListResult getAllMyErrands(){
+    public CommonResult getAllMyErrands(){
         List<ErrandResponseDto.Errands> allMyErrands = errandService.findAllMyErrands();
         return responseService.getListResult(allMyErrands);
     }
