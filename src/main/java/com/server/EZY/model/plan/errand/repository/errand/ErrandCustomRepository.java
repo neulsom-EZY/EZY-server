@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand.repository.errand;
 
+import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 
@@ -20,8 +21,8 @@ public interface ErrandCustomRepository {
      * 나의 전체 Errand를 조회한다.
      * TODO: title, dateTime
      *
-     * @param username
+     * @param myMemberEntity
      * @author 전지환
      */
-    Optional<List<ErrandResponseDto.Errands>> findAllErrandsToList(String username);
+    Optional<List<ErrandResponseDto.Errands>> findAllErrandsToList(MemberEntity myMemberEntity);
 }
