@@ -113,7 +113,7 @@ class PersonalPlanServiceImplTest {
 
         // When
         personalPlanRepository.saveAll(personalPlanEntities);
-        List<PersonalPlanEntity> allPersonalPlan = personalPlanService.getAllPersonalPlan();
+        List<PersonalPlanDto.PersonalPlanListDto> allPersonalPlan = personalPlanService.getAllPersonalPlan();
 
         // then
         assertTrue(allPersonalPlan.size() == 5);
@@ -252,7 +252,7 @@ class PersonalPlanServiceImplTest {
         List<PersonalPlanEntity> personalPlanEntityList = personalPlanRepository.saveAll(wannaFindPersonalPlanEntities);
         personalPlanRepository.saveAll(anotherPersonalPlanEntities);
 
-        List<PersonalPlanEntity> thisDatePersonalPlanEntities = personalPlanService.getThisDatePersonalPlanEntities(LocalDate.of(2021, 7, 24));
+        List<PersonalPlanDto.PersonalPlanListDto> thisDatePersonalPlanEntities = personalPlanService.getThisDatePersonalPlanEntities(LocalDate.of(2021, 7, 24));
 
         //Then
         assertEquals(personalPlanEntityList.size(), thisDatePersonalPlanEntities.size());
@@ -290,7 +290,7 @@ class PersonalPlanServiceImplTest {
         List<PersonalPlanEntity> personalPlanEntityList1 = personalPlanRepository.saveAll(wannaFindPersonalPlanEntities);
         List<PersonalPlanEntity> personalPlanEntityList2 = personalPlanRepository.saveAll(anotherPersonalPlanEntities);
 
-        List<PersonalPlanEntity> personalPlanEntitiesBetween = personalPlanService.getPersonalPlanEntitiesBetween(
+        List<PersonalPlanDto.PersonalPlanListDto> personalPlanEntitiesBetween = personalPlanService.getPersonalPlanEntitiesBetween(
                 LocalDate.of(2021, 7, 21), LocalDate.of(2021, 7, 25));
 
         //Then

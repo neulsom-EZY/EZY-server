@@ -7,7 +7,7 @@ import com.server.EZY.model.plan.embedded_type.Period;
 import com.server.EZY.model.plan.embedded_type.PlanInfo;
 import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
-import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
+import com.server.EZY.model.plan.errand.repository.errand_detail.ErrandDetailRepository;
 import com.server.EZY.testConfig.QueryDslTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +27,8 @@ class ErrandTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired ErrandRepository errandRepository;
-    @Autowired ErrandStatusRepository errandStatusRepository;
+    @Autowired
+    ErrandDetailRepository errandDetailRepository;
 
     MemberEntity memberSiwon;
     MemberEntity memberJihwan;
@@ -66,7 +67,7 @@ class ErrandTest {
                 .senderIdx(memberSiwon.getMemberIdx())
                 .recipientIdx(memberJihwan.getMemberIdx())
                 .build();
-        errandDetailEntity = errandStatusRepository.save(errandDetailEntity);
+        errandDetailEntity = errandDetailRepository.save(errandDetailEntity);
         Long ErrandDetailEntityIdx = errandDetailEntity.getErrandDetailIdx();
 
         PlanInfo planInfo = PlanInfo.builder()
@@ -120,7 +121,7 @@ class ErrandTest {
                 .senderIdx(memberSiwon.getMemberIdx())
                 .recipientIdx(memberJihwan.getMemberIdx())
                 .build();
-        errandDetailEntity = errandStatusRepository.save(errandDetailEntity);
+        errandDetailEntity = errandDetailRepository.save(errandDetailEntity);
 
         PlanInfo planInfo = PlanInfo.builder()
                 .title("PersonalPlanService CRUD 끝내기")
@@ -156,7 +157,7 @@ class ErrandTest {
         // Then
         assertThrows(
                 NoSuchElementException.class,
-                () -> errandStatusRepository.findById(1L).get()
+                () -> errandDetailRepository.findById(1L).get()
         );
         assertThrows(
                 NoSuchElementException.class,

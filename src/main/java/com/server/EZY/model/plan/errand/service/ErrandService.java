@@ -5,7 +5,10 @@ import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.plan.errand.ErrandEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
+
+import java.util.List;
 
 public interface ErrandService {
     /**
@@ -65,4 +68,12 @@ public interface ErrandService {
      * @author 정시원
      */
     void giveUpErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 내 모든 심부름을 조회하는 메소드.
+     *
+     * @return List<ErrandResponseDto.ErrandPreview>
+     * @author 전지환
+     */
+    List<ErrandResponseDto.ErrandPreview> findAllMyErrands();
 }
