@@ -1,5 +1,7 @@
 package com.server.EZY.model.plan.tag.controller;
 
+import com.server.EZY.model.plan.tag.TagEntity;
+import com.server.EZY.model.plan.tag.dto.TagGetDto;
 import com.server.EZY.model.plan.tag.dto.TagSetDto;
 import com.server.EZY.model.plan.tag.service.TagService;
 import com.server.EZY.response.ResponseService;
@@ -29,8 +31,8 @@ public class TagController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult addTag(@RequestBody TagSetDto tagSetDto) {
-        tagService.saveTag(tagSetDto);
-        return responseService.getSuccessResult();
+        TagEntity savedTagEntity = tagService.saveTag(tagSetDto);
+        return responseService.getSingleResult(new TagGetDto.TagIdx(savedTagEntity.getTagIdx()));
     }
 
     /**
