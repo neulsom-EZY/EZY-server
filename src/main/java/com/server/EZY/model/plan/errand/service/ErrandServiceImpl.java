@@ -153,6 +153,7 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 정시원
      */
     @Override
+    @Transactional
     public void completionErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
@@ -214,6 +215,7 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 정시원
      */
     @Override
+    @Transactional
     public void giveUpErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
