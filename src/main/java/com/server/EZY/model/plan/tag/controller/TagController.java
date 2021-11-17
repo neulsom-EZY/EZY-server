@@ -23,7 +23,8 @@ public class TagController {
      * 태그를 추가하는 Controller
      * @param tagSetDto
      * @return getSuccessResult
-     * @author 전지환, 배태현
+     * @author 전지환, 정시원
+     * @return TagGetDto.TagIdx - tagIdx를 반환하는 객체
      */
     @PostMapping("")
     @ApiImplicitParams({
