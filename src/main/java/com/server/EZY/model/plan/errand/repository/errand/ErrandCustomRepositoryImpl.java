@@ -28,6 +28,7 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
     public Optional<ErrandEntity> findWithErrandStatusByErrandIdx(long errandIdx) {
         ErrandEntity errand = (ErrandEntity) queryFactory
                 .from(errandEntity)
+                .where(errandEntity.planIdx.eq(errandIdx))
                 .join(errandEntity.errandDetailEntity, errandDetailEntity)
                 .fetchJoin()
                 .fetchOne();
