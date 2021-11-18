@@ -66,9 +66,10 @@ invalid-authentication-number:
   code: "-700"
   msg: "Invalid authentication number."
 
-authentication-number-transfer-failed:
+
+fail-to-send-message:
   code: "-710"
-  msg: "Authentication number transfer failed"
+  msg: "Failed to send message"
 
 plan-not-found:
   code: "-600"

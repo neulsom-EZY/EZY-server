@@ -9,13 +9,13 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.model.plan.enum_type.PlanType;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.ErrandDetailEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
-import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
+import com.server.EZY.model.plan.errand.repository.errand_detail.ErrandDetailRepository;
 import com.server.EZY.notification.dto.FcmSourceDto;
 import com.server.EZY.notification.enum_type.FcmPurposeType;
-import com.server.EZY.notification.enum_type.FcmRole;
 import com.server.EZY.notification.service.feature.FcmActiveSender;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -36,7 +37,7 @@ public class ErrandServiceImpl implements ErrandService{
     private final CurrentUserUtil currentUserUtil;
     private final MemberRepository memberRepository;
     private final ErrandRepository errandRepository;
-    private final ErrandStatusRepository errandStatusRepository;
+    private final ErrandDetailRepository errandDetailRepository;
     private final FcmActiveSender fcmActiveSender;
 
     /**
@@ -65,7 +66,7 @@ public class ErrandServiceImpl implements ErrandService{
          * savedErrandDetails: 심부름에 대한 상세정보를 저장한다.
          * savedErrandEntity: 심부름을 저장한다.
          */
-        ErrandDetailEntity savedErrandDetails = errandStatusRepository.save(errandDetails);
+        ErrandDetailEntity savedErrandDetails = errandDetailRepository.save(errandDetails);
         ErrandEntity savedErrandEntity = errandRepository.save(errandSetDto.saveToEntity(sender, savedErrandDetails));
 
         // 여기서 FCM 스펙을 정의 함.
@@ -73,7 +74,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(sender.getUsername())
                 .recipient(recipient.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.보내는사람)
                 .build();
         fcmActiveSender.sendRequestErrandFcmToRecipient(fcmSourceDto);
 
@@ -110,7 +110,6 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(senderErrandEntity.getMemberEntity().getUsername())
                 .recipient(recipientErrand.getMemberEntity().getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
         fcmActiveSender.sendAcceptErrandFcmToSender(fcmSourceDto);
         return recipientErrand;
@@ -136,13 +135,12 @@ public class ErrandServiceImpl implements ErrandService{
         checkRecipientByErrand(senderErrandDetailEntity, currentMember, InvalidAccessException::new);
 
         errandRepository.delete(senderErrandEntity);
-        errandStatusRepository.delete(senderErrandDetailEntity);
+        errandDetailRepository.delete(senderErrandDetailEntity);
 
         FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
                 .sender(senderErrandEntity.getMemberEntity().getUsername())
                 .recipient(currentMember.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
         fcmActiveSender.sendRefuseErrandFcmToSender(fcmSourceDto);
     }
@@ -155,6 +153,7 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 정시원
      */
     @Override
+    @Transactional
     public void completionErrand(long errandIdx) throws FirebaseMessagingException {
         ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
                 .orElseThrow(
@@ -172,10 +171,83 @@ public class ErrandServiceImpl implements ErrandService{
                 .sender(sender.getUsername())
                 .recipient(recipient.getUsername())
                 .fcmPurposeType(FcmPurposeType.심부름)
-                .fcmRole(FcmRole.받는사람)
                 .build();
 
         fcmActiveSender.sendCompletionErrandFcmToRecipient(fcmSourceDto);
+    }
+
+    /**
+     * 심부름이 실패한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 FAIL 으로 변경되고, 수신자에게 실패 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    @Override
+    @Transactional
+    public void failErrand(long errandIdx) throws FirebaseMessagingException {
+        ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
+                .orElseThrow(
+                        () -> new PlanNotFoundException(PlanType.심부름)
+                );
+        ErrandDetailEntity errandDetailEntity = errandEntity.getErrandDetailEntity();
+        MemberEntity sender = currentUserUtil.getCurrentUser();
+        MemberEntity recipient = memberRepository.findById(errandDetailEntity.getRecipientIdx()).orElseThrow(MemberNotFoundException::new);
+
+        checkSenderByErrand(errandDetailEntity, sender, InvalidAccessException::new);
+
+        errandDetailEntity.updateErrandStatus(ErrandStatus.FAIL);
+
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .build();
+
+        fcmActiveSender.sendFailErrandFcmToRecipient(fcmSourceDto);
+    }
+
+    /**
+     * 심부름을 수신자가 포기한다.
+     *
+     * @param errandIdx 포기할 심부름 Idx
+     * @throws FirebaseMessagingException push알람이 실패할 때
+     * @author 정시원
+     */
+    @Override
+    @Transactional
+    public void giveUpErrand(long errandIdx) throws FirebaseMessagingException {
+        ErrandEntity errandEntity = errandRepository.findWithErrandStatusByErrandIdx(errandIdx)
+                .orElseThrow(
+                        () -> new PlanNotFoundException(PlanType.심부름)
+                );
+        ErrandDetailEntity errandDetailEntity = errandEntity.getErrandDetailEntity();
+        MemberEntity sender = memberRepository.getById(errandDetailEntity.getSenderIdx());
+        MemberEntity recipient = currentUserUtil.getCurrentUser();
+
+        checkRecipientByErrand(errandDetailEntity, recipient, InvalidAccessException::new);
+
+        errandDetailEntity.updateErrandStatus(ErrandStatus.GIVE_UP);
+
+        FcmSourceDto fcmSourceDto = FcmSourceDto.builder()
+                .sender(sender.getUsername())
+                .recipient(recipient.getUsername())
+                .fcmPurposeType(FcmPurposeType.심부름)
+                .build();
+
+        fcmActiveSender.sendGiveUpErrandFcmToSender(fcmSourceDto);
+    }
+
+    /**
+     * 내 모든 심부름을 조회하는 메소드.
+     *
+     * @author 전지환
+     * @return List<ErrandResponseDto.ErrandPreview>
+     */
+    @Override
+    public List<ErrandResponseDto.ErrandPreview> findAllMyErrands() {
+        MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
+        return errandRepository.findAllErrandsToList(myMemberEntity);
     }
 
     /**

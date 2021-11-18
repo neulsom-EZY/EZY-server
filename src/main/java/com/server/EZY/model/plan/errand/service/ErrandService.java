@@ -5,7 +5,10 @@ import com.server.EZY.exception.plan.exception.PlanNotFoundException;
 import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.exception.user.exception.InvalidAccessException;
 import com.server.EZY.model.plan.errand.ErrandEntity;
+import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
+
+import java.util.List;
 
 public interface ErrandService {
     /**
@@ -47,4 +50,30 @@ public interface ErrandService {
      * @author 정시원
      */
     void completionErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 심부름이 실패한다. <br>
+     * 해당 심부름의 ErrandDetailEntity의 ErrandStauts가 FAIL 으로 변경되고, 수신자에게 실패 push알람이 전송된다.
+     *
+     * @param errandIdx 거절할 errandIdx(planIdx)
+     * @author 정시원
+     */
+    void failErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 심부름을 수신자가 포기한다.
+     *
+     * @param errandIdx 포기할 심부름 Idx
+     * @throws FirebaseMessagingException push알람이 실패할 때
+     * @author 정시원
+     */
+    void giveUpErrand(long errandIdx) throws FirebaseMessagingException;
+
+    /**
+     * 내 모든 심부름을 조회하는 메소드.
+     *
+     * @return List<ErrandResponseDto.ErrandPreview>
+     * @author 전지환
+     */
+    List<ErrandResponseDto.ErrandPreview> findAllMyErrands();
 }

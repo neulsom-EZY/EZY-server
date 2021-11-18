@@ -66,9 +66,9 @@ invalid-authentication-number:
   code: "-700"
   msg: "인증번호가 올바르지 않습니다."
 
-authentication-number-transfer-failed:
+fail-to-send-message:
   code: "-710"
-  msg: "인증 번호 전송을 실패했습니다."
+  msg: "문자 전송을 실패했습니다."
 
 plan-not-found:
   code: "-600"

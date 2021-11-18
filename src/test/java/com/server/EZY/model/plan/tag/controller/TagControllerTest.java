@@ -46,13 +46,17 @@ public class TagControllerTest extends AbstractControllerTest {
     }
 
     MemberEntity savedMemberEntity;
+    String testingFcmToken = "dBzseFuYD0dCv2-AoLOA_9:APA91bE2q3aMdjvA3CIEKouMujj4E7V_t6aKM6RFxmrCwKCDOXeB39wasAk2uEhcGo3OTU2hr2Ap4NLbKRnsaQfxeRJnF_IZ9ReOUXSCAFIuJB3q1fgfKado3al15yJQkebGU6JSfxSL";
+
+
     @BeforeEach @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void GetUserEntity(){
         //Given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .username("@jyeonjyan")
                 .password("1234")
-                .phoneNumber("01012341234")
+                .phoneNumber("01011111111")
+                .fcmToken(testingFcmToken)
                 .build();
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -63,14 +67,16 @@ public class TagControllerTest extends AbstractControllerTest {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 memberDto.getUsername(),
                 memberDto.getPassword(),
-                List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name())));
+                List.of(new SimpleGrantedAuthority(Role.ROLE_CLIENT.name()))
+        );
+
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
         log.info("=======context: {}==========", context);
 
         //then
         String currentUserNickname = CurrentUserUtil.getCurrentUsername();
-        assertEquals("배태현", currentUserNickname);
+        assertEquals("@jyeonjyan", currentUserNickname);
     }
 
     @Test @DisplayName("태그 저장 controller 테스트")

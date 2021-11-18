@@ -1,6 +1,6 @@
 package com.server.EZY.exception.authentication_number;
 
-import com.server.EZY.exception.authentication_number.exception.AuthenticationNumberTransferFailedException;
+import com.server.EZY.exception.authentication_number.exception.FailedToSendMessageException;
 import com.server.EZY.exception.authentication_number.exception.InvalidAuthenticationNumberException;
 import com.server.EZY.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface AuthenticationNumberExceptionHandler {
 
     String INVALID_AUTHENTICATION_NUMBER = "invalid-authentication-number";
-    String AUTHENTICATION_NUMBER_TRANSFER_FAILED = "authentication-number-transfer-failed";
+    String FAIL_TO_SEND_MESSAGE = "fail-to-send-message";
 
     // 인증번호가 올바르지 않습니다
     @ExceptionHandler(InvalidAuthenticationNumberException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult invalidAuthenticationNumberException(InvalidAuthenticationNumberException ex);
 
-    // 인증번호 전송을 실패 했습니다.
-    @ExceptionHandler(AuthenticationNumberTransferFailedException.class)
+    // 문자 전송을 실패 했습니다.
+    @ExceptionHandler(FailedToSendMessageException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult authenticationNumberTransferFailedException(AuthenticationNumberTransferFailedException ex);
+    CommonResult failedToSendMessageException(FailedToSendMessageException ex);
 }

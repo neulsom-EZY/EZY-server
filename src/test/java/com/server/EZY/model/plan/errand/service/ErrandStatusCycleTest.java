@@ -12,7 +12,7 @@ import com.server.EZY.model.plan.errand.ErrandDetailEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandSetDto;
 import com.server.EZY.model.plan.errand.enum_type.ErrandStatus;
 import com.server.EZY.model.plan.errand.repository.errand.ErrandRepository;
-import com.server.EZY.model.plan.errand.repository.errand_status.ErrandStatusRepository;
+import com.server.EZY.model.plan.errand.repository.errand_detail.ErrandDetailRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
@@ -38,7 +38,7 @@ public class ErrandStatusCycleTest {
     @Autowired private MemberRepository memberRepository;
     @Autowired private ErrandService errandService;
     @Autowired private ErrandRepository errandRepository;
-    @Autowired private ErrandStatusRepository errandStatusRepository;
+    @Autowired private ErrandDetailRepository errandDetailRepository;
 
     // 전지환의 token
     private final String SENDER_FCM_TOKEN = "eQb5CygpsUahmPBRDnTc0N:APA91bFaOlt2nZDJKJpO8dZsjS8vSDCZKxZWYBWtNXYUiIiUxLPiGTLcXuyuVTW1uqOxu55Ay9z_1ss-D2uz2xP-C_R2-5yxyV2pqn88zYts4WSxS4pgWgdvFtBAG6nU__dSYH7WW8Qk";
@@ -80,7 +80,6 @@ public class ErrandStatusCycleTest {
     ErrandEntity sendErrand(MemberEntity sender) throws Exception {
         signInMember(sender); // 발신자 로그인
         ErrandSetDto errandSetDto = ErrandSetDto.builder()
-                .location(RandomStringUtils.randomAlphabetic(6))
                 .period(new Period(
                         LocalDateTime.of(2021, 7, 24, 1, 30),
                         LocalDateTime.of(2021, 7, 24, 1, 30)
@@ -120,7 +119,7 @@ public class ErrandStatusCycleTest {
         assertNotEquals(senderErrandEntity.getMemberEntity(), recipientErrandEntity.getMemberEntity());
         assertEquals(senderErrandEntity.getPlanInfo(), recipientErrandEntity.getPlanInfo());
         assertEquals(senderErrandEntity.getPeriod(), recipientErrandEntity.getPeriod());
-        assertEquals(senderErrandEntity.getLocation(), recipientErrandEntity.getLocation());
+        assertEquals(senderErrandEntity.getPlanInfo().getLocation(), recipientErrandEntity.getPlanInfo().getLocation());
 
         assertEquals(senderErrandDetailEntity.getErrandDetailIdx(), recipientErrandDetailEntity.getErrandDetailIdx());
         assertEquals(senderErrandDetailEntity.getSenderIdx(), recipientErrandDetailEntity.getSenderIdx());
@@ -182,7 +181,7 @@ public class ErrandStatusCycleTest {
 
         log.info("========= Then =========");
         assertFalse(errandRepository.existsById(errandIdx));
-        assertFalse(errandStatusRepository.existsById(errandStatusIdx));
+        assertFalse(errandDetailRepository.existsById(errandStatusIdx));
     }
 
     @Test @DisplayName("심부름 거절을 다른 회원이 할 떄 InvalidAccessException검증")
@@ -239,6 +238,69 @@ public class ErrandStatusCycleTest {
 
         log.info("========= Then =========");
         assertEquals(senderErrandDetailEntity.getErrandStatus(), ErrandStatus.COMPLETION);
+    }
 
+    @Test @DisplayName("심부름 실패 테스트")
+    void 심부름_실패_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
+
+        log.info("========= When =========");
+        //로그인 후 sender의 심부름을 수락함
+        signInMember(sender);
+        errandService.failErrand(errandIdx);
+
+        log.info("========= Then =========");
+        assertEquals(senderErrandDetailEntity.getErrandStatus(), ErrandStatus.FAIL);
+    }
+
+    @Test @DisplayName("심부름 포기 테스트")
+    void 심부름_포기_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
+
+        log.info("========= When =========");
+        //로그인 후 sender의 심부름을 포기함
+        signInMember(recipient);
+        errandService.giveUpErrand(errandIdx);
+
+        log.info("========= Then =========");
+        assertEquals(ErrandStatus.GIVE_UP, senderErrandDetailEntity.getErrandStatus());
+    }
+
+    @Test @DisplayName("심부름 포기를 수신자가 아닌 다른사람이 접근한다면? 테스트")
+    void 심부름_InvalidAccessException_검증() throws Exception {
+        log.info("========= Given =========");
+        // 발신자, 수신자 생성
+        MemberEntity sender = makeMember(SENDER_USERNAME, SENDER_FCM_TOKEN);
+        MemberEntity recipient = makeMember(RECIPIENT_USERNAME, RECIPIENT_FCM_TOKEN);
+
+        // 발신자가 심부름 보냄
+        ErrandEntity senderErrandEntity = sendErrand(sender);
+        ErrandDetailEntity senderErrandDetailEntity = senderErrandEntity.getErrandDetailEntity();
+        long errandIdx = senderErrandEntity.getPlanIdx();
+        long errandStatusIdx = senderErrandDetailEntity.getErrandDetailIdx();
+
+        log.info("========= When, Then =========");
+        signInMember(sender); // 수신자가 아닌 발신자가 해당 메서드를 실행할 때
+        assertThrows(InvalidAccessException.class,
+                () -> errandService.giveUpErrand(errandIdx)
+        );
     }
 }

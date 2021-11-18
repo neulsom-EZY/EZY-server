@@ -29,8 +29,6 @@ public class ErrandEntity extends PlanEntity {
     @ManyToOne @JoinColumn(name = "errand_status_id", nullable = false, updatable = false)
     private ErrandDetailEntity errandDetailEntity;
 
-    private String location;
-
     /**
      * 심부름을 추가하는 생성자
      * @param memberEntity 연관관계를 맻을 유저엔티티
@@ -38,14 +36,12 @@ public class ErrandEntity extends PlanEntity {
      * @param planInfo 심부름의 기본적인 정보(title, explanation)을 가지고 있는 PlanInfo타입의 객체
      * @param period 심부름의 시작/종료(startTime, endTime) 시간을 가지고 있는 Period타입의 객체
      * @param errandDetailEntity 심부름의 상태 및 유저정보들을 가지고 있는 Entity
-     * @param location 심부름의 위치를 나타내는 location
      * @author 정시원
      */
     @Builder
-    public ErrandEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, ErrandDetailEntity errandDetailEntity, String location){
+    public ErrandEntity(MemberEntity memberEntity, TagEntity tagEntity, PlanInfo planInfo, Period period, ErrandDetailEntity errandDetailEntity){
         super(memberEntity, tagEntity, planInfo, period);
         this.errandDetailEntity = errandDetailEntity;
-        this.location = location;
     }
 
     /**
@@ -65,21 +61,11 @@ public class ErrandEntity extends PlanEntity {
         ErrandEntity clonedErrandEntity = ErrandEntity.builder()
                 .memberEntity(memberEntity)
                 .tagEntity(null)
-                .planInfo(planInfo)
-                .period(period)
-                .errandDetailEntity(errandDetailEntity)
-                .location(location)
+                .planInfo(this.planInfo)
+                .period(this.period)
+                .errandDetailEntity(this.errandDetailEntity)
                 .build();
-        clonedErrandEntity.setPlanIdx(null);
+        clonedErrandEntity.planIdx = null;
         return clonedErrandEntity;
-    }
-
-    /**
-     * planIdx에 대한 setter
-     * @param planIdx
-     * @author 정시원
-     */
-    private void setPlanIdx(Long planIdx){
-        this.planIdx = planIdx;
     }
 }
