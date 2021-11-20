@@ -259,7 +259,7 @@ public class ErrandServiceImpl implements ErrandService{
      */
     @Override
     public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) {
-        return null;
+        return errandRepository.findErrandDetails(errandIdx);
     }
 
     /**

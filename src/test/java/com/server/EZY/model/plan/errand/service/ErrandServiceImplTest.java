@@ -1,5 +1,6 @@
 package com.server.EZY.model.plan.errand.service;
 
+import com.server.EZY.exception.response.CustomException;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.MemberDto;
 import com.server.EZY.model.member.enum_type.Role;
@@ -200,5 +201,38 @@ class ErrandServiceImplTest {
         log.info("============ then 나의 심부름 전체 사이즈 구하기 ============");
         Integer integer = allMyErrands.size();
         assertEquals(integer, 2);
+    }
+
+    @Test @DisplayName("심부름 단건 상세 조회하기")
+    void 심부름_단건_상세조회() throws Exception {
+        log.info("========= Given: 받는사람_1 memberEntity 저장 =========");
+        MemberEntity recipient = MemberEntity.builder()
+                .username("@"+RandomStringUtils.randomAlphabetic(4))
+                .password("1234")
+                .phoneNumber(RandomStringUtils.randomNumeric(11))
+                .fcmToken("testingFcmToken2")
+                .build();
+        MemberEntity recipientEntity = memberRepository.save(recipient);
+
+        log.info("=========== Given: 보내는사람_2 memberEntity 저장 =========");
+        MemberEntity sender_2 = MemberEntity.builder()
+                .username("@"+RandomStringUtils.randomAlphabetic(4))
+                .password("1234")
+                .phoneNumber(RandomStringUtils.randomNumeric(11))
+                .fcmToken("testingFcmToken3")
+                .build();
+        MemberEntity senderEntity_2 = memberRepository.save(sender_2);
+
+        log.info("===== 내(보내는사람) 심부름 1개 저장 =====");
+        List<ErrandEntity> errandEntities = errandGenerate(myMemberEntity, recipientEntity);
+
+        log.info("======== then 나의 심부름 상세조회하기 ========");
+        // 테스트 심부름 엔티티 리스트 널 체킹
+        if (errandEntities.get(0) == null){
+            throw new Exception("해당 테스트 심부름 리스트에 심부름이 하나도 없습니다.");
+        }
+        // 조회하기
+        ErrandResponseDto.ErrandDetails errandDetails = errandService.findErrandDetails(errandEntities.get(0).getPlanIdx());
+        assertNotNull(errandDetails);
     }
 }
