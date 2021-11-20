@@ -59,4 +59,16 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
                 .where(errandEntity.memberEntity.eq(myMemberEntity))
                 .fetch();
     }
+
+    /**
+     * 해당 심부름의 상세 정보를 가져온다.
+     *
+     * @param errandIdx
+     * @return ErrandResponseDto.ErrandDetails
+     * @author 전지환
+     */
+    @Override
+    public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) {
+        return null;
+    }
 }

@@ -29,4 +29,12 @@ public interface ErrandCustomRepository {
      * @author 전지환
      */
     List<ErrandResponseDto.ErrandPreview> findAllErrandsToList(MemberEntity myMemberEntity);
+
+    /**
+     * 해당 심부름을 상세 조회한다.
+     *
+     * TODO
+     * ErrandIdx param, planInfo, period, sender, recipient, errandStatus
+     */
+    ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx);
 }
