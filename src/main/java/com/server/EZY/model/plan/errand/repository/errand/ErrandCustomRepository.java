@@ -37,5 +37,5 @@ public interface ErrandCustomRepository {
      * @return ErrandResponseDto.ErrandDetails
      * @author 전지환
      */
-    ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx);
+    ErrandResponseDto.ErrandDetails findErrandDetails(MemberEntity myMemberEntity, Long errandIdx);
 }

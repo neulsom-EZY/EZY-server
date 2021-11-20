@@ -259,7 +259,8 @@ public class ErrandServiceImpl implements ErrandService{
      */
     @Override
     public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) {
-        return errandRepository.findErrandDetails(errandIdx);
+        MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
+        return errandRepository.findErrandDetails(myMemberEntity, errandIdx);
     }
 
     /**

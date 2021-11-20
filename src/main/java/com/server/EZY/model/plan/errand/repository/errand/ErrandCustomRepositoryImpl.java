@@ -72,7 +72,7 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
      * @author 전지환
      */
     @Override
-    public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) {
+    public ErrandResponseDto.ErrandDetails findErrandDetails(MemberEntity myMemberEntity, Long errandIdx) {
         return queryFactory
                 .select(new QErrandResponseDto_ErrandDetails(
                 errandEntity.planIdx,
@@ -94,7 +94,11 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
                 ))
                 .from(errandEntity)
                 .join(errandEntity.errandDetailEntity, errandDetailEntity)
-                .where(errandEntity.planIdx.eq(errandIdx))
+                .where(
+                        errandEntity.planIdx.eq(errandIdx)
+                                .and(errandDetailEntity.senderIdx.eq(myMemberEntity.getMemberIdx())
+                                        .or(errandDetailEntity.recipientIdx.eq(myMemberEntity.getMemberIdx())))
+                )
                 .fetchOne();
     }
 }
