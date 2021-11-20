@@ -1,10 +1,13 @@
 package com.server.EZY.model.plan.errand.repository.errand;
 
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.plan.errand.ErrandEntity;
 import com.server.EZY.model.plan.errand.dto.ErrandResponseDto;
+import com.server.EZY.model.plan.errand.dto.QErrandResponseDto_ErrandDetails;
 import com.server.EZY.model.plan.errand.dto.QErrandResponseDto_ErrandPreview;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.server.EZY.model.plan.errand.QErrandEntity.errandEntity;
+import static com.server.EZY.model.member.QMemberEntity.memberEntity;
 import static com.server.EZY.model.plan.errand.QErrandDetailEntity.errandDetailEntity;
 
 @RequiredArgsConstructor
@@ -69,6 +73,28 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
      */
     @Override
     public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) {
-        return null;
+        return queryFactory
+                .select(new QErrandResponseDto_ErrandDetails(
+                errandEntity.planIdx,
+                errandEntity.planInfo,
+                errandEntity.period,
+                ExpressionUtils.as(
+                        JPAExpressions.select(memberEntity.username)
+                        .from(memberEntity)
+                        .where(memberEntity.memberIdx.eq(errandDetailEntity.senderIdx)),
+                        "sender"
+                ),
+                ExpressionUtils.as(
+                        JPAExpressions.select(memberEntity.username)
+                        .from(memberEntity)
+                        .where(memberEntity.memberIdx.eq(errandDetailEntity.recipientIdx)),
+                        "recipient"
+                ),
+                errandDetailEntity.errandStatus.stringValue()
+                ))
+                .from(errandEntity)
+                .join(errandEntity.errandDetailEntity, errandDetailEntity)
+                .where(errandEntity.planIdx.eq(errandIdx))
+                .fetchOne();
     }
 }
