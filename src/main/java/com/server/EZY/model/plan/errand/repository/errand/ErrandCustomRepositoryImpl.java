@@ -49,8 +49,8 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
      */
     @Override
     public List<ErrandResponseDto.ErrandPreview> findAllErrandsToList(MemberEntity myMemberEntity) {
-        return queryFactory.
-                select(new QErrandResponseDto_ErrandPreview(
+        return queryFactory
+                .select(new QErrandResponseDto_ErrandPreview(
                         errandEntity.planIdx,
                         new CaseBuilder()
                                 .when(errandEntity.errandDetailEntity.senderIdx.eq(myMemberEntity.getMemberIdx()))
