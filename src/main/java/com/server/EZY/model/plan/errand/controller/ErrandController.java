@@ -38,13 +38,14 @@ public class ErrandController {
 
     /**
      * 해당 심부름을 상세조회하는 Controller
+     *
      * @param errandIdx
-     * @return
-     * @author 배태현
+     * @return getSingleResult
+     * @author 전지환, 배태현
      */
-    @GetMapping("/errandIdx")
-    public CommonResult thisErrandDetailSelect(@PathVariable("errandIdx") Long errandIdx) {
-        return responseService.getSuccessResult();
+    @GetMapping("/{errandIdx}")
+    public CommonResult getThisErrandDetails(@PathVariable(value = "errandIdx") Long errandIdx) {
+        return responseService.getSingleResult(errandService.findErrandDetails(errandIdx));
     }
 
     /**
