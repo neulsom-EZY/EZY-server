@@ -48,7 +48,7 @@ public class ErrandController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getThisErrandDetails(@PathVariable(value = "errandIdx") Long errandIdx) {
+    public CommonResult getThisErrandDetails(@PathVariable(value = "errandIdx") Long errandIdx) throws Exception {
         return responseService.getSingleResult(errandService.findErrandDetails(errandIdx));
     }
 
