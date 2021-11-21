@@ -17,7 +17,7 @@ public class TagGetDto {
      * @version 1.0.0
      * @since 1.0.0
      */
-    @Getter @Setter
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE) @AllArgsConstructor
     public static class TagIdx{
         long tagIdx;
