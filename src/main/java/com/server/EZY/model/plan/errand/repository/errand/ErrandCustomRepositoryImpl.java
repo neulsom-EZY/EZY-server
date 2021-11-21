@@ -90,7 +90,7 @@ public class ErrandCustomRepositoryImpl implements ErrandCustomRepository {
                         .where(memberEntity.memberIdx.eq(errandDetailEntity.recipientIdx)),
                         "recipient"
                 ),
-                errandDetailEntity.errandStatus.stringValue()
+                errandDetailEntity.errandStatus
                 ))
                 .from(errandEntity)
                 .join(errandEntity.errandDetailEntity, errandDetailEntity)
