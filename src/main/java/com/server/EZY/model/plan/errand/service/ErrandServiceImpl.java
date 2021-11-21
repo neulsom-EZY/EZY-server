@@ -251,6 +251,21 @@ public class ErrandServiceImpl implements ErrandService{
     }
 
     /**
+     * 해당 심부름을 상세 조회하는 메소드.
+     *
+     * @param errandIdx
+     * @return ErrandResponseDto.ErrandDetails
+     * @author 전지환
+     */
+    @Override
+    public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) throws Exception {
+        MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
+        ErrandResponseDto.ErrandDetails resultOfErrandDetails = errandRepository.findErrandDetails(myMemberEntity, errandIdx);
+        if (resultOfErrandDetails == null) throw new Exception("해당 심부름과 연관되지 않은 사용자입니다.");
+        else return resultOfErrandDetails;
+    }
+
+    /**
      * 이 심부름의 발신자가 아닌지 확인하고, Supplier로 넘겨준 Exception을 던진다.
      *
      * @param errandDetailEntity - 해당 심부름의 발신자의 정보를 가지고 있는 ErrandDetailEntity
