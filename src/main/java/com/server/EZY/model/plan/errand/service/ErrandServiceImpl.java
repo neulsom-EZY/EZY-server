@@ -258,9 +258,11 @@ public class ErrandServiceImpl implements ErrandService{
      * @author 전지환
      */
     @Override
-    public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) {
+    public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) throws Exception {
         MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
-        return errandRepository.findErrandDetails(myMemberEntity, errandIdx);
+        ErrandResponseDto.ErrandDetails resultOfErrandDetails = errandRepository.findErrandDetails(myMemberEntity, errandIdx);
+        if (resultOfErrandDetails == null) throw new Exception("해당 심부름과 연관되지 않은 사용자입니다.");
+        else return resultOfErrandDetails;
     }
 
     /**

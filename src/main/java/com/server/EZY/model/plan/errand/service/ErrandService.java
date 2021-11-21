@@ -83,5 +83,5 @@ public interface ErrandService {
      *
      * @author 전지환
      */
-    ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx);
+    ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) throws Exception;
 }
