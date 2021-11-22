@@ -51,9 +51,12 @@ public class ErrandServiceImpl implements ErrandService{
         /**
          * sender: 보내는 사람
          * recipient: 받는 사람
+         *
+         * sender != recipient
          */
         MemberEntity sender = currentUserUtil.getCurrentUser();
         MemberEntity recipient = memberRepository.findByUsername(errandSetDto.getRecipient());
+        if (sender == recipient) throw new Exception("심부름은 나에게 쓸 수 없어요.");
 
         // 심부름 세부사항을 세팅한다.
         ErrandDetailEntity errandDetails = ErrandDetailEntity.builder()
