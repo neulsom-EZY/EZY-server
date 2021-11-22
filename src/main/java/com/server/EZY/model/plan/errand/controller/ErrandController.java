@@ -38,13 +38,18 @@ public class ErrandController {
 
     /**
      * 해당 심부름을 상세조회하는 Controller
+     *
      * @param errandIdx
-     * @return
-     * @author 배태현
+     * @return getSingleResult
+     * @author 전지환, 배태현
      */
-    @GetMapping("/errandIdx")
-    public CommonResult thisErrandDetailSelect(@PathVariable("errandIdx") Long errandIdx) {
-        return responseService.getSuccessResult();
+    @GetMapping("/{errandIdx}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult getThisErrandDetails(@PathVariable(value = "errandIdx") Long errandIdx) throws Exception {
+        return responseService.getSingleResult(errandService.findErrandDetails(errandIdx));
     }
 
     /**

@@ -29,4 +29,13 @@ public interface ErrandCustomRepository {
      * @author 전지환
      */
     List<ErrandResponseDto.ErrandPreview> findAllErrandsToList(MemberEntity myMemberEntity);
+
+    /**
+     * 해당 심부름의 상세 정보를 가져온다.
+     *
+     * @param errandIdx
+     * @return ErrandResponseDto.ErrandDetails
+     * @author 전지환
+     */
+    ErrandResponseDto.ErrandDetails findErrandDetails(MemberEntity myMemberEntity, Long errandIdx);
 }
