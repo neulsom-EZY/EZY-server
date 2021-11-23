@@ -30,13 +30,6 @@ public class CurrentUserUtil {
     }
 
     public MemberEntity getCurrentUser() {
-        String username = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else{
-            username = principal.toString();
-        }
-        return memberRepository.findByUsername(username);
+        return memberRepository.findByUsername(CurrentUserUtil.getCurrentUsername());
     }
 }
