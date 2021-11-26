@@ -5,7 +5,7 @@ name: EZY-server CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
     branches: [ develop ]
 
