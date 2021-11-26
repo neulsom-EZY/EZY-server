@@ -55,6 +55,8 @@ public class ErrandServiceImpl implements ErrandService{
         MemberEntity sender = currentUserUtil.getCurrentUser();
         MemberEntity recipient = memberRepository.findByUsername(errandSetDto.getRecipient());
 
+        if (sender == recipient) throw new IllegalStateException("보내는사람과 받는사람의 대상이 같아 처리할 수 없습니다.");
+
         // 심부름 세부사항을 세팅한다.
         ErrandDetailEntity errandDetails = ErrandDetailEntity.builder()
                 .senderIdx(sender.getMemberIdx())
