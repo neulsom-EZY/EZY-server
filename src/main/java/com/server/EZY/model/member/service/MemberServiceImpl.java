@@ -320,7 +320,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<UsernameResponseDto> searchUser(String keyword) {
         List<UsernameResponseDto> usernameList = memberRepository.searchUsernameKeywordBased(keyword);
-        if (usernameList.isEmpty()) throw new UsernameNotFoundException("해당 keyword로 존재하는 username이 존재하지 않습니다.");
+        if (usernameList.isEmpty()) throw new UsernameNotFoundException("%"+keyword+"%");
         else return usernameList;
     }
 }
