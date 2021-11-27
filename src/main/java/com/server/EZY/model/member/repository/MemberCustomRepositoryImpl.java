@@ -28,7 +28,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository{
                     memberEntity.username
                 ))
                 .from(memberEntity)
-                .where(memberEntity.username.contains("%"+keyword+"%"))
+                .where(memberEntity.username.contains(keyword))
                 .fetch();
     }
 }
