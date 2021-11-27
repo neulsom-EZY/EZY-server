@@ -1,29 +1,31 @@
 node {
      stage('Clone repository') {
-         checkout scm
+        checkout scm
      }
+
+    stage('Application_Config'){
+        sh '''rm -rf ${DELETE_APPLICATION1}'''
+        sh '''rm -rf ${DELETE_APPLICATION2}'''
+        sh '''rm -rf ${DELETE_APPLICATION3}'''
+        sh '''sudo cp ${SETTING_APPLICATION} ${SETTING_APPLICATION_LOCATION}'''
+        sh '''sudo cp ${SETTING_FIREBASE} ${SETTING_FIREBASE_LOCATION}'''
+    }
 
      stage('Build BackEnd') {
         sh'''
-        ./gradlew build --exclude-task test
+        ./gradlew clean build --exclude-task test
         '''
      }
 
-     stage('Build image') {
-        app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
-     }
+     stage('reset'){
+         sh'''docker stop ${DOCKER_APP}_1 || true'''
+         sh'''docker rm ${DOCKER_APP}_1 || true'''
+         sh'''docker rmi ${DOCKER_APP}:latest || true'''
+         sh'''docker stop ${REDIS}_1 || true'''
+         sh'''docker rm ${REDIS}_1 || true'''
+      }
 
-     stage('Push image') {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-            app.push()
-        }
+     stage('docker-compose'){
+        sh '''docker-compose up -d'''
      }
-
-     stage('Code Deploy') {
-         sh '''docker stop ${CONTAINER_NAME} || true && docker rm ${CONTAINER_NAME} || true''' // 컨테이너 rm
-         sh '''docker rmi -f `docker images | awk '$1 ~ /ezy-server/ {print $3}'`''' // image 삭제
-         sh '''docker run -d -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${REPOSITORY_NAME}/${CONTAINER_NAME}:latest''' // 컨테이너 1 // local : container
-     }
-
-     // + hook test
 }

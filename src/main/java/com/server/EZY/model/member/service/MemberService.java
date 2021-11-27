@@ -3,6 +3,7 @@ package com.server.EZY.model.member.service;
 import com.server.EZY.model.member.MemberEntity;
 import com.server.EZY.model.member.dto.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,4 +41,13 @@ public interface MemberService {
     void deleteUser(AuthDto deleteUserDto);
 
     void updateFcmToken(FcmTokenDto fcmTokenDto);
+
+    /**
+     * 키워드를 포함하고 있는 닉네임을 검색할 수 있는 메소드.
+     *
+     * @param keyword
+     * @return List<UsernameResponseDto>
+     * @author 전지환
+     */
+    List<UsernameResponseDto> searchUser(String keyword);
 }
