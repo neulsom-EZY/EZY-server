@@ -163,8 +163,10 @@ public class MemberController {
     }
 
     /**
-     * 닉네임이 존재하는 사용자인지 확인한다.
+     * keyword를 포함하고 있는 username을 찾아주는 컨트롤러
      *
+     * @param keyword
+     * @return getListResult()
      * @author 전지환
      */
     @GetMapping("/search")
