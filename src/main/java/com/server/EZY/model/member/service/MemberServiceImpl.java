@@ -311,7 +311,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 존재하는 닉네임인지 검색할 수 있는 메소드
+     * 키워드를 포함하고 있는 닉네임을 검색할 수 있는 메소드.
      *
      * @param keyword
      * @return List<UsernameResponseDto>

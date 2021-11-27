@@ -15,7 +15,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository{
     private final JPQLQueryFactory queryFactory;
 
     /**
-     * 키워드 기반으로 username을 찾아주는 쿼리 메소드.
+     * 키워드를 포함하고 있는 username을 찾아주는 쿼리 메소드.
      *
      * @param keyword
      * @return List<UsernameResponseDto>
