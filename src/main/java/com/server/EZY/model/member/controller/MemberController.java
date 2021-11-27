@@ -5,6 +5,8 @@ import com.server.EZY.model.member.service.MemberService;
 import com.server.EZY.response.ResponseService;
 import com.server.EZY.response.result.CommonResult;
 import com.server.EZY.response.result.SingleResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -159,4 +161,19 @@ public class MemberController {
         memberService.findUsernameByPhoneNumber(phoneNumberDto.getPhoneNumber());
         return responseService.getSuccessResult();
     }
+
+    /**
+     * 닉네임이 존재하는 사용자인지 확인한다.
+     *
+     * @author 전지환
+     */
+    @GetMapping("/search")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult verifyUser(@RequestParam String keyword) {
+        return null;
+    }
+
 }
