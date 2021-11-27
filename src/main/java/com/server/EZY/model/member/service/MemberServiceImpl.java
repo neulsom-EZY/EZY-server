@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -306,5 +307,18 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity currentUser = currentUserUtil.getCurrentUser();
 
         currentUser.updateFcmToken(fcmTokenDto.getFcmToken());
+    }
+
+    /**
+     * 존재하는 닉네임인지 검색할 수 있는 메소드
+     *
+     * @param keyword
+     * @return List<UsernameResponseDto>
+     * @author 전지환
+     */
+    @Override
+    public List<UsernameResponseDto> searchUser(String keyword) {
+
+        return null;
     }
 }
