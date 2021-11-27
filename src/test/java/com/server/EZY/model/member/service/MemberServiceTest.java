@@ -23,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -412,7 +413,7 @@ public class MemberServiceTest {
 
     @Test @DisplayName("search_username_contain_keyword")
     void username_키워드_검색(){
-        //Given
+        // Given
         MemberEntity user_1 = MemberEntity.builder()
                 .username("j" + RandomStringUtils.randomAlphabetic(4))
                 .fcmToken(RandomStringUtils.randomAlphabetic(11))
@@ -422,11 +423,14 @@ public class MemberServiceTest {
 
         memberRepository.save(user_1);
 
-        //When
+        // 성공 When ~ Then
         List<UsernameResponseDto> usernameList = memberService.searchUser("j");
-
-        //Then
         assertEquals(1, usernameList.size());
+
+        // 실패 When ~ Then
+        assertThrows(UsernameNotFoundException.class, () -> {
+            memberService.searchUser("w");
+        });
     }
 
 }
