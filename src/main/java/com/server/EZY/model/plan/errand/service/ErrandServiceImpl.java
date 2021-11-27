@@ -55,6 +55,8 @@ public class ErrandServiceImpl implements ErrandService{
         MemberEntity sender = currentUserUtil.getCurrentUser();
         MemberEntity recipient = memberRepository.findByUsername(errandSetDto.getRecipient());
 
+        if (sender == recipient) throw new IllegalStateException("보내는사람과 받는사람의 대상이 같아 처리할 수 없습니다.");
+
         // 심부름 세부사항을 세팅한다.
         ErrandDetailEntity errandDetails = ErrandDetailEntity.builder()
                 .senderIdx(sender.getMemberIdx())
@@ -248,6 +250,21 @@ public class ErrandServiceImpl implements ErrandService{
     public List<ErrandResponseDto.ErrandPreview> findAllMyErrands() {
         MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
         return errandRepository.findAllErrandsToList(myMemberEntity);
+    }
+
+    /**
+     * 해당 심부름을 상세 조회하는 메소드.
+     *
+     * @param errandIdx
+     * @return ErrandResponseDto.ErrandDetails
+     * @author 전지환
+     */
+    @Override
+    public ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) throws Exception {
+        MemberEntity myMemberEntity = currentUserUtil.getCurrentUser();
+        ErrandResponseDto.ErrandDetails resultOfErrandDetails = errandRepository.findErrandDetails(myMemberEntity, errandIdx);
+        if (resultOfErrandDetails == null) throw new Exception("해당 심부름과 연관되지 않은 사용자입니다.");
+        else return resultOfErrandDetails;
     }
 
     /**

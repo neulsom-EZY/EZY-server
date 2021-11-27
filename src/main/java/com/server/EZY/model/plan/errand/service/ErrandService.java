@@ -76,4 +76,12 @@ public interface ErrandService {
      * @author 전지환
      */
     List<ErrandResponseDto.ErrandPreview> findAllMyErrands();
+
+
+    /**
+     * 해당 심부름을 상세 조회하는 메소드.
+     *
+     * @author 전지환
+     */
+    ErrandResponseDto.ErrandDetails findErrandDetails(Long errandIdx) throws Exception;
 }
