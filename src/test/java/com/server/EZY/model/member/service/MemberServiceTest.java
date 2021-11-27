@@ -12,6 +12,7 @@ import com.server.EZY.model.member.repository.MemberRepository;
 import com.server.EZY.util.CurrentUserUtil;
 import com.server.EZY.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.RandomStringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -408,4 +409,24 @@ public class MemberServiceTest {
         MemberEntity loginUser = memberRepository.findByUsername(currentUserNickname);
         return loginUser;
     }
+
+    @Test @DisplayName("search_username_contain_keyword")
+    void username_키워드_검색(){
+        //Given
+        MemberEntity user_1 = MemberEntity.builder()
+                .username("j" + RandomStringUtils.randomAlphabetic(4))
+                .fcmToken(RandomStringUtils.randomAlphabetic(11))
+                .phoneNumber("010" + RandomStringUtils.randomNumeric(8))
+                .password("1234")
+                .build();
+
+        memberRepository.save(user_1);
+
+        //When
+        List<UsernameResponseDto> usernameList = memberService.searchUser("j");
+
+        //Then
+        assertEquals(1, usernameList.size());
+    }
+
 }
