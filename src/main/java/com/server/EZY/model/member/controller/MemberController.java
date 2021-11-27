@@ -173,7 +173,7 @@ public class MemberController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult verifyUser(@RequestParam String keyword) {
-        return null;
+        return responseService.getListResult(memberService.searchUser(keyword));
     }
 
 }

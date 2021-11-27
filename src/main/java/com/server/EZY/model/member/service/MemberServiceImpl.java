@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -318,7 +319,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public List<UsernameResponseDto> searchUser(String keyword) {
-
-        return null;
+        List<UsernameResponseDto> usernameList = memberRepository.searchUsernameKeywordBased(keyword);
+        if (usernameList.isEmpty()) throw new UsernameNotFoundException("해당 keyword로 존재하는 username이 존재하지 않습니다.");
+        else return usernameList;
     }
 }
