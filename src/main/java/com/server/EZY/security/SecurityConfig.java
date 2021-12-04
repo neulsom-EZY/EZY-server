@@ -50,17 +50,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/member/send/change/password/authkey").permitAll()
                 .antMatchers("/v1/member/change/password").permitAll()
 
+                .antMatchers("/v1/plan/**").authenticated()
+                .antMatchers("/v1/errand/**").authenticated() //개발 편의상 permitAll 처리 해 두었음
+                .antMatchers("/v1/tag/**").authenticated() //개발 편의상 permitAll 처리 해 두었음
+
+                .antMatchers("/exception/**").permitAll()
+                .antMatchers("/h2-console/**/**").permitAll()
+                .antMatchers("/exception/**").permitAll()
+
                 /* 이렇게 권한에 따라 url접속을 제한할 수 있다. (테스트 완료)
                 .antMatchers("/v1/member/test").hasRole("CLIENT")
                 .antMatchers("/v1/admin/**").hasRole("ADMIN")
                 */
 
-                .antMatchers("/v1/errand/**").permitAll() //개발 편의상 permitAll 처리 해 두었음
-                .antMatchers("/v1/tag/**").permitAll() //개발 편의상 permitAll 처리 해 두었음
-
-                .antMatchers("/exception/**").permitAll()
-                .antMatchers("/h2-console/**/**").permitAll()
-                .antMatchers("/exception/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
