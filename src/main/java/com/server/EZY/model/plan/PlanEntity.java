@@ -32,6 +32,9 @@ public class PlanEntity extends BaseTimeEntity {
     @Column(name = "plan_id")
     protected Long planIdx;
 
+    /**
+     * TeamPlan에서는 TeamLeader의 역할을 한다.
+     **/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false, updatable = false)
     protected MemberEntity memberEntity;
